@@ -1,34 +1,46 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\",
+  "WorkspaceRootPath": "C:\\Users\\escob\\Documents\\proyecto para albert\\G03_GestionCambios\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|c:\\users\\kenyi\\desktop\\g03_gestioncambios\\appgcs\\views\\repositorio\\asignacion.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|solutionrelative:appgcs\\views\\repositorio\\asignacion.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|c:\\users\\escob\\documents\\proyecto para albert\\g03_gestioncambios\\appgcs\\views\\pull\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|solutionrelative:appgcs\\views\\pull\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\appgcs\\views\\asignacion\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|solutionrelative:appgcs\\views\\asignacion\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|c:\\users\\escob\\documents\\proyecto para albert\\g03_gestioncambios\\appgcs\\views\\pull\\listar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|solutionrelative:appgcs\\views\\pull\\listar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\appgcs\\source\\js\\bootstrap.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|solutionrelative:appgcs\\source\\js\\bootstrap.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+      "AbsoluteMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|c:\\users\\escob\\documents\\proyecto para albert\\g03_gestioncambios\\appgcs\\controllers\\pullcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|solutionrelative:appgcs\\controllers\\pullcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\appgcs\\views\\solicitud\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|solutionrelative:appgcs\\views\\solicitud\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\appgcs\\views\\repositorio\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "AbsoluteMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|c:\\users\\escob\\documents\\proyecto para albert\\g03_gestioncambios\\appgcs\\views\\repositorio\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|solutionrelative:appgcs\\views\\repositorio\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\appgcs\\views\\solicitud\\formulariosolicitud.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|solutionrelative:appgcs\\views\\solicitud\\formulariosolicitud.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|c:\\users\\escob\\documents\\proyecto para albert\\g03_gestioncambios\\appgcs\\views\\asignacion\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|solutionrelative:appgcs\\views\\asignacion\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\appgcs\\views\\solicitud\\informesolicitudpdf.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|solutionrelative:appgcs\\views\\solicitud\\informesolicitudpdf.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|c:\\users\\escob\\documents\\proyecto para albert\\g03_gestioncambios\\appgcs\\views\\cambios\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|solutionrelative:appgcs\\views\\cambios\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|c:\\users\\escob\\documents\\proyecto para albert\\g03_gestioncambios\\appgcs\\views\\cambios\\registrarimplementacion.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|solutionrelative:appgcs\\views\\cambios\\registrarimplementacion.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|c:\\users\\escob\\documents\\proyecto para albert\\g03_gestioncambios\\appgcs\\controllers\\cambioscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|solutionrelative:appgcs\\controllers\\cambioscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|c:\\users\\escob\\documents\\proyecto para albert\\g03_gestioncambios\\appgcs\\controllers\\repositoriocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|solutionrelative:appgcs\\controllers\\repositoriocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|c:\\users\\escob\\documents\\proyecto para albert\\g03_gestioncambios\\appgcs\\controllers\\asignacioncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|solutionrelative:appgcs\\controllers\\asignacioncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -38,92 +50,137 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "bootstrap.js",
-              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\AppGCS\\source\\js\\bootstrap.js",
-              "RelativeDocumentMoniker": "AppGCS\\source\\js\\bootstrap.js",
-              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\AppGCS\\source\\js\\bootstrap.js",
-              "RelativeToolTip": "AppGCS\\source\\js\\bootstrap.js",
-              "ViewState": "AgIAAHgRAAAAAAAAAAAuwIMRAAAMAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2025-04-29T18:52:56.278Z"
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\AppGCS\\Views\\Asignacion\\Index.cshtml",
-              "RelativeDocumentMoniker": "AppGCS\\Views\\Asignacion\\Index.cshtml",
-              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\AppGCS\\Views\\Asignacion\\Index.cshtml",
-              "RelativeToolTip": "AppGCS\\Views\\Asignacion\\Index.cshtml",
-              "ViewState": "AgIAAB8BAAAAAAAAAAApwCsBAAAVAAAAAAAAAA==",
+              "Title": "Listar.cshtml",
+              "DocumentMoniker": "C:\\Users\\escob\\Documents\\proyecto para albert\\G03_GestionCambios\\AppGCS\\Views\\Pull\\Listar.cshtml",
+              "RelativeDocumentMoniker": "AppGCS\\Views\\Pull\\Listar.cshtml",
+              "ToolTip": "C:\\Users\\escob\\Documents\\proyecto para albert\\G03_GestionCambios\\AppGCS\\Views\\Pull\\Listar.cshtml",
+              "RelativeToolTip": "AppGCS\\Views\\Pull\\Listar.cshtml",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAYwC8AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-04-29T18:24:58.534Z"
+              "WhenOpened": "2025-04-29T21:38:31.003Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "Asignacion.cshtml",
-              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\AppGCS\\Views\\Repositorio\\Asignacion.cshtml",
-              "RelativeDocumentMoniker": "AppGCS\\Views\\Repositorio\\Asignacion.cshtml",
-              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\AppGCS\\Views\\Repositorio\\Asignacion.cshtml",
-              "RelativeToolTip": "AppGCS\\Views\\Repositorio\\Asignacion.cshtml",
-              "ViewState": "AgIAAG0AAAAAAAAAAAAmwGMBAAAfAAAAAAAAAA==",
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\escob\\Documents\\proyecto para albert\\G03_GestionCambios\\AppGCS\\Views\\Pull\\Index.cshtml",
+              "RelativeDocumentMoniker": "AppGCS\\Views\\Pull\\Index.cshtml",
+              "ToolTip": "C:\\Users\\escob\\Documents\\proyecto para albert\\G03_GestionCambios\\AppGCS\\Views\\Pull\\Index.cshtml",
+              "RelativeToolTip": "AppGCS\\Views\\Pull\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-04-29T17:56:03.304Z",
+              "WhenOpened": "2025-04-29T21:31:39.011Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "PullController.cs",
+              "DocumentMoniker": "C:\\Users\\escob\\Documents\\proyecto para albert\\G03_GestionCambios\\AppGCS\\Controllers\\PullController.cs",
+              "RelativeDocumentMoniker": "AppGCS\\Controllers\\PullController.cs",
+              "ToolTip": "C:\\Users\\escob\\Documents\\proyecto para albert\\G03_GestionCambios\\AppGCS\\Controllers\\PullController.cs",
+              "RelativeToolTip": "AppGCS\\Controllers\\PullController.cs",
+              "ViewState": "AgIAADAAAAAAAAAAAAAmwEEAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-29T21:30:54.737Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\escob\\Documents\\proyecto para albert\\G03_GestionCambios\\AppGCS\\Views\\Repositorio\\Index.cshtml",
+              "RelativeDocumentMoniker": "AppGCS\\Views\\Repositorio\\Index.cshtml",
+              "ToolTip": "C:\\Users\\escob\\Documents\\proyecto para albert\\G03_GestionCambios\\AppGCS\\Views\\Repositorio\\Index.cshtml",
+              "RelativeToolTip": "AppGCS\\Views\\Repositorio\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-29T21:20:48.827Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "RegistrarImplementacion.cshtml",
+              "DocumentMoniker": "C:\\Users\\escob\\Documents\\proyecto para albert\\G03_GestionCambios\\AppGCS\\Views\\Cambios\\RegistrarImplementacion.cshtml",
+              "RelativeDocumentMoniker": "AppGCS\\Views\\Cambios\\RegistrarImplementacion.cshtml",
+              "ToolTip": "C:\\Users\\escob\\Documents\\proyecto para albert\\G03_GestionCambios\\AppGCS\\Views\\Cambios\\RegistrarImplementacion.cshtml",
+              "RelativeToolTip": "AppGCS\\Views\\Cambios\\RegistrarImplementacion.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-29T21:01:58.509Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\escob\\Documents\\proyecto para albert\\G03_GestionCambios\\AppGCS\\Views\\Cambios\\Index.cshtml",
+              "RelativeDocumentMoniker": "AppGCS\\Views\\Cambios\\Index.cshtml",
+              "ToolTip": "C:\\Users\\escob\\Documents\\proyecto para albert\\G03_GestionCambios\\AppGCS\\Views\\Cambios\\Index.cshtml",
+              "RelativeToolTip": "AppGCS\\Views\\Cambios\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-29T21:01:38.422Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "CambiosController.cs",
+              "DocumentMoniker": "C:\\Users\\escob\\Documents\\proyecto para albert\\G03_GestionCambios\\AppGCS\\Controllers\\CambiosController.cs",
+              "RelativeDocumentMoniker": "AppGCS\\Controllers\\CambiosController.cs",
+              "ToolTip": "C:\\Users\\escob\\Documents\\proyecto para albert\\G03_GestionCambios\\AppGCS\\Controllers\\CambiosController.cs",
+              "RelativeToolTip": "AppGCS\\Controllers\\CambiosController.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAcwBIAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-29T20:50:35.692Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "RepositorioController.cs",
+              "DocumentMoniker": "C:\\Users\\escob\\Documents\\proyecto para albert\\G03_GestionCambios\\AppGCS\\Controllers\\RepositorioController.cs",
+              "RelativeDocumentMoniker": "AppGCS\\Controllers\\RepositorioController.cs",
+              "ToolTip": "C:\\Users\\escob\\Documents\\proyecto para albert\\G03_GestionCambios\\AppGCS\\Controllers\\RepositorioController.cs",
+              "RelativeToolTip": "AppGCS\\Controllers\\RepositorioController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-29T20:38:40.521Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 4,
               "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\AppGCS\\Views\\Repositorio\\Index.cshtml",
-              "RelativeDocumentMoniker": "AppGCS\\Views\\Repositorio\\Index.cshtml",
-              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\AppGCS\\Views\\Repositorio\\Index.cshtml",
-              "RelativeToolTip": "AppGCS\\Views\\Repositorio\\Index.cshtml",
-              "ViewState": "AgIAAAoCAAAAAAAAAAAqwGkBAABBAAAAAAAAAA==",
+              "DocumentMoniker": "C:\\Users\\escob\\Documents\\proyecto para albert\\G03_GestionCambios\\AppGCS\\Views\\Asignacion\\Index.cshtml",
+              "RelativeDocumentMoniker": "AppGCS\\Views\\Asignacion\\Index.cshtml",
+              "ToolTip": "C:\\Users\\escob\\Documents\\proyecto para albert\\G03_GestionCambios\\AppGCS\\Views\\Asignacion\\Index.cshtml",
+              "RelativeToolTip": "AppGCS\\Views\\Asignacion\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAcAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-04-29T17:54:59.907Z"
+              "WhenOpened": "2025-04-29T20:38:28.428Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "InformeSolicitudPdf.cshtml",
-              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\AppGCS\\Views\\Solicitud\\InformeSolicitudPdf.cshtml",
-              "RelativeDocumentMoniker": "AppGCS\\Views\\Solicitud\\InformeSolicitudPdf.cshtml",
-              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\AppGCS\\Views\\Solicitud\\InformeSolicitudPdf.cshtml",
-              "RelativeToolTip": "AppGCS\\Views\\Solicitud\\InformeSolicitudPdf.cshtml",
-              "ViewState": "AgIAACcAAAAAAAAAAAAAAAkAAAAxAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-04-29T17:09:44.941Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "FormularioSolicitud.cshtml",
-              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\AppGCS\\Views\\Solicitud\\FormularioSolicitud.cshtml",
-              "RelativeDocumentMoniker": "AppGCS\\Views\\Solicitud\\FormularioSolicitud.cshtml",
-              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\AppGCS\\Views\\Solicitud\\FormularioSolicitud.cshtml",
-              "RelativeToolTip": "AppGCS\\Views\\Solicitud\\FormularioSolicitud.cshtml",
-              "ViewState": "AgIAACUBAAAAAAAAAAAtwB0BAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-04-29T17:09:13.349Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\AppGCS\\Views\\Solicitud\\Index.cshtml",
-              "RelativeDocumentMoniker": "AppGCS\\Views\\Solicitud\\Index.cshtml",
-              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\AppGCS\\Views\\Solicitud\\Index.cshtml",
-              "RelativeToolTip": "AppGCS\\Views\\Solicitud\\Index.cshtml",
-              "ViewState": "AgIAAKwAAAAAAAAAAAAtwDcAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-04-29T17:08:47.529Z"
+              "DocumentIndex": 9,
+              "Title": "AsignacionController.cs",
+              "DocumentMoniker": "C:\\Users\\escob\\Documents\\proyecto para albert\\G03_GestionCambios\\AppGCS\\Controllers\\AsignacionController.cs",
+              "RelativeDocumentMoniker": "AppGCS\\Controllers\\AsignacionController.cs",
+              "ToolTip": "C:\\Users\\escob\\Documents\\proyecto para albert\\G03_GestionCambios\\AppGCS\\Controllers\\AsignacionController.cs",
+              "RelativeToolTip": "AppGCS\\Controllers\\AsignacionController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-29T20:36:57.249Z",
+              "EditorCaption": ""
             }
           ]
         }

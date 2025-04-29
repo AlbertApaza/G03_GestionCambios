@@ -1,0 +1,76 @@
+﻿@{
+    ViewBag.Title = "Registro de Implementación de Cambios";
+    var mostrarMensaje = ViewBag.MostrarMensaje != null && (bool)ViewBag.MostrarMensaje;
+    var codigoSolicitud = ViewBag.CodigoSolicitud as string;
+}
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.6.2/css/bootstrap.min.css" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<div class="container my-5">
+    <div class="card shadow-lg rounded">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">@ViewBag.Title</h4>
+        </div>
+
+        <div class="card-body">
+            @if (mostrarMensaje)
+            {
+                <div class="alert alert-success text-center fw-bold" id="avisoExito">
+                    ✔ Implementación registrada correctamente. Redirigiendo...
+                </div>
+
+                <script>
+                    setTimeout(function () {
+                        window.location.href = '@Url.Action("Index", "Cambios")';
+                    }, 2000);
+                </script>
+            }
+            else
+            {
+                <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Código de Solicitud *</label>
+                            <input type="text" class="form-control" name="codigoSolicitud" value="@codigoSolicitud" readonly />
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">URL Pull/Merge Request *</label>
+                            <input type="url" class="form-control" name="pullRequestUrl" required />
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Archivo del Código Fuente</label>
+                        <input class="form-control" type="file" name="archivoCodigo" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Notas Técnicas</label>
+                        <textarea class="form-control" name="notasTecnicas" rows="3"></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Entorno de Pruebas</label>
+                        <select class="form-select" name="entornoPruebas" required>
+                            <option value="">Seleccione...</option>
+                            <option value="XAMPP">XAMPP</option>
+                            <option value="Docker">Docker</option>
+                            <option value="IIS">IIS</option>
+                            <option value="Otro">Otro</option>
+                        </select>
+                    </div>
+
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" name="pruebasExitosas" />
+                        <label class="form-check-label fw-bold">¿Pruebas Unitarias Exitosas?</label>
+                    </div>
+
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-success">Registrar Implementación</button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

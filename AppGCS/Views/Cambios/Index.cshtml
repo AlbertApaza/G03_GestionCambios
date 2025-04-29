@@ -1,0 +1,58 @@
+﻿@{
+    ViewBag.Title = "Mis Tareas Asignadas";
+    var completado = ViewBag.TareaCompletada != null && (bool)ViewBag.TareaCompletada;
+}
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.6.2/css/bootstrap.min.css" />
+
+<div class="container mt-5">
+    <div class="card shadow">
+        <div class="card-header bg-dark text-white">
+            <h4 class="mb-0">Tareas Asignadas al Desarrollador</h4>
+        </div>
+        <div class="card-body">
+
+            <table class="table table-bordered">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Código</th>
+                        <th>Tipo</th>
+                        <th>Prioridad</th>
+                        <th>Descripción</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>SOL-001</td>
+                        <td>Mejora</td>
+                        <td>Alta</td>
+                        <td>Actualizar módulo de facturación</td>
+                        <td>
+                            @if (completado)
+                            {
+                                <span class="badge bg-success">Completado</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-warning text-dark">En Progreso</span>
+                            }
+                        </td>
+                        <td>
+                            @if (completado)
+                            {
+                                <button class="btn btn-outline-secondary btn-sm" disabled>Ya registrado</button>
+                            }
+                            else
+                            {
+                                <a href="@Url.Action("RegistrarImplementacion", "Cambios", new { codigo = "SOL-001" })" class="btn btn-primary btn-sm">
+                                    Registrar Implementación
+                                </a>
+                            }
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
