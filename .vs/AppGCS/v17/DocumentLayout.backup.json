@@ -3,19 +3,31 @@
   "WorkspaceRootPath": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|c:\\users\\kenyi\\desktop\\g03_gestioncambios\\appgcs\\views\\repositorio\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|solutionrelative:appgcs\\views\\repositorio\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\appgcs\\views\\repositorio\\asignacion.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|solutionrelative:appgcs\\views\\repositorio\\asignacion.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|c:\\users\\kenyi\\desktop\\g03_gestioncambios\\appgcs\\views\\solicitud\\formulariosolicitud.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|solutionrelative:appgcs\\views\\solicitud\\formulariosolicitud.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|c:\\users\\kenyi\\desktop\\g03_gestioncambios\\appgcs\\views\\asignacion\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|solutionrelative:appgcs\\views\\asignacion\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|c:\\users\\kenyi\\desktop\\g03_gestioncambios\\appgcs\\views\\solicitud\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "AbsoluteMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|c:\\users\\kenyi\\desktop\\g03_gestioncambios\\appgcs\\source\\js\\bootstrap.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|solutionrelative:appgcs\\source\\js\\bootstrap.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\appgcs\\views\\solicitud\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|solutionrelative:appgcs\\views\\solicitud\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|c:\\users\\kenyi\\desktop\\g03_gestioncambios\\appgcs\\views\\solicitud\\informesolicitudpdf.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "AbsoluteMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\appgcs\\views\\repositorio\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|solutionrelative:appgcs\\views\\repositorio\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\appgcs\\views\\solicitud\\formulariosolicitud.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|solutionrelative:appgcs\\views\\solicitud\\formulariosolicitud.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\appgcs\\views\\solicitud\\informesolicitudpdf.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|solutionrelative:appgcs\\views\\solicitud\\informesolicitudpdf.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
@@ -26,56 +38,93 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "bootstrap.js",
+              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\AppGCS\\source\\js\\bootstrap.js",
+              "RelativeDocumentMoniker": "AppGCS\\source\\js\\bootstrap.js",
+              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\AppGCS\\source\\js\\bootstrap.js",
+              "RelativeToolTip": "AppGCS\\source\\js\\bootstrap.js",
+              "ViewState": "AgIAAHgRAAAAAAAAAAAuwIMRAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2025-04-29T18:52:56.278Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\AppGCS\\Views\\Asignacion\\Index.cshtml",
+              "RelativeDocumentMoniker": "AppGCS\\Views\\Asignacion\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\AppGCS\\Views\\Asignacion\\Index.cshtml",
+              "RelativeToolTip": "AppGCS\\Views\\Asignacion\\Index.cshtml",
+              "ViewState": "AgIAAB8BAAAAAAAAAAApwCsBAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-29T18:24:58.534Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "Asignacion.cshtml",
+              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\AppGCS\\Views\\Repositorio\\Asignacion.cshtml",
+              "RelativeDocumentMoniker": "AppGCS\\Views\\Repositorio\\Asignacion.cshtml",
+              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\AppGCS\\Views\\Repositorio\\Asignacion.cshtml",
+              "RelativeToolTip": "AppGCS\\Views\\Repositorio\\Asignacion.cshtml",
+              "ViewState": "AgIAAFEBAAAAAAAAAAAmwGYBAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-29T17:56:03.304Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\AppGCS\\Views\\Repositorio\\Index.cshtml",
               "RelativeDocumentMoniker": "AppGCS\\Views\\Repositorio\\Index.cshtml",
               "ToolTip": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\AppGCS\\Views\\Repositorio\\Index.cshtml",
               "RelativeToolTip": "AppGCS\\Views\\Repositorio\\Index.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAAaAAAAAAAAAA==",
+              "ViewState": "AgIAAAoCAAAAAAAAAAAqwGkBAABBAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-04-29T17:54:59.907Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 6,
               "Title": "InformeSolicitudPdf.cshtml",
               "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\AppGCS\\Views\\Solicitud\\InformeSolicitudPdf.cshtml",
               "RelativeDocumentMoniker": "AppGCS\\Views\\Solicitud\\InformeSolicitudPdf.cshtml",
               "ToolTip": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\AppGCS\\Views\\Solicitud\\InformeSolicitudPdf.cshtml",
               "RelativeToolTip": "AppGCS\\Views\\Solicitud\\InformeSolicitudPdf.cshtml",
-              "ViewState": "AgIAAEQBAAAAAAAAAAAqwGABAAAHAAAAAAAAAA==",
+              "ViewState": "AgIAACcAAAAAAAAAAAAAAAkAAAAxAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-04-29T17:09:44.941Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-29T17:09:44.941Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 5,
               "Title": "FormularioSolicitud.cshtml",
               "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\AppGCS\\Views\\Solicitud\\FormularioSolicitud.cshtml",
               "RelativeDocumentMoniker": "AppGCS\\Views\\Solicitud\\FormularioSolicitud.cshtml",
               "ToolTip": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\AppGCS\\Views\\Solicitud\\FormularioSolicitud.cshtml",
               "RelativeToolTip": "AppGCS\\Views\\Solicitud\\FormularioSolicitud.cshtml",
-              "ViewState": "AgIAACIBAAAAAAAAAAAUwDsBAAAHAAAAAAAAAA==",
+              "ViewState": "AgIAACUBAAAAAAAAAAAtwB0BAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-04-29T17:09:13.349Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-29T17:09:13.349Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\AppGCS\\Views\\Solicitud\\Index.cshtml",
               "RelativeDocumentMoniker": "AppGCS\\Views\\Solicitud\\Index.cshtml",
               "ToolTip": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\AppGCS\\Views\\Solicitud\\Index.cshtml",
               "RelativeToolTip": "AppGCS\\Views\\Solicitud\\Index.cshtml",
-              "ViewState": "AgIAABoBAAAAAAAAAAAUwCoBAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAKwAAAAAAAAAAAAtwDcAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-04-29T17:08:47.529Z",
               "EditorCaption": ""

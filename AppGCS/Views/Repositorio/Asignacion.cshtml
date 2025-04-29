@@ -1,939 +1,359 @@
-﻿
-@{
-    ViewBag.Title = "Asignacion";
+﻿@{
+    ViewBag.Title = "Asignacion a Desarrolladores";
 }
 
-<h2>AsignacionController</h2>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Asignación de Solicitudes</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
+<style>
+    .gcs-assign-main-container {
+        display: flex;
+        /* !!! AJUSTA ESTE VALOR (ej. 80px) SEGÚN LA ALTURA REAL DE TU HEADER !!! */
+        height: calc(100vh - 80px);
+        overflow: hidden;
+        margin-top: 1rem;
+        border: 1px solid #dee2e6;
+        background-color: #fff;
+    }
 
+    .gcs-assign-requests-panel {
+        width: 33.333%;
+        border-right: 1px solid #dee2e6;
+        padding: 0;
+        overflow-y: auto;
+        background-color: #f8f9fa;
+    }
 
-        .container {
-            display: flex;
-            min-height: 100vh;
+    .gcs-assign-details-panel {
+        width: 66.667%;
+        padding: 1.5rem; /* Padding para el contenido interno */
+        overflow-y: auto; /* Scroll si el card es más alto */
+        /* No fijar altura aquí, se adaptará al contenido */
+    }
+
+    .gcs-assign-requests-panel .list-group {
+        border-radius: 0;
+        border: none;
+    }
+
+    .gcs-assign-request-card {
+        cursor: pointer;
+        transition: background-color 0.2s ease-in-out, border-left-color 0.2s ease-in-out;
+        border: none;
+        border-left: 4px solid transparent;
+        border-bottom: 1px solid #dee2e6;
+        padding: 0.8rem 1rem;
+        background-color: #fff;
+    }
+
+        .gcs-assign-request-card:last-child {
+            border-bottom: none;
         }
 
-        .requests-panel {
-            width: 33.333%;
-            background-color: white;
-            border-right: 1px solid #e5e7eb;
-            padding: 1.5rem;
-            overflow-y: auto;
-            max-height: 100vh; 
+        .gcs-assign-request-card:hover {
+            background-color: #f1f3f5;
         }
 
-            .requests-panel h2 {
-                font-size: 1.25rem;
-                font-weight: 700;
-                margin-bottom: 1rem;
-            }
-
-        .details-panel {
-            width: 66.667%;
-            padding: 1.5rem;
-            overflow-y: auto;
-            max-height: 100vh;
+        .gcs-assign-request-card.selected {
+            border-left-color: var(--bs-primary, #0d6efd);
+            background-color: #e7f1ff;
         }
 
-        .request-card {
-            background-color: white;
-            border: 1px solid #e5e7eb;
-            border-radius: 0.5rem;
-            padding: 1rem;
-            margin-bottom: 0.75rem;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-            .request-card:hover {
-                background-color: #f3f4f6;
-            }
-
-            .request-card.selected {
-                border: 2px solid #0284c7;
-                background-color: #eff6ff;
-            }
-
-        .request-card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 0.5rem;
-        }
-
-        .request-card-title {
+        .gcs-assign-request-card .request-card-title {
+            font-size: 0.95rem;
             font-weight: 500;
-            margin-bottom: 0.25rem;
+            margin-bottom: 0.1rem;
         }
 
-        .request-card-meta {
-            font-size: 0.875rem;
-            color: #6b7280;
-        }
-
-        .request-card-date {
-            font-size: 0.875rem;
-            color: #6b7280;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 0.25rem 0.5rem;
-            border-radius: 9999px;
+        .gcs-assign-request-card .request-card-meta {
             font-size: 0.75rem;
-            font-weight: 500;
-            color: white;
-            text-transform: capitalize;
+            color: #6c757d;
         }
 
-        .badge-alta {
-            background-color: #ef4444;
+        .gcs-assign-request-card .badge {
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
         }
 
-        .badge-media {
-            background-color: #eab308;
-        }
+    .gcs-assign-no-selection {
+        min-height: 300px; /* Altura mínima para el placeholder */
+        display: flex; /* Usar flex para centrar */
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        color: #6c757d;
+    }
 
-        .badge-baja {
-            background-color: #22c55e;
-        }
-
-        .badge-aprobada {
-            background-color: #3b82f6;
-        }
-
-        .badge-asignada {
-            background-color: #10b981;
-        }
-
-        .details-card {
-            background-color: white;
-            border-radius: 0.5rem;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-        }
-
-        .details-card-header {
-            padding: 1.5rem;
-            border-bottom: 1px solid #e5e7eb;
-        }
-
-        .details-card-header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .details-card-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 0.25rem;
-        }
-
-        .details-card-subtitle {
-            font-size: 0.875rem;
-            color: #6b7280;
-        }
-
-        .details-card-content {
-            padding: 1.5rem;
-        }
-
-        .details-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .details-item-label {
-            font-size: 0.875rem;
-            color: #6b7280;
-            margin-bottom: 0.25rem;
-            font-weight: 500;
-        }
-
-        .details-item-value {
-            font-size: 0.875rem;
-            color: #111827;
-        }
-
-        .separator {
-            height: 1px;
-            background-color: #e5e7eb;
-            margin: 1.5rem 0;
-        }
-
-        .description-label {
-            font-size: 0.875rem;
-            color: #6b7280;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-        }
-
-        .description-text {
-            font-size: 0.875rem;
-            line-height: 1.5;
-            color: #374151; 
-        }
-
-        .button {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0.5rem 1rem;
-            border-radius: 0.375rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: none;
-            font-size: 0.875rem;
-            text-decoration: none; 
-        }
-
-            .button:disabled {
-                opacity: 0.5;
-                cursor: not-allowed;
-                background-color: #9ca3af;
-                color: #e5e7eb;
-            }
-
-        .button-primary {
-            background-color: #0284c7;
-            color: white;
-        }
-
-            .button-primary:hover:not(:disabled) {
-                background-color: #0369a1;
-            }
-
-        .button-outline {
-            background-color: transparent;
-            border: 1px solid #d1d5db;
-            color: #111827;
-        }
-
-            .button-outline:hover:not(:disabled) {
-                background-color: #f9fafb;
-                border-color: #9ca3af;
-            }
-
-        .button-container {
-            margin-top: 1.5rem;
-            text-align: right; 
-        }
-
-        .modal-backdrop {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 50;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0s linear 0.3s;
-        }
-
-            .modal-backdrop.active {
-                opacity: 1;
-                visibility: visible;
-                transition: opacity 0.3s ease;
-            }
-
-        .modal {
-            background-color: white;
-            border-radius: 0.5rem;
-            width: 100%;
-            max-width: 28rem;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            overflow: hidden;
-            transform: scale(0.95) translateY(10px); 
-            transition: transform 0.3s ease;
-        }
-
-        .modal-backdrop.active .modal {
-            transform: scale(1) translateY(0); 
-        }
-
-        .modal-header {
-            padding: 1.5rem 1.5rem 0.5rem;
-            border-bottom: 1px solid #e5e7eb; 
-        }
-
-        .modal-title {
-            font-size: 1.125rem;
-            font-weight: 600;
-            margin-bottom: 0.25rem;
-        }
-
-        .modal-description {
-            font-size: 0.875rem;
-            color: #6b7280;
-        }
-
-        .modal-body {
-            padding: 1.5rem 1.5rem;
-        }
-
-        .modal-footer {
-            padding: 1rem 1.5rem; 
-            display: flex;
-            justify-content: flex-end;
-            gap: 0.75rem; 
-            background-color: #f9fafb; 
-            border-top: 1px solid #e5e7eb;
-        }
-
-        .modal-icon-header {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .modal-icon {
-            width: 1.5rem;
-            height: 1.5rem; 
-            flex-shrink: 0;
-        }
-
-            .modal-icon.success {
-                color: #10b981;
-            }
-
-            .modal-icon.warning {
-                color: #f59e0b;
-            }
-
-            .modal-icon.error { 
-                color: #ef4444;
-            }
-
-
-        .form-group {
+        .gcs-assign-no-selection i {
+            font-size: 2.5rem;
             margin-bottom: 1rem;
+            color: #adb5bd;
         }
 
-        .form-label {
-            display: block;
-            font-size: 0.875rem;
-            font-weight: 500;
-            margin-bottom: 0.5rem;
-            color: #374151;
-        }
+    .gcs-assign-empty-state i {
+        font-size: 1.5rem;
+        display: block;
+        margin-bottom: 10px;
+        color: #adb5bd;
+    }
 
-        .form-select {
-            width: 100%;
-            padding: 0.625rem 0.75rem;
-            border: 1px solid #d1d5db;
-            border-radius: 0.375rem;
-            background-color: white;
-            font-size: 0.875rem;
-            appearance: none; 
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
-            background-position: right 0.5rem center;
-            background-repeat: no-repeat;
-            background-size: 1.5em 1.5em;
-        }
+    .gcs-assign-empty-state {
+        padding: 40px;
+        text-align: center;
+        color: #6c757d;
+    }
 
-            .form-select:focus {
-                outline: none;
-                border-color: #0284c7;
-                box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.25);
-            }
+    #developer-select option[disabled] {
+        font-style: italic;
+        color: #6c757d;
+    }
 
+    /* Asegurarse que el card tome el ancho disponible */
+    #details-card-container {
+        width: 100%;
+    }
+</style>
 
-        .developer-option-display { 
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
-        }
+<div class="container-fluid mt-3">
+    <h1 class="h3 mb-3">@ViewBag.Title</h1>
 
-        .developer-tasks-display {
-            font-size: 0.8em;
-            margin-left: 1em;
-        }
-
-
-        .workload-info {
-            background-color: #f3f4f6; 
-            padding: 1rem;
-            border-radius: 0.375rem;
-            margin-top: 1.5rem;
-            border: 1px solid #e5e7eb;
-        }
-
-        .workload-info-title {
-            font-size: 0.875rem;
-            font-weight: 600; /* Bolder title */
-            margin-bottom: 0.75rem;
-            color: #1f2937;
-        }
-
-        .workload-item {
-            font-size: 0.875rem;
-            margin-bottom: 0.3rem;
-            color: #4b5563;
-            display: flex; 
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-            .workload-item::before { 
-                content: '•';
-                font-size: 1.2em;
-                line-height: 1;
-            }
-
-            .workload-item.workload-low::before {
-                color: #10b981;
-            }
-
-            .workload-item.workload-medium::before {
-                color: #f59e0b;
-            }
-
-            .workload-item.workload-high::before {
-                color: #ef4444;
-            }
-
-
-        .toast-container {
-            position: fixed;
-            bottom: 1.5rem; 
-            right: 1.5rem; 
-            z-index: 100;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end; 
-            gap: 0.75rem; 
-        }
-
-        .toast {
-            background-color: white;
-            border-radius: 0.375rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            padding: 1rem 1.25rem;
-            display: flex;
-            align-items: flex-start;
-            gap: 0.75rem;
-            width: auto;
-            max-width: 320px;
-            transform: translateX(100%);
-            opacity: 0;
-            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-        }
-
-            .toast.active {
-                transform: translateX(0);
-                opacity: 1;
-            }
-
-        .toast-icon {
-            width: 1.25rem;
-            height: 1.25rem;
-            flex-shrink: 0;
-            margin-top: 0.125rem;
-        }
-
-            .toast-icon.success {
-                color: #10b981;
-            }
-
-            .toast-icon.error {
-                color: #ef4444;
-            }
-
-
-        .toast-content {
-            flex-grow: 1;
-        }
-
-        .toast-title {
-            font-weight: 600;
-            font-size: 0.875rem;
-            color: #111827;
-            margin-bottom: 0.25rem;
-        }
-
-        .toast-message {
-            font-size: 0.875rem;
-            color: #6b7280;
-            line-height: 1.4;
-        }
-
-        .no-selection-message {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 200px; 
-            color: #6b7280;
-            font-style: italic;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="requests-panel">
-            <h2>Solicitudes Aprobadas</h2>
-            <div id="requests-list">
-                <div id="empty-list-message" style="display: none; padding: 1rem; color: #6b7280; text-align: center;">No hay solicitudes aprobadas pendientes.</div>
+    <div class="gcs-assign-main-container row g-0">
+        <!-- Panel izquierdo -->
+        <div class="col-lg-4 gcs-assign-requests-panel">
+            <h2 class="h5 mb-0 sticky-top bg-light py-2 px-3 border-bottom">Solicitudes Pendientes</h2>
+            <div id="requests-list" class="list-group list-group-flush">
+                <div id="empty-list-message" class="list-group-item gcs-assign-empty-state" style="display: none;">
+                    <i class="fas fa-inbox"></i>No hay solicitudes pendientes.
+                </div>
             </div>
         </div>
 
-        <div class="details-panel">
-            <div id="no-selection-placeholder" class="no-selection-message">
-                <p>Seleccione una solicitud de la lista para ver los detalles.</p>
+        <!-- Panel derecho -->
+        <div class="col-lg-8 gcs-assign-details-panel">
+            <div id="no-selection-placeholder" class="gcs-assign-no-selection">
+                <i class="fas fa-arrow-left"></i>
+                <p class="mt-3">Seleccione una solicitud<br>para ver detalles y asignar.</p>
             </div>
-            <div class="details-card" id="details-card-container" style="display: none;">
-                <div class="details-card-header">
-                    <div class="details-card-header-content">
-                        <div>
-                            <h2 class="details-card-title" id="detail-title"></h2>
-                            <p class="details-card-subtitle">Detalles de la Solicitud</p>
-                        </div>
-                        <span class="badge" id="detail-status-badge"></span>
-                    </div>
+            <div class="card shadow-sm" id="details-card-container" style="display: none;">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <div> <h5 class="card-title mb-0" id="detail-title"></h5> <small class="text-muted">Detalles</small> </div>
+                    <span class="badge rounded-pill" id="detail-status-badge"></span>
                 </div>
-                <div class="details-card-content">
-                    <div class="details-grid">
-                        <div>
-                            <p class="details-item-label">ID</p>
-                            <p class="details-item-value" id="detail-id"></p>
-                        </div>
-                        <div>
-                            <p class="details-item-label">Tipo</p>
-                            <p class="details-item-value" id="detail-type"></p>
-                        </div>
-                        <div>
-                            <p class="details-item-label">Fecha</p>
-                            <p class="details-item-value" id="detail-date"></p>
-                        </div>
-                        <div>
-                            <p class="details-item-label">Prioridad</p>
-                            <p class="details-item-value">
-                                <span id="detail-priority"></span>
-                                <span class="badge" id="detail-priority-badge-inline" style="margin-left: 0.5rem;"></span>
-                            </p>
-                        </div>
-                        <div>
-                            <p class="details-item-label">Responsable Aprobación</p>
-                            <p class="details-item-value" id="detail-responsible"></p>
-                        </div>
-                        <div id="detail-assigned-container" style="display: none;">
-                            <p class="details-item-label">Desarrollador Asignado</p>
-                            <p class="details-item-value" id="detail-assigned"></p>
-                        </div>
+                <div class="card-body">
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6"> <p class="text-muted small mb-1">ID</p> <p class="fw-bold mb-0" id="detail-id"></p> </div>
+                        <div class="col-md-6"> <p class="text-muted small mb-1">Tipo</p> <p class="fw-bold mb-0" id="detail-type"></p> </div>
+                        <div class="col-md-6"> <p class="text-muted small mb-1">Fecha Sol.</p> <p class="fw-bold mb-0" id="detail-date"></p> </div>
+                        <div class="col-md-6"> <p class="text-muted small mb-1">Prioridad</p> <p class="fw-bold mb-0"> <span id="detail-priority"></span> <span class="badge rounded-pill ms-2" id="detail-priority-badge-inline"></span> </p> </div>
+                        <div class="col-md-6"> <p class="text-muted small mb-1">Responsable</p> <p class="fw-bold mb-0" id="detail-responsible"></p> </div>
+                        <div class="col-md-6" id="detail-assigned-container" style="display: none;"> <p class="text-muted small mb-1">Asignado a</p> <p class="fw-bold mb-0" id="detail-assigned"></p> </div>
                     </div>
-
-                    <div class="separator"></div>
-
-                    <div>
-                        <p class="description-label">Descripción</p>
-                        <p class="description-text" id="detail-description"></p>
-                    </div>
-
-                    <div class="button-container">
-                        <button class="button button-primary" id="assign-button">Asignar a desarrollador</button>
-                    </div>
+                    <hr class="my-4">
+                    <div> <p class="text-muted small mb-1">Descripción</p> <p class="mb-0" id="detail-description"></p> </div>
+                    <div class="text-end mt-4"> <button type="button" class="btn btn-primary" id="assign-button" data-bs-toggle="modal" data-bs-target="#assign-modal" disabled> <i class="fas fa-user-plus"></i> Asignar </button> </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <div class="modal-backdrop" id="assign-modal">
-        <div class="modal">
-            <div class="modal-header">
-                <h3 class="modal-title">Asignar a desarrollador</h3>
-                <p class="modal-description" id="assign-modal-description"></p>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label class="form-label" for="developer-select">Desarrollador</label>
-                    <select class="form-select" id="developer-select">
-                        <option value="" disabled selected>Seleccione un desarrollador</option>
-                    </select>
-                </div>
+<!-- Modales Bootstrap -->
+<div class="modal fade" id="assign-modal" tabindex="-1" aria-labelledby="assignModalLabel" aria-hidden="true"> <div class="modal-dialog modal-dialog-centered"> <div class="modal-content"> <div class="modal-header"><h5 class="modal-title" id="assignModalLabel">Asignar/Reasignar Solicitud</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div> <div class="modal-body"> <p id="assign-modal-description" class="mb-3 text-muted"></p> <div class="mb-3"><label for="developer-select" class="form-label">Seleccione Desarrollador:</label><select class="form-select" id="developer-select"><option value="" disabled selected>-- Cargando --</option></select></div> <div class="alert alert-secondary small mt-4"><h6 class="alert-heading small">Leyenda Carga</h6><p class="mb-1"><span class="badge bg-success">Baja</span>: 0-2</p><p class="mb-1"><span class="badge bg-warning text-dark">Media</span>: 3</p><p class="mb-0"><span class="badge bg-danger">Alta</span>: 4+</p></div> </div> <div class="modal-footer"><button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button><button type="button" class="btn btn-primary" id="assign-confirm" disabled><i class="fas fa-check"></i> Confirmar</button></div> </div> </div> </div>
+<div class="modal fade" id="confirm-modal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true"> <div class="modal-dialog modal-dialog-centered"> <div class="modal-content"> <div class="modal-header"><h5 class="modal-title d-flex align-items-center" id="confirmModalLabel"><i class="fas fa-check-circle text-success me-2 fs-4" id="confirm-modal-icon-success"></i><i class="fas fa-exclamation-triangle text-warning me-2 fs-4" id="confirm-modal-icon-warning" style="display:none;"></i><span id="confirm-modal-title">Confirmar</span></h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div> <div class="modal-body"><p id="confirm-message"></p></div> <div class="modal-footer"><button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" id="confirm-cancel">Cancelar</button><button type="button" class="btn btn-primary" id="confirm-ok">Confirmar</button></div> </div> </div> </div>
+<div class="modal fade" id="warning-high-load-modal" tabindex="-1" aria-labelledby="warningModalLabel" aria-hidden="true"> <div class="modal-dialog modal-dialog-centered"> <div class="modal-content"> <div class="modal-header"><h5 class="modal-title d-flex align-items-center" id="warningModalLabel"><i class="fas fa-exclamation-triangle text-warning me-2 fs-4"></i>Advertencia Carga Alta</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div> <div class="modal-body"><p>Desarrollador <strong id="warning-dev-name"></strong> tiene carga alta (<span id="warning-dev-tasks"></span> tareas).</p><p class="mt-2">No se recomienda asignar más.</p></div> <div class="modal-footer"><button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" id="warning-high-load-cancel">Elegir Otro</button><button type="button" class="btn btn-primary" id="warning-high-load-proceed">Asignar Igualmente</button></div> </div> </div> </div>
 
-                <div class="workload-info">
-                    <p class="workload-info-title">Leyenda Carga de Trabajo</p>
-                    <p class="workload-item workload-low">1-2 tareas: Carga baja</p>
-                    <p class="workload-item workload-medium">3 tareas: Carga media</p>
-                    <p class="workload-item workload-high">4+ tareas: Carga alta (no recomendado)</p>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="button button-outline" id="assign-cancel">Cancelar</button>
-                <button class="button button-primary" id="assign-confirm" disabled>Confirmar asignación</button>
-            </div>
-        </div>
-    </div>
+<!-- Toast Container -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1100"></div>
 
-    <div class="modal-backdrop" id="confirm-modal">
-        <div class="modal">
-            <div class="modal-header">
-                <div class="modal-icon-header">
-                    <svg class="modal-icon success" id="confirm-modal-icon-success" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    <svg class="modal-icon warning" id="confirm-modal-icon-warning" style="display:none;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    <h3 class="modal-title" id="confirm-modal-title">Confirmar acción</h3>
-                </div>
-            </div>
-            <div class="modal-body">
-                <p id="confirm-message"></p>
-            </div>
-            <div class="modal-footer">
-                <button class="button button-outline" id="confirm-cancel">Cancelar</button>
-                <button class="button button-primary" id="confirm-ok">Confirmar</button>
-            </div>
-        </div>
-    </div>
+<script>
+    // --- DATOS DE EJEMPLO ---
+    let allRequests = [{ id: "SOL-001", title: "Actualización módulo facturación", type: "Mejora", date: "2025-04-05", priority: "Alta", responsible: "Comité Cambios", description: "Actualizar el módulo de facturación...", status: "Aprobada", assignedTo: null, assignedDevId: null }, { id: "SOL-002", title: "Corrección errores reportes", type: "Corrección", date: "2025-04-03", priority: "Media", responsible: "Comité Cambios", description: "Corregir errores en la generación...", status: "Aprobada", assignedTo: null, assignedDevId: null }, { id: "SOL-003", title: "Integración sistema inventario", type: "Nueva Funcionalidad", date: "2025-04-01", priority: "Alta", responsible: "Líder Proyecto", description: "Desarrollar una integración...", status: "Aprobada", assignedTo: null, assignedDevId: null }, { id: "SOL-004", title: "Ajuste interfaz login", type: "Mejora", date: "2025-03-28", priority: "Baja", responsible: "Comité Cambios", description: "Pequeños ajustes visuales...", status: "Asignada", assignedTo: "Elena Rodríguez", assignedDevId: 1 }, { id: "SOL-005", title: "Implementar 2FA", type: "Mejora", date: "2025-04-10", priority: "Alta", responsible: "Líder Proyecto", description: "Añadir autenticación de dos factores.", status: "Asignada", assignedTo: "Carlos Méndez", assignedDevId: 2 }];
+    let developers = [{ id: 1, name: "Elena Rodríguez", tasks: 1 }, { id: 2, name: "Carlos Méndez", tasks: 2 }, { id: 3, name: "Ana Martínez", tasks: 3 }, { id: 4, name: "Miguel Sánchez", tasks: 4 }, { id: 5, name: "Laura González", tasks: 0 }, { id: 6, name: "David Fernández", tasks: 5 }];
+    const DEVELOPER_HIGH_LOAD_THRESHOLD = 4;
 
-    <div class="modal-backdrop" id="warning-high-load-modal">
-        <div class="modal">
-            <div class="modal-header">
-                <div class="modal-icon-header">
-                    <svg class="modal-icon warning" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    <h3 class="modal-title">Advertencia de Carga Alta</h3>
-                </div>
-            </div>
-            <div class="modal-body">
-                <p>El desarrollador seleccionado tiene una carga de trabajo alta (4 o más tareas).</p>
-                <p style="margin-top: 0.5rem;"><strong>No se recomienda asignar más tareas.</strong> Por favor, seleccione otro desarrollador o reevalúe la asignación.</p>
-            </div>
-            <div class="modal-footer">
-                <button class="button button-primary" id="warning-high-load-ok">Entendido</button>
-            </div>
-        </div>
-    </div>
-
-
-    <div class="toast-container" id="toast-container"></div>
-
-    <script>
-    // --- DATOS DE EJEMPLO
-    let approvedRequests = [
-      { id: "SOL-001", title: "Actualización módulo facturación", type: "Mejora", date: "2025-04-05", priority: "Alta", responsible: "Comité Cambios", description: "Actualizar el módulo de facturación para incluir nuevos tipos de impuestos y mejorar el rendimiento del procesamiento de facturas.", status: "Aprobada", assignedTo: null },
-      { id: "SOL-002", title: "Corrección errores reportes", type: "Corrección", date: "2025-04-03", priority: "Media", responsible: "Comité Cambios", description: "Corregir errores en la generación de reportes mensuales que muestran datos incorrectos en algunas secciones.", status: "Aprobada", assignedTo: null },
-      { id: "SOL-003", title: "Integración sistema inventario", type: "Nueva Funcionalidad", date: "2025-04-01", priority: "Alta", responsible: "Líder Proyecto", description: "Desarrollar una integración con el sistema de inventario para sincronizar datos de productos automáticamente.", status: "Aprobada", assignedTo: null },
-      { id: "SOL-004", title: "Ajuste interfaz login", type: "Mejora", date: "2025-03-28", priority: "Baja", responsible: "Comité Cambios", description: "Pequeños ajustes visuales en la pantalla de inicio de sesión para mejorar la usabilidad en móviles.", status: "Asignada", assignedTo: "Elena Rodríguez" } // Ejemplo de una ya asignada
-    ];
-
-    let developers = [
-      { id: 1, name: "Elena Rodríguez", tasks: 1 },
-      { id: 2, name: "Carlos Méndez", tasks: 2 },
-      { id: 3, name: "Ana Martínez", tasks: 3 },
-      { id: 4, name: "Miguel Sánchez", tasks: 4 },
-      { id: 5, name: "Laura González", tasks: 0 }
-    ];
-
-    // --- ESTADO DE LA APLICACIÓN ---
+    // --- ESTADO ---
     let selectedRequestId = null;
     let developerToAssignId = null;
+    let developerToWarn = null;
+    let assignModalInstance = null;
+    let confirmModalInstance = null;
+    let warningModalInstance = null;
 
     // --- ELEMENTOS DOM ---
     const requestsListEl = document.getElementById('requests-list');
     const emptyListMessageEl = document.getElementById('empty-list-message');
-    const detailsPanelEl = document.querySelector('.details-panel');
     const noSelectionPlaceholderEl = document.getElementById('no-selection-placeholder');
     const detailsCardContainerEl = document.getElementById('details-card-container');
     const assignButtonEl = document.getElementById('assign-button');
-
     const assignModalEl = document.getElementById('assign-modal');
     const assignModalDescriptionEl = document.getElementById('assign-modal-description');
     const developerSelectEl = document.getElementById('developer-select');
-    const assignCancelBtn = document.getElementById('assign-cancel');
     const assignConfirmBtn = document.getElementById('assign-confirm');
-
     const confirmModalEl = document.getElementById('confirm-modal');
     const confirmModalTitleEl = document.getElementById('confirm-modal-title');
     const confirmModalIconSuccessEl = document.getElementById('confirm-modal-icon-success');
     const confirmModalIconWarningEl = document.getElementById('confirm-modal-icon-warning');
     const confirmMessageEl = document.getElementById('confirm-message');
-    const confirmCancelBtn = document.getElementById('confirm-cancel');
     const confirmOkBtn = document.getElementById('confirm-ok');
-
     const warningHighLoadModalEl = document.getElementById('warning-high-load-modal');
-    const warningHighLoadOkBtn = document.getElementById('warning-high-load-ok');
+    const warningDevNameEl = document.getElementById('warning-dev-name');
+    const warningDevTasksEl = document.getElementById('warning-dev-tasks');
+    const warningHighLoadCancelBtn = document.getElementById('warning-high-load-cancel');
+    const warningHighLoadProceedBtn = document.getElementById('warning-high-load-proceed');
+    const toastContainerEl = document.querySelector('.toast-container');
 
-    const toastContainerEl = document.getElementById('toast-container');
+    // --- FUNCIONES AUXILIARES ---
+    const formatDate = (dStr) => { try { const d = new Date(dStr + 'T00:00:00'); return d.toLocaleDateString('es-ES', { year: 'numeric', month: 'short', day: 'numeric' }); } catch (e) { return dStr || 'N/A'; } };
+    const getPriorityClass = (p) => { const l = (p || '').toLowerCase(); if (l === 'alta') return 'bg-danger'; if (l === 'media') return 'bg-warning text-dark'; if (l === 'baja') return 'bg-success'; return 'bg-primary'; };
+    const getStatusClass = (s) => { const l = (s || '').toLowerCase(); if (l === 'aprobada') return 'bg-primary'; if (l === 'asignada') return 'bg-info text-dark'; return 'bg-secondary'; };
+    const openModal = (modalInstance) => { if (modalInstance) modalInstance.show(); };
+    const closeModal = (modalInstance) => { if (modalInstance) modalInstance.hide(); };
 
-    // --- FUNCIONES ---
-
+    // --- RENDERIZADO ---
     function renderRequestsList() {
-      requestsListEl.innerHTML = '';
-      const pendingRequests = approvedRequests.filter(req => req.status === 'Aprobada');
-
-      if (pendingRequests.length === 0) {
-          emptyListMessageEl.style.display = 'block';
-          return;
-      }
-
-       emptyListMessageEl.style.display = 'none';
-
-      pendingRequests.forEach(request => {
-        const isSelected = selectedRequestId === request.id;
-        const priorityClass = getPriorityClass(request.priority);
-
-        const requestCard = document.createElement('div');
-        requestCard.className = `request-card ${isSelected ? 'selected' : ''}`;
-        requestCard.dataset.id = request.id;
-
-        requestCard.innerHTML = `
-          <div class="request-card-header">
-            <div>
-              <h3 class="request-card-title">${request.title}</h3>
-              <div class="request-card-meta">${request.id} • ${request.type}</div>
-            </div>
-            <span class="badge ${priorityClass}">${request.priority}</span>
-          </div>
-          <div class="request-card-date">${formatDate(request.date)}</div>
-        `;
-         requestCard.addEventListener('click', () => handleSelectRequest(request.id));
-        requestsListEl.appendChild(requestCard);
-      });
+        requestsListEl.innerHTML = '';
+        const displayRequests = allRequests.filter(req => req.status === 'Aprobada' || req.status === 'Asignada');
+        if (displayRequests.length === 0) { emptyListMessageEl.style.display = 'block'; requestsListEl.appendChild(emptyListMessageEl); return; }
+        emptyListMessageEl.style.display = 'none';
+        displayRequests.sort((a, b) => { if (a.status === 'Aprobada' && b.status !== 'Aprobada') return -1; if (a.status !== 'Aprobada' && b.status === 'Aprobada') return 1; return (b.id || "").localeCompare(a.id || ""); });
+        displayRequests.forEach(request => {
+            const isSelected = selectedRequestId === request.id;
+            const item = document.createElement('a'); // Cambiado a 'a' para semántica de list-group-item-action
+            item.href = "#"; // Evitar navegación real
+            item.className = `list-group-item list-group-item-action gcs-assign-request-card ${isSelected ? 'selected' : ''}`;
+            item.dataset.id = request.id;
+            const assignedInfo = request.status === 'Asignada' ? `<small class="d-block text-muted mt-1"><i class="fas fa-user-check text-info me-1"></i> ${request.assignedTo || 'Asignada'}</small>` : '';
+            item.innerHTML = `
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h6 class="request-card-title mb-1">${request.title}</h6>
+                        <small class="request-card-meta">${request.id} • ${request.type} • ${formatDate(request.date)}</small>
+                         ${assignedInfo}
+                    </div>
+                    <span class="badge rounded-pill ${getPriorityClass(request.priority)}">${request.priority}</span>
+                </div>`;
+            item.addEventListener('click', (e) => { e.preventDefault(); handleSelectRequest(request.id); }); requestsListEl.appendChild(item);
+        });
     }
-
     function renderRequestDetails() {
-         const selectedRequest = approvedRequests.find(req => req.id === selectedRequestId);
-
-          if (!selectedRequest) {
-            noSelectionPlaceholderEl.style.display = 'flex';
-            detailsCardContainerEl.style.display = 'none';
-            return;
-         }
-
-         noSelectionPlaceholderEl.style.display = 'none';
-         detailsCardContainerEl.style.display = 'block';
-
-
-         document.getElementById('detail-title').textContent = selectedRequest.title;
-         document.getElementById('detail-id').textContent = selectedRequest.id;
-         document.getElementById('detail-type').textContent = selectedRequest.type;
-         document.getElementById('detail-date').textContent = formatDate(selectedRequest.date);
-         document.getElementById('detail-priority').textContent = selectedRequest.priority;
-         document.getElementById('detail-responsible').textContent = selectedRequest.responsible;
-         document.getElementById('detail-description').textContent = selectedRequest.description || 'No hay descripción detallada.';
-
-         const statusBadge = document.getElementById('detail-status-badge');
-         statusBadge.textContent = selectedRequest.status;
-         statusBadge.className = `badge ${selectedRequest.status === 'Aprobada' ? 'badge-aprobada' : 'badge-asignada'}`;
-
-        const priorityBadgeInline = document.getElementById('detail-priority-badge-inline');
-        priorityBadgeInline.textContent = selectedRequest.priority;
-        priorityBadgeInline.className = `badge ${getPriorityClass(selectedRequest.priority)}`;
-
-         const assignedContainer = document.getElementById('detail-assigned-container');
-         if (selectedRequest.status === 'Asignada' && selectedRequest.assignedTo) {
-            document.getElementById('detail-assigned').textContent = selectedRequest.assignedTo;
-            assignedContainer.style.display = 'block';
-         } else {
-            assignedContainer.style.display = 'none';
-         }
-
-         assignButtonEl.disabled = selectedRequest.status !== 'Aprobada';
-         assignButtonEl.textContent = selectedRequest.status === 'Aprobada' ? 'Asignar a desarrollador' : 'Ya asignada';
+        const req = allRequests.find(r => r.id === selectedRequestId);
+        if (!req) { noSelectionPlaceholderEl.style.display = 'flex'; detailsCardContainerEl.style.display = 'none'; return; }
+        noSelectionPlaceholderEl.style.display = 'none'; detailsCardContainerEl.style.display = 'block';
+        document.getElementById('detail-title').textContent = req.title; document.getElementById('detail-id').textContent = req.id;
+        document.getElementById('detail-type').textContent = req.type; document.getElementById('detail-date').textContent = formatDate(req.date);
+        document.getElementById('detail-priority').textContent = req.priority; document.getElementById('detail-responsible').textContent = req.responsible;
+        document.getElementById('detail-description').textContent = req.description || 'N/A';
+        const statusBadge = document.getElementById('detail-status-badge'); statusBadge.textContent = req.status; statusBadge.className = `badge rounded-pill ${getStatusClass(req.status)}`;
+        const priorityBadge = document.getElementById('detail-priority-badge-inline'); priorityBadge.textContent = req.priority; priorityBadge.className = `badge rounded-pill ${getPriorityClass(req.priority)}`;
+        const assignedDiv = document.getElementById('detail-assigned-container');
+        if (req.status === 'Asignada' && req.assignedTo) { document.getElementById('detail-assigned').textContent = req.assignedTo; assignedDiv.style.display = 'block'; }
+        else { assignedDiv.style.display = 'none'; }
+        const canAssign = req.status === 'Aprobada' || req.status === 'Asignada';
+        assignButtonEl.disabled = !canAssign;
+        assignButtonEl.innerHTML = req.status === 'Aprobada' ? '<i class="fas fa-user-plus"></i> Asignar' : (req.status === 'Asignada' ? '<i class="fas fa-exchange-alt"></i> Reasignar' : '<i class="fas fa-ban"></i> No Asignable');
     }
-
     function renderDeveloperOptions() {
-      developerSelectEl.innerHTML = '<option value="" disabled selected>Seleccione un desarrollador</option>'; 
-
-      developers.forEach(dev => {
-        const option = document.createElement('option');
-        option.value = dev.id;
-        const tasksText = `${dev.tasks} ${dev.tasks === 1 ? 'tarea' : 'tareas'}`;
-        const workloadClass = getTasksClass(dev.tasks); 
-
-        option.textContent = `${dev.name} (${tasksText})`;
-
-        option.dataset.name = dev.name;
-        option.dataset.tasks = dev.tasks;
-        option.dataset.workloadClass = workloadClass;
-
-        developerSelectEl.appendChild(option);
-      });
+        developerSelectEl.innerHTML = '<option value="" disabled selected>-- Seleccione --</option>';
+        if (!developers || developers.length === 0) { developerSelectEl.innerHTML += '<option disabled>No hay</option>'; return; }
+        developers.forEach(dev => {
+            const opt = document.createElement('option'); opt.value = dev.id;
+            const tasks = dev.tasks || 0; const tasksTxt = `${tasks} tarea${tasks !== 1 ? 's' : ''}`;
+            opt.textContent = `${dev.name} (${tasksTxt})`; opt.dataset.name = dev.name; opt.dataset.tasks = tasks;
+            developerSelectEl.appendChild(opt);
+        });
     }
 
-    function handleSelectRequest(requestId) {
-       if (selectedRequestId === requestId) return;
+    // --- MANEJADORES DE EVENTOS ---
+    function handleSelectRequest(requestId) { if (selectedRequestId === requestId) return; selectedRequestId = requestId; renderRequestsList(); renderRequestDetails(); }
+    function handleOpenAssignModalOnShow() {
+        const req = allRequests.find(r => r.id === selectedRequestId);
+        if (!req) { console.warn("Modal show event sin request."); closeModal(assignModalInstance); return; }
+        const actionText = req.status === 'Aprobada' ? 'Asignar' : 'Reasignar';
+        assignModalEl.querySelector('.modal-title').textContent = `${actionText} Solicitud`;
+        assignModalDescriptionEl.textContent = `${actionText}: "${req.title}"`;
+        renderDeveloperOptions(); developerSelectEl.value = ''; assignConfirmBtn.disabled = true;
+        developerToAssignId = null; developerToWarn = null;
+    }
+    function handleDeveloperSelectionChange() { developerToAssignId = developerSelectEl.value; assignConfirmBtn.disabled = !developerToAssignId; }
+    function handleAssignConfirmClick() {
+        if (!developerToAssignId) return;
+        developerToWarn = developers.find(dev => dev.id == developerToAssignId);
+        const req = allRequests.find(r => r.id === selectedRequestId);
+        if (!developerToWarn || !req) { showToast('Error', 'Error inesperado.', 'error'); return; }
+        if (req.status === 'Asignada' && req.assignedDevId == developerToWarn.id) { showToast('Información', `${developerToWarn.name} ya tiene asignada esta tarea.`, 'info'); closeModal(assignModalInstance); return; }
+        if (developerToWarn.tasks >= DEVELOPER_HIGH_LOAD_THRESHOLD) {
+            closeModal(assignModalInstance);
+            warningDevNameEl.textContent = developerToWarn.name; warningDevTasksEl.textContent = developerToWarn.tasks;
+            openModal(warningModalInstance);
+        } else {
+            closeModal(assignModalInstance);
+            const actionText = req.status === 'Aprobada' ? 'Asignar' : 'Reasignar';
+            showConfirmationModal(`${actionText} "${req.title}"`, `¿${actionText} a ${developerToWarn.name} (${developerToWarn.tasks} tareas)?`, () => performAssignment(req, developerToWarn), 'success');
+        }
+    }
+    function handleAssignAnyway() {
+        if (!developerToWarn || !selectedRequestId) { closeModal(warningModalInstance); showToast('Error', 'No se pudo asignar.', 'error'); return; }
+        const req = allRequests.find(r => r.id === selectedRequestId);
+        if (!req) { closeModal(warningModalInstance); showToast('Error', 'No se pudo asignar.', 'error'); return; }
+        closeModal(warningModalInstance); performAssignment(req, developerToWarn);
+    }
 
-        selectedRequestId = requestId;
+    // --- LÓGICA PRINCIPAL ---
+    function performAssignment(request, newDeveloper) {
+        const reqIdx = allRequests.findIndex(r => r.id === request.id);
+        const newDevIdx = developers.findIndex(d => d.id === newDeveloper.id);
+        if (reqIdx === -1 || newDevIdx === -1) { showToast('Error', 'No se pudo actualizar.', 'error'); return; }
+        const oldDevId = allRequests[reqIdx].assignedDevId;
+        const isReassign = request.status === 'Asignada' && oldDevId !== newDeveloper.id;
+        if (isReassign && oldDevId) {
+            const oldDevIdx = developers.findIndex(d => d.id === oldDevId);
+            if (oldDevIdx !== -1 && developers[oldDevIdx].tasks > 0) { developers[oldDevIdx].tasks--; }
+        }
+        allRequests[reqIdx].status = 'Asignada'; allRequests[reqIdx].assignedTo = newDeveloper.name;
+        allRequests[reqIdx].assignedDevId = newDeveloper.id;
+        developers[newDevIdx].tasks++;
+        renderRequestsList(); renderRequestDetails();
+        closeModal(confirmModalInstance);
+        showToast('Asignación Exitosa', `Solicitud "${request.title}" asignada a ${newDeveloper.name}.`, 'success');
+        developerToAssignId = null; developerToWarn = null;
+    }
+    function showConfirmationModal(title, message, onConfirmCallback, iconType = 'success') {
+        confirmModalTitleEl.textContent = title; confirmMessageEl.textContent = message;
+        confirmModalIconSuccessEl.style.display = iconType === 'success' ? 'block' : 'none';
+        confirmModalIconWarningEl.style.display = iconType === 'warning' ? 'block' : 'none';
+        const newOkBtn = confirmOkBtn.cloneNode(true); // Clonar para quitar listeners
+        confirmOkBtn.parentNode.replaceChild(newOkBtn, confirmOkBtn);
+        document.getElementById('confirm-ok').addEventListener('click', () => { onConfirmCallback(); closeModal(confirmModalInstance); }, { once: true });
+        openModal(confirmModalInstance);
+    }
+    function showToast(title, message, type = 'success', delay = 5000) {
+        const toastId = 'toast-' + Date.now(); const toastEl = document.createElement('div');
+        toastEl.id = toastId; toastEl.className = `toast align-items-center text-white bg-${type === 'success' ? 'success' : (type === 'error' ? 'danger' : 'info')} border-0`;
+        toastEl.setAttribute('role', 'alert'); toastEl.setAttribute('aria-live', 'assertive'); toastEl.setAttribute('aria-atomic', 'true');
+        toastEl.innerHTML = `<div class="d-flex"><div class="toast-body"><strong>${title}</strong><br>${message}</div><button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button></div>`;
+        toastContainerEl.appendChild(toastEl);
+        const toast = new bootstrap.Toast(toastEl, { delay: delay }); toast.show();
+        toastEl.addEventListener('hidden.bs.toast', () => { toastEl.remove(); });
+    }
+
+    // --- INICIALIZACIÓN ---
+    function init() {
+        if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+            if (assignModalEl) assignModalInstance = new bootstrap.Modal(assignModalEl);
+            if (confirmModalEl) confirmModalInstance = new bootstrap.Modal(confirmModalEl);
+            if (warningHighLoadModalEl) warningModalInstance = new bootstrap.Modal(warningHighLoadModalEl);
+            assignModalEl?.addEventListener('show.bs.modal', handleOpenAssignModalOnShow);
+        } else {
+            console.error("Bootstrap Modals no encontrados."); if (assignButtonEl) assignButtonEl.disabled = true;
+        }
+        developerSelectEl?.addEventListener('change', handleDeveloperSelectionChange);
+        assignConfirmBtn?.addEventListener('click', handleAssignConfirmClick);
+        warningHighLoadCancelBtn?.addEventListener('click', () => { closeModal(warningModalInstance); });
+        warningHighLoadProceedBtn?.addEventListener('click', handleAssignAnyway);
+        // Ya no se necesita listener para confirmOkBtn aquí, se añade dinámicamente
+
         renderRequestsList();
         renderRequestDetails();
     }
-
-    function handleOpenAssignModal() {
-         const selectedRequest = approvedRequests.find(req => req.id === selectedRequestId);
-         if (!selectedRequest || selectedRequest.status !== 'Aprobada') return;
-
-         assignModalDescriptionEl.textContent = `Asignar la solicitud: "${selectedRequest.title}"`;
-         renderDeveloperOptions();
-         developerSelectEl.value = '';
-         assignConfirmBtn.disabled = true;
-         developerToAssignId = null;
-         openModal(assignModalEl);
-    }
-
-     function handleDeveloperSelectionChange() {
-         developerToAssignId = developerSelectEl.value;
-         assignConfirmBtn.disabled = !developerToAssignId;
-     }
-
-    function handleAssignConfirmClick() {
-         if (!developerToAssignId) return;
-
-         const developer = developers.find(dev => dev.id == developerToAssignId);
-         const selectedRequest = approvedRequests.find(req => req.id === selectedRequestId);
-
-         if (!developer || !selectedRequest) {
-             console.error("Error: Desarrollador o solicitud no encontrados.");
-             showToast('Error', 'Ocurrió un error inesperado.', 'error');
-             return;
-         }
-
-         if (developer.tasks >= 4) {
-             closeModal(assignModalEl);
-             openModal(warningHighLoadModalEl);
-         } else {
-             closeModal(assignModalEl);
-             showConfirmationModal(
-                 'Confirmar asignación',
-                 `¿Está seguro que desea asignar la solicitud "${selectedRequest.title}" a ${developer.name} (${developer.tasks} tareas)?`,
-                 () => performAssignment(selectedRequest, developer),
-                 'success'
-             );
-         }
-    }
-
-    function performAssignment(request, developer) {
-        request.status = 'Asignada';
-        request.assignedTo = developer.name;
-
-        developer.tasks++;
-
-
-         // --- ACTUALIZAR UI ---
-         renderRequestsList();
-         renderRequestDetails();
-         renderDeveloperOptions();
-
-         closeModal(confirmModalEl);
-
-         showToast('Asignación Exitosa', `Solicitud "${request.title}" asignada a ${developer.name}.`, 'success');
-
-        developerToAssignId = null;
-    }
-
-    function openModal(modalElement) {
-      modalElement.classList.add('active');
-    }
-
-    function closeModal(modalElement) {
-      modalElement.classList.remove('active');
-    }
-
-    function showConfirmationModal(title, message, onConfirmCallback, iconType = 'success') {
-        confirmModalTitleEl.textContent = title;
-        confirmMessageEl.textContent = message;
-
-         confirmModalIconSuccessEl.style.display = iconType === 'success' ? 'block' : 'none';
-         confirmModalIconWarningEl.style.display = iconType === 'warning' ? 'block' : 'none';
-
-        confirmOkBtn.onclick = onConfirmCallback;
-
-        openModal(confirmModalEl);
-    }
-
-    function showToast(title, message, type = 'success') { 
-      const toast = document.createElement('div');
-      toast.className = 'toast';
-
-       const iconClass = type === 'success' ? 'success' : 'error';
-       const iconSvg = type === 'success'
-            ? `<svg class="toast-icon ${iconClass}" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`
-            : `<svg class="toast-icon ${iconClass}" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`; // Simple warning icon for errors
-
-      toast.innerHTML = `
-        ${iconSvg}
-        <div class="toast-content">
-          <div class="toast-title">${title}</div>
-          <div class="toast-message">${message}</div>
-        </div>
-      `;
-
-      toastContainerEl.appendChild(toast);
-
-      setTimeout(() => {
-        toast.classList.add('active');
-      }, 10);
-
-      setTimeout(() => {
-        toast.classList.remove('active');
-        toast.addEventListener('transitionend', () => {
-            if (toast.parentNode === toastContainerEl) {
-               toastContainerEl.removeChild(toast);
-            }
-        }, { once: true }); 
-      }, 4000);
-    }
-
-    function getPriorityClass(priority) {
-      const lowerPriority = priority.toLowerCase();
-      if (lowerPriority === 'alta') return 'badge-alta';
-      if (lowerPriority === 'media') return 'badge-media';
-      if (lowerPriority === 'baja') return 'badge-baja';
-      return 'badge-aprobada'; 
-    }
-
-     function getTasksClass(tasks) {
-         if (tasks <= 2) return 'tasks-low';
-         if (tasks === 3) return 'tasks-medium';
-         return 'tasks-high';
-     }
-
-     function formatDate(dateString) {
-         if (!dateString) return 'N/A';
-         try {
-            const date = new Date(dateString + 'T00:00:00'); 
-            return date.toLocaleDateString('es-ES', {
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric'
-            });
-         } catch (e) {
-             console.warn("Could not format date:", dateString);
-             return dateString; 
-         }
-     }
-
-
-    // --- INICIALIZACIÓN y EVENT LISTENERS ---
-    function init() {
-      assignButtonEl.addEventListener('click', handleOpenAssignModal);
-      assignCancelBtn.addEventListener('click', () => closeModal(assignModalEl));
-      developerSelectEl.addEventListener('change', handleDeveloperSelectionChange);
-      assignConfirmBtn.addEventListener('click', handleAssignConfirmClick);
-
-      confirmCancelBtn.addEventListener('click', () => closeModal(confirmModalEl));
-
-      warningHighLoadOkBtn.addEventListener('click', () => closeModal(warningHighLoadModalEl));
-
-      // Render inicial
-      renderRequestsList();
-      renderRequestDetails(); 
-    }
-
     document.addEventListener('DOMContentLoaded', init);
-    </script>
-</body>
-</html>
+</script>
