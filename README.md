@@ -9,6 +9,7 @@
 - ⚠️ No modificar el layout, ni para redireccionamientos. De hacerlo, no será posible realizar el merge.
 - 📂 Tomar como referencia el archivo: Views/Sesión/Login.cshtml, que implementa Razor Pages.
 - ⚠️ Seguir el flujo indicado en el diagrama de Configuración.
+- ⚠️ No hacer merge, solo suban a su propia rama y guardenlo ahí.
 
 🔧 Asignación de Requerimientos y Controladores:
 
