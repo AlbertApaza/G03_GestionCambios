@@ -1,4 +1,4 @@
-﻿@* Aqui va la referencia al modelo para recepcionar los datos y enviarlos por metodo post al controlador. *@
+﻿@* Aqui v@* Aqui va la referencia al modelo para recepcionar los datos y enviarlos por metodo post al controlador. *@
 @{
     ViewBag.Title = "Login";
 }
@@ -13,29 +13,27 @@
                 <div class="card-body">
                     @using (Html.BeginForm("Login", "Account", FormMethod.Post))
                     {
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Correo electrónico</label>
-                            @* Como no hay modelo creado, se comentaron las siguientes lineas. *@
-                            @*@Html.TextBoxFor(m => m.Email, new { @class = "form-control", type = "email", required = "required", placeholder = "usuario@ejemplo.com" })*@
-                        </div>
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Contraseña</label>
+                        <label>Correo electrónico o usuario</label><br />
+                        <input type="text" name="usuario" class="form-control" style="width:100%; padding:10px; border-radius:10px; margin-bottom:15px;" />
 
-                            @*@Html.PasswordFor(m => m.Password, new { @class = "form-control", required = "required", placeholder = "Contraseña123!" })*@
-                        </div>
-                        <div class="mb-3 form-check">
+                        <label>Contraseña</label><br />
+                        <input type="password" name="password" class="form-control" style="width:100%; padding:10px; border-radius:10px; margin-bottom:15px;" />
 
-                            @*@Html.CheckBoxFor(m => m.RememberMe, new { @class = "form-check-input", id = "rememberMe" })*@
-                            <label class="form-check-label" for="rememberMe">Recordarme</label>
-                        </div>
-                        <div class="d-grid">
-                            <button type="submit" class="btn btn-primary">Ingresar</button>
+                        <!-- Google reCAPTCHA -->
+                        <label>CAPTCHA</label><br />
+                        <div class="g-recaptcha" data-sitekey="6LfWhRwrAAAAAPMGhDMV2Rt3VpY7Xc3WaT34q6Gb" style="margin-bottom: 20px;"></div>
+
+                        <div style="display: flex; justify-content: space-between;">
+                            <input type="submit" value="Ingresar" style="background-color: teal; color: white; border: none; padding: 10px 20px; border-radius: 10px;" />
                         </div>
                     }
                 </div>
                 <div class="card-footer text-center">
                     <small>¿No tienes cuenta? <a href="/Account/Register">Regístrate aquí</a></small>
                 </div>
+
+                <!-- reCAPTCHA script -->
+                <script src="https://www.google.com/recaptcha/api.js" async defer></script>
             </div>
         </div>
     </div>

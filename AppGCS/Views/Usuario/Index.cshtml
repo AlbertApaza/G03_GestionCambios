@@ -1,0 +1,173 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Usuarios</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+
+        <!-- Mensaje de éxito -->
+        <div id="successMessage" class="alert alert-success alert-dismissible fade show" role="alert" style="display: none;">
+            Usuario agregado exitosamente!
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <!-- Título de la página -->
+        <h2 class="mb-4">👤 Gestión de Usuarios</h2>
+
+        <!-- Barra de búsqueda -->
+        <form method="get" class="mb-3">
+            <input type="text" id="search" class="form-control" placeholder="Buscar por nombre o correo..." />
+        </form>
+
+        <!-- Formulario de agregar nuevo usuario -->
+        <h5 class="mt-4">➕ Agregar nuevo usuario</h5>
+        <form id="addUserForm">
+            <div class="row mb-4">
+                <div class="col-md-2"><input id="Nombre" class="form-control" placeholder="Nombre" required /></div>
+                <div class="col-md-2"><input id="Correo" type="email" class="form-control" placeholder="Correo" required /></div>
+                <div class="col-md-2">
+                    <select id="Rol" class="form-control" required>
+                        <option value="Admin">Administrador</option>
+                        <option value="Usuario">Cliente</option>
+                        <option value="Usuario">Usuario</option>
+                    </select>
+                </div>
+                <div class="col-md-2"><input id="Contrasena" type="password" class="form-control" placeholder="Contraseña" required /></div>
+                <div class="col-md-2"><input id="Proyecto" class="form-control" placeholder="Proyecto" /></div>
+                <div class="col-md-12 mt-2">
+                    <button type="submit" class="btn btn-success btn-sm">Agregar</button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Tabla de usuarios -->
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead class="table-light">
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Correo</th>
+                        <th>Rol</th>
+                        <th>Proyecto</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="usersTableBody">
+                    <!-- Aquí se llenarán los usuarios dinámicamente con JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Lista de usuarios almacenada en el frontend
+        let usuarios = [];
+
+        // Función para agregar un nuevo usuario
+        document.getElementById('addUserForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            // Obtener datos del formulario
+            const nombre = document.getElementById('Nombre').value;
+            const correo = document.getElementById('Correo').value;
+            const rol = document.getElementById('Rol').value;
+            const contrasena = document.getElementById('Contrasena').value;
+            const proyecto = document.getElementById('Proyecto').value;
+
+            // Crear un nuevo usuario
+            const nuevoUsuario = {
+                id: usuarios.length + 1,
+                nombre,
+                correo,
+                rol,
+                contrasena,
+                proyecto
+            };
+
+            // Agregar a la lista de usuarios
+            usuarios.push(nuevoUsuario);
+
+            // Limpiar el formulario
+            document.getElementById('addUserForm').reset();
+
+            // Mostrar el mensaje de éxito
+            document.getElementById('successMessage').style.display = 'block';
+
+            // Actualizar la tabla de usuarios
+            actualizarTabla();
+        });
+
+        // Función para actualizar la tabla de usuarios
+        function actualizarTabla() {
+            const tbody = document.getElementById('usersTableBody');
+            tbody.innerHTML = '';
+
+            usuarios.forEach(usuario => {
+                const row = tbody.insertRow();
+                row.innerHTML = `
+                        <td>${usuario.nombre}</td>
+                        <td>${usuario.correo}</td>
+                        <td>${usuario.rol}</td>
+                        <td>${usuario.proyecto}</td>
+                        <td>
+                            <button class="btn btn-info btn-sm" onclick="verUsuario(${usuario.id})">👁️</button>
+                            <button class="btn btn-warning btn-sm" onclick="editarUsuario(${usuario.id})">✏️</button>
+                            <button class="btn btn-danger btn-sm" onclick="eliminarUsuario(${usuario.id})">🗑️</button>
+                        </td>
+                    `;
+            });
+        }
+
+        // Función para eliminar un usuario
+        function eliminarUsuario(id) {
+            usuarios = usuarios.filter(usuario => usuario.id !== id);
+            actualizarTabla();
+        }
+
+        // Función para ver un usuario (solo muestra una alerta, no hay detalles en este ejemplo)
+        function verUsuario(id) {
+            const usuario = usuarios.find(u => u.id === id);
+            alert('Ver usuario: ' + usuario.nombre);
+        }
+
+        // Función para editar un usuario (solo muestra una alerta, no hay edición en este ejemplo)
+        function editarUsuario(id) {
+            const usuario = usuarios.find(u => u.id === id);
+            alert('Editar usuario: ' + usuario.nombre);
+        }
+
+        // Función para la barra de búsqueda
+        document.getElementById('search').addEventListener('input', function () {
+            const query = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#usersTableBody tr');
+
+            rows.forEach(row => {
+                const nombre = row.cells[0].innerText.toLowerCase();
+                const correo = row.cells[1].innerText.toLowerCase();
+
+                if (nombre.includes(query) || correo.includes(query)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    </script>
+
+    <!-- Bootstrap JS (necesario para los botones de cerrar el mensaje) -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+
+
+
