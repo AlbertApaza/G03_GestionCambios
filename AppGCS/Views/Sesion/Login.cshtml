@@ -1,22 +1,42 @@
-﻿
+﻿@* Aqui va la referencia al modelo para recepcionar los datos y enviarlos por metodo post al controlador. *@
 @{
     ViewBag.Title = "Login";
 }
 
-<form>
-    <div class="mb-3">
-        <label for="exampleInputEmail1" class="form-label">Email address</label>
-        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-        <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-    </div>
-    <div class="mb-3">
-        <label for="exampleInputPassword1" class="form-label">Password</label>
-        <input type="password" class="form-control" id="exampleInputPassword1">
-    </div>
-    <div class="mb-3 form-check">
-        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-        <label class="form-check-label" for="exampleCheck1">Check me out</label>
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header text-center bg-primary text-white">
+                    <h4>Iniciar sesión</h4>
+                </div>
+                <div class="card-body">
+                    @using (Html.BeginForm("Login", "Account", FormMethod.Post))
+                    {
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Correo electrónico</label>
+                            @* Como no hay modelo creado, se comentaron las siguientes lineas. *@
+                            @*@Html.TextBoxFor(m => m.Email, new { @class = "form-control", type = "email", required = "required", placeholder = "usuario@ejemplo.com" })*@
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Contraseña</label>
 
+                            @*@Html.PasswordFor(m => m.Password, new { @class = "form-control", required = "required", placeholder = "Contraseña123!" })*@
+                        </div>
+                        <div class="mb-3 form-check">
+
+                            @*@Html.CheckBoxFor(m => m.RememberMe, new { @class = "form-check-input", id = "rememberMe" })*@
+                            <label class="form-check-label" for="rememberMe">Recordarme</label>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Ingresar</button>
+                        </div>
+                    }
+                </div>
+                <div class="card-footer text-center">
+                    <small>¿No tienes cuenta? <a href="/Account/Register">Regístrate aquí</a></small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
