@@ -1,0 +1,56 @@
+﻿@model AppGCS.Models.clsEquipo
+@{
+    ViewBag.Title = "FormCrearEquipo";
+    // Definimos las opciones para el dropdownlist
+    List<SelectListItem> roles = new List<SelectListItem>
+    {
+        new SelectListItem { Text = "Lider de Proyecto", Value = "Lider de Proyecto" },
+        new SelectListItem { Text = "Project Owner", Value = "Project Owner" },
+        new SelectListItem { Text = "Desarrollador", Value = "Desarrollador" },
+        new SelectListItem { Text = "Miembro del CCC", Value = "Miembro del CCC" }
+    };
+}
+
+<h2>Agrega colaboradores a el proyecto</h2>
+
+<div class="container">
+    @using (Html.BeginForm("AddEquipo", "Proyecto", FormMethod.Post))
+    {
+        <div id="integrantesContainer">
+            <div class="form-group">
+                <label>Integrante 1:</label>
+                <input type="text" name="Integrantes[0].Nombre" class="form-control" placeholder="Nombre" />
+                @Html.DropDownList("Integrantes[0].Rol", roles, "Seleccionar Rol", new { @class = "form-control" })
+            </div>
+        </div>
+        <button type="button" id="addIntegrante" class="btn btn-info">Agregar otro colaborador</button>
+        <br />
+        <input type="submit" value="Guardar" class="btn btn-success" />
+    }
+</div>
+
+<script>
+    $(document).ready(function () {
+        var contador = 1;
+        // Definimos las opciones del dropdownlist en JavaScript para clonar
+        var rolesOptions = @Html.Raw(Json.Encode(roles.Select(r => new { value = r.Value, text = r.Text })));
+
+        $("#addIntegrante").click(function () {
+            contador++;
+            var nuevoIntegrante = '<div class="form-group">' +
+                '<label>Integrante ' + contador + ':</label>' +
+                '<input type="text" name="Integrantes[' + contador + '].Nombre" class="form-control" placeholder="Nombre" />' +
+                '<select name="Integrantes[' + contador + '].Rol" class="form-control">' +
+                '<option value="">Seleccionar Rol</option>';
+
+            // Agregamos las opciones del dropdownlist dinámicamente
+            $.each(rolesOptions, function (index, role) {
+                nuevoIntegrante += '<option value="' + role.value + '">' + role.text + '</option>';
+            });
+
+            nuevoIntegrante += '</select>' +
+                '</div>';
+            $("#integrantesContainer").append(nuevoIntegrante);
+        });
+    });
+</script>

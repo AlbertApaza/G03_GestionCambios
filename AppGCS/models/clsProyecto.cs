@@ -5,7 +5,7 @@ using System.Web;
 
 namespace AppGCS.Models
 {
-    public class Proyecto
+    public class clsProyecto
     {
         public int IdProyecto { get; set; }
         public string NombreProyecto { get; set; }
@@ -14,7 +14,7 @@ namespace AppGCS.Models
 
         public int IdEquipo { get; set; }
 
-        public Proyecto()
+        public clsProyecto()
         {
             this.FechaCreacion = DateTime.Now;
         }

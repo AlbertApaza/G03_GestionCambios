@@ -1,0 +1,30 @@
+﻿@model AppGCS.Models.clsProyecto
+@{
+    ViewBag.Title = "FormCrearProyecto";
+}
+
+<h2>Crear proyecto nuevo</h2>
+
+<div class="container">
+    @using (Html.BeginForm("GuardarProyecto", "Proyecto", FormMethod.Post))
+    {
+        <div class="form-group">
+            @Html.LabelFor(m => Model.IdProyecto, "Ingrese un identificador para su equipo: ")
+            @Html.EditorFor(m => Model.IdProyecto)
+            <br />
+            @Html.LabelFor(m => Model.NombreProyecto, "Nombre del proyecto para su Equipo: ")
+            @Html.EditorFor(m => Model.NombreProyecto)
+            <br />
+            @Html.LabelFor(m => Model.Metodologia, "Metodología del proyecto")
+            @*@Html.DropDownListFor(m => Model.Metodologia, new List<SelectListItem> { new SelectListItem { Text = "Scrum", Value = "Scrum" }, new SelectListItem { Text = "RUP", Value = "Rup" } })*@
+            <select asp-for="Metodologia" class="form-control" required>
+                <option value="Scrum">Scrum</option>
+                <option value="RUP">RUP</option>
+            </select>
+        </div>
+        <input type="submit" value="Continuar" class="btn btn-success"/>
+    }
+</div>
+        
+
+

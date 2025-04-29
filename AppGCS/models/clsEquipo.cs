@@ -5,14 +5,14 @@ using System.Web;
 
 namespace AppGCS.Models
 {
-    public class Equipo
+    public class clsEquipo
     {
         public int IdEquipo { get; set; }
         public string NombreCreador {  get; set; }
-        public List<string> NombresIntengrantes { get; set; }
-        public Equipo()
+        public List<clsIntegrante> Intengrantes { get; set; }
+        public clsEquipo()
         {
-            NombresIntengrantes = new List<string>();
+            Intengrantes = new List<clsIntegrante>();
         }
     }
 }

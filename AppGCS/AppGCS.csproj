@@ -112,8 +112,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Equipo.cs" />
-    <Compile Include="Models\Proyecto.cs" />
+    <Compile Include="Models\clsEquipo.cs" />
+    <Compile Include="Models\clsIntegrante.cs" />
+    <Compile Include="Models\clsProyecto.cs" />
+    <Compile Include="Models\cslProyectoModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="source\css\sidebar.css" />
   </ItemGroup>
@@ -124,6 +126,13 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Sesion\Login.cshtml" />
+    <Content Include="Views\Proyecto\FormCrearProyecto.cshtml" />
+    <Content Include="Views\Proyecto\FormCrearEquipo.cshtml" />
+    <Content Include="Views\Proyecto\ListarProyectos.cshtml" />
+    <Content Include="Views\Proyecto\Index.cshtml" />
+    <Content Include="Views\Proyecto\Crear.cshtml" />
+    <Content Include="Views\Proyecto\AgregarIntegrantes.cshtml" />
+    <Content Include="Views\Proyecto\Detalle.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -136,7 +145,6 @@
     <Folder Include="Views\Asignacion\" />
     <Folder Include="Views\Cambios\" />
     <Folder Include="Views\Equipo\" />
-    <Folder Include="Views\Proyecto\" />
     <Folder Include="Views\Pull\" />
     <Folder Include="Views\Repositorio\" />
     <Folder Include="Views\Solicitud\" />

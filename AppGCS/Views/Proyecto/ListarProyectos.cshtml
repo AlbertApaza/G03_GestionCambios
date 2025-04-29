@@ -1,0 +1,36 @@
+﻿@model List<dynamic>
+@{
+    ViewBag.Title = "Proyectos Creados";
+}
+
+<h2>Listado de Proyectos</h2>
+
+@foreach (var item in Model)
+{
+    <div class="card" style="margin-bottom:20px;">
+        <div class="card-header bg-primary text-white">
+            <strong>@item.Proyecto.NombreProyecto</strong> (ID: @item.Proyecto.IdProyecto)
+        </div>
+        <div class="card-body">
+            <p><strong>Fecha de Creación:</strong> @item.Proyecto.FechaCreacion.ToShortDateString()</p>
+            <p><strong>Metodología:</strong> @item.Proyecto.Metodologia</p>
+            <p><strong>Equipo ID:</strong> @item.Equipo?.IdEquipo</p>
+            <p><strong>Nombre del Creador:</strong> @item.Equipo?.NombreCreador</p>
+
+            <h5>Integrantes del Equipo:</h5>
+            <ul>
+                @if (item.Equipo != null && item.Equipo.Intengrantes.Count > 0)
+                {
+                    foreach (var integrante in item.Equipo.Intengrantes)
+                    {
+                        <li><strong>@integrante.Nombre</strong> - @integrante.Rol</li>
+                    }
+                }
+                else
+                {
+                    <li><em>No hay integrantes registrados.</em></li>
+                }
+            </ul>
+        </div>
+    </div>
+}

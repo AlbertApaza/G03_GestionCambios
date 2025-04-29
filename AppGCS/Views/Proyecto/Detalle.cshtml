@@ -1,0 +1,84 @@
+﻿@model AppGCS.Models.Proyecto
+@using AppGCS.Models
+@{
+    ViewBag.Title = "Detalle del Proyecto";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h2 class="card-title">Proyecto: <span class="text-primary">@Model.Nombre</span></h2>
+                    <p><strong>Metodología:</strong> @Model.Metodologia</p>
+                    <p><strong>Fecha de Creación:</strong> @Model.FechaCreacion.ToShortDateString()</p>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <h4>Integrantes del Proyecto</h4>
+                <table class="table table-bordered table-striped">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Rol</th>
+                            <th>Editar Rol</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var integrante in Model.Integrantes)
+                        {
+                            <tr>
+                                <td>@integrante.Nombre</td>
+                                <td>@integrante.Rol</td>
+                                <td>
+                                    @using (Html.BeginForm("EditarRol", "Proyecto", FormMethod.Post))
+                                    {
+                                        @Html.Hidden("id", Model.Id)
+                                        @Html.Hidden("nombre", integrante.Nombre)
+                                        <div class="d-flex">
+                                            <select name="nuevoRol" class="form-select me-2">
+                                                <option value="LiderDeProyecto">Líder de Proyecto</option>
+                                                <option value="ProjectOwner">Project Owner</option>
+                                                <option value="Desarrollador">Desarrollador</option>
+                                            </select>
+                                            <button type="submit" class="btn btn-outline-primary">Actualizar</button>
+                                        </div>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-5">
+                <h4>Agregar Nuevo Integrante</h4>
+                @using (Html.BeginForm("AgregarNuevoIntegrante", "Proyecto", FormMethod.Post))
+                {
+                    @Html.Hidden("id", Model.Id)
+
+                    <div class="mb-3">
+                        <label class="form-label">Nombre:</label>
+                        <input type="text" name="nombre" class="form-control" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Rol:</label>
+                        <select name="rol" class="form-select">
+                            <option value="LiderDeProyecto">Líder de Proyecto</option>
+                            <option value="ProjectOwner">Project Owner</option>
+                            <option value="Desarrollador">Desarrollador</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-success">Agregar</button>
+                }
+            </div>
+
+            <div class="mt-4 text-end">
+                <a href="@Url.Action("Index", "Proyecto")" class="btn btn-outline-secondary">Volver a la lista de proyectos</a>
+            </div>
+        </div>
+    </div>
+</div>
