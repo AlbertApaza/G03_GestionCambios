@@ -3,52 +3,24 @@
   "WorkspaceRootPath": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|c:\\users\\usuario\\source\\repos\\g03_gestioncambios\\appgcs\\controllers\\repositoriocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|solutionrelative:appgcs\\controllers\\repositoriocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|c:\\users\\usuario\\source\\repos\\g03_gestioncambios\\appgcs\\controllers\\equipocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|solutionrelative:appgcs\\controllers\\equipocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|c:\\users\\usuario\\source\\repos\\g03_gestioncambios\\appgcs\\controllers\\pullcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|solutionrelative:appgcs\\controllers\\pullcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|c:\\users\\usuario\\source\\repos\\g03_gestioncambios\\appgcs\\controllers\\proyectocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\appgcs\\controllers\\proyectocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|solutionrelative:appgcs\\controllers\\proyectocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|c:\\users\\usuario\\source\\repos\\g03_gestioncambios\\appgcs\\controllers\\cambioscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|solutionrelative:appgcs\\controllers\\cambioscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|c:\\users\\usuario\\source\\repos\\g03_gestioncambios\\appgcs\\models\\proyecto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|solutionrelative:appgcs\\models\\proyecto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|c:\\users\\usuario\\source\\repos\\g03_gestioncambios\\appgcs\\controllers\\sesioncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|solutionrelative:appgcs\\controllers\\sesioncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|c:\\users\\usuario\\source\\repos\\g03_gestioncambios\\appgcs\\controllers\\usuariocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|solutionrelative:appgcs\\controllers\\usuariocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|c:\\users\\usuario\\source\\repos\\g03_gestioncambios\\appgcs\\views\\sesion\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|solutionrelative:appgcs\\views\\sesion\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|c:\\users\\usuario\\source\\repos\\g03_gestioncambios\\appgcs\\views\\shared\\layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|solutionrelative:appgcs\\views\\shared\\layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|c:\\users\\usuario\\source\\repos\\g03_gestioncambios\\appgcs\\views\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "AbsoluteMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\appgcs\\views\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
       "RelativeMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|solutionrelative:appgcs\\views\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|c:\\users\\usuario\\source\\repos\\g03_gestioncambios\\appgcs\\views\\_viewstart.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "AbsoluteMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\appgcs\\views\\_viewstart.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|solutionrelative:appgcs\\views\\_viewstart.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|c:\\users\\usuario\\source\\repos\\g03_gestioncambios\\appgcs\\controllers\\solicitudcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|solutionrelative:appgcs\\controllers\\solicitudcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|c:\\users\\usuario\\source\\repos\\g03_gestioncambios\\appgcs\\controllers\\asignacioncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C5D15144-83B7-4874-9D28-8B1192C435A7}|AppGCS\\AppGCS.csproj|solutionrelative:appgcs\\controllers\\asignacioncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -58,50 +30,37 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 8,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "PullController.cs",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\AppGCS\\Controllers\\PullController.cs",
-              "RelativeDocumentMoniker": "AppGCS\\Controllers\\PullController.cs",
-              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\AppGCS\\Controllers\\PullController.cs",
-              "RelativeToolTip": "AppGCS\\Controllers\\PullController.cs",
+              "DocumentIndex": 0,
+              "Title": "EquipoController.cs",
+              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\AppGCS\\Controllers\\EquipoController.cs",
+              "RelativeDocumentMoniker": "AppGCS\\Controllers\\EquipoController.cs",
+              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\AppGCS\\Controllers\\EquipoController.cs",
+              "RelativeToolTip": "AppGCS\\Controllers\\EquipoController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-29T06:01:12.441Z",
+              "WhenOpened": "2025-04-29T16:27:02.369Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Proyecto.cs",
+              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\AppGCS\\models\\Proyecto.cs",
+              "RelativeDocumentMoniker": "AppGCS\\models\\Proyecto.cs",
+              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\AppGCS\\models\\Proyecto.cs",
+              "RelativeToolTip": "AppGCS\\models\\Proyecto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-29T15:49:45.522Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "CambiosController.cs",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\AppGCS\\Controllers\\CambiosController.cs",
-              "RelativeDocumentMoniker": "AppGCS\\Controllers\\CambiosController.cs",
-              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\AppGCS\\Controllers\\CambiosController.cs",
-              "RelativeToolTip": "AppGCS\\Controllers\\CambiosController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-29T06:00:09.134Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "Layout.cshtml",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\AppGCS\\Views\\Shared\\Layout.cshtml",
-              "RelativeDocumentMoniker": "AppGCS\\Views\\Shared\\Layout.cshtml",
-              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\AppGCS\\Views\\Shared\\Layout.cshtml",
-              "RelativeToolTip": "AppGCS\\Views\\Shared\\Layout.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAA7AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-04-29T05:43:30.168Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
               "Title": "web.config",
               "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\AppGCS\\Views\\web.config",
               "RelativeDocumentMoniker": "AppGCS\\Views\\web.config",
@@ -109,12 +68,11 @@
               "RelativeToolTip": "AppGCS\\Views\\web.config",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000601|",
-              "WhenOpened": "2025-04-29T05:43:27.869Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-29T05:43:27.869Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 4,
               "Title": "_ViewStart.cshtml",
               "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\AppGCS\\Views\\_ViewStart.cshtml",
               "RelativeDocumentMoniker": "AppGCS\\Views\\_ViewStart.cshtml",
@@ -122,98 +80,19 @@
               "RelativeToolTip": "AppGCS\\Views\\_ViewStart.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-04-29T05:43:26.735Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-29T05:43:26.735Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "SesionController.cs",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\AppGCS\\Controllers\\SesionController.cs",
-              "RelativeDocumentMoniker": "AppGCS\\Controllers\\SesionController.cs",
-              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\AppGCS\\Controllers\\SesionController.cs",
-              "RelativeToolTip": "AppGCS\\Controllers\\SesionController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAjAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-29T05:19:05.216Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "UsuarioController.cs",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\AppGCS\\Controllers\\UsuarioController.cs",
-              "RelativeDocumentMoniker": "AppGCS\\Controllers\\UsuarioController.cs",
-              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\AppGCS\\Controllers\\UsuarioController.cs",
-              "RelativeToolTip": "AppGCS\\Controllers\\UsuarioController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-29T05:31:37.695Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "ProyectoController.cs",
               "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\AppGCS\\Controllers\\ProyectoController.cs",
               "RelativeDocumentMoniker": "AppGCS\\Controllers\\ProyectoController.cs",
               "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\AppGCS\\Controllers\\ProyectoController.cs",
               "RelativeToolTip": "AppGCS\\Controllers\\ProyectoController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-04-29T05:31:53.394Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "RepositorioController.cs",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\AppGCS\\Controllers\\RepositorioController.cs",
-              "RelativeDocumentMoniker": "AppGCS\\Controllers\\RepositorioController.cs",
-              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\AppGCS\\Controllers\\RepositorioController.cs",
-              "RelativeToolTip": "AppGCS\\Controllers\\RepositorioController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-29T05:32:36.759Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "SolicitudController.cs",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\AppGCS\\Controllers\\SolicitudController.cs",
-              "RelativeDocumentMoniker": "AppGCS\\Controllers\\SolicitudController.cs",
-              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\AppGCS\\Controllers\\SolicitudController.cs",
-              "RelativeToolTip": "AppGCS\\Controllers\\SolicitudController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-29T05:32:07.901Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "AsignacionController.cs",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\AppGCS\\Controllers\\AsignacionController.cs",
-              "RelativeDocumentMoniker": "AppGCS\\Controllers\\AsignacionController.cs",
-              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\AppGCS\\Controllers\\AsignacionController.cs",
-              "RelativeToolTip": "AppGCS\\Controllers\\AsignacionController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-29T05:33:28.337Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "Login.cshtml",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\AppGCS\\Views\\Sesion\\Login.cshtml",
-              "RelativeDocumentMoniker": "AppGCS\\Views\\Sesion\\Login.cshtml",
-              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\AppGCS\\Views\\Sesion\\Login.cshtml",
-              "RelativeToolTip": "AppGCS\\Views\\Sesion\\Login.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAnAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-04-29T03:32:31.122Z",
               "EditorCaption": ""
             }
           ]
