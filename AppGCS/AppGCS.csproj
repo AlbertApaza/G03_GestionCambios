@@ -112,6 +112,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\clsProyectModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="source\css\sidebar.css" />
   </ItemGroup>
@@ -128,6 +129,10 @@
     <Content Include="Views\Solicitud\Index.cshtml" />
     <Content Include="Views\Solicitud\FormularioSolicitud.cshtml" />
     <Content Include="Views\Solicitud\InformeSolicitudPdf.cshtml" />
+    <Content Include="Views\Proyecto\Index.cshtml" />
+    <Content Include="Views\Proyecto\Crear.cshtml" />
+    <Content Include="Views\Proyecto\AgregarIntegrantes.cshtml" />
+    <Content Include="Views\Proyecto\Detalle.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -137,9 +142,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
     <Folder Include="Views\Cambios\" />
-    <Folder Include="Views\Proyecto\" />
     <Folder Include="Views\Pull\" />
     <Folder Include="Views\Usuario\" />
   </ItemGroup>
