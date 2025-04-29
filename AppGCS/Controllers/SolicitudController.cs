@@ -13,5 +13,13 @@ namespace AppGCS.Controllers
         {
             return View();
         }
+        public ActionResult FormularioSolicitud()
+        {
+            return View();
+        }
+        public ActionResult InformeSolicitudPdf()
+        {
+            return View();
+        }
     }
 }

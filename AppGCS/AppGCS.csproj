@@ -122,6 +122,12 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Sesion\Login.cshtml" />
+    <Content Include="Views\Repositorio\Index.cshtml" />
+    <Content Include="Views\Repositorio\Asignacion.cshtml" />
+    <Content Include="Views\Asignacion\Index.cshtml" />
+    <Content Include="Views\Solicitud\Index.cshtml" />
+    <Content Include="Views\Solicitud\FormularioSolicitud.cshtml" />
+    <Content Include="Views\Solicitud\InformeSolicitudPdf.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -132,12 +138,9 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
-    <Folder Include="Views\Asignacion\" />
     <Folder Include="Views\Cambios\" />
     <Folder Include="Views\Proyecto\" />
     <Folder Include="Views\Pull\" />
-    <Folder Include="Views\Repositorio\" />
-    <Folder Include="Views\Solicitud\" />
     <Folder Include="Views\Usuario\" />
   </ItemGroup>
   <PropertyGroup>

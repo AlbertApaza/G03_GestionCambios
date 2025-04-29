@@ -1,0 +1,291 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Solicitudes de Cambio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h1, h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        .header-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 18px;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s, color 0.3s;
+            border: 1px solid transparent;
+        }
+
+            .btn i {
+                margin-right: 6px;
+            }
+
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+
+            .btn-primary:hover {
+                background-color: #2980b9;
+                border-color: #2980b9;
+            }
+
+        .btn-outline-secondary {
+            background-color: transparent;
+            color: #34495e;
+            border-color: #bdc3c7;
+        }
+
+            .btn-outline-secondary:hover {
+                background-color: #ecf0f1;
+                color: #2c3e50;
+            }
+
+        .btn-sm {
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+
+        .table-container {
+            margin-top: 20px;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            font-size: 14px;
+        }
+
+        th {
+            background-color: #ecf0f1;
+            color: #34495e;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            color: white;
+            display: inline-block;
+            text-align: center;
+            min-width: 80px;
+        }
+
+        .status-propuesto {
+            background-color: #f39c12;
+        }
+        .status-aprobado {
+            background-color: #27ae60;
+        }
+        .status-planificado {
+            background-color: #3498db;
+        }
+        .status-implantado {
+            background-color: #8e44ad;
+        }
+        .status-rechazado {
+            background-color: #c0392b;
+        }
+        .status-cancelado {
+            background-color: #7f8c8d;
+        }
+        .actions a, .actions button {
+            margin-right: 8px;
+            color: #3498db;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            font-size: 14px;
+        }
+
+            .actions a:hover, .actions button:hover {
+                text-decoration: underline;
+                color: #2980b9;
+            }
+
+        .actions .fa-edit {
+            color: #f39c12;
+        }
+
+        .actions .fa-trash {
+            color: #e74c3c;
+        }
+
+        .actions .fa-eye {
+            color: #3498db;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #777;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-actions">
+            <h1>Mis Solicitudes de Cambio</h1>
+            <a href="FormularioSolicitud" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Crear Nueva Solicitud
+            </a>
+        </div>
+
+        <h2>Listado de Solicitudes</h2>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nº Solicitud</th>
+                        <th>Proyecto</th>
+                        <th>Objetivo</th>
+                        <th>Fecha Solicitud</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="solicitudesTableBody">
+                </tbody>
+            </table>
+            <p id="noSolicitudes" class="empty-state" style="display:none;">Aún no has creado ninguna solicitud de cambio.</p>
+        </div>
+    </div>
+
+    <script>
+        let solicitudesData = JSON.parse(localStorage.getItem('solicitudesCliente')) || [
+            { id: "SC-001", proyecto: "Sistema de Ventas", objetivo: "Añadir campo Descuento", fechaSolicitud: "15/05/2024", estado: "Aprobado" },
+            { id: "SC-002", proyecto: "Módulo Inventario", objetivo: "Corregir stock mínimo", fechaSolicitud: "20/05/2024", estado: "Propuesto" },
+            { id: "SC-003", proyecto: "Portal Clientes", objetivo: "Cambiar logo cabecera", fechaSolicitud: "22/05/2024", estado: "Rechazado" },
+            { id: "SC-004", proyecto: "Sistema de Ventas", objetivo: "Opción exportar PDF", fechaSolicitud: "25/05/2024", estado: "Propuesto" }
+        ];
+
+        const tableBody = document.getElementById('solicitudesTableBody');
+        const noSolicitudesMsg = document.getElementById('noSolicitudes');
+
+        function getStatusClass(estado) {
+            const lowerCaseEstado = estado.toLowerCase();
+            if (lowerCaseEstado.includes('aprobado')) return 'status-aprobado';
+            if (lowerCaseEstado.includes('propuesto')) return 'status-propuesto';
+            if (lowerCaseEstado.includes('planificado')) return 'status-planificado';
+            if (lowerCaseEstado.includes('implantado')) return 'status-implantado';
+            if (lowerCaseEstado.includes('rechazado')) return 'status-rechazado';
+            if (lowerCaseEstado.includes('cancelado')) return 'status-cancelado';
+            return 'status-cancelado';
+        }
+
+        function renderSolicitudesTable() {
+            tableBody.innerHTML = '';
+
+            if (solicitudesData.length === 0) {
+                noSolicitudesMsg.style.display = 'block';
+                tableBody.closest('table').style.display = 'none';
+            } else {
+                noSolicitudesMsg.style.display = 'none';
+                tableBody.closest('table').style.display = '';
+
+                solicitudesData.sort((a, b) => (b.id || "").localeCompare(a.id || ""));
+
+                solicitudesData.forEach(solicitud => {
+                    const row = tableBody.insertRow();
+                    row.innerHTML = `
+                            <td>${solicitud.id || 'N/A'}</td>
+                            <td>${solicitud.proyecto || 'N/A'}</td>
+                            <td>${solicitud.objetivo || 'N/A'}</td>
+                            <td>${solicitud.fechaSolicitud || 'N/A'}</td>
+                            <td><span class="status-badge ${getStatusClass(solicitud.estado || '')}">${solicitud.estado || 'N/A'}</span></td>
+                            <td class="actions">
+                                <a href="InformeSolicitudPdf?id=${solicitud.id}" title="Ver Detalles"><i class="fas fa-eye"></i> Ver</a>
+                                ${solicitud.estado === 'Propuesto' ? `
+                                    <a href="FormularioSolicitud?editar=${solicitud.id}" title="Editar Solicitud"><i class="fas fa-edit"></i> Editar</a>
+                                    <button onclick="eliminarSolicitud('${solicitud.id}')" title="Eliminar Solicitud"><i class="fas fa-trash"></i> Eliminar</button>
+                                ` : ''}
+                                 ${solicitud.estado === 'Aprobado' || solicitud.estado === 'Planificado' ? `
+                                    <button onclick="cancelarSolicitud('${solicitud.id}')" title="Cancelar Solicitud"><i class="fas fa-ban"></i> Cancelar</button>
+                                ` : ''}
+                            </td>
+                        `;
+                });
+            }
+        }
+        function eliminarSolicitud(id) {
+            if (confirm(`¿Está seguro de que desea eliminar la solicitud ${id}?`)) {
+                solicitudesData = solicitudesData.filter(s => s.id !== id);
+                localStorage.setItem('solicitudesCliente', JSON.stringify(solicitudesData));
+                console.log(`Solicitud ${id} eliminada (simulado).`);
+                alert(`Solicitud ${id} eliminada.`);
+                renderSolicitudesTable();
+            }
+        }
+        function cancelarSolicitud(id) {
+            if (confirm(`¿Está seguro de que desea cancelar la solicitud ${id}? Esto no se puede deshacer si ya está en progreso.`)) {
+                const index = solicitudesData.findIndex(s => s.id === id);
+                if (index !== -1 && (solicitudesData[index].estado === 'Aprobado' || solicitudesData[index].estado === 'Planificado')) {
+                    solicitudesData[index].estado = 'Cancelado';
+                    localStorage.setItem('solicitudesCliente', JSON.stringify(solicitudesData));
+                    console.log(`Solicitud ${id} cancelada (simulado).`);
+                    alert(`Solicitud ${id} cancelada.`);
+                    renderSolicitudesTable();
+                } else {
+                    alert('No se puede cancelar una solicitud en este estado o no se encontró.');
+                }
+            }
+        }
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            renderSolicitudesTable();
+        });
+    </script>
+</body>
+</html>

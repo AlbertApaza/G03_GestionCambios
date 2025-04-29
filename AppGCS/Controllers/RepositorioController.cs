@@ -13,5 +13,12 @@ namespace AppGCS.Controllers
         {
             return View();
         }
+
+
+        public ActionResult Asignacion()
+        {
+            return View();
+        }
+        
     }
 }
