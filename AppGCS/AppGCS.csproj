@@ -133,6 +133,12 @@
     <Content Include="Views\Proyecto\Crear.cshtml" />
     <Content Include="Views\Proyecto\AgregarIntegrantes.cshtml" />
     <Content Include="Views\Proyecto\Detalle.cshtml" />
+    <Content Include="Views\Pull\Index.cshtml" />
+    <Content Include="Views\Pull\Listar.cshtml" />
+    <Content Include="Views\Cambios\Index.cshtml" />
+    <Content Include="Views\Cambios\RegistrarImplementacion.cshtml" />
+    <None Include="Properties\PublishProfiles\lab01ecb - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\lab01ecb - Web Deploy.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -142,8 +148,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Cambios\" />
-    <Folder Include="Views\Pull\" />
     <Folder Include="Views\Usuario\" />
   </ItemGroup>
   <PropertyGroup>

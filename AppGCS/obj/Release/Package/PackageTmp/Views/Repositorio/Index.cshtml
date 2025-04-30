@@ -1,0 +1,661 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 25px;
+        }
+
+        header {
+            background-color: #343a40;
+            color: white;
+            padding: 15px 0;
+            margin-bottom: 30px;
+        }
+
+            header .container {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+        h1, h2, h3 {
+            margin: 0;
+            color: #343a40;
+        }
+
+        h1 {
+            font-size: 1.75rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        h3 {
+            font-size: 1.25rem;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #dee2e6;
+            padding-bottom: 8px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 7px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: background-color 0.2s;
+            text-decoration: none;
+        }
+
+            .btn:hover {
+                background-color: #0056b3;
+            }
+
+        .btn-success {
+            background-color: #28a745;
+        }
+            .btn-success:hover {
+                background-color: #218838;
+            }
+
+        .btn-danger {
+            background-color: #dc3545;
+        }
+            .btn-danger:hover {
+                background-color: #c82333;
+            }
+
+        .btn-secondary {
+            background-color: #6c757d;
+        }
+            .btn-secondary:hover {
+                background-color: #5a6268;
+            }
+
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 1px solid #dee2e6;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            min-width: 1000px;
+        }
+
+        table, th, td {
+            border: 1px solid #dee2e6;
+        }
+
+        th, td {
+            padding: 10px 12px;
+            text-align: left;
+            vertical-align: middle;
+            font-size: 14px;
+        }
+
+        th {
+            background-color: #e9ecef;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        tr:hover {
+            background-color: #e2e6ea;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1050;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.6);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 7% auto;
+            padding: 25px 30px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 700px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #dee2e6;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        .modal-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #343a40;
+        }
+
+        .close {
+            color: #6c757d;
+            font-size: 35px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 0.8;
+            padding: 0 5px;
+        }
+
+            .close:hover {
+                color: #343a40;
+            }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            color: #495057;
+        }
+
+        input[type="text"], input[type="url"], input[type="number"], textarea, select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+            input:focus, select:focus, textarea:focus {
+                border-color: #80bdff;
+                outline: 0;
+                box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+            }
+
+        input[readonly] {
+            background-color: #e9ecef;
+            cursor: not-allowed;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-actions {
+            margin-top: 30px;
+            text-align: right;
+            border-top: 1px solid #dee2e6;
+            padding-top: 20px;
+        }
+
+            .form-actions .btn {
+                margin-left: 10px;
+            }
+
+        .checkbox-group label {
+            display: inline-block !important;
+            margin-left: 8px;
+            margin-bottom: 0;
+            font-weight: normal;
+            cursor: pointer;
+        }
+
+        .checkbox-group div {
+            margin-bottom: 8px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+            margin-right: 3px;
+            vertical-align: middle;
+        }
+
+        .alert {
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            border: 1px solid transparent;
+            font-size: 14px;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border-color: #c3e6cb;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border-color: #f5c6cb;
+        }
+
+        .section-divider {
+            border-top: 1px solid #dee2e6;
+            margin: 25px 0;
+        }
+
+        .branch-protection-section {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 15px 20px;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+
+            .branch-protection-section h4 {
+                margin-top: 0;
+                margin-bottom: 15px;
+                font-size: 1rem;
+                color: #495057;
+            }
+
+        .icon-check {
+            color: #28a745;
+            font-size: 1.1em;
+        }
+        .icon-times {
+            color: #dc3545;
+            font-size: 1.1em;
+        }
+        .text-center {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>@ViewBag.Title</h1>
+            <div>
+                <span id="username">Administrador</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="card">
+            <h2>Repositorios de Proyectos</h2>
+            <p>Gestione la configuración de los repositorios asociados a los proyectos existentes.</p>
+
+            <div id="alertContainer" style="margin-top: 15px;"></div>
+
+            <h3>Proyectos y Configuración</h3>
+            <div class="table-container">
+                <table id="projectsTable">
+                    <thead>
+                        <tr>
+                            <th>Proyecto</th>
+                            <th>Responsable</th>
+                            <th>Repositorio</th>
+                            <th class="text-center" title="Número mínimo de revisores para PR">Revisores PR</th>
+                            <th class="text-center" title="Requiere aprobación de revisores">Aprob. Req.</th>
+                            <th class="text-center" title="Rama principal protegida">Protegida</th>
+                            <th class="text-center" title="Pruebas automáticas activadas">Pruebas CI</th>
+                            <th>Herramienta CI</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Datos de Ejemplo -  -->
+                        <tr data-project-id="Proyecto Demo">
+                            <td data-project-name="Proyecto Demo">Proyecto Demo</td>
+                            <td data-project-responsible="Juan Pérez">Juan Pérez</td>
+                            <td data-repo-url="https://github.com/empresa/proyecto-demo">https://github.com/empresa/proyecto-demo</td>
+                            <td class="text-center" data-cell="reviewers">1</td>
+                            <td class="text-center" data-cell="approval"><i class="fas fa-check-circle icon-check" title="Sí"></i></td>
+                            <td class="text-center" data-cell="protection"><i class="fas fa-check-circle icon-check" title="Sí"></i></td>
+                            <td class="text-center" data-cell="tests"><i class="fas fa-check-circle icon-check" title="Sí"></i></td>
+                            <td data-cell="tool">GitHub Actions</td>
+                            <td>
+                                <!-- Los datos se pasan al modal  -->
+                                <button class="btn btn-manage" onclick="openManageModal('Proyecto Demo', 'https://github.com/empresa/proyecto-demo', 'Juan Pérez', '1', 'yes', 'yes', 'yes', 'github-actions', true, true)">
+                                    <i class="fas fa-cogs"></i> Gestionar
+                                </button>
+                            </td>
+                        </tr>
+                        <tr data-project-id="Plataforma Omega">
+                            <td data-project-name="Plataforma Omega">Plataforma Omega</td>
+                            <td data-project-responsible="María García">María García</td>
+                            <td data-repo-url="https://github.com/empresa/omega-platform">https://github.com/empresa/omega-platform</td>
+                            <td class="text-center" data-cell="reviewers">2</td>
+                            <td class="text-center" data-cell="approval"><i class="fas fa-check-circle icon-check" title="Sí"></i></td>
+                            <td class="text-center" data-cell="protection"><i class="fas fa-check-circle icon-check" title="Sí"></i></td>
+                            <td class="text-center" data-cell="tests"><i class="fas fa-check-circle icon-check" title="Sí"></i></td>
+                            <td data-cell="tool">Jenkins</td>
+                            <td>
+                                <button class="btn btn-manage" onclick="openManageModal('Plataforma Omega', 'https://github.com/empresa/omega-platform', 'María García', '2', 'yes', 'yes', 'yes', 'jenkins', true, false)">
+                                    <i class="fas fa-cogs"></i> Gestionar
+                                </button>
+                            </td>
+                        </tr>
+                        <tr data-project-id="API de Servicios">
+                            <td data-project-name="API de Servicios">API de Servicios</td>
+                            <td data-project-responsible="Carlos López">Carlos López</td>
+                            <td data-repo-url="https://github.com/empresa/servicios-api">https://github.com/empresa/servicios-api</td>
+                            <td class="text-center" data-cell="reviewers">0</td>
+                            <td class="text-center" data-cell="approval"><i class="fas fa-times-circle icon-times" title="No"></i></td>
+                            <td class="text-center" data-cell="protection"><i class="fas fa-times-circle icon-times" title="No"></i></td>
+                            <td class="text-center" data-cell="tests"><i class="fas fa-times-circle icon-times" title="No"></i></td>
+                            <td data-cell="tool">Travis CI</td>
+                            <td>
+                                <button class="btn btn-manage" onclick="openManageModal('API de Servicios', 'https://github.com/empresa/servicios-api', 'Carlos López', '0', 'no', 'no', 'no', 'travis', false, false)">
+                                    <i class="fas fa-cogs"></i> Gestionar
+                                </button>
+                            </td>
+                        </tr>
+                        <tr data-project-id="Web Interna RH">
+                            <td data-project-name="Web Interna RH">Web Interna RH</td>
+                            <td data-project-responsible="Ana Fernández">Ana Fernández</td>
+                            <td data-repo-url="https://github.com/empresa/rh-portal">https://github.com/empresa/rh-portal</td>
+                            <td class="text-center" data-cell="reviewers">1</td>
+                            <td class="text-center" data-cell="approval"><i class="fas fa-check-circle icon-check" title="Sí"></i></td>
+                            <td class="text-center" data-cell="protection"><i class="fas fa-times-circle icon-times" title="No"></i></td>
+                            <td class="text-center" data-cell="tests"><i class="fas fa-check-circle icon-check" title="Sí"></i></td>
+                            <td data-cell="tool">GitLab CI</td>
+                            <td>
+                                <button class="btn btn-manage" onclick="openManageModal('Web Interna RH', 'https://github.com/empresa/rh-portal', 'Ana Fernández', '1', 'yes', 'no', 'yes', 'gitlab-ci', true, true)">
+                                    <i class="fas fa-cogs"></i> Gestionar
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p id="noProjects" style="text-align:center; padding: 20px; color: #777; display:none;">No hay proyectos configurados.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para GESTIONAR Repositorio  -->
+    <div id="manageRepoModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">Gestionar Configuración del Repositorio</h3>
+                <span class="close" onclick="closeManageModal()">×</span>
+            </div>
+            <div id="modalAlertContainer"></div>
+            <input type="hidden" id="editingProjectId">
+
+            <div class="form-group">
+                <label>Proyecto:</label>
+                <input type="text" id="displayProjectName" readonly>
+            </div>
+            <div class="form-group">
+                <label>Repositorio:</label>
+                <input type="url" id="displayRepoUrl" readonly>
+            </div>
+            <div class="form-group">
+                <label>Responsable:</label>
+                <input type="text" id="displayProjectResponsible" readonly>
+            </div>
+
+            <div class="section-divider"></div>
+            <h3><i class="fas fa-code-branch"></i> Ramas y Colaboración</h3>
+            <div class="branch-protection-section">
+                <h4>Rama Principal (main/master)</h4>
+                <div class="form-group">
+                    <label for="protectBranch">Proteger rama (requerir PR):</label>
+                    <select id="protectBranch">
+                        <option value="yes">Sí</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="minReviewers">Nº Mínimo Revisores PR:</label>
+                    <input type="number" id="minReviewers" min="0" max="10" value="1">
+                </div>
+                <div class="form-group">
+                    <label for="requireApproval">Requerir Aprobación antes de merge:</label>
+                    <select id="requireApproval">
+                        <option value="yes">Sí</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="section-divider"></div>
+            <h3><i class="fas fa-vial"></i> Pruebas Automáticas (CI)</h3>
+            <div class="form-group">
+                <label for="enableTests">Activar Pruebas Automáticas:</label>
+                <select id="enableTests">
+                    <option value="yes">Sí</option>
+                    <option value="no">No</option>
+                </select>
+            </div>
+            <div id="testConfigSection">
+                <div class="form-group">
+                    <label for="testTool">Herramienta CI/CD:</label>
+                    <select id="testTool">
+                        <option value="github-actions">GitHub Actions</option>
+                        <option value="jenkins">Jenkins</option>
+                        <option value="travis">Travis CI</option>
+                        <option value="gitlab-ci">GitLab CI</option>
+                        <option value="azure-devops">Azure DevOps</option>
+                        <option value="other">Otra</option>
+                    </select>
+                </div>
+                <div class="form-group checkbox-group">
+                    <label>Disparadores:</label>
+                    <div>
+                        <input type="checkbox" id="testPush" value="push">
+                        <label for="testPush">Push a ramas</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="testPR" value="pr">
+                        <label for="testPR">Pull Requests</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="btn btn-secondary" onclick="closeManageModal()">
+                    <i class="fas fa-times"></i> Cancelar
+                </button>
+                <button type="button" id="btnSaveChanges" class="btn btn-success">
+                    <i class="fas fa-save"></i> Guardar Cambios
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Referencias a elementos del modal (igual que antes)
+        const manageModal = document.getElementById('manageRepoModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const editingProjectIdInput = document.getElementById('editingProjectId');
+        const displayProjectNameInput = document.getElementById('displayProjectName');
+        const displayRepoUrlInput = document.getElementById('displayRepoUrl');
+        const displayProjectResponsibleInput = document.getElementById('displayProjectResponsible');
+        const protectBranchSelect = document.getElementById('protectBranch');
+        const minReviewersInput = document.getElementById('minReviewers');
+        const requireApprovalSelect = document.getElementById('requireApproval');
+        const enableTestsSelect = document.getElementById('enableTests');
+        const testConfigSection = document.getElementById('testConfigSection');
+        const testToolSelect = document.getElementById('testTool');
+        const testPushCheckbox = document.getElementById('testPush');
+        const testPRCheckbox = document.getElementById('testPR');
+        const btnSaveChanges = document.getElementById('btnSaveChanges');
+        const modalAlertContainer = document.getElementById('modalAlertContainer');
+        const mainAlertContainer = document.getElementById('alertContainer');
+        const projectsTableBody = document.getElementById('projectsTable').tBodies[0];
+
+
+        // --- ABRIR MODAL DE GESTIÓN ---
+        function openManageModal(projectName, repoUrl, responsible, minReviewers, requireApproval, protectBranch, enableTests, testTool, testOnPush, testOnPR) {
+            modalAlertContainer.innerHTML = '';
+            modalTitle.textContent = `Gestionar Repositorio: ${projectName}`;
+            editingProjectIdInput.value = projectName;
+            displayProjectNameInput.value = projectName;
+            displayRepoUrlInput.value = repoUrl;
+            displayProjectResponsibleInput.value = responsible;
+            protectBranchSelect.value = protectBranch;
+            minReviewersInput.value = minReviewers;
+            requireApprovalSelect.value = requireApproval;
+            enableTestsSelect.value = enableTests;
+            testToolSelect.value = testTool;
+            testPushCheckbox.checked = testOnPush;
+            testPRCheckbox.checked = testOnPR;
+            toggleTestConfigSection();
+            manageModal.style.display = 'block';
+        }
+
+        // --- CERRAR MODAL DE GESTIÓN ---
+        function closeManageModal() {
+            manageModal.style.display = 'none';
+            modalAlertContainer.innerHTML = '';
+        }
+
+        // --- MOSTRAR/OCULTAR SECCIÓN DE CONFIGURACIÓN DE PRUEBAS ---
+        function toggleTestConfigSection() {
+            testConfigSection.style.display = (enableTestsSelect.value === 'yes') ? 'block' : 'none';
+        }
+        enableTestsSelect.addEventListener('change', toggleTestConfigSection);
+
+        // --- Icono para Sí/No ---
+        function getBooleanIcon(value) {
+            const isYes = String(value).toLowerCase() === 'yes' || value === true;
+            const iconClass = isYes ? 'fas fa-check-circle icon-check' : 'fas fa-times-circle icon-times';
+            const title = isYes ? 'Sí' : 'No';
+            return `<i class="${iconClass}" title="${title}"></i>`;
+        }
+
+        // --- GUARDAR CAMBIOS (Simulado y Actualiza Tabla) ---
+        btnSaveChanges.addEventListener('click', function () {
+            const projectId = editingProjectIdInput.value; // Nombre del proyecto como ID
+
+            // Recolectar datos del modal
+            const settings = {
+                protectBranch: protectBranchSelect.value,
+                minReviewers: minReviewersInput.value,
+                requireApproval: requireApprovalSelect.value,
+                enableTests: enableTestsSelect.value,
+                testTool: testToolSelect.value,
+                testOnPush: testPushCheckbox.checked,
+                testOnPR: testPRCheckbox.checked
+            };
+
+            // Validación
+            if (settings.enableTests === 'yes' && !settings.testOnPush && !settings.testOnPR) {
+                showAlertModal('Si las pruebas están activadas, seleccione al menos un evento (Push o PR).', 'danger'); return;
+            }
+            if (parseInt(settings.minReviewers) < 0 || parseInt(settings.minReviewers) > 10) {
+                showAlertModal('El número de revisores debe ser entre 0 y 10.', 'danger'); return;
+            }
+
+            // --- SIMULACIÓN DE GUARDADO Y ACTUALIZACIÓN DE TABLA ---
+            console.log(`Guardando configuración para ${projectId}:`, settings);
+
+            const rowToUpdate = projectsTableBody.querySelector(`tr[data-project-id="${projectId}"]`);
+
+            if (rowToUpdate) {
+                rowToUpdate.querySelector('[data-cell="reviewers"]').textContent = settings.minReviewers;
+                rowToUpdate.querySelector('[data-cell="approval"]').innerHTML = getBooleanIcon(settings.requireApproval);
+                rowToUpdate.querySelector('[data-cell="protection"]').innerHTML = getBooleanIcon(settings.protectBranch);
+                rowToUpdate.querySelector('[data-cell="tests"]').innerHTML = getBooleanIcon(settings.enableTests);
+                rowToUpdate.querySelector('[data-cell="tool"]').textContent = settings.enableTests === 'yes' ? settings.testTool : 'N/A'; // Mostrar N/A si no están activas
+
+                const button = rowToUpdate.querySelector('.btn-manage');
+                if (button) {
+                    const currentRepoUrl = rowToUpdate.querySelector('td[data-repo-url]')?.dataset.repoUrl || displayRepoUrlInput.value;
+                    const currentResponsible = rowToUpdate.querySelector('td[data-project-responsible]')?.dataset.projectResponsible || displayProjectResponsibleInput.value;
+
+                    const onclickString = `openManageModal('${projectId}', '${currentRepoUrl}', '${currentResponsible}', '${settings.minReviewers}', '${settings.requireApproval}', '${settings.protectBranch}', '${settings.enableTests}', '${settings.testTool}', ${settings.testOnPush}, ${settings.testOnPR})`;
+                    button.setAttribute('onclick', onclickString);
+                    console.log("Onclick actualizado para botón");
+                }
+                showAlertMain(`Configuración para "${projectId}" actualizada en la tabla.`, 'success');
+            } else {
+                console.error("No se encontró la fila para actualizar:", projectId);
+                showAlertMain(`Error al actualizar la tabla para "${projectId}".`, 'danger');
+            }
+
+            closeManageModal();
+        });
+
+        function showAlertModal(message, type) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type}`;
+            alertDiv.textContent = message;
+            modalAlertContainer.innerHTML = '';
+            modalAlertContainer.appendChild(alertDiv);
+            manageModal.querySelector('.modal-content').scrollTop = 0;
+        }
+        function showAlertMain(message, type) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type}`;
+            alertDiv.textContent = message;
+            mainAlertContainer.innerHTML = '';
+            mainAlertContainer.appendChild(alertDiv);
+            setTimeout(() => {
+                if (alertDiv.parentNode === mainAlertContainer) {
+                    alertDiv.remove();
+                }
+            }, 5000);
+        }
+
+        window.addEventListener('click', function (event) { if (event.target == manageModal) closeManageModal(); });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const noProjectsMsg = document.getElementById('noProjects');
+            if (!projectsTableBody || projectsTableBody.rows.length === 0) {
+                noProjectsMsg.style.display = 'block';
+                projectsTableBody.closest('table').style.display = 'none';
+            } else {
+                noProjectsMsg.style.display = 'none';
+                projectsTableBody.closest('table').style.display = '';
+            }
+        });
+    </script>
+</body>
+</html>

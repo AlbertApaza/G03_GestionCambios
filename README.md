@@ -19,4 +19,4 @@
 - RF7 - RF8 – RepositorioController (Albert)
 - RF9 – AsignacionController (Albert)
 - RF10 – CambiosController (Carlos)
-- RF12 – PullController (Carlos)
+- RF12 – PullController (Carlos) asd

@@ -1,0 +1,2078 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Tareas por Desarrolladores</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Estilos generales */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f9fafb;
+            color: #111827;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        header {
+            background-color: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 1rem 1.5rem;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .notification-btn {
+            position: relative;
+            background-color: #ffffff;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            padding: 0.5rem 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            font-size: 0.875rem;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -0.25rem;
+            right: -0.25rem;
+            background-color: #ef4444;
+            color: white;
+            font-size: 0.75rem;
+            height: 1.25rem;
+            width: 1.25rem;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .avatar {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 9999px;
+            background-color: #6366f1;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .user-role {
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+
+        /* Main content */
+        main {
+            display: flex;
+            flex: 1;
+            overflow: hidden; /* Evitar scrollbars dobles si los paneles internos ya tienen */
+        }
+
+        .tasks-container {
+            background-color: #ffffff;
+            padding: 1.5rem;
+            overflow-y: auto; /* Permitir scroll vertical si el contenido excede */
+            width: 100%;
+            transition: width 0.3s ease;
+            height: calc(100vh - 65px); /* Ajustar altura al espacio restante menos el header */
+        }
+
+            .tasks-container.with-details {
+                width: 66.666667%;
+                flex-shrink: 0; /* Evitar que se encoja más de lo debido */
+            }
+
+        .tasks-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .tasks-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        /* Filters */
+        .filters-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background-color: #f3f4f6; /* Ligeramente más oscuro */
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+        }
+
+        .filter-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #374151; /* Un poco más oscuro */
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filter-name {
+            font-size: 0.875rem;
+            color: #4b5563;
+            font-weight: 500;
+        }
+
+        .filter-select {
+            min-width: 180px; /* Ancho mínimo */
+            padding: 0.5rem 0.75rem; /* Ajustar padding */
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            background-color: #ffffff;
+            font-size: 0.875rem;
+            appearance: none; /* Quitar flecha por defecto */
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            padding-right: 2.5rem; /* Espacio para la flecha custom */
+        }
+
+            .filter-select:focus {
+                outline: none;
+                border-color: #4f46e5;
+                box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.25);
+            }
+
+        /* Table */
+        .table-container {
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            overflow-x: auto; /* Permitir scroll horizontal si la tabla es muy ancha */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px; /* Ancho mínimo para evitar que se comprima demasiado */
+        }
+
+        thead {
+            background-color: #f9fafb;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        th {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            font-size: 0.75rem; /* 12px */
+            font-weight: 600;
+            color: #4b5563;
+            text-transform: uppercase; /* Mayúsculas para cabeceras */
+            white-space: nowrap; /* Evitar que el texto de cabecera se rompa */
+        }
+
+        td {
+            padding: 0.875rem 1rem; /* Más padding vertical */
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 0.875rem; /* 14px */
+            vertical-align: middle; /* Alinear verticalmente al centro */
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr.task-row {
+            cursor: pointer;
+            transition: background-color 0.15s ease-in-out;
+        }
+
+            tr.task-row:hover {
+                background-color: #f3f4f6; /* Hover más sutil */
+            }
+
+        tr.selected {
+            background-color: #e0e7ff; /* Fondo azul claro para seleccionado */
+            font-weight: 500; /* Hacer texto un poco más grueso */
+        }
+
+            tr.selected td {
+                color: #1e3a8a; /* Texto más oscuro en fila seleccionada */
+            }
+
+
+        .task-type {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+            .task-type i {
+                color: #6b7280; /* Icono gris */
+            }
+
+        /* Badges */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.625rem; /* Ligeramente más ancho */
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            white-space: nowrap; /* Evitar que se parta el badge */
+        }
+
+            .badge i {
+                margin-right: 0.375rem; /* Más espacio para icono */
+                font-size: 0.8em; /* Icono un poco más pequeño */
+            }
+
+        .badge-alta {
+            background-color: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .badge-media {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-baja {
+            background-color: #dcfce7; /* Verde más claro */
+            color: #15803d;
+        }
+
+        .badge-asignada {
+            background-color: #f3f4f6;
+            color: #4b5563;
+        }
+
+        .badge-en-progreso {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+
+        .badge-en-pruebas {
+            background-color: #f5d0fe; /* Morado más claro */
+            color: #86198f; /* Morado más oscuro */
+        }
+
+        .badge-finalizada {
+            background-color: #d1fae5;
+            color: #047857;
+        }
+
+        /* Details panel */
+        .details-panel {
+            width: 33.333333%;
+            border-left: 1px solid #e5e7eb;
+            background-color: #ffffff;
+            overflow-y: auto; /* Scroll vertical si es necesario */
+            display: none;
+            flex-shrink: 0; /* Evitar que se encoja */
+            height: calc(100vh - 65px); /* Ajustar altura */
+            position: relative; /* Para posicionar el botón de cierre */
+        }
+
+            .details-panel.active {
+                display: block;
+            }
+
+        .details-container {
+            padding: 1.5rem;
+        }
+
+        .details-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem; /* Más espacio */
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 1rem;
+        }
+
+        .details-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #6b7280;
+            padding: 0.25rem;
+            border-radius: 0.25rem;
+            line-height: 1; /* Asegurar que el icono no añada altura extra */
+        }
+
+            .close-btn:hover {
+                background-color: #f3f4f6;
+                color: #111827;
+            }
+
+            .close-btn i {
+                font-size: 1.25rem; /* Icono más grande */
+            }
+
+
+        .details-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .task-header {
+            background-color: #f9fafb;
+            padding: 1rem 1.25rem; /* Más padding */
+            border-radius: 0.5rem;
+            border: 1px solid #e5e7eb;
+        }
+
+        .task-id {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+
+            .task-id span:first-child {
+                font-weight: 500;
+            }
+
+        .task-title {
+            font-size: 1.125rem;
+            font-weight: 600; /* Más grueso */
+            margin-top: 0.25rem;
+            margin-bottom: 0.5rem;
+            color: #111827;
+        }
+
+        .task-status {
+            margin-top: 0.75rem;
+        }
+
+        .task-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem 1.5rem; /* Más espacio horizontal */
+            border-top: 1px solid #e5e7eb;
+            padding-top: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem; /* Más espacio */
+        }
+
+            .info-item i {
+                color: #6b7280;
+                width: 1rem; /* Ancho fijo para iconos */
+                text-align: center;
+            }
+
+        .info-label {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .info-value {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #1f2937;
+        }
+
+        .info-item[style*="grid-column: span 2"] { /* Estilo para items que ocupan 2 columnas */
+            grid-column: span 2;
+        }
+
+        .description-section {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .section-title {
+            font-size: 1rem; /* Más grande */
+            font-weight: 600;
+            color: #1f2937;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 0.5rem;
+        }
+
+        .description-content {
+            background-color: #ffffff; /* Fondo blanco */
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            color: #374151;
+            line-height: 1.6; /* Mejor interlineado */
+            border: 1px solid #e5e7eb;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 1rem; /* Espacio superior */
+        }
+
+        .tabs-list {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* Ajustar si hay más tabs */
+            gap: 0; /* Sin gap, el borde hará la separación */
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .tab-trigger {
+            background: none;
+            border: none;
+            padding: 0.875rem 1rem; /* Más padding */
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            color: #6b7280;
+            border-bottom: 3px solid transparent; /* Borde inferior más grueso */
+            transition: color 0.2s ease, border-color 0.2s ease;
+            white-space: nowrap;
+        }
+
+            .tab-trigger:hover {
+                color: #374151;
+            }
+
+            .tab-trigger.active {
+                color: #4f46e5;
+                border-bottom-color: #4f46e5;
+            }
+
+            .tab-trigger i {
+                font-size: 1em; /* Tamaño del icono */
+            }
+
+        .tab-content {
+            display: none;
+        }
+
+            .tab-content.active {
+                display: block;
+            }
+
+        .card {
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            background-color: #ffffff;
+        }
+
+        .card-header {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #f9fafb; /* Cabecera de tarjeta con fondo */
+        }
+
+        .card-title {
+            font-size: 0.875rem;
+            font-weight: 600; /* Más grueso */
+            color: #1f2937;
+        }
+
+        .card-content {
+            padding: 1.25rem; /* Más padding */
+        }
+
+        /* History timeline */
+        .scroll-area {
+            max-height: 250px; /* Más altura */
+            overflow-y: auto;
+            padding-right: 0.5rem; /* Espacio para scrollbar */
+        }
+            /* Custom scrollbar */
+            .scroll-area::-webkit-scrollbar {
+                width: 6px;
+            }
+
+            .scroll-area::-webkit-scrollbar-track {
+                background: #f1f1f1;
+                border-radius: 3px;
+            }
+
+            .scroll-area::-webkit-scrollbar-thumb {
+                background: #d1d5db;
+                border-radius: 3px;
+            }
+
+                .scroll-area::-webkit-scrollbar-thumb:hover {
+                    background: #9ca3af;
+                }
+
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem; /* Más espacio */
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 2rem; /* Más espacio izquierdo */
+            padding-bottom: 0; /* Quitar padding inferior */
+        }
+
+            .timeline-item:not(:last-child)::before {
+                content: '';
+                position: absolute;
+                top: 0.5rem; /* Alinear con el centro del punto */
+                left: 0.5rem;
+                bottom: -1.25rem; /* Extender hasta el siguiente item */
+                width: 2px;
+                background-color: #e5e7eb;
+            }
+
+        .timeline-dot {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 1rem;
+            height: 1rem;
+            border-radius: 9999px;
+            background-color: #ffffff; /* Punto blanco */
+            border: 3px solid #4f46e5; /* Borde morado */
+        }
+
+        .timeline-content {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .timeline-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .timeline-date {
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+
+        .timeline-user {
+            font-size: 0.875rem; /* Más grande */
+            font-weight: 500;
+            color: #1f2937;
+        }
+
+        .timeline-comment {
+            font-size: 0.875rem; /* Más grande */
+            color: #4b5563;
+            margin-top: 0.25rem;
+            background-color: #f3f4f6;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.375rem;
+        }
+
+        /* Attachments */
+        .attachments-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem; /* Más espacio */
+        }
+
+        .attachment-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 1rem; /* Más padding */
+            border-radius: 0.5rem;
+            border: 1px solid #e5e7eb;
+            transition: background-color 0.15s ease;
+        }
+
+            .attachment-item:hover {
+                background-color: #f9fafb;
+            }
+
+        .attachment-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem; /* Más espacio */
+        }
+
+            .attachment-info i {
+                font-size: 1.25rem;
+                color: #6b7280;
+            }
+
+        .attachment-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .attachment-name {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #1f2937;
+        }
+
+            .attachment-name:hover {
+                color: #4f46e5; /* Cambiar color al pasar el ratón */
+                text-decoration: underline;
+                cursor: pointer;
+            }
+
+        .attachment-meta {
+            display: flex;
+            align-items: center;
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 0.125rem; /* Pequeño espacio */
+        }
+
+            .attachment-meta span:not(:last-child)::after {
+                content: '•';
+                margin: 0 0.375rem; /* Más espacio */
+            }
+
+        /* Comments */
+        .comments-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem; /* Más espacio */
+        }
+
+        .comment-item {
+            display: flex;
+            gap: 1rem; /* Más espacio */
+        }
+
+        .comment-avatar {
+            width: 2.5rem; /* Más grande */
+            height: 2.5rem; /* Más grande */
+            border-radius: 9999px;
+            background-color: #a5b4fc; /* Color de avatar más suave */
+            color: #3730a3; /* Texto oscuro */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.875rem;
+            flex-shrink: 0; /* Evitar que se encoja */
+        }
+
+        .comment-content {
+            flex: 1;
+            background-color: #f9fafb;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid #e5e7eb;
+        }
+
+        .comment-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* Poner fecha a la derecha */
+            margin-bottom: 0.25rem;
+        }
+
+        .comment-author {
+            font-size: 0.875rem;
+            font-weight: 600; /* Más grueso */
+            color: #1f2937;
+        }
+
+        .comment-date {
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+
+        .comment-text {
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            color: #374151;
+            line-height: 1.5;
+        }
+
+        .comment-form {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1.5rem; /* Más espacio */
+            padding-top: 1rem;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .comment-input {
+            flex: 1;
+            padding: 0.625rem 0.875rem; /* Más padding */
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            resize: vertical; /* Permitir redimensionar verticalmente */
+        }
+
+            .comment-input:focus {
+                outline: none;
+                border-color: #4f46e5;
+                box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.25);
+            }
+
+        .comment-submit {
+            background-color: #4f46e5;
+            color: white;
+            border: none;
+            border-radius: 0.375rem;
+            padding: 0.625rem 1rem; /* Ajustar padding */
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            align-self: flex-start; /* Alinear con la parte superior del input */
+        }
+
+            .comment-submit:hover {
+                background-color: #4338ca;
+            }
+
+            .comment-submit:disabled {
+                background-color: #a5b4fc;
+                cursor: not-allowed;
+            }
+
+        /* Actions */
+        .actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem; /* Más espacio */
+            padding-top: 1.5rem;
+            margin-top: 1.5rem;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .btn {
+            padding: 0.625rem 1.25rem; /* Más padding */
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: inline-flex; /* Cambiado a inline-flex */
+            align-items: center;
+            justify-content: center; /* Centrar contenido */
+            gap: 0.5rem;
+            transition: all 0.2s ease;
+            text-decoration: none; /* Quitar subrayado si es un link */
+        }
+
+        .btn-outline {
+            background-color: white;
+            color: #4b5563;
+            border: 1px solid #d1d5db;
+        }
+
+            .btn-outline:hover {
+                background-color: #f9fafb;
+                border-color: #9ca3af;
+            }
+
+        .btn-primary {
+            background-color: #4f46e5;
+            color: white;
+            border: 1px solid #4f46e5; /* Borde del mismo color */
+        }
+
+            .btn-primary:hover {
+                background-color: #4338ca;
+                border-color: #4338ca;
+            }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+
+        .btn-sm {
+            padding: 0.375rem 0.75rem; /* Padding más pequeño */
+            font-size: 0.75rem;
+        }
+
+        /* Modals */
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(17, 24, 39, 0.6); /* Fondo más oscuro */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1050; /* Mayor z-index */
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0s linear 0.3s;
+        }
+
+            .modal-backdrop.active {
+                opacity: 1;
+                visibility: visible;
+                transition: opacity 0.3s ease;
+            }
+
+        .modal {
+            background-color: white;
+            border-radius: 0.5rem;
+            width: 100%;
+            max-width: 32rem; /* Un poco más ancho */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-backdrop.active .modal {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            padding: 1.25rem 1.5rem; /* Ajustar padding */
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .modal-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .modal-description {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-top: 0.5rem; /* Más espacio */
+        }
+
+        .modal-body {
+            padding: 1.5rem 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem; /* Más espacio */
+        }
+
+            .form-group:last-child {
+                margin-bottom: 0; /* Quitar margen inferior al último grupo */
+            }
+
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: #374151;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.625rem 0.875rem; /* Más padding */
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+            .form-control:focus {
+                outline: none;
+                border-color: #4f46e5;
+                box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.25);
+            }
+
+        textarea.form-control {
+            min-height: 6rem; /* Más altura mínima */
+            resize: vertical;
+        }
+
+        /* Dropzone */
+        .dropzone {
+            border: 2px dashed #d1d5db;
+            border-radius: 0.5rem;
+            padding: 2rem; /* Más padding */
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.2s ease, background-color 0.2s ease;
+            background-color: #f9fafb;
+        }
+
+            .dropzone:hover {
+                border-color: #a5b4fc;
+                background-color: #fefeff;
+            }
+
+            .dropzone.is-dragover { /* Estilo cuando se arrastra sobre él */
+                border-color: #4f46e5;
+                background-color: #e0e7ff;
+            }
+
+
+        .dropzone-icon {
+            font-size: 2.5rem; /* Icono más grande */
+            color: #9ca3af;
+            margin-bottom: 1rem; /* Más espacio */
+        }
+
+        .dropzone-text {
+            font-size: 1rem; /* Más grande */
+            font-weight: 500;
+            color: #4b5563;
+        }
+
+        .dropzone-hint {
+            font-size: 0.875rem; /* Más grande */
+            color: #6b7280;
+            margin-top: 0.5rem;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem; /* Más espacio */
+            padding: 1rem 1.5rem; /* Ajustar padding */
+            background-color: #f9fafb; /* Fondo para footer */
+            border-top: 1px solid #e5e7eb;
+        }
+
+        /* Notification (Toast) */
+        .notification-container { /* Renombrado para evitar conflicto */
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            z-index: 1100; /* Encima de modales */
+            max-width: 24rem; /* Ancho máximo */
+            pointer-events: none; /* Permitir clics a través del contenedor */
+        }
+
+        .alert-toast { /* Renombrado para evitar conflicto */
+            background-color: white;
+            border-radius: 0.5rem;
+            padding: 1rem 1.25rem; /* Más padding */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 1rem; /* Espacio si hay múltiples toasts */
+            opacity: 0;
+            transform: translateX(100%);
+            transition: opacity 0.3s ease, transform 0.4s ease;
+            pointer-events: auto; /* Permitir clics en el toast */
+        }
+
+            .alert-toast.active {
+                opacity: 1;
+                transform: translateX(0);
+            }
+
+            .alert-toast .alert-icon { /* Icono específico para toast */
+                width: 1.25rem;
+                height: 1.25rem;
+                flex-shrink: 0;
+                margin-top: 0.125rem;
+            }
+
+            .alert-toast.alert-success .alert-icon {
+                color: #10b981;
+            }
+
+            .alert-toast.alert-error .alert-icon {
+                color: #ef4444;
+            }
+
+        .alert-content { /* Contenedor para título y mensaje */
+            flex-grow: 1;
+        }
+
+        .alert-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            color: #111827;
+        }
+
+        .alert-message {
+            font-size: 0.875rem;
+            color: #4b5563;
+            line-height: 1.4;
+        }
+
+        /* Empty states */
+        .empty-state {
+            text-align: center;
+            padding: 2rem 0; /* Más padding */
+            color: #6b7280;
+            font-size: 0.875rem;
+            font-style: italic;
+        }
+
+            .empty-state i { /* Icono para empty state */
+                font-size: 1.5rem;
+                display: block;
+                margin-bottom: 0.5rem;
+                color: #9ca3af;
+            }
+    </style>
+</head>
+<body>
+    <!-- Barra superior -->
+    <header>
+        <div class="header-container">
+            <h1 class="header-title">Gestión de Tareas</h1>
+            <div class="header-actions">
+                <button class="notification-btn" id="notificationBtn">
+                    <i class="fas fa-bell"></i>
+                    <span>Notificaciones</span>
+                    <span class="notification-badge" id="notificationBadge">0</span> <!-- Se actualizará con JS -->
+                </button>
+                <div class="user-profile">
+                    <div class="avatar" id="userAvatar">MS</div> <!-- Se actualizará -->
+                    <div class="user-info">
+                        <p class="user-name" id="userName">Miguel Sánchez</p> <!-- Se actualizará -->
+                        <p class="user-role" id="userRole">Desarrollador</p> <!-- Se actualizará -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Contenido principal -->
+    <main>
+        <!-- Lista de tareas -->
+        <div class="tasks-container" id="tasksContainer">
+            <div class="tasks-header">
+                <h2 class="tasks-title">Mis Tareas Asignadas</h2>
+
+                <!-- Filtros -->
+                <div class="filters-container">
+                    <div class="filter-label">
+                        <i class="fas fa-filter"></i>
+                        <span>Filtrar por:</span>
+                    </div>
+                    <div class="filter-group">
+                        <label for="statusFilter" class="filter-name">Estado:</label>
+                        <select class="filter-select" id="statusFilter">
+                            <option value="all">Todos los estados</option>
+                            <option value="Asignada">Asignada</option>
+                            <option value="En Progreso">En Progreso</option>
+                            <option value="En Pruebas">En Pruebas</option>
+                            <option value="Finalizada">Finalizada</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="priorityFilter" class="filter-name">Prioridad:</label>
+                        <select class="filter-select" id="priorityFilter">
+                            <option value="all">Todas las prioridades</option>
+                            <option value="Alta">Alta</option>
+                            <option value="Media">Media</option>
+                            <option value="Baja">Baja</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="dueDateFilter" class="filter-name">Fecha Límite:</label>
+                        <select class="filter-select" id="dueDateFilter">
+                            <option value="all">Sin ordenar</option>
+                            <option value="closest">Más cercanas</option>
+                            <option value="furthest">Más lejanas</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Tabla de tareas -->
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Título</th>
+                                <th>Tipo</th>
+                                <th>Asignación</th>
+                                <th>Límite</th>
+                                <th>Prioridad</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tasksTableBody">
+                            <!-- Las filas de tareas se generarán dinámicamente con JavaScript -->
+                            <!-- Mensaje si no hay tareas -->
+                            <tr id="noTasksMessageRow" style="display: none;">
+                                <td colspan="7" class="empty-state">
+                                    <i class="fas fa-folder-open"></i>
+                                    No hay tareas que coincidan con los filtros seleccionados.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Panel de detalles -->
+        <div class="details-panel" id="detailsPanel">
+            <!-- Placeholder cuando no hay nada seleccionado -->
+            <div id="detailsPlaceholder" class="empty-state" style="padding-top: 4rem; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%;">
+                <i class="fas fa-info-circle"></i>
+                Selecciona una tarea de la tabla para ver sus detalles.
+            </div>
+
+            <div class="details-container" id="detailsContainerContent" style="display: none;">
+                <div class="details-header">
+                    <h2 class="details-title">Detalles de la Tarea</h2>
+                    <button class="close-btn" id="closeDetailsBtn" title="Cerrar detalles">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <div class="details-content">
+                    <!-- Encabezado -->
+                    <div class="task-header">
+                        <div class="task-id">
+                            <span>ID:</span>
+                            <strong id="detailTaskId"></strong>
+                        </div>
+                        <h3 class="task-title" id="detailTaskTitle"></h3>
+                        <div class="task-status" id="detailTaskStatus"></div>
+                    </div>
+
+                    <!-- Información principal -->
+                    <div class="task-info">
+                        <div class="info-item">
+                            <i class="fas fa-tag"></i>
+                            <span class="info-label">Tipo:</span>
+                            <span class="info-value" id="detailTaskType"></span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-exclamation-triangle" title="Prioridad"></i> <!-- Cambiado icono -->
+                            <span class="info-label">Prioridad:</span>
+                            <span class="info-value" id="detailTaskPriority"></span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-calendar-plus" title="Fecha de Creación"></i>
+                            <span class="info-label">Creación:</span>
+                            <span class="info-value" id="detailTaskCreationDate"></span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-calendar-check" title="Fecha de Asignación"></i>
+                            <span class="info-label">Asignación:</span>
+                            <span class="info-value" id="detailTaskAssignmentDate"></span>
+                        </div>
+                        <div class="info-item" style="grid-column: span 2;">
+                            <i class="fas fa-calendar-times" title="Fecha Límite"></i>
+                            <span class="info-label">Fecha límite:</span>
+                            <span class="info-value" id="detailTaskDueDate"></span>
+                        </div>
+                    </div>
+
+                    <!-- Descripción -->
+                    <div class="description-section">
+                        <h4 class="section-title">Descripción</h4>
+                        <div class="description-content" id="detailTaskDescription"></div>
+                    </div>
+
+                    <!-- Tabs para secciones -->
+                    <div class="tabs">
+                        <div class="tabs-list">
+                            <button class="tab-trigger active" data-tab="history">
+                                <i class="fas fa-history"></i>
+                                Historial
+                            </button>
+                            <button class="tab-trigger" data-tab="attachments">
+                                <i class="fas fa-paperclip"></i> <!-- Cambiado icono -->
+                                Adjuntos
+                            </button>
+                            <button class="tab-trigger" data-tab="comments">
+                                <i class="fas fa-comments"></i> <!-- Cambiado icono -->
+                                Comentarios
+                            </button>
+                        </div>
+
+                        <!-- Historial de cambios -->
+                        <div class="tab-content active" id="historyTab">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title">Historial de cambios de estado</h5>
+                                </div>
+                                <div class="card-content">
+                                    <div class="scroll-area">
+                                        <div class="timeline" id="statusHistoryTimeline">
+                                            <!-- El historial se generará dinámicamente -->
+                                            <div class="empty-state" id="historyEmptyState" style="display: none;">
+                                                <i class="fas fa-stream"></i>
+                                                No hay historial de cambios.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Archivos adjuntos -->
+                        <div class="tab-content" id="attachmentsTab">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title">Archivos adjuntos</h5>
+                                    <button class="btn btn-sm btn-primary" id="attachFileBtn">
+                                        <i class="fas fa-plus"></i> <!-- Cambiado icono -->
+                                        Adjuntar
+                                    </button>
+                                </div>
+                                <div class="card-content">
+                                    <div class="scroll-area">
+                                        <div class="attachments-list" id="attachmentsList">
+                                            <!-- Los adjuntos se generarán dinámicamente -->
+                                            <div class="empty-state" id="attachmentsEmptyState" style="display: none;">
+                                                <i class="fas fa-file-medical"></i>
+                                                No hay archivos adjuntos.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Comentarios -->
+                        <div class="tab-content" id="commentsTab">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title">Comentarios</h5>
+                                </div>
+                                <div class="card-content">
+                                    <div class="scroll-area">
+                                        <div class="comments-list" id="commentsList">
+                                            <!-- Los comentarios se generarán dinámicamente -->
+                                            <div class="empty-state" id="commentsEmptyState" style="display: none;">
+                                                <i class="fas fa-comment-slash"></i>
+                                                No hay comentarios.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="comment-form">
+                                        <textarea class="comment-input" id="newCommentInput" placeholder="Escribe un comentario... (Enter para enviar, Shift+Enter para nueva línea)" rows="1"></textarea>
+                                        <button class="comment-submit" id="addCommentBtn" title="Enviar comentario">
+                                            <i class="fas fa-paper-plane"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Acciones -->
+                    <div class="actions">
+                        <button class="btn btn-outline" id="closeDetailsBtnBottom">Cerrar</button>
+                        <button class="btn btn-primary" id="updateStatusBtn">
+                            <i class="fas fa-sync-alt"></i>
+                            Actualizar estado
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal para actualizar estado -->
+    <div class="modal-backdrop" id="statusModalBackdrop">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Actualizar estado de la tarea</h3>
+                <p class="modal-description" id="statusModalDescription">Selecciona el nuevo estado</p>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="newStatusSelect" class="form-label">Nuevo estado*</label>
+                    <select class="form-control" id="newStatusSelect">
+                        <option value="" disabled selected>-- Selecciona un estado --</option>
+                        <!-- Opciones se añadirán con JS -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="statusCommentInput" class="form-label">Comentario (opcional)</label>
+                    <textarea class="form-control" id="statusCommentInput" placeholder="Añade un comentario sobre este cambio..." rows="3"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="cancelStatusBtn">Cancelar</button>
+                <button class="btn btn-primary" id="saveStatusBtn" disabled>Guardar cambio</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para adjuntar archivo -->
+    <div class="modal-backdrop" id="attachmentModalBackdrop">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Adjuntar archivo</h3>
+                <p class="modal-description" id="attachmentModalDescription">Añade un nuevo archivo</p>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <!-- Input real de archivo, oculto -->
+                    <input type="file" id="fileInput" style="display: none;" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.sql,.png,.jpg,.jpeg,.gif">
+                    <!-- Dropzone visible -->
+                    <div class="dropzone" id="fileDropzone">
+                        <div class="dropzone-icon">
+                            <i class="fas fa-cloud-upload-alt"></i> <!-- Icono diferente -->
+                        </div>
+                        <p class="dropzone-text" id="dropzoneText">Arrastra y suelta un archivo aquí o haz clic para seleccionar</p>
+                        <p class="dropzone-hint">Tipos permitidos: PDF, Word, Excel, PPT, TXT, SQL, Imagenes. Máx 10MB.</p>
+                        <p id="selectedFileName" style="margin-top: 0.5rem; font-weight: 500; display: none;"></p> <!-- Para mostrar nombre del archivo seleccionado -->
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="attachmentNameInput" class="form-label">Nombre descriptivo (opcional)</label>
+                    <input type="text" class="form-control" id="attachmentNameInput" placeholder="Ej: Especificaciones V2">
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="cancelAttachmentBtn">Cancelar</button>
+                <button class="btn btn-primary" id="saveAttachmentBtn" disabled>
+                    <i class="fas fa-paperclip"></i> Adjuntar archivo
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenedor de Notificaciones (Toast) -->
+    <div class="notification-container" id="notificationContainer">
+        <!-- Las notificaciones se añadirán aquí -->
+    </div>
+
+    <script>
+    // --- CONSTANTES Y ENUMERACIONES ---
+    const Priority = Object.freeze({ ALTA: "Alta", MEDIA: "Media", BAJA: "Baja" });
+    const Status = Object.freeze({ ASIGNADA: "Asignada", EN_PROGRESO: "En Progreso", EN_PRUEBAS: "En Pruebas", FINALIZADA: "Finalizada" });
+    const TaskType = Object.freeze({ MEJORA: "Mejora", CORRECCION: "Corrección", NUEVA_FUNCION: "Nueva Función" });
+    const CURRENT_USER = "Miguel Sánchez"; // Simulación del usuario logueado
+
+    // --- DATOS DE EJEMPLO ---
+    let tasks = [
+        { id: 1001, title: "Implementar autenticación JWT", type: TaskType.NUEVA_FUNCION, description: "Desarrollar un sistema de autenticación seguro utilizando JWT...", assignmentDate: new Date(2024, 5, 15), creationDate: new Date(2024, 5, 10), dueDate: new Date(2024, 6, 30), priority: Priority.ALTA, status: Status.ASIGNADA, statusHistory: [{ id: 1, status: Status.ASIGNADA, date: new Date(2024, 5, 15), user: "Carlos Rodríguez", comment: "Tarea asignada" }], attachments: [{ id: 1, name: "especificaciones_auth.pdf", type: "PDF", size: "1.2 MB", date: new Date(2024, 5, 10), user: "Ana Martínez", fileName: "especificaciones_auth.pdf" }], comments: [{ id: 1, text: "Revisar adjunto.", user: "Ana Martínez", date: new Date(2024, 5, 15, 14, 30) }] },
+        { id: 1002, title: "Corregir validación email", type: TaskType.CORRECCION, description: "Formulario de contacto no valida emails correctamente...", assignmentDate: new Date(2024, 5, 18), creationDate: new Date(2024, 5, 17), dueDate: new Date(2024, 5, 25), priority: Priority.MEDIA, status: Status.EN_PROGRESO, statusHistory: [{ id: 1, status: Status.ASIGNADA, date: new Date(2024, 5, 18), user: "Carlos Rodríguez", comment: "Asignada" }, { id: 2, status: Status.EN_PROGRESO, date: new Date(2024, 5, 19), user: CURRENT_USER, comment: "Comenzando corrección" }], attachments: [], comments: [{ id: 1, text: "Problema identificado en regex.", user: CURRENT_USER, date: new Date(2024, 5, 19, 10, 15) }] },
+        { id: 1003, title: "Optimizar consultas BD reportes", type: TaskType.MEJORA, description: "Consultas en módulo de reportes lentas...", assignmentDate: new Date(2024, 5, 12), creationDate: new Date(2024, 5, 5), dueDate: new Date(2024, 6, 15), priority: Priority.ALTA, status: Status.EN_PRUEBAS, statusHistory: [{ id: 1, status: Status.ASIGNADA, date: new Date(2024, 5, 12), user: "Carlos Rodríguez", comment: "Asignada" }, { id: 2, status: Status.EN_PROGRESO, date: new Date(2024, 5, 14), user: CURRENT_USER, comment: "Iniciando análisis" }, { id: 3, status: Status.EN_PRUEBAS, date: new Date(2024, 5, 28), user: CURRENT_USER, comment: "Optimizaciones listas para pruebas" }], attachments: [{ id: 1, name: "Análisis Rendimiento", type: "Excel", size: "0.8 MB", date: new Date(2024, 5, 20), user: CURRENT_USER, fileName: "analisis_rendimiento.xlsx" }, { id: 2, name: "Índices Propuestos", type: "SQL", size: "5 KB", date: new Date(2024, 5, 25), user: CURRENT_USER, fileName: "indices_propuestos.sql" }], comments: [{ id: 1, text: "Consultas identificadas.", user: CURRENT_USER, date: new Date(2024, 5, 15, 11, 45) }, { id: 2, text: "Índices mejoraron rendimiento 60%.", user: CURRENT_USER, date: new Date(2024, 5, 25, 16, 20) }] },
+        { id: 1004, title: "Crear dashboard estadísticas", type: TaskType.NUEVA_FUNCION, description: "Dashboard con estadísticas clave: usuarios activos, transacciones...", assignmentDate: new Date(2024, 4, 25), creationDate: new Date(2024, 4, 20), dueDate: new Date(2024, 6, 10), priority: Priority.MEDIA, status: Status.FINALIZADA, statusHistory: [{ id: 1, status: Status.ASIGNADA, date: new Date(2024, 4, 25), user: "Carlos Rodríguez", comment: "Asignada" }, { id: 2, status: Status.EN_PROGRESO, date: new Date(2024, 4, 27), user: CURRENT_USER, comment: "Iniciando desarrollo" }, { id: 3, status: Status.EN_PRUEBAS, date: new Date(2024, 5, 20), user: CURRENT_USER, comment: "Listo para pruebas" }, { id: 4, status: Status.FINALIZADA, date: new Date(2024, 5, 30), user: CURRENT_USER, comment: "Finalizado y aprobado" }], attachments: [{ id: 1, name: "Mockup Dashboard", type: "Imagen", size: "2.5 MB", date: new Date(2024, 4, 22), user: "Ana Martínez", fileName: "mockup_dashboard.png" }, { id: 2, name: "Documentación Dashboard", type: "PDF", size: "1.5 MB", date: new Date(2024, 5, 30), user: CURRENT_USER, fileName: "documentacion_dashboard.pdf" }], comments: [{ id: 1, text: "Gráficos implementados.", user: CURRENT_USER, date: new Date(2024, 5, 18, 9, 30) }, { id: 2, text: "Excelente. Aprobado.", user: "Ana Martínez", date: new Date(2024, 5, 29, 15, 45) }] },
+        { id: 1005, title: "Actualizar librerías JS", type: TaskType.MEJORA, description: "Actualizar librerías de terceros a últimas versiones estables.", assignmentDate: new Date(2024, 5, 20), creationDate: new Date(2024, 5, 19), dueDate: new Date(2024, 6, 5), priority: Priority.BAJA, status: Status.ASIGNADA, statusHistory: [{ id: 1, status: Status.ASIGNADA, date: new Date(2024, 5, 20), user: "Carlos Rodríguez", comment: "Asignada" }], attachments: [{ id: 1, name: "Listado Librerías", type: "Excel", size: "0.3 MB", date: new Date(2024, 5, 19), user: "Carlos Rodríguez", fileName: "listado_librerias.xlsx" }], comments: [] }
+    ];
+
+    // --- ESTADO DE LA UI ---
+    let filteredTasks = [];
+    let selectedTask = null;
+    let statusFilter = "all";
+    let priorityFilter = "all";
+    let dueDateFilter = "all";
+    let selectedFile = null; // Para el modal de adjuntos
+
+    // --- ELEMENTOS DEL DOM (Selección más específica) ---
+    const tasksContainerEl = document.getElementById('tasksContainer');
+    const tasksTableBodyEl = document.getElementById('tasksTableBody');
+    const noTasksMessageRowEl = document.getElementById('noTasksMessageRow');
+    const detailsPanelEl = document.getElementById('detailsPanel');
+    const detailsPlaceholderEl = document.getElementById('detailsPlaceholder');
+    const detailsContainerContentEl = document.getElementById('detailsContainerContent');
+    const closeDetailsBtnEl = document.getElementById('closeDetailsBtn');
+    const closeDetailsBtnBottomEl = document.getElementById('closeDetailsBtnBottom');
+    const statusFilterSelect = document.getElementById('statusFilter');
+    const priorityFilterSelect = document.getElementById('priorityFilter');
+    const dueDateFilterSelect = document.getElementById('dueDateFilter');
+    // ... (elementos de detalles)
+    const detailTaskIdEl = document.getElementById('detailTaskId');
+    const detailTaskTitleEl = document.getElementById('detailTaskTitle');
+    const detailTaskStatusEl = document.getElementById('detailTaskStatus');
+    const detailTaskTypeEl = document.getElementById('detailTaskType');
+    const detailTaskPriorityEl = document.getElementById('detailTaskPriority');
+    const detailTaskCreationDateEl = document.getElementById('detailTaskCreationDate');
+    const detailTaskAssignmentDateEl = document.getElementById('detailTaskAssignmentDate');
+    const detailTaskDueDateEl = document.getElementById('detailTaskDueDate');
+    const detailTaskDescriptionEl = document.getElementById('detailTaskDescription');
+    // ... (elementos de tabs)
+    const statusHistoryTimelineEl = document.getElementById('statusHistoryTimeline');
+    const historyEmptyStateEl = document.getElementById('historyEmptyState');
+    const attachmentsListEl = document.getElementById('attachmentsList');
+    const attachmentsEmptyStateEl = document.getElementById('attachmentsEmptyState');
+    const commentsListEl = document.getElementById('commentsList');
+    const commentsEmptyStateEl = document.getElementById('commentsEmptyState');
+    const attachFileBtnEl = document.getElementById('attachFileBtn');
+    const newCommentInputEl = document.getElementById('newCommentInput');
+    const addCommentBtnEl = document.getElementById('addCommentBtn');
+    const updateStatusBtnEl = document.getElementById('updateStatusBtn');
+    // ... (elementos del modal de estado)
+    const statusModalBackdropEl = document.getElementById('statusModalBackdrop');
+    const statusModalDescriptionEl = document.getElementById('statusModalDescription');
+    const newStatusSelectEl = document.getElementById('newStatusSelect');
+    const statusCommentInputEl = document.getElementById('statusCommentInput');
+    const cancelStatusBtnEl = document.getElementById('cancelStatusBtn');
+    const saveStatusBtnEl = document.getElementById('saveStatusBtn');
+    // ... (elementos del modal de adjuntos)
+    const attachmentModalBackdropEl = document.getElementById('attachmentModalBackdrop');
+    const attachmentModalDescriptionEl = document.getElementById('attachmentModalDescription');
+    const fileInputEl = document.getElementById('fileInput');
+    const fileDropzoneEl = document.getElementById('fileDropzone');
+    const dropzoneTextEl = document.getElementById('dropzoneText');
+    const selectedFileNameEl = document.getElementById('selectedFileName');
+    const attachmentNameInputEl = document.getElementById('attachmentNameInput');
+    const cancelAttachmentBtnEl = document.getElementById('cancelAttachmentBtn');
+    const saveAttachmentBtnEl = document.getElementById('saveAttachmentBtn');
+    // ... (elementos de notificación)
+    const notificationContainerEl = document.getElementById('notificationContainer');
+    const notificationBtnEl = document.getElementById('notificationBtn');
+    const notificationBadgeEl = document.getElementById('notificationBadge');
+    // ... (elementos de usuario)
+    const userAvatarEl = document.getElementById('userAvatar');
+    const userNameEl = document.getElementById('userName');
+    const userRoleEl = document.getElementById('userRole');
+
+    // --- FUNCIONES AUXILIARES ---
+    const formatDate = (date) => date ? new Date(date).toLocaleDateString('es-ES') : 'N/A';
+    const formatDateTime = (date) => date ? new Date(date).toLocaleString('es-ES', { dateStyle: 'short', timeStyle: 'short' }) : 'N/A';
+
+    function getInitials(name) {
+        return name.split(' ').map(n => n[0]).join('').toUpperCase();
+    }
+
+    function getPriorityClass(priority) {
+      const classMap = { [Priority.ALTA]: "badge-alta", [Priority.MEDIA]: "badge-media", [Priority.BAJA]: "badge-baja" };
+      return classMap[priority] || "badge-asignada"; // Default
+    }
+
+    function getStatusClass(status) {
+      const classMap = { [Status.ASIGNADA]: "badge-asignada", [Status.EN_PROGRESO]: "badge-en-progreso", [Status.EN_PRUEBAS]: "badge-en-pruebas", [Status.FINALIZADA]: "badge-finalizada" };
+      return classMap[status] || "badge-asignada";
+    }
+
+    function getStatusIcon(status) {
+      const iconMap = { [Status.ASIGNADA]: "fa-clock", [Status.EN_PROGRESO]: "fa-tasks", [Status.EN_PRUEBAS]: "fa-vial", [Status.FINALIZADA]: "fa-check-circle" };
+      return iconMap[status] || "fa-question-circle";
+    }
+
+    function getTaskTypeIcon(type) {
+      const iconMap = { [TaskType.MEJORA]: "fa-arrow-up", [TaskType.CORRECCION]: "fa-bug", [TaskType.NUEVA_FUNCION]: "fa-plus-circle" };
+      return iconMap[type] || "fa-file-alt";
+    }
+
+    // --- FUNCIONES DE RENDERIZADO ---
+    function renderTasksTable() {
+        tasksTableBodyEl.innerHTML = ''; // Limpiar tabla excepto fila de mensaje vacío
+        noTasksMessageRowEl.style.display = filteredTasks.length === 0 ? 'table-row' : 'none';
+
+        filteredTasks.forEach(task => {
+            const row = tasksTableBodyEl.insertRow(); // Usar insertRow para mejor rendimiento
+            row.className = `task-row ${selectedTask && selectedTask.id === task.id ? 'selected' : ''}`;
+            row.dataset.taskId = task.id;
+            row.onclick = () => handleSelectTask(task.id); // Simplificar listener
+
+            row.innerHTML = `
+              <td>${task.id}</td>
+              <td>${task.title}</td>
+              <td>
+                <div class="task-type">
+                  <i class="fas ${getTaskTypeIcon(task.type)}" title="${task.type}"></i>
+                  <span>${task.type}</span>
+                </div>
+              </td>
+              <td>${formatDate(task.assignmentDate)}</td>
+              <td>${formatDate(task.dueDate)}</td>
+              <td><span class="badge ${getPriorityClass(task.priority)}">${task.priority}</span></td>
+              <td>
+                <span class="badge ${getStatusClass(task.status)}">
+                  <i class="fas ${getStatusIcon(task.status)}"></i>
+                  ${task.status}
+                </span>
+              </td>
+            `;
+        });
+    }
+
+    function renderTaskDetails() {
+        if (!selectedTask) {
+             detailsPlaceholderEl.style.display = 'flex';
+             detailsContainerContentEl.style.display = 'none';
+             return;
+        }
+
+        detailsPlaceholderEl.style.display = 'none';
+        detailsContainerContentEl.style.display = 'block';
+
+        // Llenar detalles básicos
+        detailTaskIdEl.textContent = selectedTask.id;
+        detailTaskTitleEl.textContent = selectedTask.title;
+        detailTaskStatusEl.innerHTML = `<span class="badge ${getStatusClass(selectedTask.status)}"><i class="fas ${getStatusIcon(selectedTask.status)}"></i> ${selectedTask.status}</span>`;
+        detailTaskTypeEl.textContent = selectedTask.type;
+        detailTaskPriorityEl.innerHTML = `<span class="badge ${getPriorityClass(selectedTask.priority)}">${selectedTask.priority}</span>`;
+        detailTaskCreationDateEl.textContent = formatDate(selectedTask.creationDate);
+        detailTaskAssignmentDateEl.textContent = formatDate(selectedTask.assignmentDate);
+        detailTaskDueDateEl.textContent = formatDate(selectedTask.dueDate);
+        detailTaskDescriptionEl.textContent = selectedTask.description || "No hay descripción.";
+
+        // Renderizar secciones
+        renderStatusHistory();
+        renderAttachments();
+        renderComments();
+
+        // Resetear tab activo (opcional, o mantener el último)
+        changeTab('history');
+
+        // Habilitar/deshabilitar botón de actualizar estado
+        updateStatusBtnEl.disabled = selectedTask.status === Status.FINALIZADA;
+    }
+
+    function renderStatusHistory() {
+        statusHistoryTimelineEl.innerHTML = '';
+        historyEmptyStateEl.style.display = selectedTask.statusHistory.length === 0 ? 'block' : 'none';
+
+        selectedTask.statusHistory.slice().reverse().forEach(change => { // Mostrar más reciente primero
+            const item = document.createElement('div');
+            item.className = 'timeline-item';
+            item.innerHTML = `
+              <div class="timeline-dot"></div>
+              <div class="timeline-content">
+                <div class="timeline-header">
+                  <span class="badge ${getStatusClass(change.status)}">${change.status}</span>
+                  <span class="timeline-date">${formatDateTime(change.date)}</span>
+                </div>
+                <div class="timeline-user">Por: ${change.user}</div>
+                ${change.comment ? `<div class="timeline-comment">${change.comment}</div>` : ''}
+              </div>
+            `;
+            statusHistoryTimelineEl.appendChild(item);
+        });
+    }
+
+    function renderAttachments() {
+        attachmentsListEl.innerHTML = '';
+        attachmentsEmptyStateEl.style.display = selectedTask.attachments.length === 0 ? 'block' : 'none';
+
+        selectedTask.attachments.forEach(attachment => {
+            const item = document.createElement('div');
+            item.className = 'attachment-item';
+            item.innerHTML = `
+              <div class="attachment-info">
+                <i class="fas fa-file"></i> <!-- Icono genérico -->
+                <div class="attachment-details">
+                  <a href="#" class="attachment-name" title="Descargar ${attachment.fileName || attachment.name}" data-filename="${attachment.fileName || attachment.name}">${attachment.name}</a>
+                  <div class="attachment-meta">
+                    <span>${attachment.type}</span>
+                    <span>${attachment.size}</span>
+                    <span>Subido por ${attachment.user}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="attachment-date">${formatDate(attachment.date)}</div>
+            `;
+             // Añadir listener para simular descarga
+            item.querySelector('.attachment-name').addEventListener('click', (e) => {
+                e.preventDefault();
+                showNotification('Descarga Simulada', `Descargando archivo: ${e.target.dataset.filename}`, false);
+            });
+
+            attachmentsListEl.appendChild(item);
+        });
+    }
+
+    function renderComments() {
+        commentsListEl.innerHTML = '';
+        commentsEmptyStateEl.style.display = selectedTask.comments.length === 0 ? 'block' : 'none';
+
+        selectedTask.comments.forEach(comment => {
+            const item = document.createElement('div');
+            item.className = 'comment-item';
+            item.innerHTML = `
+              <div class="comment-avatar">${getInitials(comment.user)}</div>
+              <div class="comment-content">
+                <div class="comment-header">
+                  <span class="comment-author">${comment.user}</span>
+                  <span class="comment-date">${formatDateTime(comment.date)}</span>
+                </div>
+                <p class="comment-text">${comment.text.replace(/\n/g, '<br>')}</p> <!-- Permitir saltos de línea -->
+              </div>
+            `;
+            commentsListEl.appendChild(item);
+        });
+        // Scroll al final de la lista de comentarios (si es necesario)
+        // commentsListEl.parentNode.scrollTop = commentsListEl.parentNode.scrollHeight;
+    }
+
+    function renderUserInfo() {
+        userNameEl.textContent = CURRENT_USER;
+        userAvatarEl.textContent = getInitials(CURRENT_USER);
+        // userRoleEl podría venir de datos del servidor
+    }
+
+    function renderNotifications() {
+        // Simulación: contar notificaciones no leídas (podrían venir del servidor)
+        const unreadCount = 2; // Ejemplo
+        notificationBadgeEl.textContent = unreadCount > 0 ? unreadCount : '';
+        notificationBadgeEl.style.display = unreadCount > 0 ? 'flex' : 'none';
+    }
+
+
+    // --- LÓGICA DE LA APLICACIÓN ---
+    function applyFiltersAndSort() {
+        let result = [...tasks];
+
+        // Filtrar por estado
+        if (statusFilter !== "all") {
+            result = result.filter(task => task.status === statusFilter);
+        }
+
+        // Filtrar por prioridad
+        if (priorityFilter !== "all") {
+            result = result.filter(task => task.priority === priorityFilter);
+        }
+
+        // Ordenar por fecha límite
+        if (dueDateFilter === "closest") {
+            result.sort((a, b) => a.dueDate.getTime() - b.dueDate.getTime());
+        } else if (dueDateFilter === "furthest") {
+            result.sort((a, b) => b.dueDate.getTime() - a.dueDate.getTime());
+        }
+         // Podrías añadir más criterios de ordenación por defecto, ej: por ID descendente
+         else {
+             result.sort((a, b) => b.id - a.id); // Ordenar por ID descendente por defecto
+         }
+
+
+        filteredTasks = result;
+        renderTasksTable();
+
+        // Si la tarea seleccionada ya no está en los filtros, deseleccionarla
+        if (selectedTask && !filteredTasks.some(task => task.id === selectedTask.id)) {
+            closeDetailsPanel();
+        }
+    }
+
+    function handleSelectTask(taskId) {
+        const previouslySelectedRow = tasksTableBodyEl.querySelector('tr.selected');
+        if (previouslySelectedRow) {
+            previouslySelectedRow.classList.remove('selected');
+        }
+
+        selectedTask = tasks.find(task => task.id === taskId);
+
+        if (selectedTask) {
+            const newSelectedRow = tasksTableBodyEl.querySelector(`tr[data-task-id="${taskId}"]`);
+            if (newSelectedRow) {
+                newSelectedRow.classList.add('selected');
+            }
+            renderTaskDetails();
+            tasksContainerEl.classList.add('with-details');
+            detailsPanelEl.classList.add('active');
+        } else {
+            closeDetailsPanel();
+        }
+    }
+
+    function closeDetailsPanel() {
+        const selectedRow = tasksTableBodyEl.querySelector('tr.selected');
+        if (selectedRow) {
+            selectedRow.classList.remove('selected');
+        }
+        tasksContainerEl.classList.remove('with-details');
+        detailsPanelEl.classList.remove('active');
+        selectedTask = null;
+        // No es necesario re-renderizar la tabla aquí si solo se deselecciona
+        // renderTasksTable();
+        detailsPlaceholderEl.style.display = 'flex';
+        detailsContainerContentEl.style.display = 'none';
+    }
+
+    function updateTaskStatus() {
+      const newStatus = newStatusSelectEl.value;
+      const statusComment = statusCommentInputEl.value.trim();
+
+      if (!selectedTask || !newStatus) return;
+
+      // --- Validación de Transición de Estado (Ejemplo) ---
+      const currentStatus = selectedTask.status;
+      const allowedTransitions = {
+          [Status.ASIGNADA]: [Status.EN_PROGRESO],
+          [Status.EN_PROGRESO]: [Status.EN_PRUEBAS],
+          [Status.EN_PRUEBAS]: [Status.FINALIZADA, Status.EN_PROGRESO], // Permitir volver a En Progreso desde Pruebas
+          [Status.FINALIZADA]: [] // No se puede cambiar desde Finalizada
+      };
+
+      if (!allowedTransitions[currentStatus] || !allowedTransitions[currentStatus].includes(newStatus)) {
+            showToast('Transición Inválida', `No se puede cambiar el estado de "${currentStatus}" a "${newStatus}".`, true);
+            return;
+      }
+      // --- Fin Validación ---
+
+
+        const newStatusChange = {
+            id: selectedTask.statusHistory.length + 1, // ID simple
+            status: newStatus,
+            date: new Date(),
+            user: CURRENT_USER,
+            comment: statusComment || null, // Guardar null si no hay comentario
+        };
+
+        // Actualizar el array 'tasks' (simulación de BD)
+        const taskIndex = tasks.findIndex(task => task.id === selectedTask.id);
+        if (taskIndex !== -1) {
+            tasks[taskIndex] = {
+                ...tasks[taskIndex],
+                status: newStatus,
+                statusHistory: [...tasks[taskIndex].statusHistory, newStatusChange],
+            };
+            // Actualizar también la tarea seleccionada localmente
+            selectedTask = tasks[taskIndex];
+        }
+
+        applyFiltersAndSort(); // Re-renderizar tabla con filtros aplicados
+        renderTaskDetails(); // Actualizar panel de detalles
+
+        showToast('Estado Actualizado', `Tarea #${selectedTask.id} actualizada a "${newStatus}".`, false);
+        closeStatusModal();
+    }
+
+    function addComment() {
+        const commentText = newCommentInputEl.value.trim();
+        if (!selectedTask || !commentText) {
+            if (!commentText) newCommentInputEl.focus(); // Focus si está vacío
+            return;
+        }
+
+        const newComment = {
+            id: selectedTask.comments.length + 1,
+            text: commentText,
+            user: CURRENT_USER,
+            date: new Date(),
+        };
+
+        const taskIndex = tasks.findIndex(task => task.id === selectedTask.id);
+        if (taskIndex !== -1) {
+            tasks[taskIndex].comments.push(newComment);
+            selectedTask = tasks[taskIndex]; // Asegurarse que selectedTask está actualizado
+        }
+
+        renderComments();
+        newCommentInputEl.value = '';
+        newCommentInputEl.style.height = 'auto'; // Resetear altura del textarea
+        showToast('Comentario Añadido', 'Tu comentario ha sido guardado.', false);
+    }
+
+    function addAttachment() {
+        const descriptiveName = attachmentNameInputEl.value.trim();
+
+        if (!selectedTask || !selectedFile) {
+             showToast('Archivo no seleccionado', 'Por favor, selecciona un archivo para adjuntar.', true);
+             return;
+        }
+
+         // Simulación de tamaño y tipo (en real se obtendría del File object)
+         const fileSize = (selectedFile.size / 1024 / 1024).toFixed(2) + ' MB'; // MB
+         const fileType = selectedFile.type.split('/')[1] || selectedFile.name.split('.').pop() || 'Desconocido'; // Obtener extensión o tipo MIME
+
+        const newAttachment = {
+            id: selectedTask.attachments.length + 1,
+            name: descriptiveName || selectedFile.name, // Usar nombre descriptivo o el del archivo
+            fileName: selectedFile.name, // Guardar siempre el nombre original
+            type: fileType.toUpperCase(),
+            size: fileSize,
+            date: new Date(),
+            user: CURRENT_USER,
+        };
+
+        const taskIndex = tasks.findIndex(task => task.id === selectedTask.id);
+        if (taskIndex !== -1) {
+            tasks[taskIndex].attachments.push(newAttachment);
+            selectedTask = tasks[taskIndex];
+        }
+
+        renderAttachments();
+        showToast('Archivo Adjuntado', `"${newAttachment.name}" se ha adjuntado correctamente.`, false);
+        closeAttachmentModal();
+    }
+
+
+    // --- MANEJO DE MODALES ---
+    function openStatusModal() {
+        if (!selectedTask || selectedTask.status === Status.FINALIZADA) return;
+
+        statusModalDescriptionEl.textContent = `Actualizar estado para Tarea #${selectedTask.id}: ${selectedTask.title}`;
+        newStatusSelectEl.innerHTML = '<option value="" disabled selected>-- Selecciona un estado --</option>'; // Reset
+
+        // Llenar opciones basadas en el estado actual
+        const nextStatuses = {
+            [Status.ASIGNADA]: [Status.EN_PROGRESO],
+            [Status.EN_PROGRESO]: [Status.EN_PRUEBAS],
+            [Status.EN_PRUEBAS]: [Status.FINALIZADA, Status.EN_PROGRESO], // Volver atrás
+        };
+
+        if (nextStatuses[selectedTask.status]) {
+            nextStatuses[selectedTask.status].forEach(status => {
+                const option = document.createElement('option');
+                option.value = status;
+                option.textContent = status;
+                newStatusSelectEl.appendChild(option);
+            });
+        }
+
+        statusCommentInputEl.value = '';
+        saveStatusBtnEl.disabled = true; // Deshabilitar guardar inicialmente
+        statusModalBackdropEl.classList.add('active');
+    }
+
+    function closeStatusModal() {
+        statusModalBackdropEl.classList.remove('active');
+    }
+
+    function openAttachmentModal() {
+         if (!selectedTask) return;
+         attachmentModalDescriptionEl.textContent = `Adjuntar archivo a Tarea #${selectedTask.id}`;
+         // Resetear modal
+         selectedFile = null;
+         fileInputEl.value = null; // Importante para permitir seleccionar el mismo archivo de nuevo
+         attachmentNameInputEl.value = '';
+         selectedFileNameEl.textContent = '';
+         selectedFileNameEl.style.display = 'none';
+         dropzoneTextEl.textContent = 'Arrastra y suelta un archivo aquí o haz clic para seleccionar';
+         fileDropzoneEl.classList.remove('is-dragover');
+         saveAttachmentBtnEl.disabled = true;
+
+         attachmentModalBackdropEl.classList.add('active');
+    }
+
+    function closeAttachmentModal() {
+        attachmentModalBackdropEl.classList.remove('active');
+    }
+
+    // --- MANEJO DE TABS ---
+    function changeTab(tabId) {
+        document.querySelectorAll('.tab-trigger').forEach(trigger => trigger.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+        const activeTrigger = document.querySelector(`.tab-trigger[data-tab="${tabId}"]`);
+        const activeContent = document.getElementById(`${tabId}Tab`);
+
+        if (activeTrigger) activeTrigger.classList.add('active');
+        if (activeContent) activeContent.classList.add('active');
+    }
+
+     // --- MANEJO DE NOTIFICACIONES (TOAST) ---
+     function showToast(title, message, isError = false) {
+         const toastId = 'toast-' + Date.now(); // ID único
+         const toast = document.createElement('div');
+         toast.id = toastId;
+         toast.className = `alert-toast ${isError ? 'alert-error' : 'alert-success'}`;
+
+         const iconClass = isError ? 'fa-exclamation-circle' : 'fa-check-circle';
+         const iconColor = isError ? '#ef4444' : '#10b981';
+
+         toast.innerHTML = `
+            <i class="fas ${iconClass} alert-icon" style="color: ${iconColor};"></i>
+            <div class="alert-content">
+              <h4 class="alert-title">${title}</h4>
+              <p class="alert-message">${message}</p>
+            </div>
+         `;
+         notificationContainerEl.appendChild(toast);
+
+         // Trigger animation
+         setTimeout(() => {
+             toast.classList.add('active');
+         }, 10); // Pequeño delay
+
+         // Auto-dismiss
+         setTimeout(() => {
+            if(toast.parentElement === notificationContainerEl) { // Chequear si aun existe
+                 toast.classList.remove('active');
+                 // Remove from DOM after transition
+                 toast.addEventListener('transitionend', () => toast.remove(), { once: true });
+             }
+         }, 5000); // 5 segundos
+     }
+
+
+    // --- INICIALIZACIÓN ---
+    function initializeApp() {
+        // Setup User Info
+        renderUserInfo();
+        renderNotifications(); // Simular carga inicial de notificaciones
+
+        // Setup Event Listeners
+        statusFilterSelect.addEventListener('change', (e) => { statusFilter = e.target.value; applyFiltersAndSort(); });
+        priorityFilterSelect.addEventListener('change', (e) => { priorityFilter = e.target.value; applyFiltersAndSort(); });
+        dueDateFilterSelect.addEventListener('change', (e) => { dueDateFilter = e.target.value; applyFiltersAndSort(); });
+
+        closeDetailsBtnEl.addEventListener('click', closeDetailsPanel);
+        closeDetailsBtnBottomEl.addEventListener('click', closeDetailsPanel);
+
+        updateStatusBtnEl.addEventListener('click', openStatusModal);
+        cancelStatusBtnEl.addEventListener('click', closeStatusModal);
+        saveStatusBtnEl.addEventListener('click', updateTaskStatus);
+        newStatusSelectEl.addEventListener('change', () => { saveStatusBtnEl.disabled = !newStatusSelectEl.value; }); // Habilitar botón al seleccionar estado
+
+        attachFileBtnEl.addEventListener('click', openAttachmentModal);
+        cancelAttachmentBtnEl.addEventListener('click', closeAttachmentModal);
+        saveAttachmentBtnEl.addEventListener('click', addAttachment);
+
+        addCommentBtnEl.addEventListener('click', addComment);
+        // Textarea auto-resize y Enter para enviar
+        newCommentInputEl.addEventListener('input', () => {
+            newCommentInputEl.style.height = 'auto';
+            newCommentInputEl.style.height = (newCommentInputEl.scrollHeight) + 'px';
+        });
+         newCommentInputEl.addEventListener('keydown', (e) => {
+             if (e.key === 'Enter' && !e.shiftKey) {
+                 e.preventDefault(); // Prevenir nueva línea
+                 addComment();
+             }
+         });
+
+
+        // Tabs
+        document.querySelectorAll('.tab-trigger').forEach(trigger => {
+            trigger.addEventListener('click', () => changeTab(trigger.dataset.tab));
+        });
+
+        // Dropzone logic
+        fileDropzoneEl.addEventListener('click', () => fileInputEl.click());
+        fileInputEl.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFileSelect(e.target.files[0]);
+            }
+        });
+        // Drag and Drop
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            fileDropzoneEl.addEventListener(eventName, preventDefaults, false);
+        });
+        ['dragenter', 'dragover'].forEach(eventName => {
+            fileDropzoneEl.addEventListener(eventName, () => fileDropzoneEl.classList.add('is-dragover'), false);
+        });
+        ['dragleave', 'drop'].forEach(eventName => {
+            fileDropzoneEl.addEventListener(eventName, () => fileDropzoneEl.classList.remove('is-dragover'), false);
+        });
+        fileDropzoneEl.addEventListener('drop', handleFileDrop, false);
+
+
+        // Cierre de modales al hacer clic fuera (opcional)
+        statusModalBackdropEl.addEventListener('click', (e) => { if (e.target === statusModalBackdropEl) closeStatusModal(); });
+        attachmentModalBackdropEl.addEventListener('click', (e) => { if (e.target === attachmentModalBackdropEl) closeAttachmentModal(); });
+
+
+        // Render inicial
+        applyFiltersAndSort(); // Aplica filtros/orden inicial y renderiza
+        renderTaskDetails(); // Renderiza el placeholder inicial
+
+        // Notificación de bienvenida (ejemplo)
+         // showToast('Bienvenido', `Hola ${CURRENT_USER}, tienes ${tasks.length} tareas asignadas.`, false);
+    }
+
+     // --- FUNCIONES PARA DROPZONE ---
+     function preventDefaults(e) {
+         e.preventDefault();
+         e.stopPropagation();
+     }
+
+     function handleFileDrop(e) {
+         const dt = e.dataTransfer;
+         const files = dt.files;
+         if (files.length > 0) {
+             handleFileSelect(files[0]);
+         }
+     }
+
+     function handleFileSelect(file) {
+         // Validación simple de tamaño (ej: 10MB)
+         if (file.size > 10 * 1024 * 1024) {
+             showToast('Archivo Demasiado Grande', 'El archivo excede el límite de 10MB.', true);
+             resetFileInput();
+             return;
+         }
+         // Validación de tipo (si es necesario, aunque el accept del input ayuda)
+         // const allowedTypes = ['application/pdf', 'image/jpeg', ...];
+         // if (!allowedTypes.includes(file.type)) { ... }
+
+         selectedFile = file;
+         selectedFileNameEl.textContent = `Archivo seleccionado: ${file.name}`;
+         selectedFileNameEl.style.display = 'block';
+         dropzoneTextEl.textContent = 'Archivo listo para adjuntar. Puedes cambiarlo.';
+         saveAttachmentBtnEl.disabled = false; // Habilitar botón
+     }
+
+     function resetFileInput() {
+         selectedFile = null;
+         fileInputEl.value = null;
+         selectedFileNameEl.textContent = '';
+         selectedFileNameEl.style.display = 'none';
+         dropzoneTextEl.textContent = 'Arrastra y suelta un archivo aquí o haz clic para seleccionar';
+         saveAttachmentBtnEl.disabled = true;
+     }
+
+
+    // --- Ejecutar al cargar el DOM ---
+    document.addEventListener('DOMContentLoaded', initializeApp);
+
+    </script>
+</body>
+</html>

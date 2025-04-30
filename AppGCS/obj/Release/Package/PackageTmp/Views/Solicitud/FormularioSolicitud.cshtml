@@ -1,0 +1,316 @@
+﻿
+@{
+    ViewBag.Title = "FormularioSolicitud";
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- El título se ajustará con JS -->
+    <title>Crear Nueva Solicitud de Cambio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            /*padding: 20px;*/
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #34495e;
+            font-size: 14px;
+        }
+
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+            input[type="text"]:focus, select:focus, textarea:focus {
+                border-color: #3498db;
+                outline: none;
+                box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+            }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 15px;
+            transition: background-color 0.3s;
+            border: none;
+            font-weight: 500;
+        }
+
+            .btn i {
+                margin-right: 6px;
+            }
+
+        .btn-primary {
+            background-color: #2ecc71;
+            color: white;
+        }
+            /* Verde para enviar/guardar */
+            .btn-primary:hover {
+                background-color: #27ae60;
+            }
+
+        .btn-secondary {
+            background-color: #e74c3c;
+            color: white;
+        }
+            /* Rojo para cancelar */
+            .btn-secondary:hover {
+                background-color: #c0392b;
+            }
+
+        .form-actions {
+            text-align: right;
+            margin-top: 30px;
+        }
+
+            .form-actions .btn {
+                margin-left: 10px;
+            }
+
+        .required-field::after {
+            content: ' *';
+            color: #e74c3c;
+        }
+
+        .field-description {
+            font-size: 12px;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 id="formTitle">Crear Nueva Solicitud de Cambio</h1>
+
+        <form id="solicitudForm">
+            <!-- Campo oculto para guardar el ID en modo edición -->
+            <input type="hidden" id="solicitudId" name="solicitudId" value="">
+
+            <div class="form-group">
+                <label for="solicitante">Solicitada por:</label>
+                <input type="text" id="solicitante" name="solicitante" value="Cliente Actual" readonly style="background-color: #eee;">
+                <p class="field-description">Este campo se rellena automáticamente con tu usuario.</p>
+            </div>
+
+            <div class="form-group">
+                <label for="proyecto" class="required-field">Proyecto/Producto:</label>
+                <select id="proyecto" name="proyecto" required>
+                    <option value="">-- Seleccione un proyecto --</option>
+                    <option value="Sistema de Ventas">Sistema de Ventas</option>
+                    <option value="Módulo de Inventario">Módulo de Inventario</option>
+                    <option value="Portal Clientes">Portal Clientes</option>
+                    <option value="App Móvil Interna">App Móvil Interna</option>
+                    <option value="Otro">Otro (Especificar en descripción)</option>
+                </select>
+                <p class="field-description">Seleccione el proyecto o producto afectado.</p>
+            </div>
+
+            <div class="form-group">
+                <label for="objetivo" class="required-field">Objetivo:</label>
+                <input type="text" id="objetivo" name="objetivo" placeholder="Ej: Añadir filtro por fecha en reportes" required maxlength="100">
+                <p class="field-description">Objetivo breve y preciso (máx. 100 caracteres).</p>
+            </div>
+
+            <div class="form-group">
+                <label for="descripcion" class="required-field">Descripción del Cambio solicitado:</label>
+                <textarea id="descripcion" name="descripcion" rows="5" placeholder="Detalle aquí las características del cambio, justificación, comportamiento esperado, etc." required></textarea>
+                <p class="field-description">Descripción detallada del cambio requerido.</p>
+            </div>
+
+            <div class="form-group">
+                <label for="elementoAfectado">Elemento(s) afectado(s):</label>
+                <input type="text" id="elementoAfectado" name="elementoAfectado" placeholder="Ej: Módulo Reportes, Pantalla Login, BD Clientes">
+                <p class="field-description">(Opcional) Componentes específicos del software afectados.</p>
+            </div>
+
+            <div class="form-group">
+                <label for="impacto">Impacto esperado:</label>
+                <textarea id="impacto" name="impacto" rows="3" placeholder="Describa cómo este cambio afectaría el sistema, los usuarios o los procesos."></textarea>
+                <p class="field-description">(Opcional) Influencia y magnitud del efecto del cambio.</p>
+            </div>
+
+            <div class="form-actions">
+                <!-- Cambiado a type="button" para evitar submit accidental -->
+                <button type="button" id="cancelButton" class="btn btn-secondary">
+                    <i class="fas fa-times"></i> Cancelar
+                </button>
+                <button type="submit" id="submitButton" class="btn btn-primary">
+                    <i class="fas fa-paper-plane"></i> Enviar Solicitud
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById('solicitudForm');
+        const formTitle = document.getElementById('formTitle');
+        const submitButton = document.getElementById('submitButton');
+        const cancelButton = document.getElementById('cancelButton');
+        const solicitudIdInput = document.getElementById('solicitudId');
+        let isEditMode = false;
+        let editingSolicitudId = null;
+
+        // --- Cargar datos si estamos en modo edición ---
+        function loadDataForEdit(id) {
+            const solicitudes = JSON.parse(localStorage.getItem('solicitudesCliente')) || [];
+            const solicitud = solicitudes.find(s => s.id === id);
+
+            if (solicitud && solicitud.estado === 'Propuesto') { // Solo permitir editar si está en estado "Propuesto"
+                isEditMode = true;
+                editingSolicitudId = id;
+                formTitle.textContent = `Editar Solicitud de Cambio: ${id}`;
+                submitButton.innerHTML = '<i class="fas fa-save"></i> Guardar Cambios';
+                solicitudIdInput.value = id; // Guardar ID en campo oculto
+
+                // Rellenar el formulario
+                document.getElementById('solicitante').value = solicitud.solicitante || 'Cliente Actual'; // Asumiendo que guardaste el solicitante
+                document.getElementById('proyecto').value = solicitud.proyecto || '';
+                document.getElementById('objetivo').value = solicitud.objetivo || '';
+                document.getElementById('descripcion').value = solicitud.descripcion || '';
+                document.getElementById('elementoAfectado').value = solicitud.elementoAfectado || '';
+                document.getElementById('impacto').value = solicitud.impacto || '';
+
+            } else {
+                // Si no se encuentra la solicitud o no es editable, redirigir o mostrar mensaje
+                if (solicitud) {
+                    alert(`La solicitud ${id} ya no se puede editar (Estado: ${solicitud.estado}).`);
+                } else {
+                    alert(`No se encontró la solicitud ${id} para editar.`);
+                }
+                window.location.href = './'; // Volver al Index
+            }
+        }
+
+        // --- Procesar envío del formulario ---
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            // Validacion simple (HTML required ayuda, pero podemos añadir más)
+            if (!document.getElementById('proyecto').value || !document.getElementById('objetivo').value || !document.getElementById('descripcion').value) {
+                alert('Por favor, complete todos los campos obligatorios (*).');
+                return;
+            }
+
+            const formData = {
+                // ID se manejará dependiendo si es nuevo o edición
+                solicitante: document.getElementById('solicitante').value,
+                proyecto: document.getElementById('proyecto').value,
+                objetivo: document.getElementById('objetivo').value,
+                descripcion: document.getElementById('descripcion').value,
+                elementoAfectado: document.getElementById('elementoAfectado').value,
+                impacto: document.getElementById('impacto').value,
+            };
+
+            let solicitudes = JSON.parse(localStorage.getItem('solicitudesCliente')) || [];
+
+            if (isEditMode) {
+                // --- Modo Edición ---
+                const index = solicitudes.findIndex(s => s.id === editingSolicitudId);
+                if (index !== -1) {
+                    // Mantener ID y fecha original, actualizar el resto
+                    solicitudes[index] = {
+                        ...solicitudes[index], // Mantener datos existentes como fecha y estado
+                        ...formData // Sobrescribir con los datos del formulario
+                    };
+                    localStorage.setItem('solicitudesCliente', JSON.stringify(solicitudes));
+                    alert(`Solicitud ${editingSolicitudId} actualizada exitosamente .`);
+                    console.log("Datos actualizados:", solicitudes[index]);
+                } else {
+                    alert(`Error: No se encontró la solicitud ${editingSolicitudId} para actualizar.`);
+                }
+
+            } else {
+                // --- Modo Creación ---
+                // Generar nuevo ID (simple, basado en el último + 1)
+                let nextId = 1;
+                if (solicitudes.length > 0) {
+                    const lastIdNum = Math.max(...solicitudes.map(s => parseInt((s.id || 'SC-0').split('-')[1])).filter(Number.isFinite));
+                    nextId = (isFinite(lastIdNum) ? lastIdNum : 0) + 1;
+                }
+                const newId = `SC-${String(nextId).padStart(3, '0')}`;
+
+                formData.id = newId;
+                formData.fechaSolicitud = new Date().toLocaleDateString('es-ES');
+                formData.estado = 'Propuesto'; // Estado inicial
+
+                solicitudes.push(formData);
+                localStorage.setItem('solicitudesCliente', JSON.stringify(solicitudes));
+                alert(`Solicitud ${newId} creada exitosamente (Simulación).`);
+                console.log("Nueva solicitud:", formData);
+            }
+
+            // Redirigir al Index después de guardar/crear
+            window.location.href = './'; // Usar './' para ir al Index del controlador actual
+
+        });
+
+        // --- Botón Cancelar ---
+        cancelButton.addEventListener('click', () => {
+            if (confirm('¿Está seguro de que desea cancelar? Se perderán los cambios no guardados.')) {
+                window.location.href = './'; // Volver al Index
+            }
+        });
+
+
+        // --- Inicializar al cargar la página ---
+        document.addEventListener('DOMContentLoaded', function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const editId = urlParams.get('editar');
+
+            if (editId) {
+                loadDataForEdit(editId);
+            } else {
+                // Modo creación (ya está configurado por defecto)
+                formTitle.textContent = 'Crear Nueva Solicitud de Cambio';
+                submitButton.innerHTML = '<i class="fas fa-paper-plane"></i> Enviar Solicitud';
+            }
+        });
+
+    </script>
+</body>
+</html>
