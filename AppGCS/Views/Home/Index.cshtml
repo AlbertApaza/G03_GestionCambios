@@ -1,7 +1,9 @@
-﻿
-@{
-    ViewBag.Title = "Home";
+﻿@{
+    if (Session["Usuario"] == null)
+    {
+        Response.Redirect(Url.Action("Login", "Sesion"));
+    }
+    ViewBag.Title = "HomeAdmin";
 }
 
-<h1>Sistema de Gestion de Cambios</h1>
-
+<h1>Sistema de Gestión de Cambios</h1>

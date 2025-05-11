@@ -6,20 +6,26 @@
     <div style="width: 360px; padding: 20px; border-radius: 8px;">
         <h3 class="text-center mb-4" style="font-weight: bold;">Iniciar Sesion</h3>
 
-        @using (Html.BeginForm("Login", "Account", FormMethod.Post))
+        @using (Html.BeginForm("Login", "Sesion", FormMethod.Post))
         {
-            <label style="font-size: 14px;">Usuario :</label>
-            <input type="text" name="usuario" class="form-control mb-3" style="border-radius: 8px;" />
+            <div class="form-group">
+                <label>Usuario:</label>
+                <input type="text" name="usuario" class="form-control" required />
 
-            <label style="font-size: 14px;">Contraseña :</label>
-            <input type="password" name="password" class="form-control mb-3" style="border-radius: 8px;" />
+                <label>Contraseña:</label>
+                <input type="password" name="contrasena" class="form-control" required />
 
-            <label style="font-size: 14px; color: #337ab7;">CAPTCHA :</label>
-            <div class="g-recaptcha mb-4" data-sitekey="6LfWhRwrAAAAAPMGhDMV2Rt3VpY7Xc3WaT34q6Gb"></div>
+                <label style="font-size: 14px; color: #337ab7;">CAPTCHA :</label>
+                <div class="g-recaptcha mb-4" data-sitekey="6LfWhRwrAAAAAPMGhDMV2Rt3VpY7Xc3WaT34q6Gb"></div>
 
-            <button type="submit" class="btn w-100" style="background-color: #3e5622; color: white; font-weight: bold;">
-                Login
-            </button>
+                <br />
+                <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+            </div>
+        }
+
+        @if (ViewBag.Mensaje != null)
+        {
+            <div class="alert alert-danger">@ViewBag.Mensaje</div>
         }
 
         <script src="https://www.google.com/recaptcha/api.js" async defer></script>
