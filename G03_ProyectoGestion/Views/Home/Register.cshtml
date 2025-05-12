@@ -1,0 +1,40 @@
+﻿@model G03_ProyectoGestion.Models.tbUsuarios
+
+@{
+    ViewBag.Title = "Registro";
+}
+
+<h2>Registrar Usuario</h2>
+
+@using (Html.BeginForm("Register", "Home", FormMethod.Post))
+{
+    <div class="form-group">
+        @Html.LabelFor(m => m.nombreUsuario)
+        @Html.TextBoxFor(m => m.nombreUsuario, new { @class = "form-control", placeholder = "Nombre de usuario" })
+        @Html.ValidationMessageFor(m => m.nombreUsuario, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.emailUsuario)
+        @Html.TextBoxFor(m => m.emailUsuario, new { @class = "form-control", placeholder = "Email" })
+        @Html.ValidationMessageFor(m => m.emailUsuario, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.contrasena)
+        @Html.PasswordFor(m => m.contrasena, new { @class = "form-control", placeholder = "Contraseña" })
+        @Html.ValidationMessageFor(m => m.contrasena, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.estadoUsuario)
+        @Html.DropDownListFor(m => m.estadoUsuario, new List<SelectListItem>
+        {
+            new SelectListItem { Text = "Activo", Value = "activo" },
+            new SelectListItem { Text = "Inactivo", Value = "inactivo" }
+        }, "-- Selecciona estado --", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.estadoUsuario, "", new { @class = "text-danger" })
+    </div>
+
+    <button type="submit" class="btn btn-primary">Registrar</button>
+}

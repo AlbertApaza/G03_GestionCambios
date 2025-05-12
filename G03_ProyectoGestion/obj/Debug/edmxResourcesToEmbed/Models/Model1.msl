@@ -1,0 +1,189 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="g03_databaseModelStoreContainer" CdmEntityContainer="g03_databaseEntities">
+    <EntitySetMapping Name="sysdiagrams">
+      <EntityTypeMapping TypeName="g03_databaseModel.sysdiagrams">
+        <MappingFragment StoreEntitySet="sysdiagrams">
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+          <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+          <ScalarProperty Name="version" ColumnName="version" />
+          <ScalarProperty Name="definition" ColumnName="definition" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbMetodologias">
+      <EntityTypeMapping TypeName="g03_databaseModel.tbMetodologias">
+        <MappingFragment StoreEntitySet="tbMetodologias">
+          <ScalarProperty Name="idMetodologia" ColumnName="idMetodologia" />
+          <ScalarProperty Name="nombreMetodologia" ColumnName="nombreMetodologia" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbProyectos">
+      <EntityTypeMapping TypeName="g03_databaseModel.tbProyectos">
+        <MappingFragment StoreEntitySet="tbProyectos">
+          <ScalarProperty Name="idProyecto" ColumnName="idProyecto" />
+          <ScalarProperty Name="nombreProyecto" ColumnName="nombreProyecto" />
+          <ScalarProperty Name="descripcionProyecto" ColumnName="descripcionProyecto" />
+          <ScalarProperty Name="fechaInicio" ColumnName="fechaInicio" />
+          <ScalarProperty Name="fechaFin" ColumnName="fechaFin" />
+          <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+          <ScalarProperty Name="idMetodologia" ColumnName="idMetodologia" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbProyectoUsuarios">
+      <EntityTypeMapping TypeName="g03_databaseModel.tbProyectoUsuarios">
+        <MappingFragment StoreEntitySet="tbProyectoUsuarios">
+          <ScalarProperty Name="idProyecto" ColumnName="idProyecto" />
+          <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+          <ScalarProperty Name="idRol" ColumnName="idRol" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbRoles">
+      <EntityTypeMapping TypeName="g03_databaseModel.tbRoles">
+        <MappingFragment StoreEntitySet="tbRoles">
+          <ScalarProperty Name="idRol" ColumnName="idRol" />
+          <ScalarProperty Name="nombreRol" ColumnName="nombreRol" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbRupActividades">
+      <EntityTypeMapping TypeName="g03_databaseModel.tbRupActividades">
+        <MappingFragment StoreEntitySet="tbRupActividades">
+          <ScalarProperty Name="idActividad" ColumnName="idActividad" />
+          <ScalarProperty Name="idFase" ColumnName="idFase" />
+          <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+          <ScalarProperty Name="idRol" ColumnName="idRol" />
+          <ScalarProperty Name="nombreActividad" ColumnName="nombreActividad" />
+          <ScalarProperty Name="descripcionActividad" ColumnName="descripcionActividad" />
+          <ScalarProperty Name="fechaInicio" ColumnName="fechaInicio" />
+          <ScalarProperty Name="fechaFin" ColumnName="fechaFin" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbRupDocumentacion">
+      <EntityTypeMapping TypeName="g03_databaseModel.tbRupDocumentacion">
+        <MappingFragment StoreEntitySet="tbRupDocumentacion">
+          <ScalarProperty Name="idDocumento" ColumnName="idDocumento" />
+          <ScalarProperty Name="idFase" ColumnName="idFase" />
+          <ScalarProperty Name="nombreDocumento" ColumnName="nombreDocumento" />
+          <ScalarProperty Name="contenidoDocumento" ColumnName="contenidoDocumento" />
+          <ScalarProperty Name="fechaDocumento" ColumnName="fechaDocumento" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbRupFases">
+      <EntityTypeMapping TypeName="g03_databaseModel.tbRupFases">
+        <MappingFragment StoreEntitySet="tbRupFases">
+          <ScalarProperty Name="idFase" ColumnName="idFase" />
+          <ScalarProperty Name="idProyecto" ColumnName="idProyecto" />
+          <ScalarProperty Name="nombreFase" ColumnName="nombreFase" />
+          <ScalarProperty Name="descripcionFase" ColumnName="descripcionFase" />
+          <ScalarProperty Name="fechaInicio" ColumnName="fechaInicio" />
+          <ScalarProperty Name="fechaFin" ColumnName="fechaFin" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbScrumBacklog">
+      <EntityTypeMapping TypeName="g03_databaseModel.tbScrumBacklog">
+        <MappingFragment StoreEntitySet="tbScrumBacklog">
+          <ScalarProperty Name="idBacklog" ColumnName="idBacklog" />
+          <ScalarProperty Name="idProyecto" ColumnName="idProyecto" />
+          <ScalarProperty Name="descripcionBacklog" ColumnName="descripcionBacklog" />
+          <ScalarProperty Name="prioridad" ColumnName="prioridad" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbScrumDaily">
+      <EntityTypeMapping TypeName="g03_databaseModel.tbScrumDaily">
+        <MappingFragment StoreEntitySet="tbScrumDaily">
+          <ScalarProperty Name="idDaily" ColumnName="idDaily" />
+          <ScalarProperty Name="idSprint" ColumnName="idSprint" />
+          <ScalarProperty Name="fechaDaily" ColumnName="fechaDaily" />
+          <ScalarProperty Name="observaciones" ColumnName="observaciones" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbScrumDailyBacklog">
+      <EntityTypeMapping TypeName="g03_databaseModel.tbScrumDailyBacklog">
+        <MappingFragment StoreEntitySet="tbScrumDailyBacklog">
+          <ScalarProperty Name="idDaily" ColumnName="idDaily" />
+          <ScalarProperty Name="idBacklog" ColumnName="idBacklog" />
+          <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+          <ScalarProperty Name="comentarioActividad" ColumnName="comentarioActividad" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbScrumSprints">
+      <EntityTypeMapping TypeName="g03_databaseModel.tbScrumSprints">
+        <MappingFragment StoreEntitySet="tbScrumSprints">
+          <ScalarProperty Name="idSprint" ColumnName="idSprint" />
+          <ScalarProperty Name="idProyecto" ColumnName="idProyecto" />
+          <ScalarProperty Name="nombreSprint" ColumnName="nombreSprint" />
+          <ScalarProperty Name="fechaInicio" ColumnName="fechaInicio" />
+          <ScalarProperty Name="fechaFin" ColumnName="fechaFin" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbTareas">
+      <EntityTypeMapping TypeName="g03_databaseModel.tbTareas">
+        <MappingFragment StoreEntitySet="tbTareas">
+          <ScalarProperty Name="idTarea" ColumnName="idTarea" />
+          <ScalarProperty Name="idProyecto" ColumnName="idProyecto" />
+          <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+          <ScalarProperty Name="descripcionTarea" ColumnName="descripcionTarea" />
+          <ScalarProperty Name="estadoTarea" ColumnName="estadoTarea" />
+          <ScalarProperty Name="fechaInicio" ColumnName="fechaInicio" />
+          <ScalarProperty Name="fechaFin" ColumnName="fechaFin" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbUsuarios">
+      <EntityTypeMapping TypeName="g03_databaseModel.tbUsuarios">
+        <MappingFragment StoreEntitySet="tbUsuarios">
+          <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+          <ScalarProperty Name="nombreUsuario" ColumnName="nombreUsuario" />
+          <ScalarProperty Name="emailUsuario" ColumnName="emailUsuario" />
+          <ScalarProperty Name="fechaCreacion" ColumnName="fechaCreacion" />
+          <ScalarProperty Name="contrasena" ColumnName="contrasena" />
+          <ScalarProperty Name="estadoUsuario" ColumnName="estadoUsuario" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbXpActividades">
+      <EntityTypeMapping TypeName="g03_databaseModel.tbXpActividades">
+        <MappingFragment StoreEntitySet="tbXpActividades">
+          <ScalarProperty Name="idActividad" ColumnName="idActividad" />
+          <ScalarProperty Name="idProyecto" ColumnName="idProyecto" />
+          <ScalarProperty Name="nombreActividad" ColumnName="nombreActividad" />
+          <ScalarProperty Name="descripcionActividad" ColumnName="descripcionActividad" />
+          <ScalarProperty Name="fechaInicio" ColumnName="fechaInicio" />
+          <ScalarProperty Name="fechaFin" ColumnName="fechaFin" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbXpRefactorizacion">
+      <EntityTypeMapping TypeName="g03_databaseModel.tbXpRefactorizacion">
+        <MappingFragment StoreEntitySet="tbXpRefactorizacion">
+          <ScalarProperty Name="idRefactorizacion" ColumnName="idRefactorizacion" />
+          <ScalarProperty Name="idActividad" ColumnName="idActividad" />
+          <ScalarProperty Name="descripcionRefactorizacion" ColumnName="descripcionRefactorizacion" />
+          <ScalarProperty Name="fechaRefactorizacion" ColumnName="fechaRefactorizacion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbXpTest">
+      <EntityTypeMapping TypeName="g03_databaseModel.tbXpTest">
+        <MappingFragment StoreEntitySet="tbXpTest">
+          <ScalarProperty Name="idTest" ColumnName="idTest" />
+          <ScalarProperty Name="idActividad" ColumnName="idActividad" />
+          <ScalarProperty Name="descripcionTest" ColumnName="descripcionTest" />
+          <ScalarProperty Name="fechaTest" ColumnName="fechaTest" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

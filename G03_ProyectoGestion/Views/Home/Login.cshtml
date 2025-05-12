@@ -1,0 +1,24 @@
+﻿@model G03_ProyectoGestion.Models.tbUsuarios
+
+@{
+    ViewBag.Title = "Login";
+
+}
+
+<h2>Login</h2>
+
+@using (Html.BeginForm("Login", "Home", FormMethod.Post))
+{
+    <div class="form-group">
+        @Html.LabelFor(m => m.nombreUsuario)
+        @Html.TextBoxFor(m => m.nombreUsuario, new { required = "Required" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.contrasena)
+        @Html.PasswordFor(m => m.contrasena, new { required = "Required" })
+    </div>
+
+    <button type="submit" class="btn btn-primary">Iniciar sesión</button>
+    
+}

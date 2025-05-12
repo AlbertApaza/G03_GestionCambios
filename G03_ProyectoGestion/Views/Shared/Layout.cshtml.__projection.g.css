@@ -1,0 +1,54 @@
+    .sidebar {
+                display: none;
+            }
+
+            .main-content {
+                padding-left: 0 !important;
+            }
+}
+
+        .user-nav {
+            position: fixed;
+            top: 0;
+            right: 0;
+            padding: 0.5rem 1rem;
+            z-index: 100;
+        }
+    
+/* END EXTERNAL SOURCE */
+/* BEGIN EXTERNAL SOURCE */
+
+        /* Asegurar que el navbar vertical y la barra de estado no se superpongan */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 100;
+            padding: 0;
+            box-shadow: 0 0 10px rgba(0,0,0,.1);
+        }
+
+        .main-content {
+            padding-left: 16.666667%; /* Equivalente a col-md-2 */
+        }
+
+        @@media (max-width: 767.98px) {
+            .sidebar {
+                display: none;
+            }
+
+            .main-content {
+                padding-left: 0 !important;
+            }
+}
+
+        .user-nav {
+            position: fixed;
+            top: 0;
+            right: 0;
+            padding: 0.5rem 1rem;
+            z-index: 100;
+        }
+    
+/* END EXTERNAL SOURCE */
