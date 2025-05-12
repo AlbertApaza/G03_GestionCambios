@@ -9,7 +9,8 @@ namespace G03_ProyectoGestion.Services
     public class UsuarioService
     {
         private readonly g03_databaseEntities _dbContext;
-        public UsuarioService() {
+        public UsuarioService()
+        {
             _dbContext = new g03_databaseEntities();
         }
         public tbUsuarios Login(tbUsuarios usuario)

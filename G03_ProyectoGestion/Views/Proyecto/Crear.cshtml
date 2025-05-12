@@ -1,0 +1,81 @@
+﻿@{
+    ViewBag.Title = "Crear Proyecto";
+    var usuarios = ViewBag.Usuarios as List<G03_ProyectoGestion.Models.tbUsuarios>;
+    var metodologias = ViewBag.Metodologias as List<G03_ProyectoGestion.Models.tbMetodologias>;
+    var roles = ViewBag.Roles as List<G03_ProyectoGestion.Models.tbRoles>;
+}
+
+<h2>Crear Proyecto</h2>
+
+@using (Html.BeginForm("Crear", "Proyecto", FormMethod.Post))
+{
+    <div>
+        <label>Nombre del Proyecto:</label>
+        <input type="text" name="nombreProyecto" required />
+    </div>
+
+    <div>
+        <label>Descripción:</label>
+        <textarea name="descripcionProyecto"></textarea>
+    </div>
+
+    <div>
+        <label>Fecha Inicio:</label>
+        <input type="date" name="fechaInicio" required />
+    </div>
+
+    <div>
+        <label>Fecha Fin:</label>
+        <input type="date" name="fechaFin" required />
+    </div>
+
+    <div>
+        <label>Metodología:</label>
+        <select name="idMetodologia" required>
+            @foreach (var metodo in metodologias)
+            {
+                <option value="@metodo.idMetodologia">@metodo.nombreMetodologia</option>
+            }
+        </select>
+    </div>
+
+    <h4>Agregar Miembros al Proyecto</h4>
+    <div id="miembrosContainer">
+        <div class="miembro">
+            <select name="miembros">
+                @foreach (var u in usuarios)
+                {
+                    <option value="@u.idUsuario">@u.nombreUsuario (@u.emailUsuario)</option>
+                }
+            </select>
+
+            <select name="roles">
+                @foreach (var r in roles)
+                {
+                    <option value="@r.idRol">@r.nombreRol</option>
+                }
+            </select>
+        </div>
+    </div>
+
+    <button type="button" onclick="agregarMiembro()">Agregar Otro Miembro</button>
+
+    <br />
+    <br />
+    <button type="submit">Crear Proyecto</button>
+}
+
+<script>
+    function agregarMiembro() {
+        const container = document.getElementById("miembrosContainer");
+        const first = container.querySelector(".miembro");
+        const clone = first.cloneNode(true);
+        container.appendChild(clone);
+    }
+
+    // Asegura que todos los selects se envíen como listas
+    document.querySelector("form").addEventListener("submit", function () {
+        document.querySelectorAll("select[name='miembros']").forEach(x => x.name = "miembros");
+        document.querySelectorAll("select[name='roles']").forEach(x => x.name = "roles");
+    });
+</script>

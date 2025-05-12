@@ -4,4 +4,13 @@
 }
 
 <h2>Index</h2>
+@if (Session["idUsuario"] == null)
+{
+    <a href="~/Home/Login">INICIAR SESION</a>
+}
+<br />
+<a href="~/Proyecto/Crear">Crear Proyecto</a>
+<br />
+
+<a href="~/Proyecto/MisProyectos">Listar tus Proyectos</a>
 
