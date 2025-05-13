@@ -1,0 +1,208 @@
+﻿@model G03_ProyectoGestion.Models.tbProyectos
+@{
+    ViewBag.Title = "Proyecto XP (Client-Side Demo)";
+    var projectName = Model?.nombreProyecto ?? "Demo Proyecto XP";
+    var projectDesc = Model?.descripcionProyecto ?? "Simulación cliente de XP.";
+    var startDate = Model?.fechaInicio?.ToString("dd MMMM yyyy") ?? DateTime.Now.ToString("dd MMMM yyyy");
+    var endDate = Model?.fechaFin?.ToString("dd MMMM yyyy") ?? DateTime.Now.AddMonths(1).ToString("dd MMMM yyyy");
+}
+
+<div class="container mt-5">
+    <div class="card shadow-lg border-left-primary">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0"><i class="fas fa-code-branch"></i> Proyecto XP (Client-Side Demo)</h4>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <h5>Nombre del Proyecto</h5>
+                    <p class="text-muted">@projectName</p>
+                </div>
+                <div class="col-md-6">
+                    <h5>Descripción</h5>
+                    <p class="text-muted">@projectDesc</p>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <h5>Fecha de Inicio</h5>
+                    <p class="text-muted">@startDate</p>
+                </div>
+                <div class="col-md-6">
+                    <h5>Fecha de Fin</h5>
+                    <p class="text-muted">@endDate</p>
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="row text-center mb-4">
+                @{
+                    var fases = new[] {
+                        "HistoriasUsuario", "PlanningGame", "DisenoSimple", "TDD", "Parejas", "Integracion", "Refactorizacion", "Aceptacion", "Entrega", "Retroalimentacion", "NuevaIteracion"
+                    };
+                    var nombres = new[] {
+                        "Historias de Usuario", "Planning Game", "Diseño Simple", "TDD", "Programación en Parejas", "Integración Continua", "Refactorización", "Pruebas de Aceptación", "Entrega de Iteración", "Retroalimentación", "Nueva Iteración"
+                    };
+                    for (int i = 0; i < fases.Length; i++)
+                    {
+                        <div class="col-md-4 mb-3">
+                            <button onclick="mostrarFase('@fases[i]')" class="btn btn-outline-primary w-100">
+                                @nombres[i]
+                            </button>
+                        </div>
+                    }
+                }
+                <div class="col-md-4 mb-3">
+                    <button onclick="mostrarFase('none')" class="btn btn-outline-secondary w-100">
+                        Ocultar Secciones
+                    </button>
+                </div>
+            </div>
+
+            <hr />
+
+            <div id="xpFasesContainer">
+                @foreach (var fase in fases)
+                {
+                    if (fase == "HistoriasUsuario")
+                    {
+                        <div id="HistoriasUsuario" class="fase-xp" style="display:none;">
+                            <h5><i class="fas fa-check-circle"></i> Historias de Usuario</h5>
+
+                            <div class="mb-3 row">
+                                <div class="col-md-3">
+                                    <input type="text" id="titulo" class="form-control" placeholder="Título">
+                                </div>
+                                <div class="col-md-4">
+                                    <textarea id="historia" class="form-control" placeholder="Historia de Usuario: Como... Quiero... Para..."></textarea>
+                                </div>
+                                <div class="col-md-4">
+                                    <textarea id="criterios" class="form-control" placeholder="Criterios de Aceptación (CA01, CA02...)"></textarea>
+                                </div>
+                                <div class="col-md-1 d-grid">
+                                    <button class="btn btn-success" onclick="agregarHistoria()">Agregar</button>
+                                </div>
+                            </div>
+
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped" id="tablaHistorias">
+                                    <thead class="table-primary">
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Título</th>
+                                            <th>Historia de Usuario</th>
+                                            <th>Criterios de Aceptación</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+
+                            <button class="btn btn-outline-secondary mt-2" onclick="mostrarFase('none')">Cerrar</button>
+                        </div>
+
+                    }
+                    else
+                    {
+                        <div id="@fase" class="fase-xp" style="display:none;">
+                            <h5><i class="fas fa-check-circle"></i> @fase</h5>
+                            <textarea class="form-control mb-3" rows="3" placeholder="Notas sobre la fase '@fase'"></textarea>
+                            <button class="btn btn-success">Guardar Nota</button>
+                        </div>
+                    }
+                }
+            </div>
+
+
+            <div class="text-center mt-4">
+                <a href="@Url.Action("Index", "Proyecto")" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left"></i> Volver a mis proyectos
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>function mostrarFase(id) {
+            document.querySelectorAll('.fase-xp').forEach(f => f.style.display = 'none');
+            if (id !== 'none') {
+                document.getElementById(id).style.display = 'block';
+            }
+        }</script>
+    <script>let historias = [];
+        let idEdicion = null;
+
+        function renderizarTabla() {
+            const tbody = document.querySelector("#tablaHistorias tbody");
+            tbody.innerHTML = "";
+
+            historias.forEach((h, index) => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${h.titulo}</td>
+                        <td>${h.historia.replace(/\n/g, "<br/>")}</td>
+                        <td>${h.criterios.replace(/\n/g, "<br/>")}</td>
+                        <td>
+                            <button class="btn btn-sm btn-warning me-1" onclick="editarHistoria(${index})">Editar</button>
+                            <button class="btn btn-sm btn-danger" onclick="eliminarHistoria(${index})">Eliminar</button>
+                        </td>
+                    </tr>`;
+            });
+        }
+
+        function agregarHistoria() {
+            const titulo = document.getElementById("titulo").value.trim();
+            const historia = document.getElementById("historia").value.trim();
+            const criterios = document.getElementById("criterios").value.trim();
+
+            if (!titulo || !historia || !criterios) {
+                alert("Completa todos los campos");
+                return;
+            }
+
+            if (idEdicion !== null) {
+                historias[idEdicion] = { titulo, historia, criterios };
+                idEdicion = null;
+            } else {
+                historias.push({ titulo, historia, criterios });
+            }
+
+            document.getElementById("titulo").value = "";
+            document.getElementById("historia").value = "";
+            document.getElementById("criterios").value = "";
+
+            renderizarTabla();
+        }
+
+        function editarHistoria(index) {
+            const h = historias[index];
+            document.getElementById("titulo").value = h.titulo;
+            document.getElementById("historia").value = h.historia;
+            document.getElementById("criterios").value = h.criterios;
+            idEdicion = index;
+        }
+
+        function eliminarHistoria(index) {
+            if (confirm("¿Estás seguro de eliminar esta historia?")) {
+                historias.splice(index, 1);
+                renderizarTabla();
+            }
+        }
+
+        // Opcional: Auto-cargar datos de ejemplo
+        document.addEventListener("DOMContentLoaded", function () {
+            historias.push(
+                {
+                    titulo: "Inicio Sesión",
+                    historia: "Como usuario\nquiero iniciar sesión\npara acceder al sistema",
+                    criterios: "CA01: Inicio de sesión exitoso\nCA02: Credenciales incorrectas"
+                },
+            );
+            renderizarTabla();
+        });</script>
+
+}

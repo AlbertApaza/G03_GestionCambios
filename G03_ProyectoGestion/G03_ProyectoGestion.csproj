@@ -255,15 +255,13 @@
     <None Include="packages.config" />
     <Content Include="Views\Shared\Layout.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Home\Register.cshtml" />
-    <Content Include="Views\Proyecto\MisProyectos.cshtml" />
+    <Content Include="Views\Proyecto\Index.cshtml" />
     <Content Include="Views\Proyecto\Crear.cshtml" />
     <Content Include="Views\Metodologia\Detalles.cshtml" />
-    <Content Include="Views\RUP\Detalles.cshtml" />
-    <Content Include="Views\SCRUM\Detalles.cshtml" />
-    <Content Include="Views\XP\Detalles.cshtml" />
+    <Content Include="Views\SCRUM\Index.cshtml" />
+    <Content Include="Views\XP\Index.cshtml" />
     <Content Include="Views\RUP\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

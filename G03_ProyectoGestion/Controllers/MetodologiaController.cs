@@ -19,7 +19,7 @@ namespace G03_ProyectoGestion.Controllers
                 return HttpNotFound();
             }
 
-            return View(metodologia); // Asegúrate de tener una vista llamada Detalles.cshtml
+            return View(metodologia);
         }
     }
 

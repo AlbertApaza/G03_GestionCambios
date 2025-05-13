@@ -1,5 +1,9 @@
-﻿@{ Layout = null; }
-
+﻿@{ Layout = null;
+    if (Session["idUsuario"] == null)
+    {
+        Response.Redirect("~/Home/Login"); // o la ruta que uses para el login
+    }
+}
 <!DOCTYPE html>
 
 <html>
@@ -132,7 +136,7 @@
             </ul>
             <div class="sidebar-footer">
                 @* Boton de Logout *@
-                <a href="#" class="sidebar-link">
+                <a href="@Url.Action("Logout", "Home")" class="sidebar-link">
                     <i class="lni lni-exit"></i>
                     <span>Logout</span>
                 </a>

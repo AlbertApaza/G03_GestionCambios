@@ -1,81 +1,347 @@
 ﻿@{
-    ViewBag.Title = "Crear Proyecto";
-    var usuarios = ViewBag.Usuarios as List<G03_ProyectoGestion.Models.tbUsuarios>;
-    var metodologias = ViewBag.Metodologias as List<G03_ProyectoGestion.Models.tbMetodologias>;
-    var roles = ViewBag.Roles as List<G03_ProyectoGestion.Models.tbRoles>;
+    ViewBag.Title = "Crear Nuevo Proyecto";
+    var usuarios = ViewBag.Usuarios as List<G03_ProyectoGestion.Models.tbUsuarios> ?? new List<G03_ProyectoGestion.Models.tbUsuarios>();
+    var metodologias = ViewBag.Metodologias as List<G03_ProyectoGestion.Models.tbMetodologias> ?? new List<G03_ProyectoGestion.Models.tbMetodologias>();
+    var roles = ViewBag.Roles as List<G03_ProyectoGestion.Models.tbRoles> ?? new List<G03_ProyectoGestion.Models.tbRoles>();
 }
 
-<h2>Crear Proyecto</h2>
+<!-- Font Awesome (si no está ya en tu _Layout.cshtml) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-@using (Html.BeginForm("Crear", "Proyecto", FormMethod.Post))
-{
-    <div>
-        <label>Nombre del Proyecto:</label>
-        <input type="text" name="nombreProyecto" required />
-    </div>
+<style>
+    /* --- ESTILOS EMBEBIDOS PARA CREAR PROYECTO --- */
+    :root {
+        --color-purple: #6a11cb;
+        --color-blue: #2575fc;
+        --color-text-dark: #343a40;
+        --color-text-light: #6c757d;
+        --form-control-border: #ced4da;
+        --form-control-focus-border: var(--color-purple);
+        --form-control-focus-shadow: rgba(106, 17, 203, 0.25);
+        --card-bg: #ffffff;
+        --button-text-color: #fff;
+    }
 
-    <div>
-        <label>Descripción:</label>
-        <textarea name="descripcionProyecto"></textarea>
-    </div>
+    .create-project-container {
+        max-width: 800px; /* Ancho máximo para el formulario */
+        margin: 2rem auto; /* Centrado y con margen superior/inferior */
+        padding: 2rem;
+        background-color: var(--card-bg);
+        border-radius: 12px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
 
-    <div>
-        <label>Fecha Inicio:</label>
-        <input type="date" name="fechaInicio" required />
-    </div>
+        .create-project-container h2 {
+            color: var(--color-text-dark);
+            text-align: center;
+            margin-bottom: 2.5rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, var(--color-purple) 0%, var(--color-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
 
-    <div>
-        <label>Fecha Fin:</label>
-        <input type="date" name="fechaFin" required />
-    </div>
+    .form-section-divider {
+        margin-top: 2.5rem;
+        margin-bottom: 1.5rem;
+        border: 0;
+        border-top: 1px solid #e0e0e0;
+    }
 
-    <div>
-        <label>Metodología:</label>
-        <select name="idMetodologia" required>
-            @foreach (var metodo in metodologias)
+    .form-label {
+        font-weight: 500;
+        color: var(--color-text-dark);
+        margin-bottom: 0.5rem;
+        display: block;
+    }
+
+    .form-control, .form-select {
+        display: block;
+        width: 100%;
+        padding: 0.75rem 1rem;
+        font-size: 0.95rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: var(--color-text-dark);
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid var(--form-control-border);
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        border-radius: 8px;
+        transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--form-control-focus-border);
+            outline: 0;
+            box-shadow: 0 0 0 0.25rem var(--form-control-focus-shadow);
+        }
+
+    textarea.form-control {
+        min-height: 120px;
+        resize: vertical;
+    }
+
+    .btn-submit-gradient {
+        background: linear-gradient(to right, var(--color-purple), var(--color-blue));
+        border: none;
+        color: var(--button-text-color) !important;
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        font-weight: 500;
+        border-radius: 8px;
+        transition: opacity 0.2s ease;
+        cursor: pointer;
+    }
+
+        .btn-submit-gradient:hover {
+            opacity: 0.9;
+            color: var(--button-text-color) !important;
+        }
+
+    .btn-add-member {
+        background-color: var(--color-blue);
+        color: var(--button-text-color);
+        border: none;
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+        border-radius: 8px;
+        transition: background-color 0.2s ease;
+        margin-top: 0.5rem;
+    }
+
+        .btn-add-member:hover {
+            background-color: var(--color-purple);
+        }
+
+        .btn-add-member i {
+            margin-right: 5px;
+        }
+
+    #miembrosContainer .miembro {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1rem;
+        align-items: center;
+    }
+
+        #miembrosContainer .miembro .form-select {
+            flex-grow: 1;
+        }
+
+        #miembrosContainer .miembro .btn-remove-member {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            flex-shrink: 0;
+        }
+
+            #miembrosContainer .miembro .btn-remove-member:hover {
+                background-color: #c82333;
+            }
+
+    .form-actions {
+        margin-top: 2rem;
+        text-align: center;
+    }
+
+    .section-title {
+        font-size: 1.25rem;
+        font-weight: 500;
+        color: var(--color-purple);
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid var(--color-blue);
+        display: inline-block;
+    }
+
+    /* --- FIN ESTILOS EMBEBIDOS --- */
+</style>
+
+<div class="container">
+    <div class="create-project-container">
+        <h2><i class="fas fa-folder-plus me-2"></i>Crear Nuevo Proyecto</h2>
+
+        @using (Html.BeginForm("Crear", "Proyecto", FormMethod.Post, new { @class = "needs-validation", novalidate = "novalidate" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="mb-3">
+                <label for="nombreProyecto" class="form-label">Nombre del Proyecto:</label>
+                <input type="text" id="nombreProyecto" name="nombreProyecto" class="form-control" required />
+                <div class="invalid-feedback">Por favor, ingresa un nombre para el proyecto.</div>
+            </div>
+
+            <div class="mb-3">
+                <label for="descripcionProyecto" class="form-label">Descripción:</label>
+                <textarea id="descripcionProyecto" name="descripcionProyecto" class="form-control"></textarea>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="fechaInicio" class="form-label">Fecha de Inicio:</label>
+                    <input type="date" id="fechaInicio" name="fechaInicio" class="form-control" required />
+                    <div class="invalid-feedback">Por favor, selecciona una fecha de inicio.</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="fechaFin" class="form-label">Fecha de Fin Estimada:</label>
+                    <input type="date" id="fechaFin" name="fechaFin" class="form-control" required />
+                    <div class="invalid-feedback">Por favor, selecciona una fecha de fin.</div>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label for="idMetodologia" class="form-label">Metodología:</label>
+                <select id="idMetodologia" name="idMetodologia" class="form-select" required>
+                    <option value="">Selecciona una metodología...</option>
+                    @foreach (var metodo in metodologias)
+                    {
+                        <option value="@metodo.idMetodologia">@metodo.nombreMetodologia</option>
+                    }
+                </select>
+                <div class="invalid-feedback">Por favor, selecciona una metodología.</div>
+            </div>
+
+            <hr class="form-section-divider">
+
+            <h4 class="section-title"><i class="fas fa-users me-2"></i>Asignar Miembros al Proyecto</h4>
+            <div id="miembrosContainer">
+                @if (usuarios.Any() && roles.Any())
+                {
+                    <div class="miembro mb-2">
+                        <select name="miembros" class="form-select">
+                            <option value="">Selecciona un usuario...</option>
+                            @foreach (var u in usuarios)
+                            {
+                                <option value="@u.idUsuario">@u.nombreUsuario (@u.emailUsuario)</option>
+                            }
+                        </select>
+
+                        <select name="roles" class="form-select">
+                            <option value="">Selecciona un rol...</option>
+                            @foreach (var r in roles)
+                            {
+                                <option value="@r.idRol">@r.nombreRol</option>
+                            }
+                        </select>
+                        <button type="button" class="btn-remove-member" onclick="removerMiembro(this)" title="Eliminar miembro" disabled>
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                }
+                else
+                {
+                    <p class="text-muted small">
+                        @if (!usuarios.Any())
+                        {<span>No hay usuarios disponibles.</span>}
+                        @if (!roles.Any())
+                        {<span>No hay roles disponibles.</span>}
+                        Asegúrate de tener usuarios y roles creados para poder asignarlos.
+                    </p>
+                }
+            </div>
+
+            if (usuarios.Any() && roles.Any())
             {
-                <option value="@metodo.idMetodologia">@metodo.nombreMetodologia</option>
+                <button type="button" class="btn btn-add-member" onclick="agregarMiembro()">
+                    <i class="fas fa-plus-circle"></i>Agregar Otro Miembro
+                </button>
+            }
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-submit-gradient">
+                    <i class="fas fa-check-circle me-2"></i>Crear Proyecto
+                </button>
+            </div>
+        }
+    </div>
+</div>
+
+@* Plantilla HTML para nuevos miembros (oculta y usada por JavaScript) *@
+<template id="miembroPlantilla">
+    <div class="miembro mb-2">
+        <select name="miembros" class="form-select">
+            <option value="">Selecciona un usuario...</option>
+            @foreach (var u in usuarios)
+            {
+                <option value="@u.idUsuario">@Html.Raw(HttpUtility.JavaScriptStringEncode(u.nombreUsuario)) (@Html.Raw(HttpUtility.JavaScriptStringEncode(u.emailUsuario)))</option>
             }
         </select>
+
+        <select name="roles" class="form-select">
+            <option value="">Selecciona un rol...</option>
+            @foreach (var r in roles)
+            {
+                <option value="@r.idRol">@Html.Raw(HttpUtility.JavaScriptStringEncode(r.nombreRol))</option>
+            }
+        </select>
+        <button type="button" class="btn-remove-member" onclick="removerMiembro(this)" title="Eliminar miembro">
+            <i class="fas fa-trash-alt"></i>
+        </button>
     </div>
+</template>
 
-    <h4>Agregar Miembros al Proyecto</h4>
-    <div id="miembrosContainer">
-        <div class="miembro">
-            <select name="miembros">
-                @foreach (var u in usuarios)
-                {
-                    <option value="@u.idUsuario">@u.nombreUsuario (@u.emailUsuario)</option>
-                }
-            </select>
-
-            <select name="roles">
-                @foreach (var r in roles)
-                {
-                    <option value="@r.idRol">@r.nombreRol</option>
-                }
-            </select>
-        </div>
-    </div>
-
-    <button type="button" onclick="agregarMiembro()">Agregar Otro Miembro</button>
-
-    <br />
-    <br />
-    <button type="submit">Crear Proyecto</button>
-}
 
 <script>
     function agregarMiembro() {
+        // Verificar si hay usuarios y roles (ya se hace en el botón, pero doble check)
+        const hayUsuarios = @(usuarios.Any().ToString().ToLower());
+        const hayRoles = @(roles.Any().ToString().ToLower());
+
+        if (!hayUsuarios || !hayRoles) {
+            // console.log("No hay usuarios o roles disponibles para agregar.");
+            return;
+        }
+
+        const plantilla = document.getElementById("miembroPlantilla");
+        if (!plantilla) {
+            console.error("Plantilla de miembro no encontrada.");
+            return;
+        }
+        // Clonar el contenido de la plantilla
+        const clone = plantilla.content.cloneNode(true);
+
         const container = document.getElementById("miembrosContainer");
-        const first = container.querySelector(".miembro");
-        const clone = first.cloneNode(true);
         container.appendChild(clone);
     }
 
-    // Asegura que todos los selects se envíen como listas
-    document.querySelector("form").addEventListener("submit", function () {
-        document.querySelectorAll("select[name='miembros']").forEach(x => x.name = "miembros");
-        document.querySelectorAll("select[name='roles']").forEach(x => x.name = "roles");
-    });
+    function removerMiembro(boton) {
+        const miembroDiv = boton.closest('.miembro');
+        if (miembroDiv) {
+            // Antes de remover, verificar si es el último. Si lo es y es el original, no permitir eliminarlo.
+            // O, como ahora el original tiene el botón deshabilitado, esta lógica es más simple.
+            miembroDiv.remove();
+        }
+    }
+
+    (function () {
+        'use strict'
+        var forms = document.querySelectorAll('.needs-validation')
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    form.classList.add('was-validated')
+
+                    // Asegura que todos los selects se envíen como listas
+                    document.querySelectorAll("#miembrosContainer select[name='miembros']").forEach(x => x.name = "miembros");
+                    document.querySelectorAll("#miembrosContainer select[name='roles']").forEach(x => x.name = "roles");
+                }, false)
+            })
+    })()
 </script>

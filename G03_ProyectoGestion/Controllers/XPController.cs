@@ -11,7 +11,7 @@ namespace G03_ProyectoGestion.Controllers
     {
         private g03_databaseEntities _dbContext = new g03_databaseEntities();
 
-        public ActionResult Detalles(int id)
+        public ActionResult Index(int id)
         {
             var proyecto = _dbContext.tbProyectos.Find(id);
             if (proyecto == null)

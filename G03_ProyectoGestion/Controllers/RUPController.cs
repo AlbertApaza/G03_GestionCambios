@@ -14,8 +14,20 @@ namespace YourProjectName.Controllers
     {
         private g03_databaseEntities db = new g03_databaseEntities();
         private const int RUP_METHODOLOGY_ID = 2;
-        private const int DEFAULT_USER_ID = 1;
+        //private const int DEFAULT_USER_ID = 1;
 
+        private int DEFAULT_USER_ID
+        {
+            get
+            {
+                return Convert.ToInt32(Session["idUsuario"]);
+            }
+        }
+
+        public ActionResult Detalles()
+        {
+            return RedirectToAction("Index");
+        }
         public ActionResult Index()
         {
             ViewBag.Title = "Gestor RUP";
@@ -34,14 +46,14 @@ namespace YourProjectName.Controllers
         [HttpGet]
         public JsonResult GetProjects()
         {
-            var projects = db.tbProyectos
-                .Where(p => p.idMetodologia == RUP_METHODOLOGY_ID)
+            var projects = db.tbProyectoUsuarios
+                .Where(p => p.tbProyectos.idMetodologia == RUP_METHODOLOGY_ID && p.idUsuario == DEFAULT_USER_ID)
                 .Select(p => new
                 {
-                    id = p.idProyecto,
-                    name = p.nombreProyecto,
-                    scope = p.descripcionProyecto,
-                    current_phase = p.idFase
+                    id = p.tbProyectos.idProyecto,
+                    name = p.tbProyectos.nombreProyecto,
+                    scope = p.tbProyectos.descripcionProyecto,
+                    current_phase = p.tbProyectos.idFase
                 })
                 .ToList();
             return Json(projects, JsonRequestBehavior.AllowGet);

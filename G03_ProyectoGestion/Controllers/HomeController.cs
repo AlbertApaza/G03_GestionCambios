@@ -12,10 +12,6 @@ namespace G03_ProyectoGestion.Controllers
     {
         private UsuarioService usuarioService = new UsuarioService();
         // GET: Home
-        public ActionResult Index()
-        {
-            return View();
-        }
         public ActionResult Login()
         {
             return View();
@@ -32,7 +28,7 @@ namespace G03_ProyectoGestion.Controllers
                 Session["idUsuario"] = usuarioModelo.idUsuario;
 
                 // Redirigimos al "Index" o a una página principal
-                return RedirectToAction("Index");
+                return RedirectToAction("Index","Proyecto");
             }
             else
             {
@@ -60,6 +56,12 @@ namespace G03_ProyectoGestion.Controllers
 
             // Si el modelo no es válido, volvemos a mostrar la vista con los errores de validación
             return View(usuario);
+        }
+
+        public ActionResult Logout()
+        {
+            Session.Clear();
+            return RedirectToAction("Login", "Home");
         }
     }
 }

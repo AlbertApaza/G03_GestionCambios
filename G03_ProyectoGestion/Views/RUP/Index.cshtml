@@ -160,7 +160,7 @@
 
         <main x-show="!selectedProjectId" class="p-6 bg-white rounded-lg shadow-lg">
             <h2 class="text-2xl font-semibold mb-4 text-blue-700">Panel de Proyectos RUP</h2>
-            <div class="mb-8 p-6 bg-gray-50 rounded-md border border-gray-200">
+            @*<div class="mb-8 p-6 bg-gray-50 rounded-md border border-gray-200">
                 <h3 class="text-xl font-semibold mb-3 text-gray-700">Crear Nuevo Proyecto RUP</h3>
                 <form @@submit.prevent="addProject" class="space-y-4">
                     <div>
@@ -184,7 +184,7 @@
                         Crear Proyecto
                     </button>
                 </form>
-            </div>
+            </div>*@
 
             <div x-show="projects.length > 0" x-cloak>
                 <h3 class="text-xl font-semibold mb-3 text-gray-700">Proyectos RUP Existentes</h3>

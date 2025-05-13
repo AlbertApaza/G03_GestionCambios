@@ -1,5 +1,24 @@
 ﻿@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
+/* --- INICIO DE VARIABLES DE COLOR --- */
+:root {
+    --primary-purple: #6a11cb; /* Tu morado principal */
+    --secondary-blue: #2575fc; /* Tu azul secundario */
+
+    --sidebar-text-main: #e0e0e0; /* Color de texto principal en sidebar (ligeramente off-white) */
+    --sidebar-text-hover: #ffffff; /* Color de texto en hover y para el logo */
+    --sidebar-icon-main: #c0c0c0; /* Color principal para iconos */
+
+    --sidebar-hover-bg: rgba(255, 255, 255, 0.1); /* Fondo sutil para hover */
+    --sidebar-active-border: var(--secondary-blue); /* Borde activo/hover (puedes cambiarlo a #ffffff si prefieres blanco) */
+
+    --dropdown-bg-collapsed: rgba(60, 30, 100, 0.95); /* Fondo para dropdown flotante (morado oscuro traslúcido) */
+    --dropdown-bg-expanded: rgba(0, 0, 0, 0.15); /* Fondo para dropdown anidado cuando sidebar está expandido */
+
+    --main-content-bg: #f4f7fc; /* Fondo para el área de contenido principal */
+}
+/* --- FIN DE VARIABLES DE COLOR --- */
+
 ::after,
 ::before {
     box-sizing: border-box;
@@ -22,6 +41,7 @@ h1 {
 
 body {
     font-family: 'Poppins', sans-serif;
+    background-color: var(--main-content-bg); /* Aplicar al body */
 }
 
 .wrapper {
@@ -33,7 +53,7 @@ body {
     width: 100%;
     overflow: hidden;
     transition: all 0.35s ease-in-out;
-    background-color: #fafbfe;
+    background-color: var(--main-content-bg); /* Color de fondo del área principal */
 }
 
 #sidebar {
@@ -41,8 +61,8 @@ body {
     min-width: 70px;
     z-index: 1000;
     transition: all .25s ease-in-out;
-    /*background-color: #0e2238;*/
-    background: linear-gradient(135deg, #9d20e3, #911ed2, #861bc2, #7a19b1, #6f17a1, #641592, #5a1282, #4f1073);
+    /* Usamos las variables para el degradado */
+    background: linear-gradient(160deg, var(--primary-purple) 0%, var(--secondary-blue) 100%);
     display: flex;
     flex-direction: column;
 }
@@ -61,7 +81,7 @@ body {
 
     .toggle-btn i {
         font-size: 1.5rem;
-        color: #FFF;
+        color: var(--sidebar-text-hover); /* Íconos del toggle en blanco */
     }
 
 .sidebar-logo {
@@ -69,7 +89,7 @@ body {
 }
 
     .sidebar-logo a {
-        color: #FFF;
+        color: var(--sidebar-text-hover); /* Logo en blanco */
         font-size: 1.15rem;
         font-weight: 600;
     }
@@ -86,58 +106,104 @@ body {
 
 a.sidebar-link {
     padding: .625rem 1.625rem;
-    color: #FFF;
+    color: var(--sidebar-text-main); /* Color de texto principal para links */
     display: block;
     font-size: 0.9rem;
     white-space: nowrap;
     border-left: 3px solid transparent;
+    transition: background-color 0.2s ease, color 0.2s ease, border-left-color 0.2s ease; /* Añadida transición */
 }
 
 .sidebar-link i {
     font-size: 1.1rem;
     margin-right: .75rem;
+    color: var(--sidebar-icon-main); /* Color para iconos */
+    transition: color 0.2s ease; /* Transición para color de icono */
 }
 
 a.sidebar-link:hover {
-    background-color: rgba(255, 255, 255, .075);
-    border-left: 3px solid #3b7ddd;
+    background-color: var(--sidebar-hover-bg); /* Fondo de hover usando variable */
+    border-left: 3px solid var(--sidebar-active-border); /* Borde activo/hover usando variable */
+    color: var(--sidebar-text-hover); /* Texto en hover más brillante */
 }
+
+    a.sidebar-link:hover i {
+        color: var(--sidebar-text-hover); /* Icono en hover más brillante */
+    }
 
 .sidebar-item {
     position: relative;
 }
 
+/* Estilo para dropdown cuando el sidebar está COLAPSADO */
 #sidebar:not(.expand) .sidebar-item .sidebar-dropdown {
     position: absolute;
     top: 0;
     left: 70px;
-    background-color:#0e2238;
-    padding: 0;
-    min-width: 15rem;
+    background-color: var(--dropdown-bg-collapsed); /* Fondo para dropdown flotante */
+    padding: 0.5rem 0; /* Añadido padding vertical */
+    min-width: 220px; /* Ajustado min-width */
     display: none;
+    border-radius: 0 8px 8px 0; /* Bordes redondeados */
+    box-shadow: 2px 2px 8px rgba(0,0,0,0.2); /* Sombra sutil */
+    z-index: 1001; /* Asegurar que esté por encima */
 }
+    /* Los links dentro del dropdown flotante */
+    #sidebar:not(.expand) .sidebar-item .sidebar-dropdown a.sidebar-link {
+        padding: 0.5rem 1rem; /* Ajuste de padding para links internos */
+        border-left: none; /* Sin borde izquierdo en sub-items flotantes */
+    }
+
 
 #sidebar:not(.expand) .sidebar-item:hover .has-dropdown + .sidebar-dropdown {
     display: block;
-    max-height: 15em;
-    width: 100%;
-    opacity: 1;
+    /* max-height y opacity ya estaban, se pueden mantener o quitar si el display:block es suficiente */
+    /* max-height: 15em; */
+    /* width: 100%; */ /* Esto puede ser problemático con min-width, revisar si es necesario */
+    /* opacity: 1; */
 }
 
+/* Estilo para dropdown cuando el sidebar está EXPANDIDO */
+#sidebar.expand .sidebar-item .sidebar-dropdown {
+    background-color: var(--dropdown-bg-expanded); /* Fondo para submenús anidados */
+    padding-left: calc(1.625rem + 0.75rem); /* Para alinear con el texto del ítem padre */
+}
+
+    #sidebar.expand .sidebar-item .sidebar-dropdown a.sidebar-link {
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+        font-size: 0.85rem; /* Ligeramente más pequeño */
+    }
+
+
+/* Flecha del desplegable (Bootstrap la maneja por data-bs-*) */
 #sidebar.expand .sidebar-link[data-bs-toggle="collapse"]::after {
     border: solid;
     border-width: 0 .075rem .075rem 0;
     content: "";
     display: inline-block;
-    padding: 2px;
+    padding: 2px; /* Podría ser 3px para un poco más grande */
     position: absolute;
     right: 1.5rem;
-    top: 1.4rem;
+    top: 1.4rem; /* Ajustar si el padding del link cambia */
     transform: rotate(-135deg);
     transition: all .2s ease-out;
+    /* El color de la flecha será el color del texto (var(--sidebar-text-main) o var(--sidebar-text-hover) en hover) */
 }
 
 #sidebar.expand .sidebar-link[data-bs-toggle="collapse"].collapsed::after {
     transform: rotate(45deg);
     transition: all .2s ease-out;
 }
+
+/* Footer del Sidebar */
+.sidebar-footer {
+    margin-top: auto; /* Empuja el footer hacia abajo */
+    padding: 0.5rem 0; /* Padding vertical para el footer */
+    border-top: 1px solid rgba(255, 255, 255, 0.1); /* Línea divisora sutil */
+}
+
+    .sidebar-footer a.sidebar-link {
+        /* Hereda estilos de .sidebar-link, pero podemos ser específicos si es necesario */
+        font-weight: 500; /* Quizás un poco más de énfasis */
+    }

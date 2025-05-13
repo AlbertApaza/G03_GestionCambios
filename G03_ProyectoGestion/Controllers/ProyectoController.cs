@@ -31,7 +31,8 @@ namespace G03_ProyectoGestion.Controllers
                 fechaInicio = fechaInicio,
                 fechaFin = fechaFin,
                 idUsuario = idUsuarioCreador,
-                idMetodologia = idMetodologia
+                idMetodologia = idMetodologia,
+                idFase = idMetodologia == 2 ? 1 : (int?)null // Asignar fase inicial si es Rup
             };
 
             _dbContext.tbProyectos.Add(proyecto);
@@ -56,17 +57,13 @@ namespace G03_ProyectoGestion.Controllers
                 _dbContext.SaveChanges();
             }
 
-            return RedirectToAction("MisProyectos");
+            return RedirectToAction("Index");
         }
 
-        public ActionResult MisProyectos()
+        public ActionResult Index()
         {
-            int idUsuario;
-            if (Session["idUsuario"] == null || !int.TryParse(Session["idUsuario"].ToString(), out idUsuario))
-            {
-                // Redirigir a login o mostrar error si el idUsuario no está en sesión o no es válido
-                return RedirectToAction("Login", "Account"); // Asumiendo que tienes una acción de Login
-            }
+            int idUsuario = Convert.ToInt32(Session["idUsuario"]);
+            
 
             var proyectosViewModel = (from p in _dbContext.tbProyectos
                                       join pu in _dbContext.tbProyectoUsuarios on p.idProyecto equals pu.idProyecto
@@ -87,14 +84,14 @@ namespace G03_ProyectoGestion.Controllers
         public ActionResult Detalles(int id)
         {
             // Lógica para mostrar detalles del proyecto
-            // Idealmente, también usarías un ViewModel aquí.
+            // Idealmente tmb se puede usar viewmodel aqui :v
             var proyecto = _dbContext.tbProyectos.Find(id);
             if (proyecto == null)
             {
                 return HttpNotFound();
             }
-            // Aquí podrías mapear 'proyecto' a un 'ProyectoDetalleViewModel'
-            return View(proyecto); // O un ViewModel específico para detalles
+            // Aquí se podria mapear 'proyecto' a un 'ProyectoDetalleViewModel' :v
+            return View(proyecto); // O un ViewModel específico para detallesss
         }
     }
 }

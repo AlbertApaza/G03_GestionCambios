@@ -3,32 +3,68 @@
   "WorkspaceRootPath": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|c:\\users\\usuario\\source\\repos\\g03_gestioncambios\\g03_proyectogestion\\views\\rup\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|solutionrelative:g03_proyectogestion\\views\\rup\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\g03_proyectogestion\\views\\xp\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|solutionrelative:g03_proyectogestion\\views\\xp\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\g03_proyectogestion\\controllers\\rupcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|solutionrelative:g03_proyectogestion\\controllers\\rupcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\g03_proyectogestion\\views\\proyecto\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|solutionrelative:g03_proyectogestion\\views\\proyecto\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\g03_proyectogestion\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
-      "RelativeMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|solutionrelative:g03_proyectogestion\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+      "AbsoluteMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|c:\\users\\usuario\\source\\repos\\g03_gestioncambios\\g03_proyectogestion\\views\\proyecto\\crear.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|solutionrelative:g03_proyectogestion\\views\\proyecto\\crear.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\g03_proyectogestion\\source\\css\\sidebar.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|solutionrelative:g03_proyectogestion\\source\\css\\sidebar.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\g03_proyectogestion\\views\\home\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|solutionrelative:g03_proyectogestion\\views\\home\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\g03_proyectogestion\\controllers\\proyectocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|solutionrelative:g03_proyectogestion\\controllers\\proyectocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\g03_proyectogestion\\views\\rup\\detalles.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|solutionrelative:g03_proyectogestion\\views\\rup\\detalles.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\g03_proyectogestion\\views\\shared\\layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|solutionrelative:g03_proyectogestion\\views\\shared\\layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\g03_proyectogestion\\models\\proyectorupviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|solutionrelative:g03_proyectogestion\\models\\proyectorupviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\g03_proyectogestion\\views\\home\\register.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|solutionrelative:g03_proyectogestion\\views\\home\\register.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\g03_proyectogestion\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|solutionrelative:g03_proyectogestion\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\g03_proyectogestion\\views\\scrum\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|solutionrelative:g03_proyectogestion\\views\\scrum\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\g03_proyectogestion\\controllers\\xpcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|solutionrelative:g03_proyectogestion\\controllers\\xpcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\g03_proyectogestion\\controllers\\rupcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|solutionrelative:g03_proyectogestion\\controllers\\rupcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\g03_proyectogestion\\controllers\\scrumcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|solutionrelative:g03_proyectogestion\\controllers\\scrumcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\g03_proyectogestion\\app_start\\routeconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|solutionrelative:g03_proyectogestion\\app_start\\routeconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\g03_proyectogestion\\views\\rup\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|solutionrelative:g03_proyectogestion\\views\\rup\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\g03_proyectogestion\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|solutionrelative:g03_proyectogestion\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
     }
   ],
   "DocumentGroupContainers": [
@@ -38,93 +74,205 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 6,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "ProyectoController.cs",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Controllers\\ProyectoController.cs",
-              "RelativeDocumentMoniker": "G03_ProyectoGestion\\Controllers\\ProyectoController.cs",
-              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Controllers\\ProyectoController.cs",
-              "RelativeToolTip": "G03_ProyectoGestion\\Controllers\\ProyectoController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-13T19:09:05.794Z"
+              "DocumentIndex": 2,
+              "Title": "Crear.cshtml",
+              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Views\\Proyecto\\Crear.cshtml",
+              "RelativeDocumentMoniker": "G03_ProyectoGestion\\Views\\Proyecto\\Crear.cshtml",
+              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Views\\Proyecto\\Crear.cshtml",
+              "RelativeToolTip": "G03_ProyectoGestion\\Views\\Proyecto\\Crear.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-13T22:47:38.483Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "HomeController.cs",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Controllers\\HomeController.cs",
-              "RelativeDocumentMoniker": "G03_ProyectoGestion\\Controllers\\HomeController.cs",
-              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Controllers\\HomeController.cs",
-              "RelativeToolTip": "G03_ProyectoGestion\\Controllers\\HomeController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-13T17:44:04.032Z"
+              "DocumentIndex": 3,
+              "Title": "sidebar.css",
+              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\source\\css\\sidebar.css",
+              "RelativeDocumentMoniker": "G03_ProyectoGestion\\source\\css\\sidebar.css",
+              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\source\\css\\sidebar.css",
+              "RelativeToolTip": "G03_ProyectoGestion\\source\\css\\sidebar.css",
+              "ViewState": "AgIAAKoAAAAAAAAAAAAmwMQAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2025-05-13T22:42:38.041Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "RUPController.cs",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Controllers\\RUPController.cs",
-              "RelativeDocumentMoniker": "G03_ProyectoGestion\\Controllers\\RUPController.cs",
-              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Controllers\\RUPController.cs",
-              "RelativeToolTip": "G03_ProyectoGestion\\Controllers\\RUPController.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAABIAAAAjAAAAAAAAAA==",
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Views\\Proyecto\\Index.cshtml",
+              "RelativeDocumentMoniker": "G03_ProyectoGestion\\Views\\Proyecto\\Index.cshtml",
+              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Views\\Proyecto\\Index.cshtml",
+              "RelativeToolTip": "G03_ProyectoGestion\\Views\\Proyecto\\Index.cshtml",
+              "ViewState": "AgIAAMIAAAAAAAAAAAAswNwAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-13T22:33:22.398Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "XPController.cs",
+              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Controllers\\XPController.cs",
+              "RelativeDocumentMoniker": "G03_ProyectoGestion\\Controllers\\XPController.cs",
+              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Controllers\\XPController.cs",
+              "RelativeToolTip": "G03_ProyectoGestion\\Controllers\\XPController.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAABYAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-13T14:59:01.757Z"
+              "WhenOpened": "2025-05-13T22:19:56.31Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Register.cshtml",
+              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Views\\Home\\Register.cshtml",
+              "RelativeDocumentMoniker": "G03_ProyectoGestion\\Views\\Home\\Register.cshtml",
+              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Views\\Home\\Register.cshtml",
+              "RelativeToolTip": "G03_ProyectoGestion\\Views\\Home\\Register.cshtml",
+              "ViewState": "AgIAAH0AAAAAAAAAAAAswEEAAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-13T22:16:27.168Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Login.cshtml",
+              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Views\\Home\\Login.cshtml",
+              "RelativeDocumentMoniker": "G03_ProyectoGestion\\Views\\Home\\Login.cshtml",
+              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Views\\Home\\Login.cshtml",
+              "RelativeToolTip": "G03_ProyectoGestion\\Views\\Home\\Login.cshtml",
+              "ViewState": "AgIAAI8AAAAAAAAAAAAmwKYAAABJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-13T22:09:03.624Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Views\\RUP\\Index.cshtml",
-              "RelativeDocumentMoniker": "G03_ProyectoGestion\\Views\\RUP\\Index.cshtml",
-              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Views\\RUP\\Index.cshtml",
-              "RelativeToolTip": "G03_ProyectoGestion\\Views\\RUP\\Index.cshtml",
-              "ViewState": "AgIAAN8BAAAAAAAAAAAmwBsDAAAHAAAAAAAAAA==",
+              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Views\\XP\\Index.cshtml",
+              "RelativeDocumentMoniker": "G03_ProyectoGestion\\Views\\XP\\Index.cshtml",
+              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Views\\XP\\Index.cshtml",
+              "RelativeToolTip": "G03_ProyectoGestion\\Views\\XP\\Index.cshtml",
+              "ViewState": "AgIAAGQAAAAAAAAAAAAswHcAAABRAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-05-13T14:59:43.01Z",
+              "WhenOpened": "2025-05-13T22:07:10.808Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 5,
+              "Title": "ProyectoController.cs",
+              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Controllers\\ProyectoController.cs",
+              "RelativeDocumentMoniker": "G03_ProyectoGestion\\Controllers\\ProyectoController.cs",
+              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Controllers\\ProyectoController.cs",
+              "RelativeToolTip": "G03_ProyectoGestion\\Controllers\\ProyectoController.cs",
+              "ViewState": "AgIAABoAAAAAAAAAAAAiwC4AAAA4AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-13T22:00:45.724Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Layout.cshtml",
+              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Views\\Shared\\Layout.cshtml",
+              "RelativeDocumentMoniker": "G03_ProyectoGestion\\Views\\Shared\\Layout.cshtml",
+              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Views\\Shared\\Layout.cshtml",
+              "RelativeToolTip": "G03_ProyectoGestion\\Views\\Shared\\Layout.cshtml",
+              "ViewState": "AgIAAHcAAAAAAAAAAAAmwI8AAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-13T21:56:31.99Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "RouteConfig.cs",
+              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\App_Start\\RouteConfig.cs",
+              "RelativeDocumentMoniker": "G03_ProyectoGestion\\App_Start\\RouteConfig.cs",
+              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\App_Start\\RouteConfig.cs",
+              "RelativeToolTip": "G03_ProyectoGestion\\App_Start\\RouteConfig.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAA2AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-13T21:54:56.246Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Views\\SCRUM\\Index.cshtml",
+              "RelativeDocumentMoniker": "G03_ProyectoGestion\\Views\\SCRUM\\Index.cshtml",
+              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Views\\SCRUM\\Index.cshtml",
+              "RelativeToolTip": "G03_ProyectoGestion\\Views\\SCRUM\\Index.cshtml",
+              "ViewState": "AgIAAH4CAAAAAAAAAAAuwJACAABZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-13T21:11:20.915Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "SCRUMController.cs",
+              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Controllers\\SCRUMController.cs",
+              "RelativeDocumentMoniker": "G03_ProyectoGestion\\Controllers\\SCRUMController.cs",
+              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Controllers\\SCRUMController.cs",
+              "RelativeToolTip": "G03_ProyectoGestion\\Controllers\\SCRUMController.cs",
+              "ViewState": "AgIAALcAAAAAAAAAAAAiwBIAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-13T20:54:41.668Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "HomeController.cs",
+              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Controllers\\HomeController.cs",
+              "RelativeDocumentMoniker": "G03_ProyectoGestion\\Controllers\\HomeController.cs",
+              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Controllers\\HomeController.cs",
+              "RelativeToolTip": "G03_ProyectoGestion\\Controllers\\HomeController.cs",
+              "ViewState": "AgIAACcAAAAAAAAAAAAowD8AAAA1AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-13T17:44:04.032Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "RUPController.cs",
+              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Controllers\\RUPController.cs",
+              "RelativeDocumentMoniker": "G03_ProyectoGestion\\Controllers\\RUPController.cs",
+              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Controllers\\RUPController.cs",
+              "RelativeToolTip": "G03_ProyectoGestion\\Controllers\\RUPController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-13T14:59:01.757Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Views\\RUP\\Index.cshtml",
+              "RelativeDocumentMoniker": "G03_ProyectoGestion\\Views\\RUP\\Index.cshtml",
+              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Views\\RUP\\Index.cshtml",
+              "RelativeToolTip": "G03_ProyectoGestion\\Views\\RUP\\Index.cshtml",
+              "ViewState": "AgIAADYBAAAAAAAAAAAAwFMBAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-13T14:59:43.01Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
               "Title": "Web.config",
               "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Web.config",
               "RelativeDocumentMoniker": "G03_ProyectoGestion\\Web.config",
               "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Web.config",
               "RelativeToolTip": "G03_ProyectoGestion\\Web.config",
-              "ViewState": "AgIAAB4AAAAAAAAAAAAAADMAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADMAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000601|",
               "WhenOpened": "2025-05-13T18:46:27.98Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "Detalles.cshtml",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Views\\RUP\\Detalles.cshtml",
-              "RelativeDocumentMoniker": "G03_ProyectoGestion\\Views\\RUP\\Detalles.cshtml",
-              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Views\\RUP\\Detalles.cshtml",
-              "RelativeToolTip": "G03_ProyectoGestion\\Views\\RUP\\Detalles.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-05-13T19:01:58.37Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "ProyectoRupViewModel.cs",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Models\\ProyectoRupViewModel.cs",
-              "RelativeDocumentMoniker": "G03_ProyectoGestion\\Models\\ProyectoRupViewModel.cs",
-              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Models\\ProyectoRupViewModel.cs",
-              "RelativeToolTip": "G03_ProyectoGestion\\Models\\ProyectoRupViewModel.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAABcAAAASAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-13T16:02:11.378Z"
             }
           ]
         }
