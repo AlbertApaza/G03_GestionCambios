@@ -12,21 +12,19 @@ namespace G03_ProyectoGestion.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class tbRupFases
+    public partial class tbRupTiposDocumento
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public tbRupFases()
+        public tbRupTiposDocumento()
         {
-            this.tbProyectos = new HashSet<tbProyectos>();
-            this.tbRupIteraciones = new HashSet<tbRupIteraciones>();
+            this.tbRupDocumentos = new HashSet<tbRupDocumentos>();
         }
     
-        public int idFase { get; set; }
+        public int idTipoDocumento { get; set; }
         public string nombre { get; set; }
+        public string clave { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tbProyectos> tbProyectos { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tbRupIteraciones> tbRupIteraciones { get; set; }
+        public virtual ICollection<tbRupDocumentos> tbRupDocumentos { get; set; }
     }
 }

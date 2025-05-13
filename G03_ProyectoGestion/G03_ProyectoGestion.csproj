@@ -144,6 +144,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Model1.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\ProyectoRupViewModel.cs" />
     <Compile Include="Models\ProyectoCardViewModel.cs" />
     <Compile Include="Models\sysdiagrams.cs">
       <DependentUpon>Model1.tt</DependentUpon>
@@ -163,10 +164,16 @@
     <Compile Include="Models\tbRupActividades.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\tbRupDocumentacion.cs">
+    <Compile Include="Models\tbRupDocumentos.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\tbRupFases.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tbRupIteraciones.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tbRupTiposDocumento.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\tbScrumBacklog.cs">
@@ -220,6 +227,7 @@
     <Content Include="Views\RUP\Detalles.cshtml" />
     <Content Include="Views\SCRUM\Detalles.cshtml" />
     <Content Include="Views\XP\Detalles.cshtml" />
+    <Content Include="Views\RUP\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

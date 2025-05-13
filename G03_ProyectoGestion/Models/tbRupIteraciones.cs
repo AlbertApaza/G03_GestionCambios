@@ -12,21 +12,29 @@ namespace G03_ProyectoGestion.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class tbRupFases
+    public partial class tbRupIteraciones
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public tbRupFases()
+        public tbRupIteraciones()
         {
-            this.tbProyectos = new HashSet<tbProyectos>();
-            this.tbRupIteraciones = new HashSet<tbRupIteraciones>();
+            this.tbRupActividades = new HashSet<tbRupActividades>();
+            this.tbRupDocumentos = new HashSet<tbRupDocumentos>();
         }
     
-        public int idFase { get; set; }
+        public int idIteracion { get; set; }
+        public int idProyecto { get; set; }
         public string nombre { get; set; }
+        public string objetivo { get; set; }
+        public Nullable<System.DateTime> fechaInicio { get; set; }
+        public Nullable<System.DateTime> fechaFin { get; set; }
+        public string Estado { get; set; }
+        public int idFase { get; set; }
     
+        public virtual tbProyectos tbProyectos { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tbProyectos> tbProyectos { get; set; }
+        public virtual ICollection<tbRupActividades> tbRupActividades { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tbRupIteraciones> tbRupIteraciones { get; set; }
+        public virtual ICollection<tbRupDocumentos> tbRupDocumentos { get; set; }
+        public virtual tbRupFases tbRupFases { get; set; }
     }
 }

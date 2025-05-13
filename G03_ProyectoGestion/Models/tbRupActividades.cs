@@ -15,16 +15,13 @@ namespace G03_ProyectoGestion.Models
     public partial class tbRupActividades
     {
         public int idActividad { get; set; }
-        public int idFase { get; set; }
-        public int idUsuario { get; set; }
+        public int idIteracion { get; set; }
+        public string descripcion { get; set; }
         public int idRol { get; set; }
-        public string nombreActividad { get; set; }
-        public string descripcionActividad { get; set; }
-        public Nullable<System.DateTime> fechaInicio { get; set; }
-        public Nullable<System.DateTime> fechaFin { get; set; }
+        public string estado { get; set; }
+        public Nullable<System.DateTime> fechaLimite { get; set; }
     
         public virtual tbRoles tbRoles { get; set; }
-        public virtual tbRupFases tbRupFases { get; set; }
-        public virtual tbUsuarios tbUsuarios { get; set; }
+        public virtual tbRupIteraciones tbRupIteraciones { get; set; }
     }
 }

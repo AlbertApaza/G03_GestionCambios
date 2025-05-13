@@ -1,0 +1,790 @@
+﻿@{
+    ViewBag.Title = "Gestor RUP"; // Or get from controller ViewBag.Title
+}
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+<style>
+    [x-cloak] {
+        display: none !important;
+    }
+
+    .tab-button {
+        padding: 0.75rem 1.5rem;
+        cursor: pointer;
+        border: 1px solid transparent;
+        border-bottom: none;
+        margin-right: 0.25rem;
+        font-weight: 500;
+        color: #4B5563;
+    }
+
+        .tab-button.active {
+            background-color: white;
+            border-color: #D1D5DB;
+            border-bottom: 1px solid white;
+            margin-bottom: -1px;
+            color: #3B82F6;
+        }
+
+    .tab-content {
+        padding: 1.5rem;
+        border: 1px solid #D1D5DB;
+        background-color: #F9FAFB;
+    }
+
+    .input-field {
+        margin-top: 0.25rem;
+        display: block;
+        width: 100%;
+        padding: 0.5rem 0.75rem;
+        border: 1px solid #D1D5DB;
+        border-radius: 0.375rem;
+        box-shadow: inset 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #2563EB;
+            box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25);
+        }
+
+    .input-field-sm {
+        padding: 0.4rem 0.6rem;
+        font-size: 0.875rem;
+    }
+
+    .input-field-xs {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.75rem;
+    }
+
+    .btn {
+        padding: 0.6rem 1.2rem;
+        border-radius: 0.375rem;
+        font-weight: 600;
+        transition: background-color 0.2s ease-in-out;
+    }
+
+    .btn-sm {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.875rem;
+    }
+
+    .btn-xs {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.75rem;
+    }
+
+    .btn-primary {
+        background-color: #3B82F6;
+        color: white;
+    }
+
+        .btn-primary:hover {
+            background-color: #2563EB;
+        }
+
+    .btn-secondary {
+        background-color: #6B7280;
+        color: white;
+    }
+
+        .btn-secondary:hover {
+            background-color: #4B5563;
+        }
+
+    .status-badge {
+        padding: 0.25rem 0.75rem;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+    .status-pending {
+        background-color: #FEF3C7;
+        color: #92400E;
+    }
+
+    .status-in-progress {
+        background-color: #DBEAFE;
+        color: #1D4ED8;
+    }
+
+    .status-completed {
+        background-color: #D1FAE5;
+        color: #065F46;
+    }
+
+    .status-in-review {
+        background-color: #E0E7FF;
+        color: #3730A3;
+    }
+
+    .status-validated {
+        background-color: #C6F6D5;
+        color: #2F855A;
+    }
+
+    .status-planned {
+        background-color: #E5E7EB;
+        color: #4B5563;
+    }
+
+    .status-active {
+        background-color: #BBF7D0;
+        color: #15803D;
+    }
+
+    .status-cancelled {
+        background-color: #FECACA;
+        color: #B91C1C;
+    }
+
+    .card {
+        background-color: white;
+        padding: 1rem;
+        border-radius: 0.375rem;
+        border: 1px solid #E5E7EB;
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        margin-bottom: 1rem;
+    }
+</style>
+<body class="bg-gray-100 text-gray-800" x-data="app()">
+    <div class="container mx-auto p-4">
+        <header class="bg-blue-600 text-white p-6 rounded-t-lg shadow-lg mb-6">
+            <h1 class="text-4xl font-bold">Gestor RUP con Iteraciones</h1>
+            <p class="text-blue-100">Guía del ciclo de vida iterativo e incremental.</p>
+        </header>
+
+        <!-- Project Creation and Listing (Main Panel) -->
+        <main x-show="!selectedProjectId" class="p-6 bg-white rounded-lg shadow-lg">
+            <h2 class="text-2xl font-semibold mb-4 text-blue-700">Panel de Proyectos RUP</h2>
+            <div class="mb-8 p-6 bg-gray-50 rounded-md border border-gray-200">
+                <h3 class="text-xl font-semibold mb-3 text-gray-700">Crear Nuevo Proyecto RUP</h3>
+                <form @@submit.prevent="addProject" class="space-y-4">
+                    <div>
+                        <label for="projectName" class="block text-sm font-medium text-gray-700">Nombre del Proyecto:</label>
+                        <input type="text" id="projectName" x-model="newProject.name" required class="input-field">
+                    </div>
+                    <div>
+                        <label for="projectScope" class="block text-sm font-medium text-gray-700">Descripción (Alcance):</label>
+                        <textarea id="projectScope" x-model="newProject.scope" rows="4" required class="input-field"></textarea>
+                    </div>
+                    <div>
+                        <label for="initialPhase" class="block text-sm font-medium text-gray-700">Fase Inicial RUP:</label>
+                        <select id="initialPhase" x-model.number="newProject.initial_phase_id" class="input-field">
+                            <template x-for="phase in phases" :key="phase.id">
+                                <option :value="phase.id" x-text="phase.name"></option>
+                            </template>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-full">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-2" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" /></svg>
+                        Crear Proyecto
+                    </button>
+                </form>
+            </div>
+
+            <div x-show="projects.length > 0" x-cloak>
+                <h3 class="text-xl font-semibold mb-3 text-gray-700">Proyectos RUP Existentes</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <template x-for="project in projects" :key="project.id">
+                        <div class="card">
+                            <h4 class="text-lg font-bold text-blue-600" x-text="project.name"></h4>
+                            <p class="text-sm text-gray-600 mb-2 truncate" x-text="project.scope"></p>
+                            <p class="text-xs text-gray-500 mb-3">Fase actual: <span class="font-semibold" x-text="getPhaseName(project.current_phase)"></span></p>
+                            <button @@click="selectProject(project.id)" class="btn btn-secondary text-sm w-full">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block mr-1" viewBox="0 0 20 20" fill="currentColor"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z" /><path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.022 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" /></svg>
+                                Gestionar Proyecto
+                            </button>
+                        </div>
+                    </template>
+                </div>
+            </div>
+            <p x-show="projects.length === 0" class="mt-4 text-center text-gray-500 italic">No hay proyectos RUP creados. Comience creando uno nuevo.</p>
+        </main>
+
+        <!-- Selected Project Details -->
+        <main x-show="selectedProjectId" x-cloak class="p-6 bg-white rounded-lg shadow-lg">
+            <button @@click="deselectProject()" class="btn btn-secondary mb-4 text-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-1" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" /></svg>
+                Volver a Proyectos
+            </button>
+            <div x-show="selectedProject">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
+                    <div>
+                        <h2 class="text-3xl font-bold text-blue-700" x-text="selectedProject.name"></h2>
+                        <p class="text-gray-600"><strong class="font-medium">Descripción:</strong> <span x-text="selectedProject.scope"></span></p>
+                    </div>
+                    <div class="mt-2 md:mt-0">
+                        <label for="currentPhase" class="block text-sm font-medium text-gray-700">Fase Activa RUP:</label>
+                        <select id="currentPhase" x-model.number="selectedProject.current_phase" @@change="updateProjectPhase()" class="input-field w-full md:w-auto">
+                            <template x-for="phase in phases" :key="phase.id">
+                                <option :value="phase.id" x-text="phase.name"></option>
+                            </template>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="my-6 p-4 bg-blue-50 border border-blue-200 rounded-md">
+                    <h4 class="text-xl font-semibold mb-3 text-blue-700">
+                        Iteraciones de la Fase: <span x-text="getPhaseName(selectedProject.current_phase)" class="font-bold"></span>
+                    </h4>
+
+                    <form @@submit.prevent="addIteration" class="mb-4 p-3 bg-white rounded border border-gray-200 space-y-3">
+                        <h5 class="text-md font-medium text-gray-700">Añadir Nueva Iteración</h5>
+                        <div>
+                            <label for="iterationName" class="text-sm font-medium text-gray-600">Nombre Iteración:</label>
+                            <input type="text" id="iterationName" x-model="newIteration.name" placeholder="Ej: Iteración 1, E1" required class="input-field input-field-sm">
+                        </div>
+                        <div>
+                            <label for="iterationObjective" class="text-sm font-medium text-gray-600">Objetivo:</label>
+                            <textarea id="iterationObjective" x-model="newIteration.objective" rows="2" placeholder="Describa el objetivo principal" required class="input-field input-field-sm"></textarea>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div>
+                                <label for="iterationStartDate" class="text-sm font-medium text-gray-600">Fecha Inicio:</label>
+                                <input type="date" id="iterationStartDate" x-model="newIteration.start_date" class="input-field input-field-sm">
+                            </div>
+                            <div>
+                                <label for="iterationEndDate" class="text-sm font-medium text-gray-600">Fecha Fin:</label>
+                                <input type="date" id="iterationEndDate" x-model="newIteration.end_date" class="input-field input-field-sm">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-sm">
+                            Crear Iteración
+                        </button>
+                    </form>
+
+                    <div class="space-y-2 max-h-60 overflow-y-auto" x-show="currentPhaseIterations.length > 0">
+                        <template x-for="iter in currentPhaseIterations" :key="iter.id">
+                            <div class="card p-3" :class="{ 'border-2 border-green-500 ring-2 ring-green-200': selectedIterationId === iter.id }">
+                                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+                                    <div class="mb-2 sm:mb-0">
+                                        <p class="font-semibold text-gray-800" x-text="iter.name"></p>
+                                        <p class="text-xs text-gray-600 truncate max-w-xs" x-text="iter.objective"></p>
+                                    </div>
+                                    <div class="flex items-center space-x-1 w-full sm:w-auto">
+                                        <select x-model="iter.status" @@change="updateIterationStatus(iter)" class="input-field input-field-xs py-1 flex-grow sm:flex-grow-0">
+                                            <template x-for="status_opt in iterationStatuses" :key="status_opt">
+                                                <option :value="status_opt" x-text="status_opt"></option>
+                                            </template>
+                                        </select>
+                                        <button @@click="selectIteration(iter.id)"
+                                                class="btn btn-secondary btn-xs"
+                                                :disabled="selectedIterationId === iter.id"
+                                                :class="{'bg-green-500 hover:bg-green-600': selectedIterationId === iter.id }">
+                                            <span x-text="selectedIterationId === iter.id ? 'Activa' : 'Activar'"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="mt-2 pt-2 border-t border-gray-200 text-xs text-gray-500">
+                                    <p>Inicio: <span x-text="iter.start_date || 'N/A'"></span> - Fin: <span x-text="iter.end_date || 'N/A'"></span></p>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                    <p x-show="currentPhaseIterations.length === 0" class="text-sm text-gray-500 italic">No hay iteraciones definidas para esta fase. Cree una para comenzar.</p>
+                </div>
+
+                <div x-show="selectedProject && !selectedIterationId" class="my-4 p-4 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 rounded-md">
+                    <p class="font-bold">¡Atención!</p>
+                    <p>Por favor, seleccione o cree una iteración activa para esta fase para poder gestionar actividades y documentos.</p>
+                </div>
+
+                <div class="mt-6" x-show="selectedIterationId && selectedIteration">
+                    <div class="border-b border-gray-300">
+                        <nav class="-mb-px flex space-x-1 md:space-x-4 overflow-x-auto" aria-label="Tabs">
+                            <button @@click="activeTab = 'activities'" :class="{ 'active': activeTab === 'activities' }" class="tab-button">
+                                Actividades
+                            </button>
+                            <button @@click="activeTab = 'documents'" :class="{ 'active': activeTab === 'documents' }" class="tab-button">
+                                Documentos
+                            </button>
+                            <button @@click="activeTab = 'overview_iteration'" :class="{ 'active': activeTab === 'overview_iteration' }" class="tab-button">
+                                Resumen Iteración
+                            </button>
+                        </nav>
+                    </div>
+
+                    <div x-show="activeTab === 'activities'" class="tab-content mt-0">
+                        <h4 class="text-xl font-semibold mb-3 text-gray-700">Actividades de: <span x-text="selectedIteration.name" class="font-bold text-indigo-600"></span></h4>
+                        <form @@submit.prevent="addActivity" class="space-y-4 mb-6 bg-white p-4 rounded border border-gray-200 shadow-sm">
+                            <div>
+                                <label for="actDesc" class="block text-sm font-medium text-gray-700">Descripción:</label>
+                                <input type="text" id="actDesc" x-model="newActivity.description" required class="input-field">
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div>
+                                    <label for="actRole" class="block text-sm font-medium text-gray-700">Rol RUP:</label>
+                                    <select id="actRole" x-model.number="newActivity.assigned_role_id" class="input-field">
+                                        <template x-for="role in roles" :key="role.id">
+                                            <option :value="role.id" x-text="role.name"></option>
+                                        </template>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="actStatus" class="block text-sm font-medium text-gray-700">Estado Inicial:</label>
+                                    <select id="actStatus" x-model="newActivity.status" class="input-field">
+                                        <template x-for="status_opt in activityStatuses" :key="status_opt">
+                                            <option :value="status_opt" x-text="status_opt"></option>
+                                        </template>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="actDueDate" class="block text-sm font-medium text-gray-700">Fecha Límite:</label>
+                                    <input type="date" id="actDueDate" x-model="newActivity.due_date" class="input-field">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-full md:w-auto">Añadir Actividad</button>
+                        </form>
+
+                        <h5 class="text-lg font-semibold mb-2 text-gray-600">Actividades Registradas:</h5>
+                        <div class="max-h-96 overflow-y-auto space-y-3 pr-2">
+                            <template x-for="activity in currentIterationActivities" :key="activity.id">
+                                <div class="card">
+                                    <div class="flex justify-between items-start">
+                                        <p class="text-md font-semibold text-gray-800" x-text="activity.description"></p>
+                                        <span :class="getStatusClass(activity.status)" class="status-badge" x-text="activity.status"></span>
+                                    </div>
+                                    <p class="text-sm text-gray-500 mt-1">Rol: <strong x-text="getRoleName(activity.assigned_role)"></strong></p>
+                                    <p class="text-xs text-gray-500">Límite: <span x-text="activity.due_date || 'N/A'"></span></p>
+                                    <div class="mt-2">
+                                        <label :for="'act_status_'+activity.id" class="text-xs font-medium text-gray-600">Cambiar Estado:</label>
+                                        <select :id="'act_status_'+activity.id" x-model="activity.status" @@change="updateActivityStatus(activity)" class="input-field input-field-xs py-1">
+                                            <template x-for="status_opt in activityStatuses" :key="status_opt">
+                                                <option :value="status_opt" x-text="status_opt"></option>
+                                            </template>
+                                        </select>
+                                    </div>
+                                </div>
+                            </template>
+                            <p x-show="currentIterationActivities.length === 0" class="text-sm text-gray-500 italic text-center py-4">No hay actividades para esta iteración.</p>
+                        </div>
+                    </div>
+
+                    <div x-show="activeTab === 'documents'" class="tab-content mt-0">
+                        <h4 class="text-xl font-semibold mb-3 text-gray-700">Documentos de: <span x-text="selectedIteration.name" class="font-bold text-indigo-600"></span></h4>
+                        <form @@submit.prevent="addDocument" id="documentForm" class="space-y-4 mb-6 bg-white p-4 rounded border border-gray-200 shadow-sm">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label for="docType" class="block text-sm font-medium text-gray-700">Tipo Documento RUP:</label>
+                                    <select id="docType" x-model="newDocument.type_clave" class="input-field">
+                                        <!-- Use type_clave -->
+                                        <template x-for="docType in documentTypes" :key="docType.clave">
+                                            <!-- Key by clave -->
+                                            <option :value="docType.clave" x-text="docType.name"></option>
+                                        </template>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="docVersion" class="block text-sm font-medium text-gray-700">Versión Inicial:</label>
+                                    <input type="text" id="docVersion" x-model="newDocument.version" placeholder="Ej: 1.0" class="input-field">
+                                </div>
+                            </div>
+                            <div>
+                                <label for="docFile" class="block text-sm font-medium text-gray-700">Adjuntar Archivo:</label>
+                                <input type="file" name="docFile" id="docFile" @@change="handleFileUpload" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
+                                <p x-show="newDocument.file_name" class="text-xs text-gray-500 mt-1">Archivo: <span x-text="newDocument.file_name"></span></p>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-full md:w-auto">Subir Documento</button>
+                        </form>
+
+                        <h5 class="text-lg font-semibold mb-2 text-gray-600">Documentos Adjuntos:</h5>
+                        <div class="max-h-96 overflow-y-auto space-y-3 pr-2">
+                            <template x-for="doc in currentIterationDocuments" :key="doc.id">
+                                <div class="card">
+                                    <div class="flex justify-between items-start">
+                                        <div>
+                                            <p class="text-md font-semibold text-gray-800" x-text="getDocumentTypeName(doc.type)"></p> <!-- doc.type is clave -->
+                                            <p class="text-sm text-gray-500">Archivo: <span x-text="doc.file_name"></span></p>
+                                            <p class="text-xs text-gray-500">Subido: <span x-text="formatDateTime(doc.uploaded_at) || 'N/A'"></span></p>
+                                        </div>
+                                        <span :class="getStatusClass(doc.status)" class="status-badge" x-text="doc.status"></span>
+                                    </div>
+                                    <div class="mt-2 flex items-center space-x-2">
+                                        <div>
+                                            <label :for="'doc_status_'+doc.id" class="text-xs font-medium text-gray-600">Estado:</label>
+                                            <select :id="'doc_status_'+doc.id" x-model="doc.status" @@change="updateDocumentStatus(doc)" class="input-field input-field-xs py-1">
+                                                <template x-for="status_opt in documentStatuses" :key="status_opt">
+                                                    <option :value="status_opt" x-text="status_opt"></option>
+                                                </template>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label :for="'doc_version_display_'+doc.id" class="text-xs font-medium text-gray-600">Versión:</label>
+                                            <input type="text" :id="'doc_version_display_'+doc.id" :value="doc.version" readonly class="input-field input-field-xs py-1 w-20 bg-gray-100 cursor-not-allowed">
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+                            <p x-show="currentIterationDocuments.length === 0" class="text-sm text-gray-500 italic text-center py-4">No hay documentos para esta iteración.</p>
+                        </div>
+                    </div>
+
+                    <div x-show="activeTab === 'overview_iteration'" class="tab-content mt-0">
+                        <h4 class="text-xl font-semibold mb-3 text-gray-700">
+                            Resumen de la Iteración: <span x-text="selectedIteration.name" class="font-bold text-indigo-600"></span>
+                        </h4>
+                        <div class="card">
+                            <p class="mb-1"><strong>Fase RUP:</strong> <span x-text="selectedProject ? getPhaseName(selectedProject.current_phase) : ''"></span></p>
+                            <p class="mb-1"><strong>Objetivo:</strong> <span x-text="selectedIteration.objective"></span></p>
+                            <p class="mb-1"><strong>Fechas:</strong> <span x-text="selectedIteration.start_date || 'N/A'"></span> a <span x-text="selectedIteration.end_date || 'N/A'"></span></p>
+                            <p><strong>Estado:</strong> <span x-text="selectedIteration.status" class="font-semibold" :class="getIterationStatusClass(selectedIteration.status)"></span></p>
+                        </div>
+                        <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="card">
+                                <h5 class="font-semibold text-gray-600 mb-2">Progreso de Actividades</h5>
+                                <p class="text-sm text-gray-500">Total: <span x-text="currentIterationActivities.length"></span></p>
+                                <p class="text-sm text-green-600">Completadas: <span x-text="currentIterationActivities.filter(a => a.status === 'Completada').length"></span></p>
+                            </div>
+                            <div class="card">
+                                <h5 class="font-semibold text-gray-600 mb-2">Estado de Documentos</h5>
+                                <p class="text-sm text-gray-500">Total: <span x-text="currentIterationDocuments.length"></span></p>
+                                <p class="text-sm text-green-600">Validados: <span x-text="currentIterationDocuments.filter(d => d.status === 'Validado').length"></span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="text-center text-sm text-gray-500 mt-12 pb-6">
+            Gestor RUP con Iteraciones © @DateTime.Now.Year - Aplicación MVC
+        </footer>
+    </div>
+
+    <script>
+    function app() {
+        return {
+            projects: [],
+            selectedProjectId: null,
+            iterations: [],
+            selectedIterationId: null,
+            activities: [],
+            documents: [],
+
+            newProject: { name: '', scope: '', initial_phase_id: null }, // Will hold idFase (int)
+            newIteration: { name: '', objective: '', start_date: '', end_date: '' },
+            newActivity: { description: '', assigned_role_id: null, status: 'Pendiente', due_date: '' }, // Will hold idRol (int)
+            newDocument: { type_clave: '', file_name: '', file_data_obj: null, version: '1.0' }, // Will hold string 'clave'
+
+            phases: [], // { id: int, name: string }
+            roles: [],  // { id: int, name: string }
+            documentTypes: [], // { id: int, name: string, clave: string }
+
+            activityStatuses: ['Pendiente', 'En Progreso', 'Completada', 'Bloqueada', 'En Revisión'],
+            documentStatuses: ['Pendiente', 'En Revisión', 'Validado', 'Obsoleto'],
+            iterationStatuses: ['Planificada', 'Activa', 'Completada', 'En Revisión', 'Cancelada'],
+            activeTab: 'activities',
+
+            get selectedProject() {
+                return this.projects.find(p => p.id === this.selectedProjectId) || null;
+            },
+            get selectedIteration() { // Iterations fetched already have phase_id (int)
+                return this.iterations.find(it => it.id === this.selectedIterationId) || null;
+            },
+            get currentPhaseIterations() {
+                if (!this.selectedProject) return [];
+                // selectedProject.current_phase is an int (idFase)
+                // iter.phase_id is also an int (idFase) from server
+                return this.iterations.filter(iter =>
+                    iter.project_id === this.selectedProject.id &&
+                    iter.phase_id === this.selectedProject.current_phase
+                ).sort((a, b) => a.name.localeCompare(b.name));
+            },
+            get currentIterationActivities() {
+                if (!this.selectedIterationId) return [];
+                return this.activities.filter(act => act.iteration_id === this.selectedIterationId);
+            },
+            get currentIterationDocuments() {
+                if (!this.selectedIterationId) return [];
+                return this.documents.filter(doc => doc.iteration_id === this.selectedIterationId);
+            },
+
+            async init() {
+                this.phases = @Html.Raw(Json.Encode(ViewBag.Phases ?? new List<object>()));
+                this.roles = @Html.Raw(Json.Encode(ViewBag.Roles ?? new List<object>()));
+                this.documentTypes = @Html.Raw(Json.Encode(ViewBag.DocumentTypes ?? new List<object>()));
+
+                if (this.phases.length > 0) {
+                    this.newProject.initial_phase_id = this.phases[0].id; // Default to first phase's integer ID
+                }
+                if (this.roles.length > 0) {
+                    this.newActivity.assigned_role_id = this.roles[0].id; // Default to first role's integer ID
+                }
+                if (this.documentTypes.length > 0) {
+                    this.newDocument.type_clave = this.documentTypes[0].clave; // Default to first doc type's string clave
+                }
+
+                await this.fetchProjects();
+                // Optional: Restore selection from localStorage
+            },
+
+            async fetchProjects() {
+                try {
+                    const response = await fetch('@Url.Action("GetProjects", "RUP")');
+                    if (!response.ok) throw new Error('Failed to fetch projects');
+                    this.projects = await response.json(); // project.current_phase will be an int (idFase)
+                } catch (error) { console.error("Error fetching projects:", error); }
+            },
+
+            async fetchIterationsForCurrentProjectPhase() {
+                if (!this.selectedProject) { this.iterations = []; return; }
+                try {
+                    // selectedProject.current_phase is already an int (idFase)
+                    const response = await fetch(`@Url.Action("GetIterationsForPhase", "RUP")?projectId=${this.selectedProject.id}&phaseId=${this.selectedProject.current_phase}`);
+                    if (!response.ok) throw new Error('Failed to fetch iterations');
+                    this.iterations = await response.json(); // iter.phase_id will be an int
+                } catch (error) { console.error("Error fetching iterations:", error); this.iterations = []; }
+            },
+
+            async fetchActivitiesForCurrentIteration() {
+                if (!this.selectedIterationId) { this.activities = []; return; }
+                try {
+                    const response = await fetch(`@Url.Action("GetActivitiesForIteration", "RUP")?iterationId=${this.selectedIterationId}`);
+                    if (!response.ok) throw new Error('Failed to fetch activities');
+                    this.activities = await response.json(); // activity.assigned_role will be an int (idRol)
+                } catch (error) { console.error("Error fetching activities:", error); this.activities = [];}
+            },
+
+            async fetchDocumentsForCurrentIteration() {
+                if (!this.selectedIterationId) { this.documents = []; return; }
+                try {
+                    const response = await fetch(`@Url.Action("GetDocumentsForIteration", "RUP")?iterationId=${this.selectedIterationId}`);
+                    if (!response.ok) throw new Error('Failed to fetch documents');
+                    this.documents = await response.json(); // document.type will be a string (clave)
+                } catch (error) { console.error("Error fetching documents:", error); this.documents = [];}
+            },
+
+            async addProject() {
+                if (!this.newProject.name.trim() || !this.newProject.scope.trim() || this.newProject.initial_phase_id === null) return;
+                try {
+                    const payload = {
+                        Name: this.newProject.name,
+                        Scope: this.newProject.scope,
+                        InitialPhaseId: this.newProject.initial_phase_id // Send integer idFase
+                    };
+                    const response = await fetch('@Url.Action("CreateProject", "RUP")', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    const result = await response.json();
+                    if (!response.ok || !result.success) throw new Error(result.message || 'Failed to create project');
+                    this.projects.push(result);
+                    this.newProject = { name: '', scope: '', initial_phase_id: (this.phases[0]?.id || null) };
+                    await this.selectProject(result.id);
+                } catch (error) { console.error("Error adding project:", error); alert("Error: " + error.message); }
+            },
+
+            async selectProject(projectId) {
+                this.selectedProjectId = projectId;
+                this.selectedIterationId = null; this.iterations = []; this.activities = []; this.documents = [];
+                if (this.selectedProject) { // selectedProject.current_phase is int (idFase)
+                    await this.fetchIterationsForCurrentProjectPhase();
+                    const activeOrDefaultIter = this.currentPhaseIterations.find(it => it.status === 'Activa') || this.currentPhaseIterations.find(it => it.status === 'Planificada') || null;
+                    if (activeOrDefaultIter) await this.selectIteration(activeOrDefaultIter.id);
+                    else this.activeTab = 'activities';
+                }
+                // localStorage.setItem('rup_selectedProjectId_vMvc', projectId);
+            },
+
+            deselectProject() {
+                this.selectedProjectId = null; this.selectedIterationId = null;
+                this.iterations = []; this.activities = []; this.documents = [];
+                // localStorage.removeItem('rup_selectedProjectId_vMvc');
+            },
+
+            async updateProjectPhase() { // selectedProject.current_phase is already an int (idFase)
+                if (!this.selectedProject) return;
+                try {
+                    const response = await fetch('@Url.Action("UpdateProjectPhase", "RUP")', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ projectId: this.selectedProject.id, phaseId: this.selectedProject.current_phase })
+                    });
+                    const result = await response.json();
+                    if (!response.ok || !result.success) throw new Error(result.message || 'Failed to update phase');
+                    this.selectedIterationId = null;
+                    await this.fetchIterationsForCurrentProjectPhase(); // Refreshes iterations for new phase
+                    const activeOrDefaultIter = this.currentPhaseIterations.find(it => it.status === 'Activa') || this.currentPhaseIterations.find(it => it.status === 'Planificada') || null;
+                    if (activeOrDefaultIter) await this.selectIteration(activeOrDefaultIter.id);
+                    else this.activeTab = 'activities';
+                } catch (error) { console.error("Error updating project phase:", error); alert("Error: " + error.message); }
+            },
+
+            async addIteration() {
+                if (!this.newIteration.name.trim() || !this.newIteration.objective.trim() || !this.selectedProject) return;
+                try {
+                    const payload = {
+                        ProjectId: this.selectedProject.id,
+                        PhaseId: this.selectedProject.current_phase, // Send integer idFase
+                        Name: this.newIteration.name,
+                        Objective: this.newIteration.objective,
+                        Start_Date: this.newIteration.start_date || null,
+                        End_Date: this.newIteration.end_date || null
+                    };
+                    const response = await fetch('@Url.Action("CreateIteration", "RUP")', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    const result = await response.json();
+                    if (!response.ok || !result.success) throw new Error(result.message || 'Failed to create iteration');
+                    this.iterations.push(result); // result.phase_id will be int
+                    this.newIteration = { name: '', objective: '', start_date: '', end_date: '' };
+                    if (!this.selectedIterationId) await this.selectIteration(result.id);
+                } catch (error) { console.error("Error adding iteration:", error); alert("Error: " + error.message); }
+            },
+
+            async selectIteration(iterationId) {
+                this.selectedIterationId = iterationId;
+                this.activities = []; this.documents = [];
+                const iter = this.iterations.find(i => i.id === iterationId);
+                if (iter && iter.status === 'Planificada') {
+                     await this.updateIterationStatus(iter, 'Activa');
+                }
+                await this.fetchActivitiesForCurrentIteration();
+                await this.fetchDocumentsForCurrentIteration();
+                this.activeTab = 'activities';
+                // localStorage.setItem(`rup_selectedIterationId_for_${this.selectedProjectId}_vMvc`, iterationId);
+            },
+
+            async updateIterationStatus(iterationToUpdate, newStatusOverride = null) {
+                const newStatus = newStatusOverride || iterationToUpdate.status;
+                try {
+                    const response = await fetch('@Url.Action("UpdateIterationStatus", "RUP")', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ iterationId: iterationToUpdate.id, status: newStatus })
+                    });
+                    const result = await response.json();
+                    if (!response.ok || !result.success) throw new Error(result.message || 'Failed to update status');
+                    const localIter = this.iterations.find(it => it.id === iterationToUpdate.id);
+                    if(localIter) localIter.status = newStatus;
+                } catch (error) { console.error("Error updating iter status:", error); alert("Error: " + error.message); await this.fetchIterationsForCurrentProjectPhase(); }
+            },
+
+            async addActivity() {
+                if (!this.newActivity.description.trim() || !this.selectedIterationId || this.newActivity.assigned_role_id === null) return;
+                try {
+                    const payload = {
+                        IterationId: this.selectedIterationId,
+                        Description: this.newActivity.description,
+                        AssignedRoleId: this.newActivity.assigned_role_id, // Send integer idRol
+                        Status: this.newActivity.status,
+                        Due_Date: this.newActivity.due_date || null
+                    };
+                    const response = await fetch('@Url.Action("CreateActivity", "RUP")', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    const result = await response.json();
+                    if (!response.ok || !result.success) throw new Error(result.message || 'Failed to create activity');
+                    this.activities.push(result); // result.assigned_role will be int (idRol)
+                    this.newActivity = { description: '', assigned_role_id: (this.roles[0]?.id || null), status: 'Pendiente', due_date: '' };
+                } catch (error) { console.error("Error adding activity:", error); alert("Error: " + error.message); }
+            },
+
+            async updateActivityStatus(activityToUpdate) {
+                 try {
+                    const response = await fetch('@Url.Action("UpdateActivityStatus", "RUP")', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ activityId: activityToUpdate.id, status: activityToUpdate.status })
+                    });
+                    const result = await response.json();
+                    if (!response.ok || !result.success) throw new Error(result.message || 'Failed to update status');
+                } catch (error) { console.error("Error updating act status:", error); alert("Error: " + error.message); await this.fetchActivitiesForCurrentIteration(); }
+            },
+
+            handleFileUpload(event) {
+                const file = event.target.files[0];
+                if (file) { this.newDocument.file_name = file.name; this.newDocument.file_data_obj = file; }
+                else { this.newDocument.file_name = ''; this.newDocument.file_data_obj = null; }
+            },
+
+            async addDocument() {
+                if (!this.newDocument.file_data_obj || !this.selectedIterationId || !this.newDocument.type_clave) { alert("Por favor, complete todos los campos y seleccione un archivo."); return; }
+                const formData = new FormData();
+                formData.append('IterationId', this.selectedIterationId);
+                formData.append('TypeClave', this.newDocument.type_clave); // Send string 'clave'
+                formData.append('Version', this.newDocument.version);
+                formData.append('docFile', this.newDocument.file_data_obj);
+                try {
+                    const response = await fetch('@Url.Action("CreateDocument", "RUP")', { method: 'POST', body: formData });
+                    const result = await response.json();
+                    if (!response.ok || !result.success) throw new Error(result.message || 'Failed to upload document');
+                    this.documents.push(result); // result.type will be string (clave)
+                    this.newDocument = { type_clave: (this.documentTypes[0]?.clave || ''), file_name: '', file_data_obj: null, version: '1.0' };
+                    document.getElementById('docFile').value = null;
+                } catch (error) { console.error("Error adding document:", error); alert("Error: " + error.message); }
+            },
+
+            async updateDocumentStatus(docToUpdate) {
+                try {
+                    const response = await fetch('@Url.Action("UpdateDocumentStatus", "RUP")', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ documentId: docToUpdate.id, status: docToUpdate.status })
+                    });
+                    const result = await response.json();
+                    if (!response.ok || !result.success) throw new Error(result.message || 'Failed to update status');
+                } catch (error) { console.error("Error updating doc status:", error); alert("Error: " + error.message); await this.fetchDocumentsForCurrentIteration(); }
+            },
+
+            getPhaseName(phaseId) { // phaseId is int
+                const phase = this.phases.find(p => p.id === phaseId);
+                return phase ? phase.name : 'N/A';
+            },
+            getRoleName(roleId) { // roleId is int
+                const role = this.roles.find(r => r.id === roleId);
+                return role ? role.name : 'N/A';
+            },
+            getDocumentTypeName(docTypeClave) { // docTypeClave is string
+                const docType = this.documentTypes.find(dt => dt.clave === docTypeClave);
+                return docType ? docType.name : 'N/A';
+            },
+            getStatusClass(status) { /* ... unchanged ... */
+                switch (status) {
+                    case 'Pendiente': return 'status-badge status-pending';
+                    case 'En Progreso': return 'status-badge status-in-progress';
+                    case 'Completada': return 'status-badge status-completed';
+                    case 'En Revisión': return 'status-badge status-in-review';
+                    case 'Validado': return 'status-badge status-validated';
+                    case 'Bloqueada': return 'status-badge status-pending';
+                    case 'Obsoleto': return 'status-badge status-cancelled';
+                    default: return 'status-badge bg-gray-200 text-gray-700';
+                }
+            },
+            getIterationStatusClass(status) { /* ... unchanged ... */
+                 switch (status) {
+                    case 'Planificada': return 'status-badge status-planned';
+                    case 'Activa': return 'status-badge status-active';
+                    case 'Completada': return 'status-badge status-completed';
+                    case 'En Revisión': return 'status-badge status-in-review';
+                    case 'Cancelada': return 'status-badge status-cancelled';
+                    default: return 'status-badge bg-gray-200 text-gray-700';
+                }
+            },
+            formatDateTime(isoString) { /* ... unchanged ... */
+                if (!isoString) return null;
+                try {
+                    let date = new Date(isoString);
+                    if (isNaN(date.getTime())) {
+                        const msDate = isoString.match(/\/Date\((\d+)\)\//);
+                        if (msDate) date = new Date(parseInt(msDate[1]));
+                        else return "Fecha Inválida";
+                    }
+                    if (isNaN(date.getTime())) return "Fecha Inválida";
+                    return date.toLocaleString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+                } catch (e) { return "Fecha Inválida"; }
+            }
+        }
+    }
+    </script>
+</body>

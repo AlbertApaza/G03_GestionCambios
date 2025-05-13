@@ -19,7 +19,6 @@ namespace G03_ProyectoGestion.Models
         {
             this.tbProyectos = new HashSet<tbProyectos>();
             this.tbProyectoUsuarios = new HashSet<tbProyectoUsuarios>();
-            this.tbRupActividades = new HashSet<tbRupActividades>();
             this.tbScrumDailyBacklog = new HashSet<tbScrumDailyBacklog>();
             this.tbTareas = new HashSet<tbTareas>();
         }
@@ -35,8 +34,6 @@ namespace G03_ProyectoGestion.Models
         public virtual ICollection<tbProyectos> tbProyectos { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbProyectoUsuarios> tbProyectoUsuarios { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tbRupActividades> tbRupActividades { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbScrumDailyBacklog> tbScrumDailyBacklog { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
