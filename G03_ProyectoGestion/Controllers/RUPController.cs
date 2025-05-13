@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Renci.SshNet;
 using G03_ProyectoGestion.Models;
 
 namespace YourProjectName.Controllers
@@ -12,10 +13,9 @@ namespace YourProjectName.Controllers
     public class RUPController : Controller
     {
         private g03_databaseEntities db = new g03_databaseEntities();
-        private const int RUP_METHODOLOGY_ID = 2; // From your DB script
-        private const int DEFAULT_USER_ID = 1; // Placeholder - 'Albert' from your DB script
+        private const int RUP_METHODOLOGY_ID = 2;
+        private const int DEFAULT_USER_ID = 1;
 
-        // MAIN VIEW
         public ActionResult Index()
         {
             ViewBag.Title = "Gestor RUP";
@@ -25,36 +25,33 @@ namespace YourProjectName.Controllers
             ViewBag.Roles = db.tbRoles
                                 .Select(r => new { id = r.idRol, name = r.nombreRol })
                                 .ToList();
-            ViewBag.DocumentTypes = db.tbRupTiposDocumento // EF might pluralize this to tbRupTiposDocumentoes
+            ViewBag.DocumentTypes = db.tbRupTiposDocumento
                                 .Select(dt => new { id = dt.idTipoDocumento, name = dt.nombre, clave = dt.clave })
                                 .ToList();
             return View();
         }
 
-        // --- PROJECTS ---
         [HttpGet]
         public JsonResult GetProjects()
         {
-            // Only fetch projects that use RUP methodology
             var projects = db.tbProyectos
-                .Where(p => p.idMetodologia == RUP_METHODOLOGY_ID) // Filter for RUP projects
+                .Where(p => p.idMetodologia == RUP_METHODOLOGY_ID)
                 .Select(p => new
                 {
                     id = p.idProyecto,
                     name = p.nombreProyecto,
                     scope = p.descripcionProyecto,
-                    current_phase = p.idFase // This is now an integer idFase
+                    current_phase = p.idFase
                 })
                 .ToList();
             return Json(projects, JsonRequestBehavior.AllowGet);
         }
 
-        // ViewModel for Project Creation
         public class ProjectCreatePostModel
         {
             public string Name { get; set; }
             public string Scope { get; set; }
-            public int InitialPhaseId { get; set; } // Expecting idFase
+            public int InitialPhaseId { get; set; }
         }
 
         [HttpPost]
@@ -73,10 +70,9 @@ namespace YourProjectName.Controllers
                     nombreProyecto = projectData.Name,
                     descripcionProyecto = projectData.Scope,
                     idFase = projectData.InitialPhaseId,
-                    idMetodologia = RUP_METHODOLOGY_ID, // Hardcoded for RUP
-                    idUsuario = DEFAULT_USER_ID, // Placeholder for logged-in user
-                    fechaInicio = DateTime.Today // Example default
-                    // fechaFin could be null or set
+                    idMetodologia = RUP_METHODOLOGY_ID,
+                    idUsuario = DEFAULT_USER_ID,
+                    fechaInicio = DateTime.Today
                 };
 
                 db.tbProyectos.Add(newDbProject);
@@ -95,7 +91,7 @@ namespace YourProjectName.Controllers
         }
 
         [HttpPost]
-        public JsonResult UpdateProjectPhase(int projectId, int phaseId) // phaseId is now int (idFase)
+        public JsonResult UpdateProjectPhase(int projectId, int phaseId)
         {
             var project = db.tbProyectos.FirstOrDefault(p => p.idProyecto == projectId && p.idMetodologia == RUP_METHODOLOGY_ID);
             if (project == null) return Json(new { success = false, message = "Proyecto RUP no encontrado." });
@@ -108,17 +104,16 @@ namespace YourProjectName.Controllers
             return Json(new { success = true });
         }
 
-        // --- ITERATIONS ---
         [HttpGet]
-        public JsonResult GetIterationsForPhase(int projectId, int phaseId) // phaseId is int (idFase)
+        public JsonResult GetIterationsForPhase(int projectId, int phaseId)
         {
             var iterations = db.tbRupIteraciones
                 .Where(i => i.idProyecto == projectId && i.idFase == phaseId)
                 .Select(i => new
                 {
-                    id = i.idIteracion, // for Alpine key
+                    id = i.idIteracion,
                     project_id = i.idProyecto,
-                    phase_id = i.idFase, // Use phase_id consistently
+                    phase_id = i.idFase,
                     name = i.nombre,
                     objective = i.objetivo,
                     start_date = i.fechaInicio,
@@ -143,7 +138,7 @@ namespace YourProjectName.Controllers
         public class IterationCreatePostModel
         {
             public int ProjectId { get; set; }
-            public int PhaseId { get; set; } // idFase
+            public int PhaseId { get; set; }
             public string Name { get; set; }
             public string Objective { get; set; }
             public DateTime? Start_Date { get; set; }
@@ -155,7 +150,7 @@ namespace YourProjectName.Controllers
         {
             if (ModelState.IsValid)
             {
-                tbRupIteraciones newDbIteration = new tbRupIteraciones // EF might use tbRupIteracione
+                tbRupIteraciones newDbIteration = new tbRupIteraciones
                 {
                     idProyecto = iterationData.ProjectId,
                     idFase = iterationData.PhaseId,
@@ -163,7 +158,7 @@ namespace YourProjectName.Controllers
                     objetivo = iterationData.Objective,
                     fechaInicio = iterationData.Start_Date,
                     fechaFin = iterationData.End_Date,
-                    Estado = "Planificada" // Default status
+                    Estado = "Planificada"
                 };
                 db.tbRupIteraciones.Add(newDbIteration);
                 db.SaveChanges();
@@ -195,7 +190,6 @@ namespace YourProjectName.Controllers
             return Json(new { success = true });
         }
 
-        // --- ACTIVITIES ---
         [HttpGet]
         public JsonResult GetActivitiesForIteration(int iterationId)
         {
@@ -206,7 +200,7 @@ namespace YourProjectName.Controllers
                     id = a.idActividad,
                     iteration_id = a.idIteracion,
                     description = a.descripcion,
-                    assigned_role = a.idRol, // This is now idRol (int)
+                    assigned_role = a.idRol,
                     status = a.estado,
                     due_date = a.fechaLimite
                 })
@@ -227,7 +221,7 @@ namespace YourProjectName.Controllers
         {
             public int IterationId { get; set; }
             public string Description { get; set; }
-            public int AssignedRoleId { get; set; } // idRol
+            public int AssignedRoleId { get; set; }
             public string Status { get; set; }
             public DateTime? Due_Date { get; set; }
         }
@@ -237,7 +231,7 @@ namespace YourProjectName.Controllers
         {
             if (ModelState.IsValid)
             {
-                tbRupActividades newDbActivity = new tbRupActividades // EF might use tbRupActividade
+                tbRupActividades newDbActivity = new tbRupActividades
                 {
                     idIteracion = activityData.IterationId,
                     descripcion = activityData.Description,
@@ -268,36 +262,44 @@ namespace YourProjectName.Controllers
             var activity = db.tbRupActividades.Find(activityId);
             if (activity == null) return Json(new { success = false, message = "Actividad no encontrada." });
 
-            activity.estado = status; // column name is 'estado'
+            activity.estado = status;
             db.SaveChanges();
             return Json(new { success = true });
         }
 
-        // --- DOCUMENTS ---
         [HttpGet]
         public JsonResult GetDocumentsForIteration(int iterationId)
         {
             var documents = db.tbRupDocumentos
                 .Where(d => d.idIteracion == iterationId)
-                .Include(d => d.tbRupTiposDocumento) // Include for accessing clave
+                .Include(d => d.tbRupTiposDocumento)
                 .Select(d => new
                 {
                     id = d.idDocumento,
                     iteration_id = d.idIteracion,
-                    type = d.tbRupTiposDocumento.clave, // Use the clave from related table
+                    type = d.tbRupTiposDocumento.clave,
                     file_name = d.nombreArchivo,
                     version = d.Version,
                     status = d.Estado,
                     uploaded_at = d.FechaSubida
                 })
                 .ToList();
-            return Json(documents, JsonRequestBehavior.AllowGet);
+            var result = documents.Select(d => new {
+                d.id,
+                d.iteration_id,
+                d.type,
+                d.file_name,
+                d.version,
+                d.status,
+                uploaded_at = d.uploaded_at.ToString("o")
+            }).ToList();
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         public class DocumentCreatePostModel
         {
             public int IterationId { get; set; }
-            public string TypeClave { get; set; } // Frontend sends 'clave' (e.g., "vision")
+            public string TypeClave { get; set; }
             public string Version { get; set; }
         }
 
@@ -315,44 +317,97 @@ namespace YourProjectName.Controllers
                 return Json(new { success = false, message = "Tipo de documento inválido." });
             }
 
+            var iteration = db.tbRupIteraciones.Find(documentData.IterationId);
+            if (iteration == null)
+            {
+                return Json(new { success = false, message = "Iteración no encontrada para el documento." });
+            }
+
             if (ModelState.IsValid)
             {
-                var iteration = db.tbRupIteraciones.Find(documentData.IterationId);
-                if (iteration == null) return Json(new { success = false, message = "Iteración no encontrada para el documento." });
+                var originalFileName = Path.GetFileName(docFile.FileName);
+                var fileExtension = Path.GetExtension(originalFileName);
+                var uniqueRemoteFileName = Guid.NewGuid().ToString() + fileExtension;
 
-                var fileName = Path.GetFileName(docFile.FileName);
-                string projectUploadPath = Server.MapPath($"~/App_Data/RUP_Uploads/Project_{iteration.idProyecto}");
-                string iterationUploadPath = Path.Combine(projectUploadPath, $"Iteration_{documentData.IterationId}");
-                Directory.CreateDirectory(iterationUploadPath);
+                string vpsHost = "161.132.38.250";
+                string vpsUsername = "root";
+                string vpsPassword = "patitochera123";
 
-                var path = Path.Combine(iterationUploadPath, fileName);
-                docFile.SaveAs(path);
+                string remoteBaseUploadPath = "/root/rup_manager/uploads";
+                string remoteProjectFolder = $"Proyecto_{iteration.idProyecto}";
+                string remoteIterationFolder = $"Iteracion_{iteration.idIteracion}";
+                string remoteFilePathOnVps = $"{remoteBaseUploadPath}/{remoteProjectFolder}/{remoteIterationFolder}/{uniqueRemoteFileName}";
 
-                tbRupDocumentos newDbDocument = new tbRupDocumentos // EF might use tbRupDocumento
+                string tempUploadDir = Server.MapPath("~/App_Data/TempUploadsForVPS");
+                Directory.CreateDirectory(tempUploadDir);
+                string tempFilePath = Path.Combine(tempUploadDir, Guid.NewGuid().ToString() + fileExtension);
+
+                try
                 {
-                    idIteracion = documentData.IterationId,
-                    idTipoDocumento = tipoDocumento.idTipoDocumento, // Use looked-up ID
-                    nombreArchivo = fileName,
-                    rutaArchivo = $"~/App_Data/RUP_Uploads/Project_{iteration.idProyecto}/Iteration_{documentData.IterationId}/{fileName}",
-                    Version = documentData.Version,
-                    Estado = "Pendiente",
-                    FechaSubida = DateTime.Now
-                };
+                    docFile.SaveAs(tempFilePath);
 
-                db.tbRupDocumentos.Add(newDbDocument);
-                db.SaveChanges();
+                    var connectionInfo = new ConnectionInfo(vpsHost, vpsUsername,
+                                            new PasswordAuthenticationMethod(vpsUsername, vpsPassword));
 
-                return Json(new
+                    using (var scpClient = new ScpClient(connectionInfo))
+                    {
+                        scpClient.Connect();
+
+                        using (var sshClient = new SshClient(connectionInfo))
+                        {
+                            sshClient.Connect();
+                            sshClient.RunCommand($"mkdir -p {remoteBaseUploadPath}/{remoteProjectFolder}/{remoteIterationFolder}");
+                            sshClient.Disconnect();
+                        }
+
+                        using (var fs = new FileStream(tempFilePath, FileMode.Open, FileAccess.Read))
+                        {
+                            scpClient.Upload(fs, remoteFilePathOnVps);
+                        }
+                        scpClient.Disconnect();
+                    }
+
+                    tbRupDocumentos newDbDocument = new tbRupDocumentos
+                    {
+                        idIteracion = documentData.IterationId,
+                        idTipoDocumento = tipoDocumento.idTipoDocumento,
+                        nombreArchivo = originalFileName,
+                        rutaArchivo = remoteFilePathOnVps,
+                        Version = documentData.Version,
+                        Estado = "Pendiente",
+                        FechaSubida = DateTime.Now
+                    };
+
+                    db.tbRupDocumentos.Add(newDbDocument);
+                    db.SaveChanges();
+
+                    return Json(new
+                    {
+                        success = true,
+                        id = newDbDocument.idDocumento,
+                        iteration_id = newDbDocument.idIteracion,
+                        type = tipoDocumento.clave,
+                        file_name = newDbDocument.nombreArchivo,
+                        version = newDbDocument.Version,
+                        status = newDbDocument.Estado,
+                        uploaded_at = newDbDocument.FechaSubida.ToString("o")
+                    });
+                }
+                catch (Renci.SshNet.Common.SshAuthenticationException authEx)
                 {
-                    success = true,
-                    id = newDbDocument.idDocumento,
-                    iteration_id = newDbDocument.idIteracion,
-                    type = tipoDocumento.clave, // Send back the clave for consistency with GET
-                    file_name = newDbDocument.nombreArchivo,
-                    version = newDbDocument.Version,
-                    status = newDbDocument.Estado,
-                    uploaded_at = newDbDocument.FechaSubida.ToString("o")
-                });
+                    return Json(new { success = false, message = "Error de autenticación SSH con el VPS: " + authEx.Message });
+                }
+                catch (Exception ex)
+                {
+                    return Json(new { success = false, message = "Error al subir o registrar el documento: " + ex.Message });
+                }
+                finally
+                {
+                    if (System.IO.File.Exists(tempFilePath))
+                    {
+                        System.IO.File.Delete(tempFilePath);
+                    }
+                }
             }
             var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
             return Json(new { success = false, message = "Datos inválidos.", errors = errors });
@@ -368,6 +423,71 @@ namespace YourProjectName.Controllers
             db.SaveChanges();
             return Json(new { success = true });
         }
+
+        // -----comentario(seccion modificada)
+        [HttpGet]
+        public ActionResult DownloadDocument(int documentId)
+        {
+            var document = db.tbRupDocumentos.Find(documentId);
+            if (document == null || string.IsNullOrEmpty(document.rutaArchivo))
+            {
+                TempData["ErrorMessage"] = "Documento no encontrado o ruta inválida.";
+                return RedirectToAction("Index");
+            }
+
+            string vpsHost = "161.132.38.250";
+            string vpsUsername = "root";
+            string vpsPassword = "patitochera123";
+            string remoteFilePathOnVps = document.rutaArchivo;
+            string originalFileNameToDownload = document.nombreArchivo;
+
+            string tempDownloadDir = Server.MapPath("~/App_Data/TempDownloads");
+            Directory.CreateDirectory(tempDownloadDir);
+            string tempLocalFilePath = Path.Combine(tempDownloadDir, Guid.NewGuid().ToString() + Path.GetExtension(originalFileNameToDownload));
+
+            try
+            {
+                var connectionInfo = new ConnectionInfo(vpsHost, vpsUsername,
+                                        new PasswordAuthenticationMethod(vpsUsername, vpsPassword));
+
+                using (var scpClient = new ScpClient(connectionInfo))
+                {
+                    scpClient.Connect();
+                    using (var fs = new FileStream(tempLocalFilePath, FileMode.Create, FileAccess.Write))
+                    {
+                        scpClient.Download(remoteFilePathOnVps, fs);
+                    }
+                    scpClient.Disconnect();
+                }
+
+                byte[] fileBytes = System.IO.File.ReadAllBytes(tempLocalFilePath);
+
+                return File(fileBytes, MimeMapping.GetMimeMapping(originalFileNameToDownload), originalFileNameToDownload);
+            }
+            catch (Renci.SshNet.Common.SftpPathNotFoundException)
+            {
+                TempData["ErrorMessage"] = "El archivo no fue encontrado en el servidor remoto.";
+                return RedirectToAction("Index");
+            }
+            catch (Renci.SshNet.Common.SshAuthenticationException authEx)
+            {
+                TempData["ErrorMessage"] = "Error de autenticación SSH con el VPS: " + authEx.Message;
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Ocurrió un error al intentar descargar el archivo: " + ex.Message;
+                return RedirectToAction("Index");
+            }
+            finally
+            {
+                if (System.IO.File.Exists(tempLocalFilePath))
+                {
+                    System.IO.File.Delete(tempLocalFilePath);
+                }
+            }
+        }
+        // fin de comentarios(fin de seccion modificada)
 
         protected override void Dispose(bool disposing)
         {

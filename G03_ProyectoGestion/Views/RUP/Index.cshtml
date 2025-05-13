@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Gestor RUP"; // Or get from controller ViewBag.Title
+    ViewBag.Title = "Gestor RUP";
 }
 
 <script src="https://cdn.tailwindcss.com"></script>
@@ -158,7 +158,6 @@
             <p class="text-blue-100">Guía del ciclo de vida iterativo e incremental.</p>
         </header>
 
-        <!-- Project Creation and Listing (Main Panel) -->
         <main x-show="!selectedProjectId" class="p-6 bg-white rounded-lg shadow-lg">
             <h2 class="text-2xl font-semibold mb-4 text-blue-700">Panel de Proyectos RUP</h2>
             <div class="mb-8 p-6 bg-gray-50 rounded-md border border-gray-200">
@@ -206,7 +205,6 @@
             <p x-show="projects.length === 0" class="mt-4 text-center text-gray-500 italic">No hay proyectos RUP creados. Comience creando uno nuevo.</p>
         </main>
 
-        <!-- Selected Project Details -->
         <main x-show="selectedProjectId" x-cloak class="p-6 bg-white rounded-lg shadow-lg">
             <button @@click="deselectProject()" class="btn btn-secondary mb-4 text-sm">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-1" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" /></svg>
@@ -372,9 +370,7 @@
                                 <div>
                                     <label for="docType" class="block text-sm font-medium text-gray-700">Tipo Documento RUP:</label>
                                     <select id="docType" x-model="newDocument.type_clave" class="input-field">
-                                        <!-- Use type_clave -->
                                         <template x-for="docType in documentTypes" :key="docType.clave">
-                                            <!-- Key by clave -->
                                             <option :value="docType.clave" x-text="docType.name"></option>
                                         </template>
                                     </select>
@@ -398,7 +394,7 @@
                                 <div class="card">
                                     <div class="flex justify-between items-start">
                                         <div>
-                                            <p class="text-md font-semibold text-gray-800" x-text="getDocumentTypeName(doc.type)"></p> <!-- doc.type is clave -->
+                                            <p class="text-md font-semibold text-gray-800" x-text="getDocumentTypeName(doc.type)"></p>
                                             <p class="text-sm text-gray-500">Archivo: <span x-text="doc.file_name"></span></p>
                                             <p class="text-xs text-gray-500">Subido: <span x-text="formatDateTime(doc.uploaded_at) || 'N/A'"></span></p>
                                         </div>
@@ -416,6 +412,15 @@
                                         <div>
                                             <label :for="'doc_version_display_'+doc.id" class="text-xs font-medium text-gray-600">Versión:</label>
                                             <input type="text" :id="'doc_version_display_'+doc.id" :value="doc.version" readonly class="input-field input-field-xs py-1 w-20 bg-gray-100 cursor-not-allowed">
+                                        </div>
+                                        <div class="ml-auto">
+                                            <button @@click="downloadDocument(doc.id, doc.file_name)"
+                                                    title="Descargar Documento"
+                                                    class="btn btn-secondary btn-xs">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block" viewBox="0 0 20 20" fill="currentColor">
+                                                    <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                                </svg>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -466,14 +471,14 @@
             activities: [],
             documents: [],
 
-            newProject: { name: '', scope: '', initial_phase_id: null }, // Will hold idFase (int)
+            newProject: { name: '', scope: '', initial_phase_id: null },
             newIteration: { name: '', objective: '', start_date: '', end_date: '' },
-            newActivity: { description: '', assigned_role_id: null, status: 'Pendiente', due_date: '' }, // Will hold idRol (int)
-            newDocument: { type_clave: '', file_name: '', file_data_obj: null, version: '1.0' }, // Will hold string 'clave'
+            newActivity: { description: '', assigned_role_id: null, status: 'Pendiente', due_date: '' },
+            newDocument: { type_clave: '', file_name: '', file_data_obj: null, version: '1.0' },
 
-            phases: [], // { id: int, name: string }
-            roles: [],  // { id: int, name: string }
-            documentTypes: [], // { id: int, name: string, clave: string }
+            phases: [],
+            roles: [],
+            documentTypes: [],
 
             activityStatuses: ['Pendiente', 'En Progreso', 'Completada', 'Bloqueada', 'En Revisión'],
             documentStatuses: ['Pendiente', 'En Revisión', 'Validado', 'Obsoleto'],
@@ -483,13 +488,11 @@
             get selectedProject() {
                 return this.projects.find(p => p.id === this.selectedProjectId) || null;
             },
-            get selectedIteration() { // Iterations fetched already have phase_id (int)
+            get selectedIteration() {
                 return this.iterations.find(it => it.id === this.selectedIterationId) || null;
             },
             get currentPhaseIterations() {
                 if (!this.selectedProject) return [];
-                // selectedProject.current_phase is an int (idFase)
-                // iter.phase_id is also an int (idFase) from server
                 return this.iterations.filter(iter =>
                     iter.project_id === this.selectedProject.id &&
                     iter.phase_id === this.selectedProject.current_phase
@@ -510,34 +513,32 @@
                 this.documentTypes = @Html.Raw(Json.Encode(ViewBag.DocumentTypes ?? new List<object>()));
 
                 if (this.phases.length > 0) {
-                    this.newProject.initial_phase_id = this.phases[0].id; // Default to first phase's integer ID
+                    this.newProject.initial_phase_id = this.phases[0].id;
                 }
                 if (this.roles.length > 0) {
-                    this.newActivity.assigned_role_id = this.roles[0].id; // Default to first role's integer ID
+                    this.newActivity.assigned_role_id = this.roles[0].id;
                 }
                 if (this.documentTypes.length > 0) {
-                    this.newDocument.type_clave = this.documentTypes[0].clave; // Default to first doc type's string clave
+                    this.newDocument.type_clave = this.documentTypes[0].clave;
                 }
 
                 await this.fetchProjects();
-                // Optional: Restore selection from localStorage
             },
 
             async fetchProjects() {
                 try {
                     const response = await fetch('@Url.Action("GetProjects", "RUP")');
                     if (!response.ok) throw new Error('Failed to fetch projects');
-                    this.projects = await response.json(); // project.current_phase will be an int (idFase)
+                    this.projects = await response.json();
                 } catch (error) { console.error("Error fetching projects:", error); }
             },
 
             async fetchIterationsForCurrentProjectPhase() {
                 if (!this.selectedProject) { this.iterations = []; return; }
                 try {
-                    // selectedProject.current_phase is already an int (idFase)
                     const response = await fetch(`@Url.Action("GetIterationsForPhase", "RUP")?projectId=${this.selectedProject.id}&phaseId=${this.selectedProject.current_phase}`);
                     if (!response.ok) throw new Error('Failed to fetch iterations');
-                    this.iterations = await response.json(); // iter.phase_id will be an int
+                    this.iterations = await response.json();
                 } catch (error) { console.error("Error fetching iterations:", error); this.iterations = []; }
             },
 
@@ -546,7 +547,7 @@
                 try {
                     const response = await fetch(`@Url.Action("GetActivitiesForIteration", "RUP")?iterationId=${this.selectedIterationId}`);
                     if (!response.ok) throw new Error('Failed to fetch activities');
-                    this.activities = await response.json(); // activity.assigned_role will be an int (idRol)
+                    this.activities = await response.json();
                 } catch (error) { console.error("Error fetching activities:", error); this.activities = [];}
             },
 
@@ -555,7 +556,7 @@
                 try {
                     const response = await fetch(`@Url.Action("GetDocumentsForIteration", "RUP")?iterationId=${this.selectedIterationId}`);
                     if (!response.ok) throw new Error('Failed to fetch documents');
-                    this.documents = await response.json(); // document.type will be a string (clave)
+                    this.documents = await response.json();
                 } catch (error) { console.error("Error fetching documents:", error); this.documents = [];}
             },
 
@@ -565,7 +566,7 @@
                     const payload = {
                         Name: this.newProject.name,
                         Scope: this.newProject.scope,
-                        InitialPhaseId: this.newProject.initial_phase_id // Send integer idFase
+                        InitialPhaseId: this.newProject.initial_phase_id
                     };
                     const response = await fetch('@Url.Action("CreateProject", "RUP")', {
                         method: 'POST',
@@ -583,22 +584,20 @@
             async selectProject(projectId) {
                 this.selectedProjectId = projectId;
                 this.selectedIterationId = null; this.iterations = []; this.activities = []; this.documents = [];
-                if (this.selectedProject) { // selectedProject.current_phase is int (idFase)
+                if (this.selectedProject) {
                     await this.fetchIterationsForCurrentProjectPhase();
                     const activeOrDefaultIter = this.currentPhaseIterations.find(it => it.status === 'Activa') || this.currentPhaseIterations.find(it => it.status === 'Planificada') || null;
                     if (activeOrDefaultIter) await this.selectIteration(activeOrDefaultIter.id);
                     else this.activeTab = 'activities';
                 }
-                // localStorage.setItem('rup_selectedProjectId_vMvc', projectId);
             },
 
             deselectProject() {
                 this.selectedProjectId = null; this.selectedIterationId = null;
                 this.iterations = []; this.activities = []; this.documents = [];
-                // localStorage.removeItem('rup_selectedProjectId_vMvc');
             },
 
-            async updateProjectPhase() { // selectedProject.current_phase is already an int (idFase)
+            async updateProjectPhase() {
                 if (!this.selectedProject) return;
                 try {
                     const response = await fetch('@Url.Action("UpdateProjectPhase", "RUP")', {
@@ -609,7 +608,7 @@
                     const result = await response.json();
                     if (!response.ok || !result.success) throw new Error(result.message || 'Failed to update phase');
                     this.selectedIterationId = null;
-                    await this.fetchIterationsForCurrentProjectPhase(); // Refreshes iterations for new phase
+                    await this.fetchIterationsForCurrentProjectPhase();
                     const activeOrDefaultIter = this.currentPhaseIterations.find(it => it.status === 'Activa') || this.currentPhaseIterations.find(it => it.status === 'Planificada') || null;
                     if (activeOrDefaultIter) await this.selectIteration(activeOrDefaultIter.id);
                     else this.activeTab = 'activities';
@@ -621,7 +620,7 @@
                 try {
                     const payload = {
                         ProjectId: this.selectedProject.id,
-                        PhaseId: this.selectedProject.current_phase, // Send integer idFase
+                        PhaseId: this.selectedProject.current_phase,
                         Name: this.newIteration.name,
                         Objective: this.newIteration.objective,
                         Start_Date: this.newIteration.start_date || null,
@@ -634,7 +633,7 @@
                     });
                     const result = await response.json();
                     if (!response.ok || !result.success) throw new Error(result.message || 'Failed to create iteration');
-                    this.iterations.push(result); // result.phase_id will be int
+                    this.iterations.push(result);
                     this.newIteration = { name: '', objective: '', start_date: '', end_date: '' };
                     if (!this.selectedIterationId) await this.selectIteration(result.id);
                 } catch (error) { console.error("Error adding iteration:", error); alert("Error: " + error.message); }
@@ -650,7 +649,6 @@
                 await this.fetchActivitiesForCurrentIteration();
                 await this.fetchDocumentsForCurrentIteration();
                 this.activeTab = 'activities';
-                // localStorage.setItem(`rup_selectedIterationId_for_${this.selectedProjectId}_vMvc`, iterationId);
             },
 
             async updateIterationStatus(iterationToUpdate, newStatusOverride = null) {
@@ -674,7 +672,7 @@
                     const payload = {
                         IterationId: this.selectedIterationId,
                         Description: this.newActivity.description,
-                        AssignedRoleId: this.newActivity.assigned_role_id, // Send integer idRol
+                        AssignedRoleId: this.newActivity.assigned_role_id,
                         Status: this.newActivity.status,
                         Due_Date: this.newActivity.due_date || null
                     };
@@ -685,7 +683,7 @@
                     });
                     const result = await response.json();
                     if (!response.ok || !result.success) throw new Error(result.message || 'Failed to create activity');
-                    this.activities.push(result); // result.assigned_role will be int (idRol)
+                    this.activities.push(result);
                     this.newActivity = { description: '', assigned_role_id: (this.roles[0]?.id || null), status: 'Pendiente', due_date: '' };
                 } catch (error) { console.error("Error adding activity:", error); alert("Error: " + error.message); }
             },
@@ -712,14 +710,14 @@
                 if (!this.newDocument.file_data_obj || !this.selectedIterationId || !this.newDocument.type_clave) { alert("Por favor, complete todos los campos y seleccione un archivo."); return; }
                 const formData = new FormData();
                 formData.append('IterationId', this.selectedIterationId);
-                formData.append('TypeClave', this.newDocument.type_clave); // Send string 'clave'
+                formData.append('TypeClave', this.newDocument.type_clave);
                 formData.append('Version', this.newDocument.version);
                 formData.append('docFile', this.newDocument.file_data_obj);
                 try {
                     const response = await fetch('@Url.Action("CreateDocument", "RUP")', { method: 'POST', body: formData });
                     const result = await response.json();
                     if (!response.ok || !result.success) throw new Error(result.message || 'Failed to upload document');
-                    this.documents.push(result); // result.type will be string (clave)
+                    this.documents.push(result);
                     this.newDocument = { type_clave: (this.documentTypes[0]?.clave || ''), file_name: '', file_data_obj: null, version: '1.0' };
                     document.getElementById('docFile').value = null;
                 } catch (error) { console.error("Error adding document:", error); alert("Error: " + error.message); }
@@ -736,20 +734,28 @@
                     if (!response.ok || !result.success) throw new Error(result.message || 'Failed to update status');
                 } catch (error) { console.error("Error updating doc status:", error); alert("Error: " + error.message); await this.fetchDocumentsForCurrentIteration(); }
             },
-
-            getPhaseName(phaseId) { // phaseId is int
+            async downloadDocument(documentId, originalFileName) {
+                try {
+                    const downloadUrl = `@Url.Action("DownloadDocument", "RUP")?documentId=${documentId}`;
+                    window.location.href = downloadUrl;
+                } catch (error) {
+                    console.error("Error downloading document:", error);
+                    alert("Error al descargar el documento: " + error.message);
+                }
+            },
+            getPhaseName(phaseId) {
                 const phase = this.phases.find(p => p.id === phaseId);
                 return phase ? phase.name : 'N/A';
             },
-            getRoleName(roleId) { // roleId is int
+            getRoleName(roleId) {
                 const role = this.roles.find(r => r.id === roleId);
                 return role ? role.name : 'N/A';
             },
-            getDocumentTypeName(docTypeClave) { // docTypeClave is string
+            getDocumentTypeName(docTypeClave) {
                 const docType = this.documentTypes.find(dt => dt.clave === docTypeClave);
                 return docType ? docType.name : 'N/A';
             },
-            getStatusClass(status) { /* ... unchanged ... */
+            getStatusClass(status) {
                 switch (status) {
                     case 'Pendiente': return 'status-badge status-pending';
                     case 'En Progreso': return 'status-badge status-in-progress';
@@ -761,7 +767,7 @@
                     default: return 'status-badge bg-gray-200 text-gray-700';
                 }
             },
-            getIterationStatusClass(status) { /* ... unchanged ... */
+            getIterationStatusClass(status) {
                  switch (status) {
                     case 'Planificada': return 'status-badge status-planned';
                     case 'Activa': return 'status-badge status-active';
@@ -771,7 +777,7 @@
                     default: return 'status-badge bg-gray-200 text-gray-700';
                 }
             },
-            formatDateTime(isoString) { /* ... unchanged ... */
+            formatDateTime(isoString) {
                 if (!isoString) return null;
                 try {
                     let date = new Date(isoString);
