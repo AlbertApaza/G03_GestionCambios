@@ -13,5 +13,7 @@ namespace G03_ProyectoGestion.Models
         public DateTime? FechaInicio { get; set; } // Usa Nullable DateTime si pueden ser null en BD
         public DateTime? FechaFin { get; set; }    // Usa Nullable DateTime si pueden ser null en BD
         public string Metodologia { get; set; }
+        public int IdMetodologia { get; set; } // 
+
     }
 }

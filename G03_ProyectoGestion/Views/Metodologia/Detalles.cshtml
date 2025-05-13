@@ -1,0 +1,21 @@
+﻿@model G03_ProyectoGestion.Models.tbMetodologias
+
+@{
+    ViewBag.Title = "Detalle de Metodología";
+}
+
+<h2>@Model.nombreMetodologia</h2>
+
+@if (Model.tbProyectos != null && Model.tbProyectos.Any())
+{
+    <ul>
+        @foreach (var proyecto in Model.tbProyectos)
+        {
+            <li>@proyecto.nombreProyecto</li>
+        }
+    </ul>
+}
+else
+{
+    <p>No hay proyectos asociados a esta metodología.</p>
+}

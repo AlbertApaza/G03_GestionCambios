@@ -1,0 +1,547 @@
+﻿@* Use the original model just for initial project data display *@
+@model G03_ProyectoGestion.Models.tbProyectos
+@* Or if you don't have the model available for this temporary view, use a dynamic or remove the @model line *@
+@* @model dynamic *@
+
+@{
+    ViewBag.Title = "Proyecto SCRUM (Client-Side Demo)";
+    // Dummy project data if no model is passed
+    var projectName = Model?.nombreProyecto ?? "Demo Project Alpha";
+    var projectDesc = Model?.descripcionProyecto ?? "Client-side simulation of SCRUM functionalities.";
+    var startDate = Model?.fechaInicio?.ToString("dd MMMM yyyy") ?? DateTime.Now.ToString("dd MMMM yyyy");
+    var endDate = Model?.fechaFin?.ToString("dd MMMM yyyy") ?? DateTime.Now.AddMonths(1).ToString("dd MMMM yyyy");
+    var projectId = Model?.idProyecto ?? 0; // Still useful maybe for context, but not DB key here
+}
+
+<div class="container mt-5">
+    <div class="card shadow-lg border-left-info">
+        <div class="card-header bg-info text-white">
+            <h4 class="mb-0"><i class="fas fa-sitemap"></i> Proyecto SCRUM (Client-Side Demo)</h4>
+        </div>
+        <div class="card-body">
+            <!-- Datos del proyecto (Display Only) -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <h5><i class="fas fa-project-diagram"></i> Nombre del Proyecto</h5>
+                    <p class="text-muted">@projectName</p>
+                </div>
+                <div class="col-md-6">
+                    <h5><i class="fas fa-align-left"></i> Descripción</h5>
+                    <p class="text-muted">@projectDesc</p>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <h5><i class="fas fa-calendar-alt"></i> Fecha de Inicio</h5>
+                    <p class="text-muted">@startDate</p>
+                </div>
+                <div class="col-md-6">
+                    <h5><i class="fas fa-calendar-check"></i> Fecha de Finalización</h5>
+                    <p class="text-muted">@endDate</p>
+                </div>
+            </div>
+
+            <hr />
+
+            <!-- Botones para mostrar secciones SCRUM -->
+            <div class="row text-center mb-4">
+                <div class="col-md-4 mb-3">
+                    <button onclick="showSection('backlogSection')" class="btn btn-outline-primary w-100">
+                        <i class="fas fa-list"></i> Ver / Crear Backlog
+                    </button>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <button onclick="showSection('sprintSection')" class="btn btn-outline-success w-100">
+                        <i class="fas fa-bolt"></i> Seleccionar para Sprint
+                    </button>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <button onclick="showSection('dailySection')" class="btn btn-outline-warning w-100">
+                        <i class="fas fa-sun"></i> Subir Daily Scrum
+                    </button>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <button onclick="showSection('burndownSection')" class="btn btn-outline-info w-100">
+                        <i class="fas fa-chart-line"></i> Ver Burndown Chart
+                    </button>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <button onclick="showSection('retroSection')" class="btn btn-outline-dark w-100">
+                        <i class="fas fa-comments"></i> Retrospectiva del Sprint
+                    </button>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <button onclick="showSection('none')" class="btn btn-outline-secondary w-100">
+                        <i class="fas fa-eye-slash"></i> Ocultar Secciones
+                    </button>
+                </div>
+            </div>
+
+            <hr />
+
+            <!-- Secciones SCRUM (Ocultas por defecto) -->
+            <div id="scrumSectionsContainer">
+
+                <!-- 1. Backlog Section -->
+                <div id="backlogSection" class="scrum-section" style="display: none;">
+                    <h5><i class="fas fa-list"></i> Product Backlog</h5>
+                    <div class="mb-3 p-3 border rounded">
+                        <h6>Añadir Nuevo Item al Backlog</h6>
+                        <div class="input-group mb-3">
+                            <input type="text" id="backlogItemInput" class="form-control" placeholder="Descripción del item (User Story, Tarea, Bug)">
+                            <button class="btn btn-primary" type="button" onclick="addBacklogItem()">Añadir</button>
+                        </div>
+                        <div class="input-group mb-3">
+                            <input type="number" id="backlogPointsInput" class="form-control" placeholder="Puntos Estimados (opcional)">
+                        </div>
+                    </div>
+                    <h6>Items Actuales</h6>
+                    <ul id="backlogList" class="list-group">
+                        <!-- Los items se añadirán aquí por JS -->
+                        <li class="list-group-item text-muted">No hay items en el backlog todavía.</li>
+                    </ul>
+                </div>
+
+                <!-- 2. Sprint Selection Section -->
+                <div id="sprintSection" class="scrum-section" style="display: none;">
+                    <h5><i class="fas fa-bolt"></i> Sprint Planning / Selección</h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Backlog (Seleccionar para Sprint)</h6>
+                            <ul id="backlogForSprintList" class="list-group mb-3">
+                                <!-- Items del backlog listados aquí para selección -->
+                                <li class="list-group-item text-muted">El backlog está vacío o no hay items para seleccionar.</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Sprint Backlog (Items Seleccionados)</h6>
+                            <p>Puntos totales en Sprint: <strong id="sprintTotalPoints">0</strong></p>
+                            <ul id="sprintBacklogList" class="list-group">
+                                <!-- Items seleccionados para el sprint -->
+                                <li class="list-group-item text-muted">No hay items seleccionados para el sprint.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Daily Scrum Section -->
+                <div id="dailySection" class="scrum-section" style="display: none;">
+                    <h5><i class="fas fa-sun"></i> Daily Scrum Log</h5>
+                    <div class="mb-3 p-3 border rounded">
+                        <h6>Registrar Entrada del Daily</h6>
+                        <div class="mb-2">
+                            <label for="dailyDone" class="form-label">¿Qué hiciste ayer?</label>
+                            <textarea id="dailyDone" class="form-control" rows="2"></textarea>
+                        </div>
+                        <div class="mb-2">
+                            <label for="dailyToDo" class="form-label">¿Qué harás hoy?</label>
+                            <textarea id="dailyToDo" class="form-control" rows="2"></textarea>
+                        </div>
+                        <div class="mb-2">
+                            <label for="dailyImpediments" class="form-label">¿Impedimentos?</label>
+                            <textarea id="dailyImpediments" class="form-control" rows="1"></textarea>
+                        </div>
+                        <button class="btn btn-warning mt-2" onclick="addDailyEntry()">Registrar Daily</button>
+                    </div>
+                    <h6>Historial de Dailies</h6>
+                    <div id="dailyLog" class="list-group">
+                        <!-- Entradas del daily se añadirán aquí -->
+                        <div class="list-group-item text-muted">No hay registros del Daily Scrum todavía.</div>
+                    </div>
+                </div>
+
+                <!-- 4. Burndown Chart Section -->
+                <div id="burndownSection" class="scrum-section" style="display: none;">
+                    <h5><i class="fas fa-chart-line"></i> Burndown Chart (Simulación)</h5>
+                    <div class="alert alert-info">
+                        Nota: Esto es una simulación. Normalmente se generaría un gráfico visual (ej. con Chart.js) basado en los puntos de las tareas completadas del sprint.
+                    </div>
+                    <div class="mb-3 p-3 border rounded">
+                        <h6>Añadir Punto de Datos (Simulado)</h6>
+                        <div class="row g-3 align-items-center">
+                            <div class="col-auto">
+                                <label for="burndownDayInput" class="col-form-label">Día del Sprint:</label>
+                            </div>
+                            <div class="col-auto">
+                                <input type="number" id="burndownDayInput" class="form-control" min="0" placeholder="Ej: 1">
+                            </div>
+                            <div class="col-auto">
+                                <label for="burndownPointsInput" class="col-form-label">Puntos Restantes:</label>
+                            </div>
+                            <div class="col-auto">
+                                <input type="number" id="burndownPointsInput" class="form-control" min="0" placeholder="Ej: 45">
+                            </div>
+                            <div class="col-auto">
+                                <button class="btn btn-info" onclick="addBurndownDataPoint()">Añadir Dato</button>
+                            </div>
+                        </div>
+                    </div>
+                    <h6>Datos del Burndown Registrados</h6>
+                    <ul id="burndownDataList" class="list-group">
+                        <!-- Puntos de datos se listarán aquí -->
+                        <li class="list-group-item text-muted">No hay datos para el Burndown Chart todavía.</li>
+                    </ul>
+                    <!-- Opcional: Placeholder para un gráfico real -->
+                    <!-- <canvas id="myBurndownChart" width="400" height="200"></canvas> -->
+                </div>
+
+                <!-- 5. Retrospective Section -->
+                <div id="retroSection" class="scrum-section" style="display: none;">
+                    <h5><i class="fas fa-comments"></i> Retrospectiva del Sprint</h5>
+                    <div class="mb-3 p-3 border rounded">
+                        <h6>Notas de la Retrospectiva</h6>
+                        <div class="mb-2">
+                            <label for="retroWell" class="form-label">¿Qué fue bien?</label>
+                            <textarea id="retroWell" class="form-control" rows="3"></textarea>
+                        </div>
+                        <div class="mb-2">
+                            <label for="retroImprove" class="form-label">¿Qué se puede mejorar?</label>
+                            <textarea id="retroImprove" class="form-control" rows="3"></textarea>
+                        </div>
+                        <div class="mb-2">
+                            <label for="retroActions" class="form-label">Acciones a tomar</label>
+                            <textarea id="retroActions" class="form-control" rows="2"></textarea>
+                        </div>
+                        <button class="btn btn-dark mt-2" onclick="saveRetrospective()">Guardar Notas (Temporalmente)</button>
+                    </div>
+                    <h6>Resumen de la Última Retrospectiva Guardada</h6>
+                    <div id="retroSummary" class="p-3 border rounded bg-light">
+                        <p><strong>Qué fue bien:</strong> <span id="retroWellDisplay" class="text-muted">N/A</span></p>
+                        <p><strong>Qué mejorar:</strong> <span id="retroImproveDisplay" class="text-muted">N/A</span></p>
+                        <p><strong>Acciones:</strong> <span id="retroActionsDisplay" class="text-muted">N/A</span></p>
+                    </div>
+                </div>
+
+            </div> <!-- Fin scrumSectionsContainer -->
+
+            <hr />
+
+            <div class="text-center mt-4">
+                @* This button can just stay as is, assuming MisProyectos is a standard view *@
+                <a href="@Url.Action("MisProyectos", "Proyecto")" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left"></i> Volver a mis proyectos
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @* Include Font Awesome if not globally included *@
+    @* <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script> *@
+
+    @* Optional: Include Chart.js if you want to implement a visual burndown chart *@
+    @* <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> *@
+
+    <script>
+        // --- Client-Side Data Storage ---
+        let backlogItems = []; // Array of objects: { id: number, text: string, points: number, status: 'backlog' | 'sprint' }
+        let sprintItems = []; // Array of backlog item IDs selected for the sprint
+        let dailyEntries = []; // Array of objects: { date: string, done: string, toDo: string, impediments: string }
+        let burndownDataPoints = []; // Array of objects: { day: number, points: number }
+        let retrospectiveNotes = { well: '', improve: '', actions: '' };
+        let nextItemId = 1;
+
+        // --- Utility Functions ---
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.scrum-section').forEach(section => {
+                section.style.display = 'none';
+            });
+            // Show the selected section (if not 'none')
+            if (sectionId !== 'none') {
+                const sectionToShow = document.getElementById(sectionId);
+                if (sectionToShow) {
+                    sectionToShow.style.display = 'block';
+                    // Refresh content when section is shown (important for sprint selection)
+                    if (sectionId === 'sprintSection') {
+                        renderBacklogForSprintSelection();
+                        renderSprintBacklog();
+                    }
+                    if (sectionId === 'backlogSection') {
+                        renderBacklogList();
+                    }
+                }
+            }
+        }
+
+        // --- Backlog Functions ---
+        function addBacklogItem() {
+            const input = document.getElementById('backlogItemInput');
+            const pointsInput = document.getElementById('backlogPointsInput');
+            const text = input.value.trim();
+            const points = parseInt(pointsInput.value) || 0; // Default to 0 if not a number or empty
+
+            if (text) {
+                const newItem = {
+                    id: nextItemId++,
+                    text: text,
+                    points: points,
+                    status: 'backlog' // Initial status
+                };
+                backlogItems.push(newItem);
+                input.value = ''; // Clear input
+                pointsInput.value = ''; // Clear points input
+                renderBacklogList();
+                // Also potentially update the list shown in the sprint selection tab if it's visible
+                renderBacklogForSprintSelection();
+            } else {
+                alert('Por favor, introduce la descripción del item del backlog.');
+            }
+        }
+
+        function renderBacklogList() {
+            const list = document.getElementById('backlogList');
+            list.innerHTML = ''; // Clear current list
+
+            if (backlogItems.length === 0) {
+                list.innerHTML = '<li class="list-group-item text-muted">No hay items en el backlog todavía.</li>';
+                return;
+            }
+
+            backlogItems.forEach(item => {
+                // Only show items actually in the backlog (not moved to sprint)
+                if (item.status === 'backlog') {
+                    const li = document.createElement('li');
+                    li.className = 'list-group-item d-flex justify-content-between align-items-center';
+                    li.textContent = `${item.text} (${item.points} pts)`;
+                    // Add a delete button for demonstration
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.className = 'btn btn-sm btn-outline-danger';
+                    deleteBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
+                    deleteBtn.onclick = () => removeBacklogItem(item.id);
+                    li.appendChild(deleteBtn);
+                    list.appendChild(li);
+                }
+            });
+        }
+
+        function removeBacklogItem(id) {
+            backlogItems = backlogItems.filter(item => item.id !== id);
+            // Also remove from sprint if it was there (though it shouldn't be if status is backlog)
+            sprintItems = sprintItems.filter(sprintItemId => sprintItemId !== id);
+            renderBacklogList();
+            renderBacklogForSprintSelection();
+            renderSprintBacklog();
+        }
+
+
+        // --- Sprint Functions ---
+        function renderBacklogForSprintSelection() {
+            const list = document.getElementById('backlogForSprintList');
+            list.innerHTML = '';
+            let availableItems = false;
+
+            backlogItems.forEach(item => {
+                if (item.status === 'backlog') {
+                    availableItems = true;
+                    const li = document.createElement('li');
+                    li.className = 'list-group-item d-flex justify-content-between align-items-center';
+                    li.textContent = `${item.text} (${item.points} pts)`;
+
+                    const selectBtn = document.createElement('button');
+                    selectBtn.className = 'btn btn-sm btn-outline-success';
+                    selectBtn.innerHTML = '<i class="fas fa-plus"></i> Añadir al Sprint';
+                    selectBtn.onclick = () => selectItemForSprint(item.id);
+                    li.appendChild(selectBtn);
+
+                    list.appendChild(li);
+                }
+            });
+
+            if (!availableItems) {
+                list.innerHTML = '<li class="list-group-item text-muted">No hay items disponibles en el backlog para seleccionar.</li>';
+            }
+        }
+
+        function selectItemForSprint(id) {
+            const itemIndex = backlogItems.findIndex(item => item.id === id);
+            if (itemIndex > -1 && backlogItems[itemIndex].status === 'backlog') {
+                backlogItems[itemIndex].status = 'sprint'; // Change status
+                sprintItems.push(id); // Add ID to sprint list (redundant but can be useful)
+                renderBacklogForSprintSelection(); // Update the available list
+                renderSprintBacklog(); // Update the sprint list
+            }
+        }
+
+        function removeItemFromSprint(id) {
+            const itemIndex = backlogItems.findIndex(item => item.id === id);
+            if (itemIndex > -1 && backlogItems[itemIndex].status === 'sprint') {
+                backlogItems[itemIndex].status = 'backlog'; // Change status back
+                sprintItems = sprintItems.filter(sprintItemId => sprintItemId !== id); // Remove from sprint list
+                renderBacklogForSprintSelection();
+                renderSprintBacklog();
+            }
+        }
+
+        function renderSprintBacklog() {
+            const list = document.getElementById('sprintBacklogList');
+            const totalPointsEl = document.getElementById('sprintTotalPoints');
+            list.innerHTML = '';
+            let totalPoints = 0;
+            let itemsInSprint = false;
+
+            backlogItems.forEach(item => {
+                if (item.status === 'sprint') {
+                    itemsInSprint = true;
+                    totalPoints += item.points;
+                    const li = document.createElement('li');
+                    li.className = 'list-group-item d-flex justify-content-between align-items-center';
+                    li.textContent = `${item.text} (${item.points} pts)`;
+
+                    const removeBtn = document.createElement('button');
+                    removeBtn.className = 'btn btn-sm btn-outline-warning';
+                    removeBtn.innerHTML = '<i class="fas fa-minus"></i> Quitar';
+                    removeBtn.onclick = () => removeItemFromSprint(item.id);
+                    li.appendChild(removeBtn);
+
+                    list.appendChild(li);
+                }
+            });
+
+            totalPointsEl.textContent = totalPoints;
+
+            if (!itemsInSprint) {
+                list.innerHTML = '<li class="list-group-item text-muted">No hay items seleccionados para el sprint.</li>';
+            }
+        }
+
+        // --- Daily Scrum Functions ---
+        function addDailyEntry() {
+            const doneInput = document.getElementById('dailyDone');
+            const toDoInput = document.getElementById('dailyToDo');
+            const impedimentsInput = document.getElementById('dailyImpediments');
+
+            const newEntry = {
+                date: new Date().toLocaleString(),
+                done: doneInput.value.trim(),
+                toDo: toDoInput.value.trim(),
+                impediments: impedimentsInput.value.trim()
+            };
+
+            if (!newEntry.done && !newEntry.toDo && !newEntry.impediments) {
+                alert('Por favor, completa al menos un campo del Daily.');
+                return;
+            }
+
+            dailyEntries.unshift(newEntry); // Add to the beginning of the array
+
+            // Clear inputs
+            doneInput.value = '';
+            toDoInput.value = '';
+            impedimentsInput.value = '';
+
+            renderDailyLog();
+        }
+
+        function renderDailyLog() {
+            const log = document.getElementById('dailyLog');
+            log.innerHTML = ''; // Clear current log
+
+            if (dailyEntries.length === 0) {
+                log.innerHTML = '<div class="list-group-item text-muted">No hay registros del Daily Scrum todavía.</div>';
+                return;
+            }
+
+            dailyEntries.forEach(entry => {
+                const entryDiv = document.createElement('div');
+                entryDiv.className = 'list-group-item flex-column align-items-start mb-2 p-3 border rounded';
+                entryDiv.innerHTML = `
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">Daily Entry</h6>
+                            <small>${entry.date}</small>
+                        </div>
+                        <p class="mb-1"><strong>Ayer:</strong> ${entry.done || 'N/A'}</p>
+                        <p class="mb-1"><strong>Hoy:</strong> ${entry.toDo || 'N/A'}</p>
+                        <small><strong>Impedimentos:</strong> ${entry.impediments || 'Ninguno'}</small>
+                    `;
+                log.appendChild(entryDiv);
+            });
+        }
+
+        // --- Burndown Chart Functions ---
+        function addBurndownDataPoint() {
+            const dayInput = document.getElementById('burndownDayInput');
+            const pointsInput = document.getElementById('burndownPointsInput');
+
+            const day = parseInt(dayInput.value);
+            const points = parseInt(pointsInput.value);
+
+            if (isNaN(day) || isNaN(points) || day < 0 || points < 0) {
+                alert('Por favor, introduce un día y puntos restantes válidos (números no negativos).');
+                return;
+            }
+
+            // Optional: Check for duplicate day entry? Or just allow override/multiple? Let's allow multiple for simplicity.
+            burndownDataPoints.push({ day: day, points: points });
+
+            // Sort by day for display
+            burndownDataPoints.sort((a, b) => a.day - b.day);
+
+            dayInput.value = '';
+            pointsInput.value = '';
+
+            renderBurndownDataList();
+            // Optional: Update a visual chart here if using Chart.js
+            // updateChart();
+        }
+
+        function renderBurndownDataList() {
+            const list = document.getElementById('burndownDataList');
+            list.innerHTML = '';
+
+            if (burndownDataPoints.length === 0) {
+                list.innerHTML = '<li class="list-group-item text-muted">No hay datos para el Burndown Chart todavía.</li>';
+                return;
+            }
+
+            burndownDataPoints.forEach(dp => {
+                const li = document.createElement('li');
+                li.className = 'list-group-item';
+                li.textContent = `Día ${dp.day}: ${dp.points} puntos restantes`;
+                list.appendChild(li);
+            });
+        }
+
+        // --- Retrospective Functions ---
+        function saveRetrospective() {
+            retrospectiveNotes.well = document.getElementById('retroWell').value.trim();
+            retrospectiveNotes.improve = document.getElementById('retroImprove').value.trim();
+            retrospectiveNotes.actions = document.getElementById('retroActions').value.trim();
+
+            renderRetrospectiveSummary();
+            alert('Notas de la retrospectiva guardadas temporalmente.');
+            // Optionally clear the textareas after saving
+            // document.getElementById('retroWell').value = '';
+            // document.getElementById('retroImprove').value = '';
+            // document.getElementById('retroActions').value = '';
+        }
+
+        function renderRetrospectiveSummary() {
+            document.getElementById('retroWellDisplay').textContent = retrospectiveNotes.well || 'N/A';
+            document.getElementById('retroImproveDisplay').textContent = retrospectiveNotes.improve || 'N/A';
+            document.getElementById('retroActionsDisplay').textContent = retrospectiveNotes.actions || 'N/A';
+
+            // Add text-muted class back if content is empty
+            document.getElementById('retroWellDisplay').classList.toggle('text-muted', !retrospectiveNotes.well);
+            document.getElementById('retroImproveDisplay').classList.toggle('text-muted', !retrospectiveNotes.improve);
+            document.getElementById('retroActionsDisplay').classList.toggle('text-muted', !retrospectiveNotes.actions);
+        }
+
+
+        // --- Initial Setup ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initial rendering of potentially empty lists/sections
+            renderBacklogList();
+            renderBacklogForSprintSelection();
+            renderSprintBacklog();
+            renderDailyLog();
+            renderBurndownDataList();
+            renderRetrospectiveSummary();
+
+            // Ensure all sections are hidden initially
+            showSection('none');
+        });
+
+    </script>
+}

@@ -121,7 +121,11 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MetodologiaController.cs" />
     <Compile Include="Controllers\ProyectoController.cs" />
+    <Compile Include="Controllers\RUPController.cs" />
+    <Compile Include="Controllers\SCRUMController.cs" />
+    <Compile Include="Controllers\XPController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -212,6 +216,10 @@
     <Content Include="Views\Home\Register.cshtml" />
     <Content Include="Views\Proyecto\MisProyectos.cshtml" />
     <Content Include="Views\Proyecto\Crear.cshtml" />
+    <Content Include="Views\Metodologia\Detalles.cshtml" />
+    <Content Include="Views\RUP\Detalles.cshtml" />
+    <Content Include="Views\SCRUM\Detalles.cshtml" />
+    <Content Include="Views\XP\Detalles.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
