@@ -181,6 +181,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Model1.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\ProyectoScrumViewModel.cs" />
     <Compile Include="Models\ProyectoRupViewModel.cs" />
     <Compile Include="Models\ProyectoCardViewModel.cs" />
     <Compile Include="Models\sysdiagrams.cs">

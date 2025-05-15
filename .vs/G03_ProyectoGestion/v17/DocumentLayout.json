@@ -3,12 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\g03_proyectogestion\\services\\scrumservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|solutionrelative:g03_proyectogestion\\services\\scrumservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|c:\\users\\usuario\\source\\repos\\g03_gestioncambios\\g03_proyectogestion\\controllers\\scrumcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|solutionrelative:g03_proyectogestion\\controllers\\scrumcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\g03_proyectogestion\\services\\scrumservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|solutionrelative:g03_proyectogestion\\services\\scrumservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|c:\\users\\usuario\\source\\repos\\g03_gestioncambios\\g03_proyectogestion\\models\\proyectoscrumviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|solutionrelative:g03_proyectogestion\\models\\proyectoscrumviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\g03_proyectogestion\\services\\rupservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -30,24 +34,25 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "RUPController.cs",
               "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Controllers\\RUPController.cs",
               "RelativeDocumentMoniker": "G03_ProyectoGestion\\Controllers\\RUPController.cs",
               "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Controllers\\RUPController.cs",
               "RelativeToolTip": "G03_ProyectoGestion\\Controllers\\RUPController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFUAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-05-15T17:49:36.564Z",
-              "IsPinned": true
+              "IsPinned": true,
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Views\\RUP\\Index.cshtml",
               "RelativeDocumentMoniker": "G03_ProyectoGestion\\Views\\RUP\\Index.cshtml",
@@ -56,17 +61,18 @@
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAM8BAABmAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-05-15T18:14:53.556Z",
-              "IsPinned": true
+              "IsPinned": true,
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "RupService.cs",
               "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Services\\RupService.cs",
               "RelativeDocumentMoniker": "G03_ProyectoGestion\\Services\\RupService.cs",
               "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Services\\RupService.cs",
               "RelativeToolTip": "G03_ProyectoGestion\\Services\\RupService.cs",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAAAAoAAAAbAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAhAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-05-15T17:48:34.516Z",
               "IsPinned": true,
@@ -74,13 +80,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "SCRUMController.cs",
               "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Controllers\\SCRUMController.cs",
               "RelativeDocumentMoniker": "G03_ProyectoGestion\\Controllers\\SCRUMController.cs",
               "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Controllers\\SCRUMController.cs",
               "RelativeToolTip": "G03_ProyectoGestion\\Controllers\\SCRUMController.cs",
-              "ViewState": "AgIAAAsAAAAAAAAAAAAQwCcAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAJ8AAAAAAAAAAADwv60AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-05-15T20:44:17.161Z",
               "IsPinned": true,
@@ -88,16 +94,29 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "ScrumService.cs",
               "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Services\\ScrumService.cs",
               "RelativeDocumentMoniker": "G03_ProyectoGestion\\Services\\ScrumService.cs",
               "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Services\\ScrumService.cs",
               "RelativeToolTip": "G03_ProyectoGestion\\Services\\ScrumService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAFAAAAAAAAAA==",
+              "ViewState": "AgIAAOEAAAAAAAAAAAAUwPIAAAAgAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-05-15T20:44:08.308Z",
               "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ProyectoScrumViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Models\\ProyectoScrumViewModel.cs",
+              "RelativeDocumentMoniker": "G03_ProyectoGestion\\Models\\ProyectoScrumViewModel.cs",
+              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Models\\ProyectoScrumViewModel.cs",
+              "RelativeToolTip": "G03_ProyectoGestion\\Models\\ProyectoScrumViewModel.cs",
+              "ViewState": "AgIAABIAAAAAAAAAAAAswCUAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-15T20:54:43.876Z",
               "EditorCaption": ""
             }
           ]
