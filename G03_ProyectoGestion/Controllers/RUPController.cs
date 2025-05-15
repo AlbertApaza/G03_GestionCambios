@@ -7,13 +7,14 @@ using System.Web;
 using System.Web.Mvc;
 using Renci.SshNet;
 using G03_ProyectoGestion.Models;
+using G03_ProyectoGestion.Services;
 
 namespace YourProjectName.Controllers
 {
     public class RUPController : Controller
     {
 
-
+        RupService Rupservice = new RupService();
 
         private g03_databaseEntities db = new g03_databaseEntities();
         private const int RUP_METHODOLOGY_ID = 2;
@@ -49,16 +50,17 @@ namespace YourProjectName.Controllers
         [HttpGet]
         public JsonResult GetProjects()
         {
-            var projects = db.tbProyectoUsuarios
-                .Where(p => p.tbProyectos.idMetodologia == RUP_METHODOLOGY_ID && p.idUsuario == DEFAULT_USER_ID)
-                .Select(p => new
-                {
-                    id = p.tbProyectos.idProyecto,
-                    name = p.tbProyectos.nombreProyecto,
-                    scope = p.tbProyectos.descripcionProyecto,
-                    current_phase = p.tbProyectos.idFase
-                })
-                .ToList();
+            //var projects = db.tbProyectoUsuarios
+            //    .Where(p => p.tbProyectos.idMetodologia == RUP_METHODOLOGY_ID && p.idUsuario == DEFAULT_USER_ID)
+            //    .Select(p => new
+            //    {
+            //        id = p.tbProyectos.idProyecto,
+            //        name = p.tbProyectos.nombreProyecto,
+            //        scope = p.tbProyectos.descripcionProyecto,
+            //        current_phase = p.tbProyectos.idFase
+            //    })
+            //    .ToList();
+            var projects = Rupservice.Listar(DEFAULT_USER_ID);
             return Json(projects, JsonRequestBehavior.AllowGet);
         }
 

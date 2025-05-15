@@ -1,12 +1,16 @@
 ﻿@model G03_ProyectoGestion.Models.tbProyectos
 @{
     ViewBag.Title = ViewBag.Title ?? $"Tablero SCRUM: {Model.nombreProyecto}";
-    int currentProjectId = Model.idProyecto; // ID del proyecto actual para Alpine
+    int currentProjectId = Model.idProyecto;
+    // Pasar fechas del proyecto a JavaScript para validación, en formato yyyy-MM-dd
+    string projectStartDate = Model.fechaInicio?.ToString("yyyy-MM-dd");
+    string projectEndDate = Model.fechaFin?.ToString("yyyy-MM-dd");
+    // Asumo que ViewBag.ProjectUsersAndRoles se carga en el controlador
+    var projectUsersAndRoles = ViewBag.ProjectUsersAndRoles as List<dynamic> ?? new List<dynamic>();
 }
 
 <script src="https://cdn.tailwindcss.com"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-@* Font Awesome - Asegúrate de tener acceso a internet o tenerlo localmente *@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <style>
@@ -19,85 +23,80 @@
         display: block;
         width: 100%;
         padding: 0.5rem 0.75rem;
-        border: 1px solid #D1D5DB; /* coolGray-300 */
-        border-radius: 0.375rem; /* rounded-md */
+        border: 1px solid #D1D5DB;
+        border-radius: 0.375rem;
         box-shadow: inset 0 1px 2px 0 rgba(0,0,0,0.05);
     }
 
         .input-field:focus {
             outline: 2px solid transparent;
             outline-offset: 2px;
-            border-color: #3B82F6; /* blue-500 */
-            box-shadow: 0 0 0 3px rgba(59,130,246,0.3); /* Anillo de foco azul */
+            border-color: #3B82F6;
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.3);
         }
 
     .input-field-sm {
-        padding: 0.375rem 0.625rem; /* py-1.5 px-2.5 */
-        font-size: 0.875rem; /* text-sm */
+        padding: 0.375rem 0.625rem;
+        font-size: 0.875rem;
     }
 
     .btn {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        padding: 0.6rem 1.2rem; /* py-2.5 px-5 */
-        border-radius: 0.375rem; /* rounded-md */
-        font-weight: 600; /* font-semibold */
+        padding: 0.6rem 1.2rem;
+        border-radius: 0.375rem;
+        font-weight: 600;
         transition: background-color 0.15s ease-in-out;
         cursor: pointer;
     }
 
     .btn-sm {
-        padding: 0.4rem 0.8rem; /* py-1.5 px-3 */
-        font-size: 0.875rem; /* text-sm */
-    }
-
-    .btn-xs {
-        padding: 0.25rem 0.5rem; /* py-1 px-2 */
-        font-size: 0.75rem; /* text-xs */
+        padding: 0.4rem 0.8rem;
+        font-size: 0.875rem;
     }
 
     .btn-primary {
-        background-color: #3B82F6; /* blue-500 */
+        background-color: #3B82F6;
         color: white;
     }
 
         .btn-primary:hover {
-            background-color: #2563EB; /* blue-600 */
+            background-color: #2563EB;
         }
 
     .btn-secondary {
-        background-color: #6B7280; /* coolGray-500 */
+        background-color: #6B7280;
         color: white;
     }
 
         .btn-secondary:hover {
-            background-color: #4B5563; /* coolGray-600 */
+            background-color: #4B5563;
         }
 
     .card {
         background-color: white;
-        padding: 1rem; /* p-4 */
-        border-radius: 0.375rem; /* rounded-md */
-        border: 1px solid #E5E7EB; /* coolGray-200 */
-        margin-bottom: 1rem; /* mb-4 */
-        box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05); /* shadow-sm */
+        padding: 1rem;
+        border-radius: 0.375rem;
+        border: 1px solid #E5E7EB;
+        margin-bottom: 1rem;
+        box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05);
     }
 
     .scrum-board {
         display: flex;
-        gap: 1rem; /* gap-4 */
+        gap: 1rem;
         overflow-x: auto;
-        padding-bottom: 1rem; /* pb-4 */
+        padding-bottom: 1rem;
         min-height: 300px;
     }
 
     .sprint-column {
         min-width: 300px;
         max-width: 320px;
-        background-color: #f3f4f6; /* coolGray-100 */
-        padding: 0.75rem; /* p-3 */
-        border-radius: 0.375rem; /* rounded-md */
+        background-color: #f3f4f6;
+        padding: 0.75rem;
+        border-radius: 0.375rem;
         flex-shrink: 0;
         display: flex;
         flex-direction: column;
@@ -106,22 +105,21 @@
     .column-content-wrapper {
         flex-grow: 1;
         overflow-y: auto;
-        max-height: calc(100vh - 350px);
+        max-height: calc(100vh - 400px); /* Ajusta altura para scroll */
     }
-
 
     .backlog-item-card {
         background-color: white;
-        border: 1px solid #e5e7eb; /* coolGray-200 */
-        padding: 0.75rem; /* p-3 */
-        margin-bottom: 0.5rem; /* mb-2 */
-        border-radius: 0.25rem; /* rounded-sm */
+        border: 1px solid #e5e7eb;
+        padding: 0.75rem;
+        margin-bottom: 0.5rem;
+        border-radius: 0.25rem;
         cursor: grab;
         box-shadow: 0 1px 2px 0 rgba(0,0,0,0.03);
     }
 
         .backlog-item-card:hover {
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06); /* shadow-md */
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
         }
 
     .status-column {
@@ -129,21 +127,51 @@
     }
 
     .column-header {
-        font-weight: 600; /* font-semibold */
-        margin-bottom: 0.5rem; /* mb-2 */
-        padding: 0.5rem; /* p-2 */
-        background-color: #e5e7eb; /* coolGray-200 */
-        border-radius: 0.25rem 0.25rem 0 0; /* rounded-t-sm */
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        padding: 0.5rem;
+        background-color: #e5e7eb;
+        border-radius: 0.25rem 0.25rem 0 0;
         text-align: center;
     }
 
     .dragging-over {
-        border: 2px dashed #3B82F6 !important; /* blue-500 */
-        background-color: #eff6ff !important; /* blue-50 */
+        border: 2px dashed #3B82F6 !important;
+        background-color: #eff6ff !important;
+    }
+
+    .timeline {
+        list-style-type: none;
+        padding-left: 0;
+    }
+
+    .timeline-item {
+        margin-bottom: 0.5em;
+        padding-left: 1.5em;
+        position: relative;
+        border-left: 2px solid #3B82F6;
+    }
+
+        .timeline-item::before {
+            content: '';
+            background-color: white;
+            border: 2px solid #3B82F6;
+            border-radius: 50%;
+            width: 0.75em;
+            height: 0.75em;
+            position: absolute;
+            left: -0.45em;
+            top: 0.2em;
+        }
+
+    .validation-error {
+        color: #EF4444;
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
     }
 </style>
 
-<body class="bg-gray-100 text-gray-800" x-data="scrumApp(@currentProjectId)">
+<body class="bg-gray-100 text-gray-800" x-data="scrumApp(@currentProjectId, '@projectStartDate', '@projectEndDate')">
     <div class="container mx-auto p-4">
         <header class="bg-blue-600 text-white p-6 rounded-t-lg shadow-lg mb-6">
             <div class="flex justify-between items-center">
@@ -154,8 +182,8 @@
             </div>
             <p class="text-blue-100 mt-1">@Model.descripcionProyecto</p>
             <p class="text-xs text-blue-200 mt-2">
-                <i class="fas fa-calendar-alt mr-1"></i>Inicio: @Model.fechaInicio?.ToString("dd/MM/yyyy") -
-                <i class="fas fa-calendar-check ml-3 mr-1"></i>Fin: @Model.fechaFin?.ToString("dd/MM/yyyy")
+                <i class="fas fa-calendar-alt mr-1"></i>Inicio: <span x-text="projectStartDate ? formatDisplayDate(projectStartDate) : 'N/A'"></span> -
+                <i class="fas fa-calendar-check ml-3 mr-1"></i>Fin: <span x-text="projectEndDate ? formatDisplayDate(projectEndDate) : 'N/A'"></span>
             </p>
         </header>
 
@@ -186,6 +214,62 @@
         </div>
 
         <main class="p-6 bg-white rounded-lg shadow-lg">
+            <div class="mb-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="md:col-span-2 card bg-gray-50 border">
+                    <h3 class="text-xl font-semibold mb-3 text-gray-700"><i class="fas fa-calendar-alt mr-2"></i>Cronograma del Proyecto y Sprints</h3>
+                    <div x-show="projectStartDate && projectEndDate">
+                        <p class="text-sm text-gray-600 mb-1">
+                            <strong>Proyecto:</strong> <span x-text="formatDisplayDate(projectStartDate.toISOString().split('T')[0])"></span> - <span x-text="formatDisplayDate(projectEndDate.toISOString().split('T')[0])"></span>
+                            (<span x-text="getDurationInDays(projectStartDate.toISOString().split('T')[0], projectEndDate.toISOString().split('T')[0])"></span> días)
+                        </p>
+                    </div>
+                    <div x-show="!projectStartDate || !projectEndDate">
+                        <p class="text-sm text-yellow-600 italic mb-1">Fechas del proyecto no definidas completamente para mostrar cronograma detallado.</p>
+                    </div>
+
+                    <h4 class="text-md font-semibold mt-3 mb-2 text-gray-600">Sprints Planeados:</h4>
+                    <ul class="timeline max-h-40 overflow-y-auto pr-2" x-show="sprints.length > 0">
+                        <template x-for="sprint in sortedSprints" :key="sprint.id">
+                            <li class="timeline-item">
+                                <strong x-text="sprint.name" class="text-blue-600"></strong>
+                                <span class="text-xs text-gray-500 ml-2">
+                                    (<span x-text="formatDisplayDate(sprint.start_date)"></span> - <span x-text="formatDisplayDate(sprint.end_date)"></span>, <span x-text="getDurationInDays(sprint.start_date, sprint.end_date)"></span> días)
+                                </span>
+                            </li>
+                        </template>
+                    </ul>
+                    <p x-show="sprints.length === 0" class="text-sm text-gray-500 italic">No hay sprints definidos aún.</p>
+                </div>
+
+                <div class="card bg-gray-50 border">
+                    <h3 class="text-xl font-semibold mb-3 text-gray-700"><i class="fas fa-users mr-2"></i>Equipo del Proyecto</h3>
+                    <p class="text-sm text-gray-600 mb-4">
+                        Visualiza y gestiona los miembros del equipo y sus roles asignados para este proyecto.
+                    </p>
+                    <a href="@Url.Action("Equipo", "SCRUM", new { idProyecto = Model.idProyecto })"
+                       class="btn btn-primary w-full">
+                        <i class="fas fa-user-cog mr-2"></i>Gestionar Equipo
+                    </a>
+                </div>
+                @*<div class="card bg-gray-50 border">
+                        <h3 class="text-xl font-semibold mb-3 text-gray-700"><i class="fas fa-users mr-2"></i>Equipo del Proyecto</h3>
+                        @if (projectUsersAndRoles.Any())
+                        {
+                            <ul class="list-disc list-inside space-y-1 text-sm max-h-48 overflow-y-auto">
+                                @foreach (var userRole in projectUsersAndRoles)
+                                {
+                                    <li><strong class="text-gray-700">@userRole.userName:</strong> <span class="text-blue-600">@userRole.roleName</span></li>
+                                }
+                            </ul>
+                        }
+                        else
+                        {
+                            <p class="text-sm text-gray-500 italic">No hay usuarios o roles definidos para este proyecto.</p>
+                        }
+                    </div>*@
+            </div>
+            <hr class="my-6 border-gray-300" />
+
             <form @@submit.prevent="addBacklogItem" class="card mb-4 p-4 bg-gray-50 border">
                 <h3 class="text-xl font-semibold mb-3 text-gray-700">
                     <i class="fas fa-plus-square mr-2"></i>Añadir al Product Backlog
@@ -204,7 +288,7 @@
                         <label for="backlogPrio" class="block text-sm font-medium text-gray-700">Prioridad:</label>
                         <select id="backlogPrio" x-model="newBacklogItem.priority" class="input-field">
                             <template x-for="prio in priorities" :key="prio">
-                                <option :value="prio" x-text="prio.charAt(0).toUpperCase() + prio.slice(1)"></option> @* Mostrar con Mayúscula inicial *@
+                                <option :value="prio" x-text="prio.charAt(0).toUpperCase() + prio.slice(1)"></option>
                             </template>
                         </select>
                     </div>
@@ -235,7 +319,7 @@
                     <div class="sprint-column">
                         <div class="column-header">
                             <i class="fas fa-rocket mr-2"></i><span x-text="sprint.name"></span>
-                            <p class="text-xs font-normal text-gray-600 mt-1" x-text="(sprint.start_date || 'N/A') + ' - ' + (sprint.end_date || 'N/A')"></p>
+                            <p class="text-xs font-normal text-gray-600 mt-1" x-text="(sprint.start_date ? formatDisplayDate(sprint.start_date) : 'N/A') + ' - ' + (sprint.end_date ? formatDisplayDate(sprint.end_date) : 'N/A')"></p>
                         </div>
                         <div class="column-content-wrapper">
                             <template x-for="statusName in backlogItemStatesVisual" :key="statusName + '-' + sprint.id">
@@ -266,13 +350,16 @@
                         </div>
                         <div class="mb-2">
                             <label class="text-sm font-medium text-gray-600">Inicio:</label>
-                            <input type="date" x-model="newSprint.start_date" class="input-field input-field-sm">
+                            <input type="date" x-model="newSprint.start_date" @@change="validateSprintDates()" class="input-field input-field-sm">
+                            <p x-show="sprintDateErrors.start_date" x-text="sprintDateErrors.start_date" class="validation-error"></p>
                         </div>
                         <div class="mb-2">
                             <label class="text-sm font-medium text-gray-600">Fin:</label>
-                            <input type="date" x-model="newSprint.end_date" class="input-field input-field-sm">
+                            <input type="date" x-model="newSprint.end_date" @@change="validateSprintDates()" class="input-field input-field-sm">
+                            <p x-show="sprintDateErrors.end_date" x-text="sprintDateErrors.end_date" class="validation-error"></p>
                         </div>
-                        <button type="submit" class="btn btn-primary btn-sm w-full"><i class="fas fa-plus-circle mr-1"></i>Crear Sprint</button>
+                        <p x-show="sprintDateErrors.general" x-text="sprintDateErrors.general" class="validation-error"></p>
+                        <button type="submit" class="btn btn-primary btn-sm w-full mt-2"><i class="fas fa-plus-circle mr-1"></i>Crear Sprint</button>
                     </form>
                 </div>
             </div>
@@ -370,9 +457,11 @@
     </div>
 
     <script>
-    function scrumApp(currentProjectId) {
+    function scrumApp(currentProjectId, projectStartDateString, projectEndDateString) {
         return {
             projectId: currentProjectId,
+            projectStartDate: projectStartDateString ? new Date(projectStartDateString + 'T00:00:00Z') : null,
+            projectEndDate: projectEndDateString ? new Date(projectEndDateString + 'T00:00:00Z') : null,
             sprints: [],
             projectBacklogItems: [],
             dailyScrums: [],
@@ -381,6 +470,7 @@
             currentDailyDetails: null,
 
             newSprint: { name: '', start_date: '', end_date: '' },
+            sprintDateErrors: { start_date: '', end_date: '', general: '' },
             newBacklogItem: { description: '', priority: 'media' },
             userStoryHelperText: 'Quiero [una meta] para que [una razón]',
             newDaily: { date: new Date().toISOString().split('T')[0], observations: '', backlogUpdates: [] },
@@ -404,6 +494,13 @@
                 if (!this.selectedSprintIdForDaily) return [];
                 const sprintIdNum = parseInt(this.selectedSprintIdForDaily);
                 return this.projectBacklogItems.filter(item => item.sprint_id_temp === sprintIdNum);
+            },
+            get sortedSprints() {
+                return [...this.sprints].sort((a,b) => {
+                    const dateA = a.start_date ? new Date(a.start_date) : new Date(0);
+                    const dateB = b.start_date ? new Date(b.start_date) : new Date(0);
+                    return dateA - dateB;
+                });
             },
 
             async init() {
@@ -454,8 +551,6 @@
 
             async fetchApi(url, method = 'GET', body = null) {
                 const options = { method, headers: { 'Content-Type': 'application/json' } };
-                // Para [ValidateAntiForgeryToken] necesitarías añadir el token aquí.
-                // Ejemplo (requiere que @Html.AntiForgeryToken() esté en algún lugar de la página):
                 // const csrfTokenInput = document.querySelector('input[name="__RequestVerificationToken"]');
                 // if (csrfTokenInput) {
                 //     options.headers['RequestVerificationToken'] = csrfTokenInput.value;
@@ -486,15 +581,82 @@
                     this.sprints = await this.fetchApi(`@Url.Action("GetSprintsForProject", "SCRUM")?projectId=${this.projectId}`);
                 } catch (e) { this.showApiError(e, "No se pudieron cargar los sprints"); }
             },
+
+            validateSprintDates() {
+                this.sprintDateErrors = { start_date: '', end_date: '', general: '' };
+                let isValid = true;
+                const sprintStartStr = this.newSprint.start_date;
+                const sprintEndStr = this.newSprint.end_date;
+
+                if (!sprintStartStr) {
+                    this.sprintDateErrors.start_date = 'Fecha de inicio es requerida.'; isValid = false;
+                }
+                if (!sprintEndStr) {
+                    this.sprintDateErrors.end_date = 'Fecha de fin es requerida.'; isValid = false;
+                }
+                if (!sprintStartStr || !sprintEndStr) return isValid;
+
+                const sprintStart = new Date(sprintStartStr + 'T00:00:00Z');
+                const sprintEnd = new Date(sprintEndStr + 'T00:00:00Z');
+
+                if (this.projectStartDate && sprintStart < this.projectStartDate) {
+                    this.sprintDateErrors.start_date = `Inicio no puede ser antes del proyecto (${this.formatDisplayDate(this.projectStartDate.toISOString().split('T')[0])}).`;
+                    isValid = false;
+                }
+                if (this.projectEndDate && sprintStart > this.projectEndDate) {
+                    this.sprintDateErrors.start_date = `Inicio no puede ser después del proyecto (${this.formatDisplayDate(this.projectEndDate.toISOString().split('T')[0])}).`;
+                     isValid = false;
+                }
+                if (this.projectEndDate && sprintEnd > this.projectEndDate) {
+                    this.sprintDateErrors.end_date = `Fin no puede ser después del proyecto (${this.formatDisplayDate(this.projectEndDate.toISOString().split('T')[0])}).`;
+                    isValid = false;
+                }
+                 if (this.projectStartDate && sprintEnd < this.projectStartDate) {
+                    this.sprintDateErrors.end_date = `Fin no puede ser antes del proyecto (${this.formatDisplayDate(this.projectStartDate.toISOString().split('T')[0])}).`;
+                    isValid = false;
+                }
+                if (sprintEnd < sprintStart) {
+                    this.sprintDateErrors.end_date = 'Fin no puede ser antes que inicio del sprint.';
+                    isValid = false;
+                }
+
+                if (isValid) {
+                    for (const existingSprint of this.sprints) {
+                        const existingStart = existingSprint.start_date ? new Date(existingSprint.start_date + 'T00:00:00Z') : null;
+                        const existingEnd = existingSprint.end_date ? new Date(existingSprint.end_date + 'T00:00:00Z') : null;
+                        if (existingStart && existingEnd) {
+                            if (sprintStart < existingEnd && sprintEnd > existingStart) {
+                                this.sprintDateErrors.general = `Fechas se solapan con sprint: ${existingSprint.name}.`;
+                                isValid = false;
+                                break;
+                            }
+                        }
+                    }
+                }
+                return isValid;
+            },
+
             async addSprint() {
+                if (!this.validateSprintDates()) {
+                    return;
+                }
                 try {
                     const payload = { ...this.newSprint, ProjectId: this.projectId };
                     const result = await this.fetchApi('@Url.Action("CreateSprint", "SCRUM")', 'POST', payload);
                     if (result.success) {
                         this.sprints.push(result);
                         this.newSprint = { name: '', start_date: '', end_date: '' };
+                        this.sprintDateErrors = { start_date: '', end_date: '', general: '' };
                     } else {
-                        alert('Error al crear sprint: ' + (result.message || 'Error desconocido') + (result.errors ? '\n- ' + result.errors.join('\n- ') : ''));
+                        if (result.errors && Array.isArray(result.errors)) {
+                             result.errors.forEach(err => {
+                                if (err.toLowerCase().includes("inicio") || err.toLowerCase().includes("start_date")) this.sprintDateErrors.start_date = err;
+                                else if (err.toLowerCase().includes("fin") || err.toLowerCase().includes("end_date")) this.sprintDateErrors.end_date = err;
+                                else this.sprintDateErrors.general = (this.sprintDateErrors.general ? this.sprintDateErrors.general + " " : "") + err;
+                            });
+                        } else {
+                             this.sprintDateErrors.general = result.message || 'Error desconocido al crear sprint.';
+                        }
                     }
                 } catch (e) { this.showApiError(e, "Error al crear sprint"); }
             },
@@ -633,7 +795,6 @@
                         ProjectId: this.projectId,
                         BacklogUpdates: this.newDaily.backlogUpdates.filter(bu => bu.backlogId && bu.userId && bu.comment && bu.comment.trim())
                     };
-                    // Validación extra en cliente: asegurar que al menos UserId y BacklogId tienen valor
                     if (payload.BacklogUpdates.some(bu => !bu.backlogId || !bu.userId)) {
                         alert("Por favor, seleccione un Item del Backlog y un Usuario para cada actualización de actividad.");
                         return;
@@ -658,6 +819,24 @@
                     this.selectedDailyId = null;
                     this.currentDailyDetails = null;
                 }
+            },
+
+            formatDisplayDate(dateString) { // Espera yyyy-MM-dd
+                if (!dateString) return 'N/A';
+                const parts = dateString.split('-');
+                if (parts.length === 3) {
+                    return `${parts[2]}/${parts[1]}/${parts[0]}`;
+                }
+                return 'Fecha Inválida';
+            },
+            getDurationInDays(startStr, endStr) {
+                if (!startStr || !endStr) return '?';
+                const startDate = new Date(startStr + 'T00:00:00Z');
+                const endDate = new Date(endStr + 'T00:00:00Z');
+                if (isNaN(startDate.getTime()) || isNaN(endDate.getTime()) || endDate < startDate) return '?';
+                const diffTime = Math.abs(endDate.getTime() - startDate.getTime());
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+                return diffDays;
             }
         }
     }

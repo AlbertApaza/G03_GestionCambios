@@ -32,6 +32,7 @@ namespace G03_ProyectoGestion.Controllers
                 fechaFin = fechaFin,
                 idUsuario = idUsuarioCreador,
                 idMetodologia = idMetodologia,
+                estado = 1, // Estado activo
                 idFase = idMetodologia == 2 ? 1 : (int?)null // Asignar fase inicial si es Rup
             };
 

@@ -316,5 +316,22 @@ namespace G03_ProyectoGestion.Controllers
             }
             base.Dispose(disposing);
         }
+        // GET: SCRUM/Equipo?idProyecto=5
+        public ActionResult Equipo(int idProyecto)
+        {
+            var proyecto = db.tbProyectos
+                            .Include(p => p.tbProyectoUsuarios.Select(pu => pu.tbUsuarios))
+                            .Include(p => p.tbProyectoUsuarios.Select(pu => pu.tbRoles)) 
+                            .FirstOrDefault(p => p.idProyecto == idProyecto && p.idMetodologia == SCRUM_METHODOLOGY_ID);
+
+            if (proyecto == null)
+            {
+                TempData["ErrorMessage"] = "Proyecto SCRUM no encontrado o no válido.";
+                return RedirectToAction("Index", "Proyecto");
+            }
+
+            ViewBag.Title = $"Equipo del Proyecto: {proyecto.nombreProyecto}";
+            return View(proyecto);
+        }
     }
 }
