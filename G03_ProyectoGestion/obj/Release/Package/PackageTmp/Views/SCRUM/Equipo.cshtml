@@ -1,0 +1,76 @@
+﻿@model G03_ProyectoGestion.Models.tbProyectos
+
+@{
+    ViewBag.Title = ViewBag.Title ?? $"Equipo del Proyecto: {Model.nombreProyecto}";
+}
+
+<div class="container mx-auto mt-5 p-4">
+    <div class="card shadow-lg">
+        <div class="card-header bg-blue-600 text-white p-4">
+            <div class="flex justify-between items-center">
+                <h4 class="text-2xl text-black font-bold mb-0">
+                    <i class="fas fa-users mr-2"></i>Equipo del Proyecto: @Model.nombreProyecto
+                </h4>
+                <a href="@Url.Action("Index", "SCRUM", new { id = Model.idProyecto })" class="btn btn-sm bg-blue-100 text-blue-700 hover:bg-blue-200">
+                    <i class="fas fa-arrow-left mr-1"></i>Volver al Tablero
+                </a>
+            </div>
+        </div>
+        <div class="card-body p-5">
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4" role="alert">
+                    <p class="font-bold">Éxito</p>
+                    <p>@TempData["SuccessMessage"]</p>
+                </div>
+            }
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4" role="alert">
+                    <p class="font-bold">Error</p>
+                    <p>@TempData["ErrorMessage"]</p>
+                </div>
+            }
+
+            <div class="mb-4 text-right">
+                <!-- Botones adicionales si deseas agregar -->
+            </div>
+
+            @if (!Model.tbProyectoUsuarios.Any())
+            {
+                <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4" role="alert">
+                    <p class="font-bold">Información</p>
+                    <p>No hay miembros asignados a este proyecto actualmente.</p>
+                </div>
+            }
+            else
+            {
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white border border-gray-300 rounded-md">
+                        <thead class="bg-gray-100 text-gray-700">
+                            <tr>
+                                <th class="text-left py-2 px-4 font-medium text-sm border-b border-gray-300">Usuario</th>
+                                <th class="text-left py-2 px-4 font-medium text-sm border-b border-gray-300">Rol en el Proyecto</th>
+                                <th class="text-left py-2 px-4 font-medium text-sm border-b border-gray-300">Email del Usuario</th>
+                                <th class="text-left py-2 px-4 font-medium text-sm border-b border-gray-300">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-gray-800">
+                            @foreach (var pu in Model.tbProyectoUsuarios.OrderBy(u => u.tbUsuarios.nombreUsuario))
+                            {
+                                <tr class="border-b border-gray-200 hover:bg-gray-50">
+                                    <td class="py-2 px-4">@(pu.tbUsuarios?.nombreUsuario ?? "Usuario no disponible")</td>
+                                    <td class="py-2 px-4">@(pu.tbRoles?.nombreRol ?? "No asignado")</td>
+                                    <td class="py-2 px-4">@(pu.tbUsuarios?.emailUsuario ?? "N/A")</td>
+                                    <td class="py-2 px-4">
+                                        <span class="text-gray-400 italic">N/A</span>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>

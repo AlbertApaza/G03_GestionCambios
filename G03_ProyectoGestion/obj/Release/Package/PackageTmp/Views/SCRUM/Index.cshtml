@@ -1,0 +1,844 @@
+﻿@model G03_ProyectoGestion.Models.tbProyectos
+@{
+    ViewBag.Title = ViewBag.Title ?? $"Tablero SCRUM: {Model.nombreProyecto}";
+    int currentProjectId = Model.idProyecto;
+    // Pasar fechas del proyecto a JavaScript para validación, en formato yyyy-MM-dd
+    string projectStartDate = Model.fechaInicio?.ToString("yyyy-MM-dd");
+    string projectEndDate = Model.fechaFin?.ToString("yyyy-MM-dd");
+    // Asumo que ViewBag.ProjectUsersAndRoles se carga en el controlador
+    var projectUsersAndRoles = ViewBag.ProjectUsersAndRoles as List<dynamic> ?? new List<dynamic>();
+}
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<style>
+    [x-cloak] {
+        display: none !important;
+    }
+
+    .input-field {
+        margin-top: 0.25rem;
+        display: block;
+        width: 100%;
+        padding: 0.5rem 0.75rem;
+        border: 1px solid #D1D5DB;
+        border-radius: 0.375rem;
+        box-shadow: inset 0 1px 2px 0 rgba(0,0,0,0.05);
+    }
+
+        .input-field:focus {
+            outline: 2px solid transparent;
+            outline-offset: 2px;
+            border-color: #3B82F6;
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.3);
+        }
+
+    .input-field-sm {
+        padding: 0.375rem 0.625rem;
+        font-size: 0.875rem;
+    }
+
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.6rem 1.2rem;
+        border-radius: 0.375rem;
+        font-weight: 600;
+        transition: background-color 0.15s ease-in-out;
+        cursor: pointer;
+    }
+
+    .btn-sm {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.875rem;
+    }
+
+    .btn-primary {
+        background-color: #3B82F6;
+        color: white;
+    }
+
+        .btn-primary:hover {
+            background-color: #2563EB;
+        }
+
+    .btn-secondary {
+        background-color: #6B7280;
+        color: white;
+    }
+
+        .btn-secondary:hover {
+            background-color: #4B5563;
+        }
+
+    .card {
+        background-color: white;
+        padding: 1rem;
+        border-radius: 0.375rem;
+        border: 1px solid #E5E7EB;
+        margin-bottom: 1rem;
+        box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05);
+    }
+
+    .scrum-board {
+        display: flex;
+        gap: 1rem;
+        overflow-x: auto;
+        padding-bottom: 1rem;
+        min-height: 300px;
+    }
+
+    .sprint-column {
+        min-width: 300px;
+        max-width: 320px;
+        background-color: #f3f4f6;
+        padding: 0.75rem;
+        border-radius: 0.375rem;
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .column-content-wrapper {
+        flex-grow: 1;
+        overflow-y: auto;
+        max-height: calc(100vh - 400px); /* Ajusta altura para scroll */
+    }
+
+    .backlog-item-card {
+        background-color: white;
+        border: 1px solid #e5e7eb;
+        padding: 0.75rem;
+        margin-bottom: 0.5rem;
+        border-radius: 0.25rem;
+        cursor: grab;
+        box-shadow: 0 1px 2px 0 rgba(0,0,0,0.03);
+    }
+
+        .backlog-item-card:hover {
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+        }
+
+    .status-column {
+        min-height: 100px;
+    }
+
+    .column-header {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        padding: 0.5rem;
+        background-color: #e5e7eb;
+        border-radius: 0.25rem 0.25rem 0 0;
+        text-align: center;
+    }
+
+    .dragging-over {
+        border: 2px dashed #3B82F6 !important;
+        background-color: #eff6ff !important;
+    }
+
+    .timeline {
+        list-style-type: none;
+        padding-left: 0;
+    }
+
+    .timeline-item {
+        margin-bottom: 0.5em;
+        padding-left: 1.5em;
+        position: relative;
+        border-left: 2px solid #3B82F6;
+    }
+
+        .timeline-item::before {
+            content: '';
+            background-color: white;
+            border: 2px solid #3B82F6;
+            border-radius: 50%;
+            width: 0.75em;
+            height: 0.75em;
+            position: absolute;
+            left: -0.45em;
+            top: 0.2em;
+        }
+
+    .validation-error {
+        color: #EF4444;
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+    }
+</style>
+
+<body class="bg-gray-100 text-gray-800" x-data="scrumApp(@currentProjectId, '@projectStartDate', '@projectEndDate')">
+    <div class="container mx-auto p-4">
+        <header class="bg-blue-600 text-white p-6 rounded-t-lg shadow-lg mb-6">
+            <div class="flex justify-between items-center">
+                <h1 class="text-4xl font-bold">@Model.nombreProyecto - Tablero SCRUM</h1>
+                <a href="@Url.Action("Index", "Proyecto")" class="btn btn-sm bg-blue-500 hover:bg-blue-400">
+                    <i class="fas fa-arrow-left mr-2"></i>Volver a Mis Proyectos
+                </a>
+            </div>
+            <p class="text-blue-100 mt-1">@Model.descripcionProyecto</p>
+            <p class="text-xs text-blue-200 mt-2">
+                <i class="fas fa-calendar-alt mr-1"></i>Inicio: <span x-text="projectStartDate ? formatDisplayDate(projectStartDate) : 'N/A'"></span> -
+                <i class="fas fa-calendar-check ml-3 mr-1"></i>Fin: <span x-text="projectEndDate ? formatDisplayDate(projectEndDate) : 'N/A'"></span>
+            </p>
+        </header>
+
+        <div x-data="{ showMessage: false, messageText: '', messageType: '' }"
+             x-init="
+             const successMessage=@Html.Raw(TempData["SuccessMessage"] != null ? "'" + HttpUtility.JavaScriptStringEncode(TempData["SuccessMessage"].ToString()) + "'" : "null") ;
+             const errorMessage=@Html.Raw(TempData["ErrorMessage"] != null ? "'" + HttpUtility.JavaScriptStringEncode(TempData["ErrorMessage"].ToString()) + "'" : "null") ;
+             if (successMessage) {
+             $nextTick(()=>
+            { messageText = successMessage; messageType = 'success'; showMessage = true; setTimeout(() => showMessage = false, 5000); });
+            }
+            if (errorMessage) {
+            $nextTick(() => { messageText = errorMessage; messageType = 'error'; showMessage = true; setTimeout(() => showMessage = false, 8000); });
+            }
+            ">
+            <div x-show="showMessage && messageText" x-cloak
+                 :class="{
+                    'bg-green-100 border-green-400 text-green-700': messageType === 'success',
+                    'bg-red-100 border-red-400 text-red-700': messageType === 'error'
+                 }"
+                 class="border px-4 py-3 rounded relative mb-4" role="alert">
+                <strong class="font-bold" x-text="messageType === 'success' ? 'Éxito!' : 'Error!'"></strong>
+                <span class="block sm:inline" x-text="messageText"></span>
+                <span class="absolute top-0 bottom-0 right-0 px-4 py-3" @@click="showMessage = false" role="button" tabindex="0">
+                    <svg class="fill-current h-6 w-6" :class="messageType === 'success' ? 'text-green-500' : 'text-red-500'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Cerrar</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" /></svg>
+                </span>
+            </div>
+        </div>
+
+        <main class="p-6 bg-white rounded-lg shadow-lg">
+            <div class="mb-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="md:col-span-2 card bg-gray-50 border">
+                    <h3 class="text-xl font-semibold mb-3 text-gray-700"><i class="fas fa-calendar-alt mr-2"></i>Cronograma del Proyecto y Sprints</h3>
+                    <div x-show="projectStartDate && projectEndDate">
+                        <p class="text-sm text-gray-600 mb-1">
+                            <strong>Proyecto:</strong> <span x-text="formatDisplayDate(projectStartDate.toISOString().split('T')[0])"></span> - <span x-text="formatDisplayDate(projectEndDate.toISOString().split('T')[0])"></span>
+                            (<span x-text="getDurationInDays(projectStartDate.toISOString().split('T')[0], projectEndDate.toISOString().split('T')[0])"></span> días)
+                        </p>
+                    </div>
+                    <div x-show="!projectStartDate || !projectEndDate">
+                        <p class="text-sm text-yellow-600 italic mb-1">Fechas del proyecto no definidas completamente para mostrar cronograma detallado.</p>
+                    </div>
+
+                    <h4 class="text-md font-semibold mt-3 mb-2 text-gray-600">Sprints Planeados:</h4>
+                    <ul class="timeline max-h-40 overflow-y-auto pr-2" x-show="sprints.length > 0">
+                        <template x-for="sprint in sortedSprints" :key="sprint.id">
+                            <li class="timeline-item">
+                                <strong x-text="sprint.name" class="text-blue-600"></strong>
+                                <span class="text-xs text-gray-500 ml-2">
+                                    (<span x-text="formatDisplayDate(sprint.start_date)"></span> - <span x-text="formatDisplayDate(sprint.end_date)"></span>, <span x-text="getDurationInDays(sprint.start_date, sprint.end_date)"></span> días)
+                                </span>
+                            </li>
+                        </template>
+                    </ul>
+                    <p x-show="sprints.length === 0" class="text-sm text-gray-500 italic">No hay sprints definidos aún.</p>
+                </div>
+
+                <div class="card bg-gray-50 border">
+                    <h3 class="text-xl font-semibold mb-3 text-gray-700"><i class="fas fa-users mr-2"></i>Equipo del Proyecto</h3>
+                    <p class="text-sm text-gray-600 mb-4">
+                        Visualiza y gestiona los miembros del equipo y sus roles asignados para este proyecto.
+                    </p>
+                    <a href="@Url.Action("Equipo", "SCRUM", new { idProyecto = Model.idProyecto })"
+                       class="btn btn-primary w-full">
+                        <i class="fas fa-user-cog mr-2"></i>Gestionar Equipo
+                    </a>
+                </div>
+                @*<div class="card bg-gray-50 border">
+                        <h3 class="text-xl font-semibold mb-3 text-gray-700"><i class="fas fa-users mr-2"></i>Equipo del Proyecto</h3>
+                        @if (projectUsersAndRoles.Any())
+                        {
+                            <ul class="list-disc list-inside space-y-1 text-sm max-h-48 overflow-y-auto">
+                                @foreach (var userRole in projectUsersAndRoles)
+                                {
+                                    <li><strong class="text-gray-700">@userRole.userName:</strong> <span class="text-blue-600">@userRole.roleName</span></li>
+                                }
+                            </ul>
+                        }
+                        else
+                        {
+                            <p class="text-sm text-gray-500 italic">No hay usuarios o roles definidos para este proyecto.</p>
+                        }
+                    </div>*@
+            </div>
+            <hr class="my-6 border-gray-300" />
+
+            <form @@submit.prevent="addBacklogItem" class="card mb-4 p-4 bg-gray-50 border">
+                <h3 class="text-xl font-semibold mb-3 text-gray-700">
+                    <i class="fas fa-plus-square mr-2"></i>Añadir al Product Backlog
+                </h3>
+                <div class="mb-3">
+                    <label for="backlogDesc" class="block text-sm font-medium text-gray-700">Descripción del Item (User Story):</label>
+                    <textarea id="backlogDesc"
+                              x-model="newBacklogItem.description"
+                              @@input="updateUserStoryHelperText($event.target.value)"
+                              placeholder="Como [tipo de usuario]..."
+                              rows="3" required class="input-field"></textarea>
+                    <small class="block text-gray-500 mt-1 text-xs italic" x-html="userStoryHelperText"></small>
+                </div>
+                <div class="flex items-end gap-4">
+                    <div class="flex-grow">
+                        <label for="backlogPrio" class="block text-sm font-medium text-gray-700">Prioridad:</label>
+                        <select id="backlogPrio" x-model="newBacklogItem.priority" class="input-field">
+                            <template x-for="prio in priorities" :key="prio">
+                                <option :value="prio" x-text="prio.charAt(0).toUpperCase() + prio.slice(1)"></option>
+                            </template>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary self-end"><i class="fas fa-plus mr-2"></i>Añadir Item</button>
+                </div>
+            </form>
+
+            <hr class="my-6 border-gray-300" />
+
+            <div class="scrum-board" @@dragover.prevent @@dragenter.prevent>
+                <div class="sprint-column">
+                    <div class="column-header"><i class="fas fa-clipboard-list mr-2"></i>Product Backlog</div>
+                    <div class="column-content-wrapper">
+                        <div class="status-column product-backlog-list min-h-[200px] bg-white p-2 rounded-b-md border border-t-0 border-gray-200"
+                             @@drop="dropItemToProductBacklog($event)" @@dragenter="highlightDropZone($event.currentTarget)" @@dragleave="clearDropZoneHighlight($event.currentTarget)">
+                            <template x-for="item in productBacklogOnlyItems" :key="item.id">
+                                <div class="backlog-item-card" :draggable="true" @@dragstart="dragStartItem(item, null, null, $event)" @@dragend="dragEndItem($event)">
+                                    <p x-text="item.description" class="text-sm font-medium text-gray-800"></p>
+                                    <small class="block text-gray-600 text-xs mt-1">Prioridad: <span class="font-semibold" x-text="item.priority ? item.priority.charAt(0).toUpperCase() + item.priority.slice(1) : 'N/A'"></span></small>
+                                </div>
+                            </template>
+                            <p x-show="productBacklogOnlyItems.length === 0" class="text-xs text-gray-500 p-2 text-center italic">El Product Backlog está vacío.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <template x-for="sprint in sprints" :key="sprint.id">
+                    <div class="sprint-column">
+                        <div class="column-header">
+                            <i class="fas fa-rocket mr-2"></i><span x-text="sprint.name"></span>
+                            <p class="text-xs font-normal text-gray-600 mt-1" x-text="(sprint.start_date ? formatDisplayDate(sprint.start_date) : 'N/A') + ' - ' + (sprint.end_date ? formatDisplayDate(sprint.end_date) : 'N/A')"></p>
+                        </div>
+                        <div class="column-content-wrapper">
+                            <template x-for="statusName in backlogItemStatesVisual" :key="statusName + '-' + sprint.id">
+                                <div class="mb-3">
+                                    <h5 class="text-sm font-medium text-gray-600 p-1 bg-gray-100 rounded text-center" x-text="statusName"></h5>
+                                    <div class="status-column min-h-[100px] border border-dashed border-gray-300 rounded p-2 mt-1 bg-white"
+                                         @@drop="dropItemToSprint(sprint.id, statusName, $event)" @@dragenter="highlightDropZone($event.currentTarget)" @@dragleave="clearDropZoneHighlight($event.currentTarget)">
+                                        <template x-for="item in getSprintBacklogItemsByVisualState(sprint.id, statusName)" :key="item.id">
+                                            <div class="backlog-item-card" :draggable="true" @@dragstart="dragStartItem(item, sprint.id, statusName, $event)" @@dragend="dragEndItem($event)">
+                                                <p x-text="item.description" class="text-sm font-medium text-gray-800"></p>
+                                                <small class="block text-gray-600 text-xs mt-1">Prioridad: <span class="font-semibold" x-text="item.priority ? item.priority.charAt(0).toUpperCase() + item.priority.slice(1) : 'N/A'"></span></small>
+                                            </div>
+                                        </template>
+                                        <p x-show="getSprintBacklogItemsByVisualState(sprint.id, statusName).length === 0" class="text-xs text-gray-400 p-2 text-center italic">Arrastra items aquí</p>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </template>
+
+                <div class="sprint-column">
+                    <form @@submit.prevent="addSprint" class="card p-3 bg-gray-50 border">
+                        <h4 class="font-semibold mb-2 text-gray-700"><i class="fas fa-layer-group mr-2"></i>Nuevo Sprint</h4>
+                        <div class="mb-2">
+                            <label class="text-sm font-medium text-gray-600">Nombre:</label>
+                            <input type="text" x-model="newSprint.name" placeholder="Ej: Sprint Alfa" required class="input-field input-field-sm">
+                        </div>
+                        <div class="mb-2">
+                            <label class="text-sm font-medium text-gray-600">Inicio:</label>
+                            <input type="date" x-model="newSprint.start_date" @@change="validateSprintDates()" class="input-field input-field-sm">
+                            <p x-show="sprintDateErrors.start_date" x-text="sprintDateErrors.start_date" class="validation-error"></p>
+                        </div>
+                        <div class="mb-2">
+                            <label class="text-sm font-medium text-gray-600">Fin:</label>
+                            <input type="date" x-model="newSprint.end_date" @@change="validateSprintDates()" class="input-field input-field-sm">
+                            <p x-show="sprintDateErrors.end_date" x-text="sprintDateErrors.end_date" class="validation-error"></p>
+                        </div>
+                        <p x-show="sprintDateErrors.general" x-text="sprintDateErrors.general" class="validation-error"></p>
+                        <button type="submit" class="btn btn-primary btn-sm w-full mt-2"><i class="fas fa-plus-circle mr-1"></i>Crear Sprint</button>
+                    </form>
+                </div>
+            </div>
+
+            <hr class="my-6 border-gray-300" />
+
+            <div class="mt-8">
+                <h3 class="text-2xl font-semibold mb-4 text-gray-700"><i class="fas fa-sun mr-2"></i>Daily Scrums</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="md:col-span-1">
+                        <div class="card bg-gray-50 border">
+                            <label for="dailySprintSelect" class="block text-sm font-medium text-gray-700 mb-1">Sprint para Daily:</label>
+                            <select id="dailySprintSelect" x-model="selectedSprintIdForDaily" @@change="fetchDailiesForSelectedSprint()" class="input-field mb-3">
+                                <option value="">-- Seleccione un Sprint --</option>
+                                <template x-for="sprint in sprints" :key="sprint.id">
+                                    <option :value="sprint.id" x-text="sprint.name"></option>
+                                </template>
+                            </select>
+
+                            <div x-show="selectedSprintIdForDaily" x-cloak>
+                                <form @@submit.prevent="addDaily" class="mt-2 space-y-3">
+                                    <h4 class="font-semibold text-gray-700" x-text="'Nuevo Daily para ' + (sprints.find(s=>s.id==selectedSprintIdForDaily)?.name || '')"></h4>
+                                    <div>
+                                        <label class="text-sm font-medium text-gray-600">Fecha:</label>
+                                        <input type="date" x-model="newDaily.date" required class="input-field input-field-sm">
+                                    </div>
+                                    <div>
+                                        <label class="text-sm font-medium text-gray-600">Observaciones Generales:</label>
+                                        <textarea x-model="newDaily.observations" rows="3" class="input-field input-field-sm"></textarea>
+                                    </div>
+
+                                    <h5 class="text-sm font-semibold mt-3 mb-1 text-gray-600">Actualizaciones de Backlog Items (del Sprint seleccionado):</h5>
+                                    <div class="space-y-2 max-h-40 overflow-y-auto pr-1">
+                                        <template x-for="(update, index) in newDaily.backlogUpdates" :key="index">
+                                            <div class="border p-2 rounded bg-white shadow-sm">
+                                                <select x-model="update.backlogId" class="input-field input-field-sm mb-1 text-xs">
+                                                    <option value="">-- Item del Backlog --</option>
+                                                    <template x-for="item in itemsInSelectedSprintForDaily()" :key="item.id + '-daily-' + index">
+                                                        <option :value="item.id" x-text="item.description.length > 30 ? item.description.substring(0,30)+'...' : item.description"></option>
+                                                    </template>
+                                                </select>
+                                                <select x-model="update.userId" class="input-field input-field-sm mb-1 text-xs">
+                                                    <option value="">-- Usuario --</option>
+                                                    <template x-for="user in usuarios" :key="user.id + '-daily-' + index">
+                                                        <option :value="user.id" x-text="user.name"></option>
+                                                    </template>
+                                                </select>
+                                                <input type="text" x-model="update.comment" placeholder="Comentario de actividad..." class="input-field input-field-sm text-xs">
+                                                <button type="button" @@click="removeDailyBacklogUpdate(index)" class="text-red-500 text-xs mt-1 hover:underline">Quitar item</button>
+                                            </div>
+                                        </template>
+                                        <p x-show="itemsInSelectedSprintForDaily().length === 0" class="text-xs text-gray-500 italic p-1">No hay items en este sprint (según el tablero visual) para actualizar.</p>
+                                    </div>
+                                    <button type="button" @@click="addDailyBacklogUpdateEntry()" class="btn btn-secondary btn-sm w-full text-xs py-1" :disabled="itemsInSelectedSprintForDaily().length === 0"><i class="fas fa-comment-dots mr-1"></i>Añadir Actualización de Item</button>
+                                    <button type="submit" class="btn btn-primary btn-sm w-full mt-3"><i class="fas fa-save mr-1"></i>Guardar Daily</button>
+                                </form>
+                            </div>
+                            <p x-show="!selectedSprintIdForDaily" class="text-sm text-gray-500 italic mt-2">Seleccione un sprint para registrar un daily.</p>
+                        </div>
+                    </div>
+                    <div class="md:col-span-2">
+                        <h4 class="font-semibold mb-2 text-gray-700">Dailies Registrados <span x-show="selectedSprintIdForDaily" x-text="'para ' + (sprints.find(s=>s.id==selectedSprintIdForDaily)?.name || '')"></span>:</h4>
+                        <div class="max-h-[500px] overflow-y-auto space-y-2 pr-1">
+                            <template x-for="daily in dailyScrums" :key="daily.id">
+                                <div class="card p-3 cursor-pointer hover:shadow-md transition-shadow" @@click="fetchDailyDetails(daily.id)" :class="{'ring-2 ring-blue-500 shadow-lg': selectedDailyId === daily.id}">
+                                    <p class="font-medium"><strong>Fecha:</strong> <span x-text="daily.date"></span></p>
+                                    <p class="text-sm truncate"><strong>Obs:</strong> <span x-text="daily.observations || 'Ninguna'"></span></p>
+                                </div>
+                            </template>
+                            <p x-show="selectedSprintIdForDaily && dailyScrums.length === 0" class="text-sm text-gray-500 italic p-4 text-center">No hay dailies registrados para este sprint.</p>
+                            <p x-show="!selectedSprintIdForDaily" class="text-sm text-gray-500 italic p-4 text-center">Seleccione un sprint para ver sus dailies.</p>
+                        </div>
+
+                        <div x-show="currentDailyDetails" x-cloak class="card mt-4 p-4 bg-blue-50 border-blue-200 border">
+                            <h4 class="font-semibold text-lg mb-2 text-blue-700" x-text="'Detalles del Daily: ' + currentDailyDetails.date"></h4>
+                            <p class="mb-1"><strong>Observaciones:</strong></p>
+                            <p class="pl-2 mb-3 text-gray-700 whitespace-pre-wrap" x-text="currentDailyDetails.observations || 'Ninguna'"></p>
+                            <h5 class="font-medium mt-3 mb-1 text-gray-600">Items Comentados:</h5>
+                            <ul class="list-disc list-inside pl-2 space-y-1">
+                                <template x-for="entry in currentDailyDetails.backlog_entries" :key="entry.backlog_id + '-' + entry.user_id + '-' + Math.random()">
+                                    <li class="text-sm text-gray-700">
+                                        <strong x-text="entry.backlog_description || '[Item Eliminado]'"></strong> por <em x-text="entry.user_name || '[Usuario Eliminado]'"></em>: "<span x-text="entry.comment"></span>"
+                                    </li>
+                                </template>
+                                <li x-show="!currentDailyDetails.backlog_entries || currentDailyDetails.backlog_entries.length === 0" class="text-sm text-gray-500 italic">Ningún item comentado.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer class="text-center text-sm text-gray-500 mt-12 pb-6">
+            Gestor SCRUM © @DateTime.Now.Year
+        </footer>
+    </div>
+
+    <script>
+    function scrumApp(currentProjectId, projectStartDateString, projectEndDateString) {
+        return {
+            projectId: currentProjectId,
+            projectStartDate: projectStartDateString ? new Date(projectStartDateString + 'T00:00:00Z') : null,
+            projectEndDate: projectEndDateString ? new Date(projectEndDateString + 'T00:00:00Z') : null,
+            sprints: [],
+            projectBacklogItems: [],
+            dailyScrums: [],
+            selectedSprintIdForDaily: '',
+            selectedDailyId: null,
+            currentDailyDetails: null,
+
+            newSprint: { name: '', start_date: '', end_date: '' },
+            sprintDateErrors: { start_date: '', end_date: '', general: '' },
+            newBacklogItem: { description: '', priority: 'media' },
+            userStoryHelperText: 'Quiero [una meta] para que [una razón]',
+            newDaily: { date: new Date().toISOString().split('T')[0], observations: '', backlogUpdates: [] },
+
+            usuarios: @Html.Raw(Json.Encode(ViewBag.Usuarios ?? new List<object>())),
+            priorities: @Html.Raw(Json.Encode(ViewBag.PrioridadesBacklog ?? new List<string>())),
+            backlogItemStatesVisual: @Html.Raw(Json.Encode(ViewBag.EstadosBacklogVisual ?? new List<string>())),
+
+            draggedItem: null,
+            draggedItemOriginalSprintIdTemp: null,
+            draggedItemOriginalStatusTemp: null,
+            currentDropTarget: null,
+
+            get productBacklogOnlyItems() {
+                return this.projectBacklogItems.filter(item => !item.sprint_id_temp);
+            },
+            getSprintBacklogItemsByVisualState(sprintId, statusName) {
+                 return this.projectBacklogItems.filter(item => item.sprint_id_temp === sprintId && item.status_temp === statusName);
+            },
+            itemsInSelectedSprintForDaily() {
+                if (!this.selectedSprintIdForDaily) return [];
+                const sprintIdNum = parseInt(this.selectedSprintIdForDaily);
+                return this.projectBacklogItems.filter(item => item.sprint_id_temp === sprintIdNum);
+            },
+            get sortedSprints() {
+                return [...this.sprints].sort((a,b) => {
+                    const dateA = a.start_date ? new Date(a.start_date) : new Date(0);
+                    const dateB = b.start_date ? new Date(b.start_date) : new Date(0);
+                    return dateA - dateB;
+                });
+            },
+
+            async init() {
+                if (this.priorities.length > 0) {
+                    this.newBacklogItem.priority = this.priorities.includes('media') ? 'media' : this.priorities[0];
+                } else {
+                    this.newBacklogItem.priority = 'media';
+                }
+                this.updateUserStoryHelperText('');
+
+                if(this.projectId) {
+                    await this.fetchSprintsForProject();
+                    await this.fetchBacklogItemsForProject();
+                }
+            },
+
+            updateUserStoryHelperText(currentText) {
+                const comoPattern = /^como\s+/i;
+                const quieroPattern = /quiero\s+/i;
+                const paraQuePattern = /para que\s+/i;
+                let textLower = currentText.toLowerCase();
+
+                if (comoPattern.test(textLower)) {
+                    let parteComo = currentText.match(comoPattern)[0];
+                    let resto = currentText.substring(parteComo.length);
+
+                    if (quieroPattern.test(resto.toLowerCase())) {
+                        let parteQuiero = resto.match(quieroPattern)[0];
+                        let ultimoResto = resto.substring(parteQuiero.length);
+                        if (paraQuePattern.test(ultimoResto.toLowerCase())) {
+                             this.userStoryHelperText = `<span class="text-green-500">¡Formato de User Story completo!</span>`;
+                        } else {
+                            this.userStoryHelperText = `... <strong class="text-blue-600">para que</strong> [una razón]`;
+                        }
+                    } else {
+                         this.userStoryHelperText = `... <strong class="text-blue-600">quiero</strong> [una meta] para que [una razón]`;
+                    }
+                } else if (currentText.trim() === '') {
+                     this.userStoryHelperText = 'Quiero [una meta] para que [una razón]';
+                } else {
+                    if (!quieroPattern.test(textLower) && !paraQuePattern.test(textLower)) {
+                         this.userStoryHelperText = 'Quiero [una meta] para que [una razón]';
+                    } else if (quieroPattern.test(textLower) && !paraQuePattern.test(textLower.substring(textLower.indexOf("quiero")))) {
+                         this.userStoryHelperText = `... <strong class="text-blue-600">para que</strong> [una razón]`;
+                    }
+                }
+            },
+
+            async fetchApi(url, method = 'GET', body = null) {
+                const options = { method, headers: { 'Content-Type': 'application/json' } };
+                // const csrfTokenInput = document.querySelector('input[name="__RequestVerificationToken"]');
+                // if (csrfTokenInput) {
+                //     options.headers['RequestVerificationToken'] = csrfTokenInput.value;
+                // }
+                if (body) options.body = JSON.stringify(body);
+                try {
+                    const response = await fetch(url, options);
+                    const responseData = await response.json();
+                    if (!response.ok) {
+                        let errorMessage = responseData.message || `Error ${response.status}`;
+                        if (responseData.errors && Array.isArray(responseData.errors) && responseData.errors.length > 0) {
+                             errorMessage += ": " + responseData.errors.join("; ");
+                        }
+                        throw new Error(errorMessage);
+                    }
+                    return responseData;
+                } catch (error) {
+                    console.error(`API Error (${method} ${url}):`, error.message);
+                    throw error;
+                }
+            },
+            showApiError(error, contextMessage = "Se produjo un error") {
+                 alert(`${contextMessage}: ${error.message}`);
+            },
+
+            async fetchSprintsForProject() {
+                try {
+                    this.sprints = await this.fetchApi(`@Url.Action("GetSprintsForProject", "SCRUM")?projectId=${this.projectId}`);
+                } catch (e) { this.showApiError(e, "No se pudieron cargar los sprints"); }
+            },
+
+            validateSprintDates() {
+                this.sprintDateErrors = { start_date: '', end_date: '', general: '' };
+                let isValid = true;
+                const sprintStartStr = this.newSprint.start_date;
+                const sprintEndStr = this.newSprint.end_date;
+
+                if (!sprintStartStr) {
+                    this.sprintDateErrors.start_date = 'Fecha de inicio es requerida.'; isValid = false;
+                }
+                if (!sprintEndStr) {
+                    this.sprintDateErrors.end_date = 'Fecha de fin es requerida.'; isValid = false;
+                }
+                if (!sprintStartStr || !sprintEndStr) return isValid;
+
+                const sprintStart = new Date(sprintStartStr + 'T00:00:00Z');
+                const sprintEnd = new Date(sprintEndStr + 'T00:00:00Z');
+
+                if (this.projectStartDate && sprintStart < this.projectStartDate) {
+                    this.sprintDateErrors.start_date = `Inicio no puede ser antes del proyecto (${this.formatDisplayDate(this.projectStartDate.toISOString().split('T')[0])}).`;
+                    isValid = false;
+                }
+                if (this.projectEndDate && sprintStart > this.projectEndDate) {
+                    this.sprintDateErrors.start_date = `Inicio no puede ser después del proyecto (${this.formatDisplayDate(this.projectEndDate.toISOString().split('T')[0])}).`;
+                     isValid = false;
+                }
+                if (this.projectEndDate && sprintEnd > this.projectEndDate) {
+                    this.sprintDateErrors.end_date = `Fin no puede ser después del proyecto (${this.formatDisplayDate(this.projectEndDate.toISOString().split('T')[0])}).`;
+                    isValid = false;
+                }
+                 if (this.projectStartDate && sprintEnd < this.projectStartDate) {
+                    this.sprintDateErrors.end_date = `Fin no puede ser antes del proyecto (${this.formatDisplayDate(this.projectStartDate.toISOString().split('T')[0])}).`;
+                    isValid = false;
+                }
+                if (sprintEnd < sprintStart) {
+                    this.sprintDateErrors.end_date = 'Fin no puede ser antes que inicio del sprint.';
+                    isValid = false;
+                }
+
+                if (isValid) {
+                    for (const existingSprint of this.sprints) {
+                        const existingStart = existingSprint.start_date ? new Date(existingSprint.start_date + 'T00:00:00Z') : null;
+                        const existingEnd = existingSprint.end_date ? new Date(existingSprint.end_date + 'T00:00:00Z') : null;
+                        if (existingStart && existingEnd) {
+                            if (sprintStart < existingEnd && sprintEnd > existingStart) {
+                                this.sprintDateErrors.general = `Fechas se solapan con sprint: ${existingSprint.name}.`;
+                                isValid = false;
+                                break;
+                            }
+                        }
+                    }
+                }
+                return isValid;
+            },
+
+            async addSprint() {
+                if (!this.validateSprintDates()) {
+                    return;
+                }
+                try {
+                    const payload = { ...this.newSprint, ProjectId: this.projectId };
+                    const result = await this.fetchApi('@Url.Action("CreateSprint", "SCRUM")', 'POST', payload);
+                    if (result.success) {
+                        this.sprints.push(result);
+                        this.newSprint = { name: '', start_date: '', end_date: '' };
+                        this.sprintDateErrors = { start_date: '', end_date: '', general: '' };
+                    } else {
+                        if (result.errors && Array.isArray(result.errors)) {
+                             result.errors.forEach(err => {
+                                if (err.toLowerCase().includes("inicio") || err.toLowerCase().includes("start_date")) this.sprintDateErrors.start_date = err;
+                                else if (err.toLowerCase().includes("fin") || err.toLowerCase().includes("end_date")) this.sprintDateErrors.end_date = err;
+                                else this.sprintDateErrors.general = (this.sprintDateErrors.general ? this.sprintDateErrors.general + " " : "") + err;
+                            });
+                        } else {
+                             this.sprintDateErrors.general = result.message || 'Error desconocido al crear sprint.';
+                        }
+                    }
+                } catch (e) { this.showApiError(e, "Error al crear sprint"); }
+            },
+
+            async fetchBacklogItemsForProject() {
+                 try {
+                    const items = await this.fetchApi(`@Url.Action("GetBacklogItemsForProject", "SCRUM")?projectId=${this.projectId}`);
+                    this.projectBacklogItems = items.map(item => ({
+                        ...item,
+                        sprint_id_temp: null,
+                        status_temp: this.backlogItemStatesVisual[0]
+                    }));
+                } catch (e) { this.showApiError(e, "No se pudieron cargar los items del backlog"); }
+            },
+            async addBacklogItem() {
+                try {
+                    const payload = { ...this.newBacklogItem, ProjectId: this.projectId };
+                     if (!this.priorities.includes(payload.priority.toLowerCase())) {
+                        alert("Prioridad seleccionada no es válida. Por favor, elija una de la lista.");
+                        return;
+                    }
+                    payload.priority = payload.priority.toLowerCase();
+
+                    const result = await this.fetchApi('@Url.Action("CreateBacklogItem", "SCRUM")', 'POST', payload);
+                    if (result.success) {
+                         this.projectBacklogItems.push({
+                            ...result,
+                            sprint_id_temp: null,
+                            status_temp: this.backlogItemStatesVisual[0]
+                        });
+                        this.newBacklogItem = { description: '', priority: this.priorities.includes('media') ? 'media' : this.priorities[0] };
+                        this.updateUserStoryHelperText('');
+                    } else {
+                         alert('Error al crear item: ' + (result.message || 'Error desconocido') + (result.errors ? '\n- ' + result.errors.join('\n- ') : ''));
+                    }
+                } catch (e) { this.showApiError(e, "Error al crear item del backlog"); }
+            },
+
+            dragStartItem(item, currentSprintIdTemp, currentStatusTemp, event) {
+                this.draggedItem = JSON.parse(JSON.stringify(item));
+                this.draggedItemOriginalSprintIdTemp = currentSprintIdTemp;
+                this.draggedItemOriginalStatusTemp = currentStatusTemp;
+                event.dataTransfer.effectAllowed = 'move';
+                event.dataTransfer.setData('text/plain', item.id.toString());
+                if (event.target.classList.contains('backlog-item-card')) {
+                    event.target.style.opacity = '0.5';
+                }
+            },
+            dragEndItem(event) {
+                 if (event.target.classList.contains('backlog-item-card')) {
+                    event.target.style.opacity = '1';
+                }
+                this.clearDropZoneHighlight();
+                this.draggedItem = null;
+            },
+            highlightDropZone(element) {
+                this.clearDropZoneHighlight();
+                if (element && element.classList.contains('status-column')) {
+                    element.classList.add('dragging-over');
+                    this.currentDropTarget = element;
+                }
+            },
+            clearDropZoneHighlight(element = null) {
+                const targetEl = element || this.currentDropTarget;
+                if (targetEl && targetEl.classList.contains('status-column')) {
+                    targetEl.classList.remove('dragging-over');
+                }
+                if (this.currentDropTarget === targetEl) {
+                    this.currentDropTarget = null;
+                }
+            },
+            async dropItemToSprint(targetSprintId, targetStatus, event) {
+                event.preventDefault();
+                this.clearDropZoneHighlight(event.currentTarget);
+                if (!this.draggedItem) return;
+
+                const itemId = parseInt(event.dataTransfer.getData('text/plain'));
+                this._updateItemVisualLocationInClient(itemId, targetSprintId, targetStatus);
+
+                try {
+                    await this.fetchApi(`@Url.Action("UpdateBacklogItemVisualState", "SCRUM")`, 'POST',
+                        { backlogId: itemId, targetSprintId: targetSprintId, targetVisualStatus: targetStatus });
+                } catch (error) {
+                    this.showApiError(error, "Error al notificar cambio visual al servidor. Revirtiendo.");
+                    this._updateItemVisualLocationInClient(itemId, this.draggedItemOriginalSprintIdTemp, this.draggedItemOriginalStatusTemp);
+                }
+                this.draggedItem = null;
+            },
+            async dropItemToProductBacklog(event) {
+                event.preventDefault();
+                this.clearDropZoneHighlight(event.currentTarget);
+                if (!this.draggedItem) return;
+
+                const itemId = parseInt(event.dataTransfer.getData('text/plain'));
+                this._updateItemVisualLocationInClient(itemId, null, this.backlogItemStatesVisual[0]);
+
+                try {
+                    await this.fetchApi(`@Url.Action("UpdateBacklogItemVisualState", "SCRUM")`, 'POST',
+                        { backlogId: itemId, targetSprintId: null, targetVisualStatus: this.backlogItemStatesVisual[0] });
+                } catch (error) {
+                    this.showApiError(error, "Error al notificar cambio visual al servidor. Revirtiendo.");
+                    this._updateItemVisualLocationInClient(itemId, this.draggedItemOriginalSprintIdTemp, this.draggedItemOriginalStatusTemp);
+                }
+                this.draggedItem = null;
+            },
+            _updateItemVisualLocationInClient(itemId, newSprintIdTemp, newStatusTemp) {
+                const itemIndex = this.projectBacklogItems.findIndex(i => i.id === itemId);
+                if (itemIndex > -1) {
+                    this.projectBacklogItems[itemIndex].sprint_id_temp = newSprintIdTemp;
+                    this.projectBacklogItems[itemIndex].status_temp = newStatusTemp;
+                    this.projectBacklogItems = [...this.projectBacklogItems];
+                }
+            },
+
+            async fetchDailiesForSelectedSprint() {
+                this.selectedDailyId = null; this.currentDailyDetails = null;
+                if (!this.selectedSprintIdForDaily) { this.dailyScrums = []; return; }
+                try {
+                    const sprintIdNum = parseInt(this.selectedSprintIdForDaily);
+                    this.dailyScrums = await this.fetchApi(`@Url.Action("GetDailiesForSprint", "SCRUM")?sprintId=${sprintIdNum}`);
+                } catch (e) { this.showApiError(e, "No se pudieron cargar los dailies"); }
+            },
+            addDailyBacklogUpdateEntry() {
+                let defaultUserId = this.usuarios.length > 0 ? this.usuarios[0].id : '';
+                this.newDaily.backlogUpdates.push({ backlogId: '', userId: defaultUserId, comment: '' });
+            },
+            removeDailyBacklogUpdate(index) {
+                this.newDaily.backlogUpdates.splice(index, 1);
+            },
+            async addDaily() {
+                if (!this.selectedSprintIdForDaily) { alert("Seleccione un sprint primero."); return; }
+                try {
+                    const payload = {
+                        ...this.newDaily,
+                        SprintId: parseInt(this.selectedSprintIdForDaily),
+                        ProjectId: this.projectId,
+                        BacklogUpdates: this.newDaily.backlogUpdates.filter(bu => bu.backlogId && bu.userId && bu.comment && bu.comment.trim())
+                    };
+                    if (payload.BacklogUpdates.some(bu => !bu.backlogId || !bu.userId)) {
+                        alert("Por favor, seleccione un Item del Backlog y un Usuario para cada actualización de actividad.");
+                        return;
+                    }
+
+                    const result = await this.fetchApi('@Url.Action("CreateDaily", "SCRUM")', 'POST', payload);
+                    if (result.success) {
+                        const newDailyEntry = { ...result, date: new Date(result.date + 'T00:00:00Z').toISOString().split('T')[0] };
+                        this.dailyScrums.unshift(newDailyEntry);
+                        this.newDaily = { date: new Date().toISOString().split('T')[0], observations: '', backlogUpdates: [] };
+                    } else {
+                        alert('Error al guardar daily: ' + (result.message || 'Error desconocido') + (result.errors ? '\n- ' + result.errors.join('\n- ') : ''));
+                    }
+                } catch (e) { this.showApiError(e, "Error al guardar Daily Scrum"); }
+            },
+            async fetchDailyDetails(dailyId) {
+                try {
+                    this.selectedDailyId = dailyId;
+                    this.currentDailyDetails = await this.fetchApi(`@Url.Action("GetDailyDetails", "SCRUM")?dailyId=${dailyId}&projectId=${this.projectId}`);
+                } catch (e) {
+                    this.showApiError(e, "No se pudieron cargar los detalles del daily");
+                    this.selectedDailyId = null;
+                    this.currentDailyDetails = null;
+                }
+            },
+
+            formatDisplayDate(dateString) { // Espera yyyy-MM-dd
+                if (!dateString) return 'N/A';
+                const parts = dateString.split('-');
+                if (parts.length === 3) {
+                    return `${parts[2]}/${parts[1]}/${parts[0]}`;
+                }
+                return 'Fecha Inválida';
+            },
+            getDurationInDays(startStr, endStr) {
+                if (!startStr || !endStr) return '?';
+                const startDate = new Date(startStr + 'T00:00:00Z');
+                const endDate = new Date(endStr + 'T00:00:00Z');
+                if (isNaN(startDate.getTime()) || isNaN(endDate.getTime()) || endDate < startDate) return '?';
+                const diffTime = Math.abs(endDate.getTime() - startDate.getTime());
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+                return diffDays;
+            }
+        }
+    }
+    </script>
+</body>

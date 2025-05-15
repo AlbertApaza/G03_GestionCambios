@@ -104,6 +104,44 @@
                         </div>
 
                     }
+                    else if (fase == "NuevaIteracion")
+                    {
+                        <div id="NuevaIteracion" class="fase-xp" style="display:none;">
+                            <h5><i class="fas fa-check-circle"></i> Nueva Iteración</h5>
+
+                            <div class="mb-3 row">
+                                <div class="col-md-4">
+                                    <input type="text" id="nombreIteracion" class="form-control" placeholder="Nombre de la iteración" />
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="date" id="fechaInicioIteracion" class="form-control" />
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="date" id="fechaFinIteracion" class="form-control" />
+                                </div>
+                                <div class="col-md-2 d-grid">
+                                    <button onclick="registrarIteracion()" class="btn btn-success">Guardar</button>
+                                </div>
+                            </div>
+
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-sm" id="tablaIteraciones">
+                                    <thead class="table-primary">
+                                        <tr>
+                                            <th>Nombre</th>
+                                            <th>Inicio</th>
+                                            <th>Fin</th>
+                                            <th>Estado</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+
+                            <button class="btn btn-outline-secondary mt-2" onclick="mostrarFase('none')">Cerrar</button>
+                        </div>
+                    }
+
                     else
                     {
                         <div id="@fase" class="fase-xp" style="display:none;">
@@ -126,83 +164,154 @@
 </div>
 
 @section Scripts {
-    <script>function mostrarFase(id) {
-            document.querySelectorAll('.fase-xp').forEach(f => f.style.display = 'none');
-            if (id !== 'none') {
-                document.getElementById(id).style.display = 'block';
-            }
-        }</script>
-    <script>let historias = [];
-        let idEdicion = null;
+    <script>
+    function mostrarFase(id) {
+        document.querySelectorAll('.fase-xp').forEach(f => f.style.display = 'none');
+        if (id !== 'none') {
+            document.getElementById(id).style.display = 'block';
+        }
+    }
 
-        function renderizarTabla() {
+    // ---------------- HISTORIAS DE USUARIO ----------------
+
+    let historiaIdEditar = null;
+
+    function listarHistorias() {
+        const idProyecto = @Model.idProyecto;
+
+        $.get('@Url.Action("ListarHistorias", "XP")', { idProyecto: idProyecto }, function (data) {
             const tbody = document.querySelector("#tablaHistorias tbody");
             tbody.innerHTML = "";
-
-            historias.forEach((h, index) => {
+            data.forEach((h) => {
                 tbody.innerHTML += `
                     <tr>
-                        <td>${index + 1}</td>
+                        <td>${h.idHistoria}</td>
                         <td>${h.titulo}</td>
                         <td>${h.historia.replace(/\n/g, "<br/>")}</td>
-                        <td>${h.criterios.replace(/\n/g, "<br/>")}</td>
+                        <td>${h.criteriosAceptacion.replace(/\n/g, "<br/>")}</td>
                         <td>
-                            <button class="btn btn-sm btn-warning me-1" onclick="editarHistoria(${index})">Editar</button>
-                            <button class="btn btn-sm btn-danger" onclick="eliminarHistoria(${index})">Eliminar</button>
+                            <button class="btn btn-sm btn-warning me-1" onclick="editarHistoria(${h.idHistoria}, '${h.titulo}', \`${h.historia}\`, \`${h.criteriosAceptacion}\`)">Editar</button>
+                            <button class="btn btn-sm btn-danger" onclick="eliminarHistoria(${h.idHistoria})">Eliminar</button>
                         </td>
                     </tr>`;
             });
+        });
+    }
+
+    function agregarHistoria() {
+        const titulo = document.getElementById("titulo").value.trim();
+        const historia = document.getElementById("historia").value.trim();
+        const criterios = document.getElementById("criterios").value.trim();
+        const idProyecto = @Model.idProyecto;
+
+        if (!titulo || !historia || !criterios) {
+            alert("Completa todos los campos");
+            return;
         }
 
-        function agregarHistoria() {
-            const titulo = document.getElementById("titulo").value.trim();
-            const historia = document.getElementById("historia").value.trim();
-            const criterios = document.getElementById("criterios").value.trim();
+        const url = historiaIdEditar
+            ? '@Url.Action("ActualizarHistoria", "XP")'
+            : '@Url.Action("RegistrarHistoria", "XP")';
 
-            if (!titulo || !historia || !criterios) {
-                alert("Completa todos los campos");
-                return;
+        const payload = {
+            idHistoria: historiaIdEditar,
+            idProyecto: idProyecto,
+            titulo: titulo,
+            historia: historia,
+            criteriosAceptacion: criterios
+        };
+
+        $.ajax({
+            url: url,
+            type: "POST",
+            data: payload,
+            success: function (response) {
+                if (response.success) {
+                    listarHistorias();
+                    document.getElementById("titulo").value = "";
+                    document.getElementById("historia").value = "";
+                    document.getElementById("criterios").value = "";
+                    historiaIdEditar = null;
+                } else {
+                    console.error("Error del servidor:", response.errores || response);
+                    alert("Error al guardar historia");
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("Error AJAX:", error);
+                console.error("Respuesta del servidor:", xhr.responseText);
+                alert("Error inesperado al intentar guardar la historia.");
             }
+        });
+    }
 
-            if (idEdicion !== null) {
-                historias[idEdicion] = { titulo, historia, criterios };
-                idEdicion = null;
+    function editarHistoria(id, titulo, historia, criterios) {
+        document.getElementById("titulo").value = titulo;
+        document.getElementById("historia").value = historia;
+        document.getElementById("criterios").value = criterios;
+        historiaIdEditar = id;
+    }
+
+    function eliminarHistoria(id) {
+        if (confirm("¿Estás seguro de eliminar esta historia?")) {
+            $.post('@Url.Action("EliminarHistoria", "XP")', { id: id }, function (response) {
+                if (response.success) {
+                    listarHistorias();
+                } else {
+                    alert("No se pudo eliminar");
+                }
+            });
+        }
+    }
+
+    // ---------------- ITERACIONES XP ----------------
+
+    function registrarIteracion() {
+        const nombre = document.getElementById("nombreIteracion").value;
+        const fechaInicio = document.getElementById("fechaInicioIteracion").value;
+        const fechaFin = document.getElementById("fechaFinIteracion").value;
+        const idProyecto = @Model.idProyecto;
+
+        if (!nombre || !fechaInicio || !fechaFin) {
+            alert("Completa todos los campos.");
+            return;
+        }
+
+        $.post('@Url.Action("RegistrarIteracion", "XP")', {
+            nombre: nombre,
+            fechaInicio: fechaInicio,
+            fechaFin: fechaFin,
+            estado: "Planificada",
+            idProyecto: idProyecto
+        }, function (response) {
+            if (response.success) {
+                listarIteraciones();
+                document.getElementById("nombreIteracion").value = "";
             } else {
-                historias.push({ titulo, historia, criterios });
+                alert("Error al registrar");
             }
+        });
+    }
 
-            document.getElementById("titulo").value = "";
-            document.getElementById("historia").value = "";
-            document.getElementById("criterios").value = "";
+    function listarIteraciones() {
+        const idProyecto = @Model.idProyecto;
+        $.get('@Url.Action("ObtenerIteraciones", "XP")', { idProyecto: idProyecto }, function (data) {
+            const tbody = document.querySelector("#tablaIteraciones tbody");
+            tbody.innerHTML = "";
+            data.forEach(item => {
+                tbody.innerHTML += `<tr>
+                    <td>${item.nombre}</td>
+                    <td>${item.fechaInicio}</td>
+                    <td>${item.fechaFin}</td>
+                    <td>${item.estado}</td>
+                </tr>`;
+            });
+        });
+    }
 
-            renderizarTabla();
-        }
-
-        function editarHistoria(index) {
-            const h = historias[index];
-            document.getElementById("titulo").value = h.titulo;
-            document.getElementById("historia").value = h.historia;
-            document.getElementById("criterios").value = h.criterios;
-            idEdicion = index;
-        }
-
-        function eliminarHistoria(index) {
-            if (confirm("¿Estás seguro de eliminar esta historia?")) {
-                historias.splice(index, 1);
-                renderizarTabla();
-            }
-        }
-
-        // Opcional: Auto-cargar datos de ejemplo
-        document.addEventListener("DOMContentLoaded", function () {
-            historias.push(
-                {
-                    titulo: "Inicio Sesión",
-                    historia: "Como usuario\nquiero iniciar sesión\npara acceder al sistema",
-                    criterios: "CA01: Inicio de sesión exitoso\nCA02: Credenciales incorrectas"
-                },
-            );
-            renderizarTabla();
-        });</script>
-
+    document.addEventListener("DOMContentLoaded", function () {
+        listarIteraciones();
+        listarHistorias();
+    });
+    </script>
 }

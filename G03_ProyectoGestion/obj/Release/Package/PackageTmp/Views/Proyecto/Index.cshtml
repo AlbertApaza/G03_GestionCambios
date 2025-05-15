@@ -1,0 +1,263 @@
+﻿@model IEnumerable<G03_ProyectoGestion.Models.ProyectoCardViewModel>
+
+@{
+    ViewBag.Title = "Mis Proyectos";
+    // Asumo que esta vista SÍ usa tu _Layout.cshtml principal,
+    // a diferencia del login/registro. Si no es así, avísame.
+}
+
+<!-- Font Awesome (si no está ya en tu _Layout.cshtml) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<style>
+    /* --- ESTILOS EMBEBIDOS PARA MIS PROYECTOS --- */
+    :root {
+        --color-purple: #6a11cb;
+        --color-blue: #2575fc;
+        --color-text-dark: #343a40;
+        --color-text-light: #6c757d;
+        --card-bg: #ffffff;
+        --card-border-light: #e9ecef;
+        --button-text-color: #fff;
+    }
+
+    .projects-page-container {
+        padding-top: 2rem; /* Espacio superior */
+        padding-bottom: 2rem; /* Espacio inferior */
+    }
+
+    .page-header-gradient {
+        background: linear-gradient(135deg, var(--color-purple) 0%, var(--color-blue) 100%);
+        padding: 20px 30px;
+        border-radius: 10px;
+        margin-bottom: 2.5rem;
+        color: var(--button-text-color); /* Texto blanco para el header */
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+        .page-header-gradient h2 {
+            margin-bottom: 0;
+            font-weight: 600;
+        }
+
+    .btn-create-project {
+        background: #ffffff; /* Botón de crear contrastante */
+        color: var(--color-purple);
+        border: 2px solid var(--color-purple);
+        font-weight: 500;
+        padding: 0.5rem 1.25rem;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+        .btn-create-project:hover {
+            background: var(--color-purple);
+            color: #ffffff;
+            box-shadow: 0 2px 8px rgba(106, 17, 203, 0.4);
+        }
+
+        .btn-create-project i {
+            margin-right: 5px;
+        }
+
+    .project-card {
+        border: none; /* Quitamos el borde por defecto de Bootstrap */
+        border-radius: 10px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        background-color: var(--card-bg);
+        display: flex;
+        flex-direction: column;
+        height: 100%; /* Para que todas las tarjetas tengan la misma altura en una fila */
+    }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .project-card .card-header-accent {
+            background: linear-gradient(to right, var(--color-purple), var(--color-blue));
+            color: var(--button-text-color);
+            padding: 0.75rem 1.25rem;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            font-weight: 500;
+        }
+
+        .project-card .card-body {
+            padding: 1.5rem;
+            flex-grow: 1; /* Hace que el body ocupe el espacio disponible */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project-card .card-title {
+            color: var(--color-text-dark);
+            font-weight: 600;
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .project-card .card-text-description {
+            font-size: 0.9em;
+            color: var(--color-text-light);
+            display: -webkit-box;
+            -webkit-line-clamp: 3; /* Limita a 3 líneas */
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            min-height: 54px; /* Aproximadamente 3 líneas de texto */
+            margin-bottom: 1rem;
+        }
+
+        .project-card .list-group-item {
+            border: none;
+            padding: 0.5rem 0; /* Ajuste de padding */
+            font-size: 0.875rem;
+            color: var(--color-text-dark);
+        }
+
+            .project-card .list-group-item strong {
+                color: var(--color-purple); /* Destacar los labels */
+                min-width: 90px; /* Para alinear los valores */
+                display: inline-block;
+            }
+
+            .project-card .list-group-item i {
+                margin-right: 8px;
+                color: var(--color-blue);
+                width: 16px; /* Para alinear iconos */
+                text-align: center;
+            }
+
+
+    .btn-view-project {
+        background: linear-gradient(to right, var(--color-purple), var(--color-blue));
+        border: none;
+        color: var(--button-text-color) !important; /* Importante para sobreescribir el color de 'a' */
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+        font-weight: 500;
+        border-radius: 8px;
+        transition: opacity 0.2s ease;
+        text-decoration: none; /* Quitar subrayado de 'a' */
+        display: inline-block; /* Para que el botón se comporte bien */
+    }
+
+        .btn-view-project:hover {
+            opacity: 0.9;
+            color: var(--button-text-color) !important;
+        }
+
+        .btn-view-project i {
+            margin-right: 5px;
+        }
+
+    .project-card .card-footer {
+        background-color: #f8f9fa; /* Un gris muy claro */
+        border-top: 1px solid var(--card-border-light);
+        font-size: 0.8rem;
+        color: var(--color-text-light);
+        padding: 0.75rem 1.25rem;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+    }
+
+    .alert-no-projects {
+        background-color: #e9ecef; /* Un fondo claro y suave */
+        border-left: 5px solid var(--color-blue);
+        color: var(--color-text-dark);
+        padding: 1.5rem;
+        border-radius: 8px;
+    }
+
+        .alert-no-projects i {
+            margin-right: 10px;
+            color: var(--color-blue);
+        }
+
+    /* Pequeños ajustes para responsividad */
+    @@media (max-width: 767px) {
+        .page-header-gradient {
+            flex-direction: column;
+            align-items: flex-start !important;
+        }
+
+            .page-header-gradient h2 {
+                margin-bottom: 1rem;
+            }
+    }
+
+    /* --- FIN ESTILOS EMBEBIDOS --- */
+</style>
+
+<div class="container projects-page-container">
+    <div class="page-header-gradient d-flex justify-content-between align-items-center">
+        <h2><i class="fas fa-tasks me-2"></i>Mis Proyectos</h2>
+        @Html.ActionLink("Crear Nuevo Proyecto", "Crear", "Proyecto", null, new { @class = "btn btn-create-project" })
+    </div>
+    @* <hr />  Ya no es necesario con el header estilizado *@
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-no-projects" role="alert">
+            <i class="fas fa-info-circle fa-lg"></i>
+            No tienes proyectos asignados actualmente. ¡Anímate y crea uno nuevo usando el botón de arriba!
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var proyecto in Model)
+            {
+                <div class="col-lg-4 col-md-6 mb-4 ">
+                    @*{/* d-flex para que las tarjetas en la misma fila crezcan igual */}*@
+                    <div class="project-card">
+                         @*Quitado el card-header-accent para un look más limpio, pero puedes volverlo a poner si te gusta*@
+                            @*<div class="card-header-accent">
+                                @proyecto.Metodologia
+                            </div>*@
+                        
+                        <div class="card-body">
+                            <h5 class="card-title">@proyecto.NombreProyecto</h5>
+                            <p class="card-text-description">@proyecto.DescripcionProyecto</p>
+
+                            <ul class="list-group list-group-flush my-3">
+                                <li class="list-group-item">
+                                    <i class="far fa-calendar-alt"></i><strong>Inicio:</strong> @(proyecto.FechaInicio?.ToString("dd/MM/yyyy") ?? "N/A")
+                                </li>
+                                <li class="list-group-item">
+                                    <i class="far fa-calendar-check"></i><strong>Fin:</strong> @(proyecto.FechaFin?.ToString("dd/MM/yyyy") ?? "N/A")
+                                </li>
+                                <li class="list-group-item">
+                                    <i class="fas fa-cogs"></i><strong>Metodología:</strong> @proyecto.Metodologia
+                                </li>
+                            </ul>
+
+                            <div class="mt-auto text-center">
+                                @*{/* mt-auto empuja el botón hacia abajo */}*@
+                                @{
+                                    string controlador = "";
+                                    switch (proyecto.Metodologia?.ToLower())
+                                    {
+                                        case "rup": controlador = "RUP"; break;
+                                        case "scrum": controlador = "SCRUM"; break;
+                                        case "xp": controlador = "XP"; break;
+                                        default: controlador = "Proyecto"; break;
+                                    }
+                                }
+                                <a href="@Url.Action("Index", controlador, new { id = proyecto.IdProyecto })" class="btn btn-view-project">
+                                    <i class="fas fa-arrow-right"></i> Ir al Proyecto
+                                </a>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            ID Proyecto: @proyecto.IdProyecto
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
