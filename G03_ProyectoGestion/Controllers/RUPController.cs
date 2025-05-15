@@ -9,16 +9,15 @@ using Renci.SshNet;
 using G03_ProyectoGestion.Models;
 using G03_ProyectoGestion.Services;
 
-namespace YourProjectName.Controllers
+namespace G03_ProyectoGestion.Controllers
 {
     public class RUPController : Controller
     {
 
-        RupService Rupservice = new RupService();
+        RupService _rupService = new RupService();
 
         private g03_databaseEntities db = new g03_databaseEntities();
         private const int RUP_METHODOLOGY_ID = 2;
-        //private const int DEFAULT_USER_ID = 1;
 
         private int DEFAULT_USER_ID
         {
@@ -32,9 +31,46 @@ namespace YourProjectName.Controllers
         {
             return RedirectToAction("Index");
         }
-        public ActionResult Index()
+
+        public ActionResult Index(int? id) // Recibe el ID del proyecto
         {
-            ViewBag.Title = "Gestor RUP";
+            if (DEFAULT_USER_ID == 0) // Ejemplo de manejo de sesión inválida
+            {
+                TempData["ErrorMessage"] = "Sesión expirada o inválida. Por favor, inicie sesión nuevamente.";
+                return RedirectToAction("Login", "Account"); // O tu controlador/acción de login
+            }
+
+            if (!id.HasValue)
+            {
+                TempData["ErrorMessage"] = "No se especificó un proyecto para gestionar.";
+                return RedirectToAction("Index", "Proyecto"); // Redirige a tu lista principal de proyectos
+            }
+
+            // Validar que el proyecto existe, es RUP y pertenece al usuario (o tiene acceso)
+            var project = db.tbProyectos
+                            .Where(p => p.idProyecto == id.Value &&
+                                        p.idMetodologia == RUP_METHODOLOGY_ID &&
+                                        p.tbProyectoUsuarios.Any(pu => pu.idUsuario == DEFAULT_USER_ID && pu.idProyecto == id.Value)) // Asumiendo tbProyectoUsuarios para relación muchos-a-muchos
+                            .Select(p => new ProjectViewModel // Un ViewModel simple para los datos iniciales del proyecto
+                            {
+                                id = p.idProyecto,
+                                name = p.nombreProyecto,
+                                scope = p.descripcionProyecto,
+                                current_phase = p.idFase ?? 0 // Asegurar que no sea null, o manejarlo
+                            })
+                            .FirstOrDefault();
+
+
+            if (project == null)
+            {
+                TempData["ErrorMessage"] = "Proyecto no encontrado, no es un proyecto RUP válido o no tiene acceso.";
+                return RedirectToAction("Index", "Proyecto"); // Redirige a tu lista principal
+            }
+
+            ViewBag.Title = $"Gestor RUP - {project.name}";
+            ViewBag.SelectedProjectData = project; // Pasar los datos del proyecto directamente
+            ViewBag.ProjectId = project.id;       // Pasar el ID también para Alpine
+
             ViewBag.Phases = db.tbRupFases
                                 .Select(p => new { id = p.idFase, name = p.nombre })
                                 .ToList();
@@ -47,151 +83,36 @@ namespace YourProjectName.Controllers
             return View();
         }
 
-        [HttpGet]
-        public JsonResult GetProjects()
-        {
-            //var projects = db.tbProyectoUsuarios
-            //    .Where(p => p.tbProyectos.idMetodologia == RUP_METHODOLOGY_ID && p.idUsuario == DEFAULT_USER_ID)
-            //    .Select(p => new
-            //    {
-            //        id = p.tbProyectos.idProyecto,
-            //        name = p.tbProyectos.nombreProyecto,
-            //        scope = p.tbProyectos.descripcionProyecto,
-            //        current_phase = p.tbProyectos.idFase
-            //    })
-            //    .ToList();
-            var projects = Rupservice.Listar(DEFAULT_USER_ID);
-            return Json(projects, JsonRequestBehavior.AllowGet);
-        }
-
-        public class ProjectCreatePostModel
-        {
-            public string Name { get; set; }
-            public string Scope { get; set; }
-            public int InitialPhaseId { get; set; }
-        }
-
-        [HttpPost]
-        public JsonResult CreateProject(ProjectCreatePostModel projectData)
-        {
-            if (ModelState.IsValid)
-            {
-                var phaseExists = db.tbRupFases.Any(f => f.idFase == projectData.InitialPhaseId);
-                if (!phaseExists)
-                {
-                    return Json(new { success = false, message = "Fase inicial inválida." });
-                }
-
-                tbProyectos newDbProject = new tbProyectos
-                {
-                    nombreProyecto = projectData.Name,
-                    descripcionProyecto = projectData.Scope,
-                    idFase = projectData.InitialPhaseId,
-                    idMetodologia = RUP_METHODOLOGY_ID,
-                    idUsuario = DEFAULT_USER_ID,
-                    fechaInicio = DateTime.Today
-                };
-
-                db.tbProyectos.Add(newDbProject);
-                db.SaveChanges();
-                return Json(new
-                {
-                    success = true,
-                    id = newDbProject.idProyecto,
-                    name = newDbProject.nombreProyecto,
-                    scope = newDbProject.descripcionProyecto,
-                    current_phase = newDbProject.idFase
-                });
-            }
-            var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
-            return Json(new { success = false, message = "Datos inválidos.", errors = errors });
-        }
 
         [HttpPost]
         public JsonResult UpdateProjectPhase(int projectId, int phaseId)
         {
-            var project = db.tbProyectos.FirstOrDefault(p => p.idProyecto == projectId && p.idMetodologia == RUP_METHODOLOGY_ID);
-            if (project == null) return Json(new { success = false, message = "Proyecto RUP no encontrado." });
-
-            var phaseExists = db.tbRupFases.Any(f => f.idFase == phaseId);
-            if (!phaseExists) return Json(new { success = false, message = "Fase inválida." });
-
-            project.idFase = phaseId;
-            db.SaveChanges();
-            return Json(new { success = true });
+            var success = _rupService.ActualizarFaseDelProyecto(projectId, phaseId);
+            if (success)
+            {
+                return Json(new { success = true });
+            }
+            return Json(new { success = false, message = "No se pudo actualizar la fase del proyecto." });
         }
 
         [HttpGet]
         public JsonResult GetIterationsForPhase(int projectId, int phaseId)
         {
-            var iterations = db.tbRupIteraciones
-                .Where(i => i.idProyecto == projectId && i.idFase == phaseId)
-                .Select(i => new
-                {
-                    id = i.idIteracion,
-                    project_id = i.idProyecto,
-                    phase_id = i.idFase,
-                    name = i.nombre,
-                    objective = i.objetivo,
-                    start_date = i.fechaInicio,
-                    end_date = i.fechaFin,
-                    status = i.Estado
-                })
-                .ToList();
-
-            var result = iterations.Select(i => new {
-                i.id,
-                i.project_id,
-                i.phase_id,
-                i.name,
-                i.objective,
-                start_date = i.start_date?.ToString("yyyy-MM-dd"),
-                end_date = i.end_date?.ToString("yyyy-MM-dd"),
-                i.status
-            }).ToList();
+            var result = _rupService.ObtenerIteracionesPorFase(projectId, phaseId);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-        public class IterationCreatePostModel
-        {
-            public int ProjectId { get; set; }
-            public int PhaseId { get; set; }
-            public string Name { get; set; }
-            public string Objective { get; set; }
-            public DateTime? Start_Date { get; set; }
-            public DateTime? End_Date { get; set; }
-        }
+        
 
         [HttpPost]
         public JsonResult CreateIteration(IterationCreatePostModel iterationData)
         {
             if (ModelState.IsValid)
             {
-                tbRupIteraciones newDbIteration = new tbRupIteraciones
-                {
-                    idProyecto = iterationData.ProjectId,
-                    idFase = iterationData.PhaseId,
-                    nombre = iterationData.Name,
-                    objetivo = iterationData.Objective,
-                    fechaInicio = iterationData.Start_Date,
-                    fechaFin = iterationData.End_Date,
-                    Estado = "Planificada"
-                };
-                db.tbRupIteraciones.Add(newDbIteration);
-                db.SaveChanges();
-                return Json(new
-                {
-                    success = true,
-                    id = newDbIteration.idIteracion,
-                    project_id = newDbIteration.idProyecto,
-                    phase_id = newDbIteration.idFase,
-                    name = newDbIteration.nombre,
-                    objective = newDbIteration.objetivo,
-                    start_date = newDbIteration.fechaInicio?.ToString("yyyy-MM-dd"),
-                    end_date = newDbIteration.fechaFin?.ToString("yyyy-MM-dd"),
-                    status = newDbIteration.Estado
-                });
+                var result = _rupService.CrearIteracion(iterationData);
+                return Json(result);
             }
+
             var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
             return Json(new { success = false, message = "Datos inválidos.", errors = errors });
         }
@@ -210,122 +131,21 @@ namespace YourProjectName.Controllers
         [HttpGet]
         public JsonResult GetActivitiesForIteration(int iterationId)
         {
-            var activities = db.tbRupActividades
-                .Where(a => a.idIteracion == iterationId)
-                .Select(a => new
-                {
-                    id = a.idActividad,
-                    iteration_id = a.idIteracion,
-                    description = a.descripcion,
-                    assigned_role = a.idRol, // Rol de contexto
-                    status = a.estado,
-                    due_date = a.fechaLimite,
-                    // Obtener los usuarios asignados
-                    assigned_users = db.tbRupActividadAsignaciones
-                                       .Where(aa => aa.idActividad == a.idActividad)
-                                       .Select(aa => new {
-                                           id = aa.tbUsuarios.idUsuario,
-                                           name = aa.tbUsuarios.nombreUsuario
-                                       }).ToList()
-                })
-                .ToList();
-
-            var result = activities.Select(a => new {
-                a.id,
-                a.iteration_id,
-                a.description,
-                a.assigned_role, // Rol de contexto
-                a.status,
-                due_date = a.due_date?.ToString("yyyy-MM-dd"),
-                a.assigned_users
-            }).ToList();
+            var result = _rupService.ObtenerActividadesPorIteracion(iterationId);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-        public class ActivityCreatePostModel
-        {
-            public int IterationId { get; set; }
-            public string Description { get; set; }
-            public int ContextRoleId { get; set; } // El rol general de la actividad
-            public List<int> AssignedUserIds { get; set; } // IDs de los usuarios asignados
-            public string Status { get; set; }
-            public DateTime? Due_Date { get; set; }
-        }
+        
 
         [HttpPost]
         public JsonResult CreateActivity(ActivityCreatePostModel activityData)
         {
             if (ModelState.IsValid)
             {
-                if (activityData.AssignedUserIds == null || !activityData.AssignedUserIds.Any())
-                {
-                    return Json(new { success = false, message = "Debe asignar al menos un usuario a la actividad." });
-                }
-
-                // Validar que los usuarios asignados existen y tienen el rol de contexto en el proyecto
-                var iteration = db.tbRupIteraciones.Find(activityData.IterationId);
-                if (iteration == null)
-                {
-                    return Json(new { success = false, message = "Iteración no encontrada." });
-                }
-                int projectId = iteration.idProyecto;
-
-                foreach (var userId in activityData.AssignedUserIds)
-                {
-                    var userInProjectWithRole = db.tbProyectoUsuarios
-                                                  .Any(pu => pu.idProyecto == projectId &&
-                                                             pu.idUsuario == userId &&
-                                                             pu.idRol == activityData.ContextRoleId);
-                    if (!userInProjectWithRole)
-                    {
-                        var user = db.tbUsuarios.Find(userId);
-                        var role = db.tbRoles.Find(activityData.ContextRoleId);
-                        return Json(new { success = false, message = $"El usuario '{user?.nombreUsuario ?? "Desconocido"}' no tiene el rol '{role?.nombreRol ?? "Desconocido"}' en este proyecto o no existe." });
-                    }
-                }
-
-
-                tbRupActividades newDbActivity = new tbRupActividades
-                {
-                    idIteracion = activityData.IterationId,
-                    descripcion = activityData.Description,
-                    idRol = activityData.ContextRoleId, // Rol de contexto de la actividad
-                    estado = string.IsNullOrEmpty(activityData.Status) ? "Pendiente" : activityData.Status,
-                    fechaLimite = activityData.Due_Date
-                    // idActividad se autogenerará si está configurado como IDENTITY en la BD
-                };
-                db.tbRupActividades.Add(newDbActivity);
-                db.SaveChanges(); // Guardar actividad para obtener su ID
-
-                // Guardar las asignaciones de usuarios
-                foreach (var userId in activityData.AssignedUserIds)
-                {
-                    db.tbRupActividadAsignaciones.Add(new tbRupActividadAsignaciones
-                    {
-                        idActividad = newDbActivity.idActividad,
-                        idUsuario = userId
-                    });
-                }
-                db.SaveChanges(); // Guardar asignaciones
-
-                // Devolver la actividad con los usuarios asignados (para la UI)
-                var assignedUsers = db.tbUsuarios
-                    .Where(u => activityData.AssignedUserIds.Contains(u.idUsuario))
-                    .Select(u => new { id = u.idUsuario, name = u.nombreUsuario })
-                    .ToList();
-
-                return Json(new
-                {
-                    success = true,
-                    id = newDbActivity.idActividad,
-                    iteration_id = newDbActivity.idIteracion,
-                    description = newDbActivity.descripcion,
-                    assigned_role = newDbActivity.idRol, // Rol de contexto
-                    assigned_users = assignedUsers, // Lista de usuarios asignados
-                    status = newDbActivity.estado,
-                    due_date = newDbActivity.fechaLimite?.ToString("yyyy-MM-dd")
-                });
+                var result = _rupService.CrearActividad(activityData);
+                return Json(result);
             }
+
             var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
             return Json(new { success = false, message = "Datos inválidos.", errors = errors });
         }
@@ -344,38 +164,11 @@ namespace YourProjectName.Controllers
         [HttpGet]
         public JsonResult GetDocumentsForIteration(int iterationId)
         {
-            var documents = db.tbRupDocumentos
-                .Where(d => d.idIteracion == iterationId)
-                .Include(d => d.tbRupTiposDocumento)
-                .Select(d => new
-                {
-                    id = d.idDocumento,
-                    iteration_id = d.idIteracion,
-                    type = d.tbRupTiposDocumento.clave,
-                    file_name = d.nombreArchivo,
-                    version = d.Version,
-                    status = d.Estado,
-                    uploaded_at = d.FechaSubida
-                })
-                .ToList();
-            var result = documents.Select(d => new {
-                d.id,
-                d.iteration_id,
-                d.type,
-                d.file_name,
-                d.version,
-                d.status,
-                uploaded_at = d.uploaded_at.ToString("o")
-            }).ToList();
+            var result = _rupService.ObtenerDocumentosPorIteracion(iterationId);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-        public class DocumentCreatePostModel
-        {
-            public int IterationId { get; set; }
-            public string TypeClave { get; set; }
-            public string Version { get; set; }
-        }
+        
 
         [HttpPost]
         public JsonResult CreateDocument(DocumentCreatePostModel documentData, HttpPostedFileBase docFile)
@@ -566,15 +359,8 @@ namespace YourProjectName.Controllers
         [HttpGet]
         public JsonResult GetUsersByRoleInProject(int projectId, int roleId)
         {
-            var usersInRoleForProject = db.tbProyectoUsuarios
-                .Where(pu => pu.idProyecto == projectId && pu.idRol == roleId)
-                .Select(pu => new
-                {
-                    id = pu.tbUsuarios.idUsuario,
-                    name = pu.tbUsuarios.nombreUsuario
-                })
-                .ToList();
-            return Json(usersInRoleForProject, JsonRequestBehavior.AllowGet);
+            var result = _rupService.ObtenerUsuariosPorRolEnProyecto(projectId, roleId);
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         protected override void Dispose(bool disposing)

@@ -9,7 +9,7 @@
         <div class="card-header bg-blue-600 text-white p-4">
             <div class="flex justify-between items-center">
                 <h4 class="text-2xl font-semibold mb-0"><i class="fas fa-users mr-2"></i>Equipo del Proyecto: @Model.nombreProyecto</h4>
-                <a href="@Url.Action("Detalles", "SCRUM", new { id = Model.idProyecto })" class="btn btn-sm bg-blue-100 text-blue-700 hover:bg-blue-200">
+                <a href="@Url.Action("Index", "SCRUM", new { id = Model.idProyecto })" class="btn btn-sm bg-blue-100 text-blue-700 hover:bg-blue-200">
                     <i class="fas fa-arrow-left mr-1"></i>Volver al Tablero
                 </a>
             </div>
