@@ -15,12 +15,18 @@ namespace G03_ProyectoGestion.Controllers
         private g03_databaseEntities db = new g03_databaseEntities();
 
 
-        public ActionResult Index(int id) // 'id' es idProyecto
+        public ActionResult Index(int? id)
         {
-            var (success, proyecto, errorMessage) = _scrumService.ObtenerProyecto(id);
+            if (id == null)
+            {
+                TempData["ErrorMessage"] = "ID de proyecto no proporcionado.";
+                return RedirectToAction("Index", "Proyecto");
+            }
+
+            var (success, proyecto, errorMessage) = _scrumService.ObtenerProyecto(id.Value);
             if (!success)
             {
-                TempData["ErrorMessage"] = errorMessage.FirstOrDefault();
+                TempData["ErrorMessage"] = errorMessage;
                 return RedirectToAction("Index", "Proyecto");
             }
 

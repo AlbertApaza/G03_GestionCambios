@@ -25,7 +25,6 @@ namespace G03_ProyectoGestion.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<tbMetodologias> tbMetodologias { get; set; }
         public virtual DbSet<tbProyectos> tbProyectos { get; set; }
         public virtual DbSet<tbProyectoUsuarios> tbProyectoUsuarios { get; set; }
@@ -43,8 +42,14 @@ namespace G03_ProyectoGestion.Models
         public virtual DbSet<tbTareas> tbTareas { get; set; }
         public virtual DbSet<tbUsuarios> tbUsuarios { get; set; }
         public virtual DbSet<tbXpActividades> tbXpActividades { get; set; }
+        public virtual DbSet<tbXpEntregas> tbXpEntregas { get; set; }
         public virtual DbSet<tbXpHistoriasUsuario> tbXpHistoriasUsuario { get; set; }
+        public virtual DbSet<tbXpIteraciones> tbXpIteraciones { get; set; }
+        public virtual DbSet<tbXpParejasProgramacion> tbXpParejasProgramacion { get; set; }
+        public virtual DbSet<tbXpPlanningGame> tbXpPlanningGame { get; set; }
+        public virtual DbSet<tbXpPruebasAceptacion> tbXpPruebasAceptacion { get; set; }
         public virtual DbSet<tbXpRefactorizacion> tbXpRefactorizacion { get; set; }
+        public virtual DbSet<tbXpRetroalimentacion> tbXpRetroalimentacion { get; set; }
         public virtual DbSet<tbXpTest> tbXpTest { get; set; }
     }
 }

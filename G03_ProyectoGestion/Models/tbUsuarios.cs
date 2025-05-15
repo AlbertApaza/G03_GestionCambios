@@ -22,6 +22,8 @@ namespace G03_ProyectoGestion.Models
             this.tbRupActividadAsignaciones = new HashSet<tbRupActividadAsignaciones>();
             this.tbScrumDailyBacklog = new HashSet<tbScrumDailyBacklog>();
             this.tbTareas = new HashSet<tbTareas>();
+            this.tbXpParejasProgramacion = new HashSet<tbXpParejasProgramacion>();
+            this.tbXpParejasProgramacion1 = new HashSet<tbXpParejasProgramacion>();
         }
     
         public int idUsuario { get; set; }
@@ -41,5 +43,9 @@ namespace G03_ProyectoGestion.Models
         public virtual ICollection<tbScrumDailyBacklog> tbScrumDailyBacklog { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbTareas> tbTareas { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tbXpParejasProgramacion> tbXpParejasProgramacion { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tbXpParejasProgramacion> tbXpParejasProgramacion1 { get; set; }
     }
 }

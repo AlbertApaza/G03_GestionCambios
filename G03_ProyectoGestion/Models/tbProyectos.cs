@@ -23,6 +23,8 @@ namespace G03_ProyectoGestion.Models
             this.tbTareas = new HashSet<tbTareas>();
             this.tbXpActividades = new HashSet<tbXpActividades>();
             this.tbXpHistoriasUsuario = new HashSet<tbXpHistoriasUsuario>();
+            this.tbXpIteraciones = new HashSet<tbXpIteraciones>();
+            this.tbXpParejasProgramacion = new HashSet<tbXpParejasProgramacion>();
             this.tbRupIteraciones = new HashSet<tbRupIteraciones>();
         }
     
@@ -50,6 +52,10 @@ namespace G03_ProyectoGestion.Models
         public virtual ICollection<tbXpActividades> tbXpActividades { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbXpHistoriasUsuario> tbXpHistoriasUsuario { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tbXpIteraciones> tbXpIteraciones { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tbXpParejasProgramacion> tbXpParejasProgramacion { get; set; }
         public virtual tbRupFases tbRupFases { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbRupIteraciones> tbRupIteraciones { get; set; }

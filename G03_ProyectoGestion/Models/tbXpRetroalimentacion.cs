@@ -12,12 +12,14 @@ namespace G03_ProyectoGestion.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class sysdiagrams
+    public partial class tbXpRetroalimentacion
     {
-        public string name { get; set; }
-        public int principal_id { get; set; }
-        public int diagram_id { get; set; }
-        public Nullable<int> version { get; set; }
-        public byte[] definition { get; set; }
+        public int idFeedback { get; set; }
+        public int idIteracion { get; set; }
+        public string tipo { get; set; }
+        public string descripcion { get; set; }
+        public Nullable<System.DateTime> fecha { get; set; }
+    
+        public virtual tbXpIteraciones tbXpIteraciones { get; set; }
     }
 }

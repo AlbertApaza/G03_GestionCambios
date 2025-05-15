@@ -34,10 +34,10 @@ namespace G03_ProyectoGestion.Controllers
 
         public ActionResult Index(int? id) // Recibe el ID del proyecto
         {
-            if (DEFAULT_USER_ID == 0) // Ejemplo de manejo de sesión inválida
+            if (DEFAULT_USER_ID == 0) // manejo de sesión inválida
             {
                 TempData["ErrorMessage"] = "Sesión expirada o inválida. Por favor, inicie sesión nuevamente.";
-                return RedirectToAction("Login", "Account"); // O tu controlador/acción de login
+                return RedirectToAction("Login", "Home"); // O tu controlador/acción de login
             }
 
             if (!id.HasValue)

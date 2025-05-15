@@ -1,15 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="g03_databaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-  <EntityType Name="sysdiagrams">
-    <Key>
-      <PropertyRef Name="diagram_id" />
-    </Key>
-    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
-    <Property Name="principal_id" Type="int" Nullable="false" />
-    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="version" Type="int" />
-    <Property Name="definition" Type="varbinary(max)" />
-  </EntityType>
   <EntityType Name="tbMetodologias">
     <Key>
       <PropertyRef Name="idMetodologia" />
@@ -180,6 +170,16 @@
     <Property Name="fechaInicio" Type="date" />
     <Property Name="fechaFin" Type="date" />
   </EntityType>
+  <EntityType Name="tbXpEntregas">
+    <Key>
+      <PropertyRef Name="idEntrega" />
+    </Key>
+    <Property Name="idEntrega" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="idIteracion" Type="int" Nullable="false" />
+    <Property Name="fechaEntrega" Type="date" />
+    <Property Name="observaciones" Type="text" />
+    <Property Name="validadoPorCliente" Type="bit" />
+  </EntityType>
   <EntityType Name="tbXpHistoriasUsuario">
     <Key>
       <PropertyRef Name="idHistoria" />
@@ -190,6 +190,49 @@
     <Property Name="historia" Type="text" Nullable="false" />
     <Property Name="criteriosAceptacion" Type="text" Nullable="false" />
   </EntityType>
+  <EntityType Name="tbXpIteraciones">
+    <Key>
+      <PropertyRef Name="idIteracion" />
+    </Key>
+    <Property Name="idIteracion" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="idProyecto" Type="int" Nullable="false" />
+    <Property Name="nombre" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="fechaInicio" Type="date" />
+    <Property Name="fechaFin" Type="date" />
+    <Property Name="estado" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tbXpParejasProgramacion">
+    <Key>
+      <PropertyRef Name="idSesion" />
+    </Key>
+    <Property Name="idSesion" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="idProyecto" Type="int" Nullable="false" />
+    <Property Name="idUsuario1" Type="int" Nullable="false" />
+    <Property Name="idUsuario2" Type="int" Nullable="false" />
+    <Property Name="fecha" Type="datetime" />
+    <Property Name="historiaAsociada" Type="int" />
+    <Property Name="observaciones" Type="text" />
+  </EntityType>
+  <EntityType Name="tbXpPlanningGame">
+    <Key>
+      <PropertyRef Name="idPlan" />
+    </Key>
+    <Property Name="idPlan" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="idIteracion" Type="int" Nullable="false" />
+    <Property Name="idHistoria" Type="int" Nullable="false" />
+    <Property Name="estimacionHoras" Type="int" />
+    <Property Name="prioridad" Type="int" />
+  </EntityType>
+  <EntityType Name="tbXpPruebasAceptacion">
+    <Key>
+      <PropertyRef Name="idPrueba" />
+    </Key>
+    <Property Name="idPrueba" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="idHistoria" Type="int" Nullable="false" />
+    <Property Name="descripcion" Type="text" />
+    <Property Name="resultado" Type="varchar" MaxLength="50" />
+    <Property Name="fecha" Type="datetime" />
+  </EntityType>
   <EntityType Name="tbXpRefactorizacion">
     <Key>
       <PropertyRef Name="idRefactorizacion" />
@@ -198,6 +241,16 @@
     <Property Name="idActividad" Type="int" Nullable="false" />
     <Property Name="descripcionRefactorizacion" Type="text" />
     <Property Name="fechaRefactorizacion" Type="date" />
+  </EntityType>
+  <EntityType Name="tbXpRetroalimentacion">
+    <Key>
+      <PropertyRef Name="idFeedback" />
+    </Key>
+    <Property Name="idFeedback" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="idIteracion" Type="int" Nullable="false" />
+    <Property Name="tipo" Type="varchar" MaxLength="50" />
+    <Property Name="descripcion" Type="text" Nullable="false" />
+    <Property Name="fecha" Type="datetime" />
   </EntityType>
   <EntityType Name="tbXpTest">
     <Key>
@@ -402,6 +455,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK__tbXpEntre__idIte__18B6AB08">
+    <End Role="tbXpIteraciones" Type="Self.tbXpIteraciones" Multiplicity="1" />
+    <End Role="tbXpEntregas" Type="Self.tbXpEntregas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbXpIteraciones">
+        <PropertyRef Name="idIteracion" />
+      </Principal>
+      <Dependent Role="tbXpEntregas">
+        <PropertyRef Name="idIteracion" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK__tbXpHisto__idPro__74794A92">
     <End Role="tbProyectos" Type="Self.tbProyectos" Multiplicity="1" />
     <End Role="tbXpHistoriasUsuario" Type="Self.tbXpHistoriasUsuario" Multiplicity="*" />
@@ -414,6 +479,102 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK__tbXpItera__idPro__01D345B0">
+    <End Role="tbProyectos" Type="Self.tbProyectos" Multiplicity="1" />
+    <End Role="tbXpIteraciones" Type="Self.tbXpIteraciones" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbProyectos">
+        <PropertyRef Name="idProyecto" />
+      </Principal>
+      <Dependent Role="tbXpIteraciones">
+        <PropertyRef Name="idProyecto" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tbXpParej__histo__1E6F845E">
+    <End Role="tbXpHistoriasUsuario" Type="Self.tbXpHistoriasUsuario" Multiplicity="0..1" />
+    <End Role="tbXpParejasProgramacion" Type="Self.tbXpParejasProgramacion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbXpHistoriasUsuario">
+        <PropertyRef Name="idHistoria" />
+      </Principal>
+      <Dependent Role="tbXpParejasProgramacion">
+        <PropertyRef Name="historiaAsociada" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tbXpParej__idPro__1B9317B3">
+    <End Role="tbProyectos" Type="Self.tbProyectos" Multiplicity="1" />
+    <End Role="tbXpParejasProgramacion" Type="Self.tbXpParejasProgramacion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbProyectos">
+        <PropertyRef Name="idProyecto" />
+      </Principal>
+      <Dependent Role="tbXpParejasProgramacion">
+        <PropertyRef Name="idProyecto" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tbXpParej__idUsu__1C873BEC">
+    <End Role="tbUsuarios" Type="Self.tbUsuarios" Multiplicity="1" />
+    <End Role="tbXpParejasProgramacion" Type="Self.tbXpParejasProgramacion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbUsuarios">
+        <PropertyRef Name="idUsuario" />
+      </Principal>
+      <Dependent Role="tbXpParejasProgramacion">
+        <PropertyRef Name="idUsuario1" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tbXpParej__idUsu__1D7B6025">
+    <End Role="tbUsuarios" Type="Self.tbUsuarios" Multiplicity="1" />
+    <End Role="tbXpParejasProgramacion" Type="Self.tbXpParejasProgramacion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbUsuarios">
+        <PropertyRef Name="idUsuario" />
+      </Principal>
+      <Dependent Role="tbXpParejasProgramacion">
+        <PropertyRef Name="idUsuario2" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tbXpPlann__idHis__0697FACD">
+    <End Role="tbXpHistoriasUsuario" Type="Self.tbXpHistoriasUsuario" Multiplicity="1" />
+    <End Role="tbXpPlanningGame" Type="Self.tbXpPlanningGame" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbXpHistoriasUsuario">
+        <PropertyRef Name="idHistoria" />
+      </Principal>
+      <Dependent Role="tbXpPlanningGame">
+        <PropertyRef Name="idHistoria" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tbXpPlann__idIte__05A3D694">
+    <End Role="tbXpIteraciones" Type="Self.tbXpIteraciones" Multiplicity="1" />
+    <End Role="tbXpPlanningGame" Type="Self.tbXpPlanningGame" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbXpIteraciones">
+        <PropertyRef Name="idIteracion" />
+      </Principal>
+      <Dependent Role="tbXpPlanningGame">
+        <PropertyRef Name="idIteracion" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tbXpPrueb__idHis__0F2D40CE">
+    <End Role="tbXpHistoriasUsuario" Type="Self.tbXpHistoriasUsuario" Multiplicity="1" />
+    <End Role="tbXpPruebasAceptacion" Type="Self.tbXpPruebasAceptacion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbXpHistoriasUsuario">
+        <PropertyRef Name="idHistoria" />
+      </Principal>
+      <Dependent Role="tbXpPruebasAceptacion">
+        <PropertyRef Name="idHistoria" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK__tbXpRefac__idAct__3F115E1A">
     <End Role="tbXpActividades" Type="Self.tbXpActividades" Multiplicity="1" />
     <End Role="tbXpRefactorizacion" Type="Self.tbXpRefactorizacion" Multiplicity="*" />
@@ -423,6 +584,18 @@
       </Principal>
       <Dependent Role="tbXpRefactorizacion">
         <PropertyRef Name="idActividad" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tbXpRetro__idIte__13F1F5EB">
+    <End Role="tbXpIteraciones" Type="Self.tbXpIteraciones" Multiplicity="1" />
+    <End Role="tbXpRetroalimentacion" Type="Self.tbXpRetroalimentacion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbXpIteraciones">
+        <PropertyRef Name="idIteracion" />
+      </Principal>
+      <Dependent Role="tbXpRetroalimentacion">
+        <PropertyRef Name="idIteracion" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -529,7 +702,6 @@
     </ReferentialConstraint>
   </Association>
   <EntityContainer Name="g03_databaseModelStoreContainer">
-    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tbMetodologias" EntityType="Self.tbMetodologias" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tbProyectos" EntityType="Self.tbProyectos" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tbProyectoUsuarios" EntityType="Self.tbProyectoUsuarios" Schema="dbo" store:Type="Tables" />
@@ -547,8 +719,14 @@
     <EntitySet Name="tbTareas" EntityType="Self.tbTareas" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tbUsuarios" EntityType="Self.tbUsuarios" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tbXpActividades" EntityType="Self.tbXpActividades" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbXpEntregas" EntityType="Self.tbXpEntregas" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tbXpHistoriasUsuario" EntityType="Self.tbXpHistoriasUsuario" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbXpIteraciones" EntityType="Self.tbXpIteraciones" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbXpParejasProgramacion" EntityType="Self.tbXpParejasProgramacion" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbXpPlanningGame" EntityType="Self.tbXpPlanningGame" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbXpPruebasAceptacion" EntityType="Self.tbXpPruebasAceptacion" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tbXpRefactorizacion" EntityType="Self.tbXpRefactorizacion" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbXpRetroalimentacion" EntityType="Self.tbXpRetroalimentacion" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tbXpTest" EntityType="Self.tbXpTest" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="FK__tbProyect__idMet__18EBB532" Association="Self.FK__tbProyect__idMet__18EBB532">
       <End Role="tbMetodologias" EntitySet="tbMetodologias" />
@@ -614,13 +792,53 @@
       <End Role="tbProyectos" EntitySet="tbProyectos" />
       <End Role="tbXpActividades" EntitySet="tbXpActividades" />
     </AssociationSet>
+    <AssociationSet Name="FK__tbXpEntre__idIte__18B6AB08" Association="Self.FK__tbXpEntre__idIte__18B6AB08">
+      <End Role="tbXpIteraciones" EntitySet="tbXpIteraciones" />
+      <End Role="tbXpEntregas" EntitySet="tbXpEntregas" />
+    </AssociationSet>
     <AssociationSet Name="FK__tbXpHisto__idPro__74794A92" Association="Self.FK__tbXpHisto__idPro__74794A92">
       <End Role="tbProyectos" EntitySet="tbProyectos" />
       <End Role="tbXpHistoriasUsuario" EntitySet="tbXpHistoriasUsuario" />
     </AssociationSet>
+    <AssociationSet Name="FK__tbXpItera__idPro__01D345B0" Association="Self.FK__tbXpItera__idPro__01D345B0">
+      <End Role="tbProyectos" EntitySet="tbProyectos" />
+      <End Role="tbXpIteraciones" EntitySet="tbXpIteraciones" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbXpParej__histo__1E6F845E" Association="Self.FK__tbXpParej__histo__1E6F845E">
+      <End Role="tbXpHistoriasUsuario" EntitySet="tbXpHistoriasUsuario" />
+      <End Role="tbXpParejasProgramacion" EntitySet="tbXpParejasProgramacion" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbXpParej__idPro__1B9317B3" Association="Self.FK__tbXpParej__idPro__1B9317B3">
+      <End Role="tbProyectos" EntitySet="tbProyectos" />
+      <End Role="tbXpParejasProgramacion" EntitySet="tbXpParejasProgramacion" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbXpParej__idUsu__1C873BEC" Association="Self.FK__tbXpParej__idUsu__1C873BEC">
+      <End Role="tbUsuarios" EntitySet="tbUsuarios" />
+      <End Role="tbXpParejasProgramacion" EntitySet="tbXpParejasProgramacion" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbXpParej__idUsu__1D7B6025" Association="Self.FK__tbXpParej__idUsu__1D7B6025">
+      <End Role="tbUsuarios" EntitySet="tbUsuarios" />
+      <End Role="tbXpParejasProgramacion" EntitySet="tbXpParejasProgramacion" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbXpPlann__idHis__0697FACD" Association="Self.FK__tbXpPlann__idHis__0697FACD">
+      <End Role="tbXpHistoriasUsuario" EntitySet="tbXpHistoriasUsuario" />
+      <End Role="tbXpPlanningGame" EntitySet="tbXpPlanningGame" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbXpPlann__idIte__05A3D694" Association="Self.FK__tbXpPlann__idIte__05A3D694">
+      <End Role="tbXpIteraciones" EntitySet="tbXpIteraciones" />
+      <End Role="tbXpPlanningGame" EntitySet="tbXpPlanningGame" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbXpPrueb__idHis__0F2D40CE" Association="Self.FK__tbXpPrueb__idHis__0F2D40CE">
+      <End Role="tbXpHistoriasUsuario" EntitySet="tbXpHistoriasUsuario" />
+      <End Role="tbXpPruebasAceptacion" EntitySet="tbXpPruebasAceptacion" />
+    </AssociationSet>
     <AssociationSet Name="FK__tbXpRefac__idAct__3F115E1A" Association="Self.FK__tbXpRefac__idAct__3F115E1A">
       <End Role="tbXpActividades" EntitySet="tbXpActividades" />
       <End Role="tbXpRefactorizacion" EntitySet="tbXpRefactorizacion" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbXpRetro__idIte__13F1F5EB" Association="Self.FK__tbXpRetro__idIte__13F1F5EB">
+      <End Role="tbXpIteraciones" EntitySet="tbXpIteraciones" />
+      <End Role="tbXpRetroalimentacion" EntitySet="tbXpRetroalimentacion" />
     </AssociationSet>
     <AssociationSet Name="FK__tbXpTest__idActi__3C34F16F" Association="Self.FK__tbXpTest__idActi__3C34F16F">
       <End Role="tbXpActividades" EntitySet="tbXpActividades" />

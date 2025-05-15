@@ -12,28 +12,29 @@ namespace G03_ProyectoGestion.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class tbXpHistoriasUsuario
+    public partial class tbXpIteraciones
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public tbXpHistoriasUsuario()
+        public tbXpIteraciones()
         {
-            this.tbXpParejasProgramacion = new HashSet<tbXpParejasProgramacion>();
+            this.tbXpEntregas = new HashSet<tbXpEntregas>();
             this.tbXpPlanningGame = new HashSet<tbXpPlanningGame>();
-            this.tbXpPruebasAceptacion = new HashSet<tbXpPruebasAceptacion>();
+            this.tbXpRetroalimentacion = new HashSet<tbXpRetroalimentacion>();
         }
     
-        public int idHistoria { get; set; }
+        public int idIteracion { get; set; }
         public int idProyecto { get; set; }
-        public string titulo { get; set; }
-        public string historia { get; set; }
-        public string criteriosAceptacion { get; set; }
+        public string nombre { get; set; }
+        public Nullable<System.DateTime> fechaInicio { get; set; }
+        public Nullable<System.DateTime> fechaFin { get; set; }
+        public string estado { get; set; }
     
         public virtual tbProyectos tbProyectos { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tbXpParejasProgramacion> tbXpParejasProgramacion { get; set; }
+        public virtual ICollection<tbXpEntregas> tbXpEntregas { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbXpPlanningGame> tbXpPlanningGame { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tbXpPruebasAceptacion> tbXpPruebasAceptacion { get; set; }
+        public virtual ICollection<tbXpRetroalimentacion> tbXpRetroalimentacion { get; set; }
     }
 }
