@@ -29,6 +29,7 @@
     <Property Name="idUsuario" Type="int" Nullable="false" />
     <Property Name="idMetodologia" Type="int" Nullable="false" />
     <Property Name="idFase" Type="int" />
+    <Property Name="estado" Type="int" />
   </EntityType>
   <EntityType Name="tbProyectoUsuarios">
     <Key>
@@ -45,6 +46,14 @@
     </Key>
     <Property Name="idRol" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="nombreRol" Type="varchar" MaxLength="100" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tbRupActividadAsignaciones">
+    <Key>
+      <PropertyRef Name="idActividadAsignacion" />
+    </Key>
+    <Property Name="idActividadAsignacion" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="idActividad" Type="int" />
+    <Property Name="idUsuario" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="tbRupActividades">
     <Key>
@@ -171,6 +180,16 @@
     <Property Name="fechaInicio" Type="date" />
     <Property Name="fechaFin" Type="date" />
   </EntityType>
+  <EntityType Name="tbXpHistoriasUsuario">
+    <Key>
+      <PropertyRef Name="idHistoria" />
+    </Key>
+    <Property Name="idHistoria" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="idProyecto" Type="int" Nullable="false" />
+    <Property Name="titulo" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="historia" Type="text" Nullable="false" />
+    <Property Name="criteriosAceptacion" Type="text" Nullable="false" />
+  </EntityType>
   <EntityType Name="tbXpRefactorizacion">
     <Key>
       <PropertyRef Name="idRefactorizacion" />
@@ -245,6 +264,32 @@
         <PropertyRef Name="idUsuario" />
       </Principal>
       <Dependent Role="tbProyectoUsuarios">
+        <PropertyRef Name="idUsuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tbRupActi__idAct__7C1A6C5A">
+    <End Role="tbRupActividades" Type="Self.tbRupActividades" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="tbRupActividadAsignaciones" Type="Self.tbRupActividadAsignaciones" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbRupActividades">
+        <PropertyRef Name="idActividad" />
+      </Principal>
+      <Dependent Role="tbRupActividadAsignaciones">
+        <PropertyRef Name="idActividad" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tbRupActi__idUsu__7D0E9093">
+    <End Role="tbUsuarios" Type="Self.tbUsuarios" Multiplicity="1" />
+    <End Role="tbRupActividadAsignaciones" Type="Self.tbRupActividadAsignaciones" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbUsuarios">
+        <PropertyRef Name="idUsuario" />
+      </Principal>
+      <Dependent Role="tbRupActividadAsignaciones">
         <PropertyRef Name="idUsuario" />
       </Dependent>
     </ReferentialConstraint>
@@ -353,6 +398,18 @@
         <PropertyRef Name="idProyecto" />
       </Principal>
       <Dependent Role="tbXpActividades">
+        <PropertyRef Name="idProyecto" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tbXpHisto__idPro__74794A92">
+    <End Role="tbProyectos" Type="Self.tbProyectos" Multiplicity="1" />
+    <End Role="tbXpHistoriasUsuario" Type="Self.tbXpHistoriasUsuario" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbProyectos">
+        <PropertyRef Name="idProyecto" />
+      </Principal>
+      <Dependent Role="tbXpHistoriasUsuario">
         <PropertyRef Name="idProyecto" />
       </Dependent>
     </ReferentialConstraint>
@@ -477,6 +534,7 @@
     <EntitySet Name="tbProyectos" EntityType="Self.tbProyectos" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tbProyectoUsuarios" EntityType="Self.tbProyectoUsuarios" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tbRoles" EntityType="Self.tbRoles" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbRupActividadAsignaciones" EntityType="Self.tbRupActividadAsignaciones" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tbRupActividades" EntityType="Self.tbRupActividades" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tbRupDocumentos" EntityType="Self.tbRupDocumentos" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tbRupFases" EntityType="Self.tbRupFases" Schema="dbo" store:Type="Tables" />
@@ -489,6 +547,7 @@
     <EntitySet Name="tbTareas" EntityType="Self.tbTareas" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tbUsuarios" EntityType="Self.tbUsuarios" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tbXpActividades" EntityType="Self.tbXpActividades" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbXpHistoriasUsuario" EntityType="Self.tbXpHistoriasUsuario" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tbXpRefactorizacion" EntityType="Self.tbXpRefactorizacion" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tbXpTest" EntityType="Self.tbXpTest" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="FK__tbProyect__idMet__18EBB532" Association="Self.FK__tbProyect__idMet__18EBB532">
@@ -510,6 +569,14 @@
     <AssociationSet Name="FK__tbProyect__idUsu__1CBC4616" Association="Self.FK__tbProyect__idUsu__1CBC4616">
       <End Role="tbUsuarios" EntitySet="tbUsuarios" />
       <End Role="tbProyectoUsuarios" EntitySet="tbProyectoUsuarios" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbRupActi__idAct__7C1A6C5A" Association="Self.FK__tbRupActi__idAct__7C1A6C5A">
+      <End Role="tbRupActividades" EntitySet="tbRupActividades" />
+      <End Role="tbRupActividadAsignaciones" EntitySet="tbRupActividadAsignaciones" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbRupActi__idUsu__7D0E9093" Association="Self.FK__tbRupActi__idUsu__7D0E9093">
+      <End Role="tbUsuarios" EntitySet="tbUsuarios" />
+      <End Role="tbRupActividadAsignaciones" EntitySet="tbRupActividadAsignaciones" />
     </AssociationSet>
     <AssociationSet Name="FK__tbScrumBa__idPro__2180FB33" Association="Self.FK__tbScrumBa__idPro__2180FB33">
       <End Role="tbProyectos" EntitySet="tbProyectos" />
@@ -546,6 +613,10 @@
     <AssociationSet Name="FK__tbXpActiv__idPro__395884C4" Association="Self.FK__tbXpActiv__idPro__395884C4">
       <End Role="tbProyectos" EntitySet="tbProyectos" />
       <End Role="tbXpActividades" EntitySet="tbXpActividades" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbXpHisto__idPro__74794A92" Association="Self.FK__tbXpHisto__idPro__74794A92">
+      <End Role="tbProyectos" EntitySet="tbProyectos" />
+      <End Role="tbXpHistoriasUsuario" EntitySet="tbXpHistoriasUsuario" />
     </AssociationSet>
     <AssociationSet Name="FK__tbXpRefac__idAct__3F115E1A" Association="Self.FK__tbXpRefac__idAct__3F115E1A">
       <End Role="tbXpActividades" EntitySet="tbXpActividades" />

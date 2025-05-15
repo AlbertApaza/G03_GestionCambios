@@ -14,6 +14,12 @@ namespace G03_ProyectoGestion.Models
     
     public partial class tbRupActividades
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public tbRupActividades()
+        {
+            this.tbRupActividadAsignaciones = new HashSet<tbRupActividadAsignaciones>();
+        }
+    
         public int idActividad { get; set; }
         public int idIteracion { get; set; }
         public string descripcion { get; set; }
@@ -22,6 +28,8 @@ namespace G03_ProyectoGestion.Models
         public Nullable<System.DateTime> fechaLimite { get; set; }
     
         public virtual tbRoles tbRoles { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tbRupActividadAsignaciones> tbRupActividadAsignaciones { get; set; }
         public virtual tbRupIteraciones tbRupIteraciones { get; set; }
     }
 }

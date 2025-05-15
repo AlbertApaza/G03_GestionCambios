@@ -314,15 +314,27 @@
                                 <label for="actDesc" class="block text-sm font-medium text-gray-700">Descripción:</label>
                                 <input type="text" id="actDesc" x-model="newActivity.description" required class="input-field">
                             </div>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
-                                    <label for="actRole" class="block text-sm font-medium text-gray-700">Rol RUP:</label>
-                                    <select id="actRole" x-model.number="newActivity.assigned_role_id" class="input-field">
+                                    <label for="actContextRole" class="block text-sm font-medium text-gray-700">Rol Principal de la Actividad:</label>
+                                    <select id="actContextRole" x-model.number="newActivity.context_role_id" @@change="fetchUsersForSelectedRole()" class="input-field">
+                                        <option value="">-- Seleccione Rol --</option>
                                         <template x-for="role in roles" :key="role.id">
                                             <option :value="role.id" x-text="role.name"></option>
                                         </template>
                                     </select>
                                 </div>
+                                <div>
+                                    <label for="actAssignedUsers" class="block text-sm font-medium text-gray-700">Asignar Usuarios (de este rol):</label>
+                                    <select id="actAssignedUsers" x-model="newActivity.selected_user_ids" multiple class="input-field h-24" :disabled="!newActivity.context_role_id || availableUsersForRole.length === 0">
+                                        <template x-for="user in availableUsersForRole" :key="user.id">
+                                            <option :value="user.id" x-text="user.name"></option>
+                                        </template>
+                                    </select>
+                                    <p x-show="newActivity.context_role_id && availableUsersForRole.length === 0" class="text-xs text-red-500 mt-1">No hay usuarios con este rol en el proyecto.</p>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label for="actStatus" class="block text-sm font-medium text-gray-700">Estado Inicial:</label>
                                     <select id="actStatus" x-model="newActivity.status" class="input-field">
@@ -347,7 +359,16 @@
                                         <p class="text-md font-semibold text-gray-800" x-text="activity.description"></p>
                                         <span :class="getStatusClass(activity.status)" class="status-badge" x-text="activity.status"></span>
                                     </div>
-                                    <p class="text-sm text-gray-500 mt-1">Rol: <strong x-text="getRoleName(activity.assigned_role)"></strong></p>
+                                    <p class="text-sm text-gray-500 mt-1">Rol Actividad: <strong x-text="getRoleName(activity.assigned_role)"></strong></p>
+                                    <div class="text-sm text-gray-600 mt-1">
+                                        Asignado a:
+                                        <template x-if="activity.assigned_users && activity.assigned_users.length > 0">
+                                            <span x-text="activity.assigned_users.map(u => u.name).join(', ')"></span>
+                                        </template>
+                                        <template x-if="!activity.assigned_users || activity.assigned_users.length === 0">
+                                            <span class="italic text-gray-400">Nadie asignado</span>
+                                        </template>
+                                    </div>
                                     <p class="text-xs text-gray-500">Límite: <span x-text="activity.due_date || 'N/A'"></span></p>
                                     <div class="mt-2">
                                         <label :for="'act_status_'+activity.id" class="text-xs font-medium text-gray-600">Cambiar Estado:</label>
@@ -430,6 +451,25 @@
                     </div>
 
                     <div x-show="activeTab === 'overview_iteration'" class="tab-content mt-0">
+
+                        <div class="card mt-4">
+                            <h5 class="font-semibold text-gray-600 mb-2">Detalle de Actividades</h5>
+                            <template x-if="currentIterationActivities.length > 0">
+                                <ul class="list-disc list-inside text-sm space-y-1">
+                                    <template x-for="activity in currentIterationActivities" :key="activity.id">
+                                        <li>
+                                            <span x-text="activity.description"></span>
+                                            (<span x-text="activity.status"></span>)
+                                            - Rol: <span x-text="getRoleName(activity.assigned_role)"></span>
+                                            - Asignada a: <span x-text="activity.assigned_users && activity.assigned_users.length > 0 ? activity.assigned_users.map(u => u.name).join(', ') : 'Nadie'"></span>
+                                        </li>
+                                    </template>
+                                </ul>
+                            </template>
+                            <p x-show="currentIterationActivities.length === 0" class="text-sm text-gray-500 italic">No hay actividades en esta iteración.</p>
+                        </div>
+
+
                         <h4 class="text-xl font-semibold mb-3 text-gray-700">
                             Resumen de la Iteración: <span x-text="selectedIteration.name" class="font-bold text-indigo-600"></span>
                         </h4>
@@ -507,22 +547,71 @@
                 return this.documents.filter(doc => doc.iteration_id === this.selectedIterationId);
             },
 
+
+            // ...
+            newActivity: { description: '', context_role_id: null, selected_user_ids: [], status: 'Pendiente', due_date: '' },
+            availableUsersForRole: [], // Nuevo
+            // ...
             async init() {
                 this.phases = @Html.Raw(Json.Encode(ViewBag.Phases ?? new List<object>()));
                 this.roles = @Html.Raw(Json.Encode(ViewBag.Roles ?? new List<object>()));
                 this.documentTypes = @Html.Raw(Json.Encode(ViewBag.DocumentTypes ?? new List<object>()));
 
                 if (this.phases.length > 0) {
-                    this.newProject.initial_phase_id = this.phases[0].id;
+                    // this.newProject.initial_phase_id = this.phases[0].id; // No se usa directamente
                 }
                 if (this.roles.length > 0) {
-                    this.newActivity.assigned_role_id = this.roles[0].id;
+                    this.newActivity.context_role_id = this.roles[0].id; // Podría ser null por defecto
                 }
                 if (this.documentTypes.length > 0) {
                     this.newDocument.type_clave = this.documentTypes[0].clave;
                 }
-
                 await this.fetchProjects();
+            },
+
+            async fetchUsersForSelectedRole() {
+                this.availableUsersForRole = [];
+                this.newActivity.selected_user_ids = []; // Resetear usuarios seleccionados
+                if (!this.newActivity.context_role_id || !this.selectedProject) return;
+                try {
+                    const response = await fetch(`@Url.Action("GetUsersByRoleInProject", "RUP")?projectId=${this.selectedProject.id}&roleId=${this.newActivity.context_role_id}`);
+                    if (!response.ok) throw new Error('Failed to fetch users for role');
+                    this.availableUsersForRole = await response.json();
+                } catch (error) {
+                    console.error("Error fetching users for role:", error);
+                    this.availableUsersForRole = [];
+                }
+            },
+            // ...
+            async addActivity() {
+                console.log('Datos de nueva actividad ANTES de validación:', JSON.parse(JSON.stringify(this.newActivity)));
+                if (!this.newActivity.description.trim() ||
+                    !this.selectedIterationId ||
+                    this.newActivity.context_role_id === null || // Bien
+                    this.newActivity.selected_user_ids.length === 0) { // Aquí falla si no hay usuarios seleccionados
+                    alert("Por favor, complete todos los campos requeridos, seleccione un rol y al menos un usuario.");
+                    return;
+                }
+                try {
+                    const payload = {
+                        IterationId: this.selectedIterationId,
+                        Description: this.newActivity.description,
+                        ContextRoleId: this.newActivity.context_role_id, // Usar la propiedad correcta de Alpine
+                        AssignedUserIds: this.newActivity.selected_user_ids,
+                        Status: this.newActivity.status,
+                        Due_Date: this.newActivity.due_date || null
+                    };
+                    const response = await fetch('@Url.Action("CreateActivity", "RUP")', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    const result = await response.json();
+                    if (!response.ok || !result.success) throw new Error(result.message || 'Failed to create activity');
+                    this.activities.push(result); // El resultado ahora debería incluir assigned_users
+                    this.newActivity = { description: '', context_role_id: (this.roles[0]?.id || null), selected_user_ids: [], status: 'Pendiente', due_date: '' };
+                    this.availableUsersForRole = [];
+                } catch (error) { console.error("Error adding activity:", error); alert("Error: " + error.message); }
             },
 
             async fetchProjects() {
@@ -666,7 +755,7 @@
                 } catch (error) { console.error("Error updating iter status:", error); alert("Error: " + error.message); await this.fetchIterationsForCurrentProjectPhase(); }
             },
 
-            async addActivity() {
+            @*async addActivity() {
                 if (!this.newActivity.description.trim() || !this.selectedIterationId || this.newActivity.assigned_role_id === null) return;
                 try {
                     const payload = {
@@ -686,7 +775,7 @@
                     this.activities.push(result);
                     this.newActivity = { description: '', assigned_role_id: (this.roles[0]?.id || null), status: 'Pendiente', due_date: '' };
                 } catch (error) { console.error("Error adding activity:", error); alert("Error: " + error.message); }
-            },
+            },*@
 
             async updateActivityStatus(activityToUpdate) {
                  try {

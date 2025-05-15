@@ -23,6 +23,7 @@
     <EntitySetMapping Name="tbProyectos">
       <EntityTypeMapping TypeName="g03_databaseModel.tbProyectos">
         <MappingFragment StoreEntitySet="tbProyectos">
+          <ScalarProperty Name="estado" ColumnName="estado" />
           <ScalarProperty Name="idFase" ColumnName="idFase" />
           <ScalarProperty Name="idMetodologia" ColumnName="idMetodologia" />
           <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
@@ -48,6 +49,15 @@
         <MappingFragment StoreEntitySet="tbRoles">
           <ScalarProperty Name="nombreRol" ColumnName="nombreRol" />
           <ScalarProperty Name="idRol" ColumnName="idRol" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbRupActividadAsignaciones">
+      <EntityTypeMapping TypeName="g03_databaseModel.tbRupActividadAsignaciones">
+        <MappingFragment StoreEntitySet="tbRupActividadAsignaciones">
+          <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+          <ScalarProperty Name="idActividad" ColumnName="idActividad" />
+          <ScalarProperty Name="idActividadAsignacion" ColumnName="idActividadAsignacion" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -183,6 +193,17 @@
           <ScalarProperty Name="nombreActividad" ColumnName="nombreActividad" />
           <ScalarProperty Name="idProyecto" ColumnName="idProyecto" />
           <ScalarProperty Name="idActividad" ColumnName="idActividad" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbXpHistoriasUsuario">
+      <EntityTypeMapping TypeName="g03_databaseModel.tbXpHistoriasUsuario">
+        <MappingFragment StoreEntitySet="tbXpHistoriasUsuario">
+          <ScalarProperty Name="criteriosAceptacion" ColumnName="criteriosAceptacion" />
+          <ScalarProperty Name="historia" ColumnName="historia" />
+          <ScalarProperty Name="titulo" ColumnName="titulo" />
+          <ScalarProperty Name="idProyecto" ColumnName="idProyecto" />
+          <ScalarProperty Name="idHistoria" ColumnName="idHistoria" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

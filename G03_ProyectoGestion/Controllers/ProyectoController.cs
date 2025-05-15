@@ -67,7 +67,7 @@ namespace G03_ProyectoGestion.Controllers
 
             var proyectosViewModel = (from p in _dbContext.tbProyectos
                                       join pu in _dbContext.tbProyectoUsuarios on p.idProyecto equals pu.idProyecto
-                                      where pu.idUsuario == idUsuario
+                                      where pu.idUsuario == idUsuario && p.estado == 1 // Solo proyectos activos
                                       select new ProyectoCardViewModel // Proyecta al ViewModel
                                       {
                                           IdProyecto = p.idProyecto,

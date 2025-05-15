@@ -22,6 +22,7 @@ namespace G03_ProyectoGestion.Models
             this.tbScrumSprints = new HashSet<tbScrumSprints>();
             this.tbTareas = new HashSet<tbTareas>();
             this.tbXpActividades = new HashSet<tbXpActividades>();
+            this.tbXpHistoriasUsuario = new HashSet<tbXpHistoriasUsuario>();
             this.tbRupIteraciones = new HashSet<tbRupIteraciones>();
         }
     
@@ -33,6 +34,7 @@ namespace G03_ProyectoGestion.Models
         public int idUsuario { get; set; }
         public int idMetodologia { get; set; }
         public Nullable<int> idFase { get; set; }
+        public Nullable<int> estado { get; set; }
     
         public virtual tbMetodologias tbMetodologias { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -46,6 +48,8 @@ namespace G03_ProyectoGestion.Models
         public virtual ICollection<tbTareas> tbTareas { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbXpActividades> tbXpActividades { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tbXpHistoriasUsuario> tbXpHistoriasUsuario { get; set; }
         public virtual tbRupFases tbRupFases { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbRupIteraciones> tbRupIteraciones { get; set; }

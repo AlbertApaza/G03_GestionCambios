@@ -32,4 +32,6 @@ namespace G03_ProyectoGestion.Models
         public string Start_Date { get; set; } // Expect "yyyy-MM-dd" string
         public string End_Date { get; set; }   // Expect "yyyy-MM-dd" string
     }
+
+    
 }

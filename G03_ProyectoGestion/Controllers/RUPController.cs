@@ -12,6 +12,9 @@ namespace YourProjectName.Controllers
 {
     public class RUPController : Controller
     {
+
+
+
         private g03_databaseEntities db = new g03_databaseEntities();
         private const int RUP_METHODOLOGY_ID = 2;
         //private const int DEFAULT_USER_ID = 1;
@@ -212,9 +215,16 @@ namespace YourProjectName.Controllers
                     id = a.idActividad,
                     iteration_id = a.idIteracion,
                     description = a.descripcion,
-                    assigned_role = a.idRol,
+                    assigned_role = a.idRol, // Rol de contexto
                     status = a.estado,
-                    due_date = a.fechaLimite
+                    due_date = a.fechaLimite,
+                    // Obtener los usuarios asignados
+                    assigned_users = db.tbRupActividadAsignaciones
+                                       .Where(aa => aa.idActividad == a.idActividad)
+                                       .Select(aa => new {
+                                           id = aa.tbUsuarios.idUsuario,
+                                           name = aa.tbUsuarios.nombreUsuario
+                                       }).ToList()
                 })
                 .ToList();
 
@@ -222,9 +232,10 @@ namespace YourProjectName.Controllers
                 a.id,
                 a.iteration_id,
                 a.description,
-                a.assigned_role,
+                a.assigned_role, // Rol de contexto
                 a.status,
-                due_date = a.due_date?.ToString("yyyy-MM-dd")
+                due_date = a.due_date?.ToString("yyyy-MM-dd"),
+                a.assigned_users
             }).ToList();
             return Json(result, JsonRequestBehavior.AllowGet);
         }
@@ -233,7 +244,8 @@ namespace YourProjectName.Controllers
         {
             public int IterationId { get; set; }
             public string Description { get; set; }
-            public int AssignedRoleId { get; set; }
+            public int ContextRoleId { get; set; } // El rol general de la actividad
+            public List<int> AssignedUserIds { get; set; } // IDs de los usuarios asignados
             public string Status { get; set; }
             public DateTime? Due_Date { get; set; }
         }
@@ -243,23 +255,71 @@ namespace YourProjectName.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (activityData.AssignedUserIds == null || !activityData.AssignedUserIds.Any())
+                {
+                    return Json(new { success = false, message = "Debe asignar al menos un usuario a la actividad." });
+                }
+
+                // Validar que los usuarios asignados existen y tienen el rol de contexto en el proyecto
+                var iteration = db.tbRupIteraciones.Find(activityData.IterationId);
+                if (iteration == null)
+                {
+                    return Json(new { success = false, message = "Iteración no encontrada." });
+                }
+                int projectId = iteration.idProyecto;
+
+                foreach (var userId in activityData.AssignedUserIds)
+                {
+                    var userInProjectWithRole = db.tbProyectoUsuarios
+                                                  .Any(pu => pu.idProyecto == projectId &&
+                                                             pu.idUsuario == userId &&
+                                                             pu.idRol == activityData.ContextRoleId);
+                    if (!userInProjectWithRole)
+                    {
+                        var user = db.tbUsuarios.Find(userId);
+                        var role = db.tbRoles.Find(activityData.ContextRoleId);
+                        return Json(new { success = false, message = $"El usuario '{user?.nombreUsuario ?? "Desconocido"}' no tiene el rol '{role?.nombreRol ?? "Desconocido"}' en este proyecto o no existe." });
+                    }
+                }
+
+
                 tbRupActividades newDbActivity = new tbRupActividades
                 {
                     idIteracion = activityData.IterationId,
                     descripcion = activityData.Description,
-                    idRol = activityData.AssignedRoleId,
+                    idRol = activityData.ContextRoleId, // Rol de contexto de la actividad
                     estado = string.IsNullOrEmpty(activityData.Status) ? "Pendiente" : activityData.Status,
                     fechaLimite = activityData.Due_Date
+                    // idActividad se autogenerará si está configurado como IDENTITY en la BD
                 };
                 db.tbRupActividades.Add(newDbActivity);
-                db.SaveChanges();
+                db.SaveChanges(); // Guardar actividad para obtener su ID
+
+                // Guardar las asignaciones de usuarios
+                foreach (var userId in activityData.AssignedUserIds)
+                {
+                    db.tbRupActividadAsignaciones.Add(new tbRupActividadAsignaciones
+                    {
+                        idActividad = newDbActivity.idActividad,
+                        idUsuario = userId
+                    });
+                }
+                db.SaveChanges(); // Guardar asignaciones
+
+                // Devolver la actividad con los usuarios asignados (para la UI)
+                var assignedUsers = db.tbUsuarios
+                    .Where(u => activityData.AssignedUserIds.Contains(u.idUsuario))
+                    .Select(u => new { id = u.idUsuario, name = u.nombreUsuario })
+                    .ToList();
+
                 return Json(new
                 {
                     success = true,
                     id = newDbActivity.idActividad,
                     iteration_id = newDbActivity.idIteracion,
                     description = newDbActivity.descripcion,
-                    assigned_role = newDbActivity.idRol,
+                    assigned_role = newDbActivity.idRol, // Rol de contexto
+                    assigned_users = assignedUsers, // Lista de usuarios asignados
                     status = newDbActivity.estado,
                     due_date = newDbActivity.fechaLimite?.ToString("yyyy-MM-dd")
                 });
@@ -499,7 +559,21 @@ namespace YourProjectName.Controllers
                 }
             }
         }
-        // fin de comentarios(fin de seccion modificada)
+
+
+        [HttpGet]
+        public JsonResult GetUsersByRoleInProject(int projectId, int roleId)
+        {
+            var usersInRoleForProject = db.tbProyectoUsuarios
+                .Where(pu => pu.idProyecto == projectId && pu.idRol == roleId)
+                .Select(pu => new
+                {
+                    id = pu.tbUsuarios.idUsuario,
+                    name = pu.tbUsuarios.nombreUsuario
+                })
+                .ToList();
+            return Json(usersInRoleForProject, JsonRequestBehavior.AllowGet);
+        }
 
         protected override void Dispose(bool disposing)
         {
