@@ -18,7 +18,8 @@ namespace G03_ProyectoGestion.Models
         public tbRupFases()
         {
             this.tbProyectos = new HashSet<tbProyectos>();
-            this.tbRupIteraciones = new HashSet<tbRupIteraciones>();
+            this.tbRupActividades = new HashSet<tbRupActividades>();
+            this.tbRupDocumentos = new HashSet<tbRupDocumentos>();
         }
     
         public int idFase { get; set; }
@@ -27,6 +28,8 @@ namespace G03_ProyectoGestion.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbProyectos> tbProyectos { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tbRupIteraciones> tbRupIteraciones { get; set; }
+        public virtual ICollection<tbRupActividades> tbRupActividades { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tbRupDocumentos> tbRupDocumentos { get; set; }
     }
 }

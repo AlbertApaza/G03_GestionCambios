@@ -15,15 +15,17 @@ namespace G03_ProyectoGestion.Models
     public partial class tbRupDocumentos
     {
         public int idDocumento { get; set; }
-        public int idIteracion { get; set; }
         public int idTipoDocumento { get; set; }
         public string nombreArchivo { get; set; }
         public string rutaArchivo { get; set; }
         public string Version { get; set; }
         public string Estado { get; set; }
         public System.DateTime FechaSubida { get; set; }
+        public int idFase { get; set; }
+        public int idProyecto { get; set; }
     
-        public virtual tbRupIteraciones tbRupIteraciones { get; set; }
+        public virtual tbProyectos tbProyectos { get; set; }
+        public virtual tbRupFases tbRupFases { get; set; }
         public virtual tbRupTiposDocumento tbRupTiposDocumento { get; set; }
     }
 }

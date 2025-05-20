@@ -5,32 +5,32 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="47be0865979f42a087f41f655be9ec81" Name="Diagram1" ZoomLevel="70">
-        <EntityTypeShape EntityType="g03_databaseModel.tbMetodologias" Width="1.5" PointX="0.75" PointY="17.875" />
-        <EntityTypeShape EntityType="g03_databaseModel.tbProyectos" Width="1.5" PointX="3" PointY="20.5" />
-        <EntityTypeShape EntityType="g03_databaseModel.tbProyectoUsuarios" Width="1.5" PointX="5.25" PointY="17.875" />
-        <EntityTypeShape EntityType="g03_databaseModel.tbRoles" Width="1.5" PointX="3" PointY="17.125" />
-        <EntityTypeShape EntityType="g03_databaseModel.tbRupActividadAsignaciones" Width="1.5" PointX="14.75" PointY="22" />
-        <EntityTypeShape EntityType="g03_databaseModel.tbRupActividades" Width="1.5" PointX="12.5" PointY="21.625" />
-        <EntityTypeShape EntityType="g03_databaseModel.tbRupDocumentos" Width="1.5" PointX="12.5" PointY="25.5" />
-        <EntityTypeShape EntityType="g03_databaseModel.tbRupFases" Width="1.5" PointX="0.75" PointY="26.25" />
-        <EntityTypeShape EntityType="g03_databaseModel.tbRupIteraciones" Width="1.5" PointX="5.25" PointY="25.375" />
-        <EntityTypeShape EntityType="g03_databaseModel.tbRupTiposDocumento" Width="1.5" PointX="10.25" PointY="33.125" />
-        <EntityTypeShape EntityType="g03_databaseModel.tbScrumBacklog" Width="1.5" PointX="5.25" PointY="32.375" />
-        <EntityTypeShape EntityType="g03_databaseModel.tbScrumDaily" Width="1.5" PointX="7.5" PointY="13" />
-        <EntityTypeShape EntityType="g03_databaseModel.tbScrumDailyBacklog" Width="1.5" PointX="9.75" PointY="25.625" />
-        <EntityTypeShape EntityType="g03_databaseModel.tbScrumSprints" Width="1.5" PointX="5.25" PointY="13" />
-        <EntityTypeShape EntityType="g03_databaseModel.tbTareas" Width="1.5" PointX="10.25" PointY="21.625" />
-        <EntityTypeShape EntityType="g03_databaseModel.tbUsuarios" Width="1.5" PointX="0.75" PointY="21.25" />
-        <EntityTypeShape EntityType="g03_databaseModel.tbXpActividades" Width="1.5" PointX="5.25" PointY="43.875" />
-        <EntityTypeShape EntityType="g03_databaseModel.tbXpEntregas" Width="1.5" PointX="7.5" PointY="23.125" />
-        <EntityTypeShape EntityType="g03_databaseModel.tbXpHistoriasUsuario" Width="1.5" PointX="5.25" PointY="35.375" />
-        <EntityTypeShape EntityType="g03_databaseModel.tbXpIteraciones" Width="1.5" PointX="5.25" PointY="21.25" />
-        <EntityTypeShape EntityType="g03_databaseModel.tbXpParejasProgramacion" Width="1.5" PointX="7.5" PointY="27.75" />
-        <EntityTypeShape EntityType="g03_databaseModel.tbXpPlanningGame" Width="1.5" PointX="10.5" PointY="29.5" />
-        <EntityTypeShape EntityType="g03_databaseModel.tbXpPruebasAceptacion" Width="1.5" PointX="7.5" PointY="39.5" />
-        <EntityTypeShape EntityType="g03_databaseModel.tbXpRefactorizacion" Width="1.5" PointX="7.5" PointY="45.625" />
-        <EntityTypeShape EntityType="g03_databaseModel.tbXpRetroalimentacion" Width="1.5" PointX="7.5" PointY="20.125" />
-        <EntityTypeShape EntityType="g03_databaseModel.tbXpTest" Width="1.5" PointX="7.5" PointY="42.875" />
+        <EntityTypeShape EntityType="g03_databaseModel.sysdiagrams" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="g03_databaseModel.tbMetodologias" Width="1.5" PointX="0.75" PointY="26" />
+        <EntityTypeShape EntityType="g03_databaseModel.tbProyectos" Width="1.5" PointX="3" PointY="20.75" />
+        <EntityTypeShape EntityType="g03_databaseModel.tbProyectoUsuarios" Width="1.5" PointX="8.25" PointY="26.375" />
+        <EntityTypeShape EntityType="g03_databaseModel.tbRoles" Width="1.5" PointX="6" PointY="13.5" />
+        <EntityTypeShape EntityType="g03_databaseModel.tbRupActividadAsignaciones" Width="1.5" PointX="13.5" PointY="24.375" />
+        <EntityTypeShape EntityType="g03_databaseModel.tbRupActividades" Width="1.5" PointX="11.25" PointY="25.875" />
+        <EntityTypeShape EntityType="g03_databaseModel.tbRupDocumentos" Width="1.5" PointX="10.25" PointY="17.75" />
+        <EntityTypeShape EntityType="g03_databaseModel.tbRupFases" Width="1.5" PointX="0.75" PointY="18.25" />
+        <EntityTypeShape EntityType="g03_databaseModel.tbRupTiposDocumento" Width="1.5" PointX="8" PointY="20.5" />
+        <EntityTypeShape EntityType="g03_databaseModel.tbScrumBacklog" Width="1.5" PointX="5.25" PointY="45.625" />
+        <EntityTypeShape EntityType="g03_databaseModel.tbScrumDaily" Width="1.5" PointX="7.5" PointY="17" />
+        <EntityTypeShape EntityType="g03_databaseModel.tbScrumDailyBacklog" Width="1.5" PointX="9.75" PointY="31.25" />
+        <EntityTypeShape EntityType="g03_databaseModel.tbScrumSprints" Width="1.5" PointX="5.25" PointY="16.875" />
+        <EntityTypeShape EntityType="g03_databaseModel.tbTareas" Width="1.5" PointX="5.25" PointY="27" />
+        <EntityTypeShape EntityType="g03_databaseModel.tbUsuarios" Width="1.5" PointX="0.75" PointY="21.625" />
+        <EntityTypeShape EntityType="g03_databaseModel.tbXpActividades" Width="1.5" PointX="5.25" PointY="35.375" />
+        <EntityTypeShape EntityType="g03_databaseModel.tbXpEntregas" Width="1.5" PointX="7.5" PointY="39.875" />
+        <EntityTypeShape EntityType="g03_databaseModel.tbXpHistoriasUsuario" Width="1.5" PointX="5.25" PointY="22.875" />
+        <EntityTypeShape EntityType="g03_databaseModel.tbXpIteraciones" Width="1.5" PointX="5.25" PointY="40.875" />
+        <EntityTypeShape EntityType="g03_databaseModel.tbXpParejasProgramacion" Width="1.5" PointX="10.5" PointY="21.875" />
+        <EntityTypeShape EntityType="g03_databaseModel.tbXpPlanningGame" Width="1.5" PointX="7.5" PointY="31.25" />
+        <EntityTypeShape EntityType="g03_databaseModel.tbXpPruebasAceptacion" Width="1.5" PointX="7.5" PointY="23.25" />
+        <EntityTypeShape EntityType="g03_databaseModel.tbXpRefactorizacion" Width="1.5" PointX="7.5" PointY="34.375" />
+        <EntityTypeShape EntityType="g03_databaseModel.tbXpRetroalimentacion" Width="1.5" PointX="7.5" PointY="42.75" />
+        <EntityTypeShape EntityType="g03_databaseModel.tbXpTest" Width="1.5" PointX="7.5" PointY="37.125" />
         <AssociationConnector Association="g03_databaseModel.FK__tbProyect__idMet__18EBB532" />
         <AssociationConnector Association="g03_databaseModel.FK__tbProyect__idPro__1BC821DD" />
         <AssociationConnector Association="g03_databaseModel.FK__tbProyect__idUsu__17F790F9" />
@@ -42,16 +42,16 @@
         <AssociationConnector Association="g03_databaseModel.FK__tbXpItera__idPro__01D345B0" />
         <AssociationConnector Association="g03_databaseModel.FK__tbXpParej__idPro__1B9317B3" />
         <AssociationConnector Association="g03_databaseModel.FK_tbProyectos_idFase" />
-        <AssociationConnector Association="g03_databaseModel.FK_tbRupIteraciones_Proyecto" />
+        <AssociationConnector Association="g03_databaseModel.FK_tbRupActividades_tbProyectos" />
+        <AssociationConnector Association="g03_databaseModel.FK_tbRupDocumentos_tbProyectos" />
         <AssociationConnector Association="g03_databaseModel.FK__tbProyect__idRol__1DB06A4F" />
         <AssociationConnector Association="g03_databaseModel.FK__tbProyect__idUsu__1CBC4616" />
         <AssociationConnector Association="g03_databaseModel.FK_tbRupActividades_Rol" />
         <AssociationConnector Association="g03_databaseModel.FK__tbRupActi__idAct__7C1A6C5A" />
         <AssociationConnector Association="g03_databaseModel.FK__tbRupActi__idUsu__7D0E9093" />
-        <AssociationConnector Association="g03_databaseModel.FK_tbRupActividades_Iteracion" />
-        <AssociationConnector Association="g03_databaseModel.FK_tbRupDocumentos_Iteracion" />
+        <AssociationConnector Association="g03_databaseModel.FK_tbRupActividades_tbRupFases" />
+        <AssociationConnector Association="g03_databaseModel.FK_tbRupDocumentos_tbRupFases" />
         <AssociationConnector Association="g03_databaseModel.FK_tbRupDocumentos_Tipo" />
-        <AssociationConnector Association="g03_databaseModel.FK_tbRupIteraciones_idFase" />
         <AssociationConnector Association="g03_databaseModel.FK__tbScrumDa__idBac__2B0A656D" />
         <AssociationConnector Association="g03_databaseModel.FK__tbScrumDa__idDai__2A164134" />
         <AssociationConnector Association="g03_databaseModel.FK__tbScrumDa__idSpr__2739D489" />

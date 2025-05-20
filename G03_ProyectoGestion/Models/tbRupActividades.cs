@@ -21,15 +21,17 @@ namespace G03_ProyectoGestion.Models
         }
     
         public int idActividad { get; set; }
-        public int idIteracion { get; set; }
         public string descripcion { get; set; }
         public int idRol { get; set; }
         public string estado { get; set; }
         public Nullable<System.DateTime> fechaLimite { get; set; }
+        public int idFase { get; set; }
+        public int idProyecto { get; set; }
     
+        public virtual tbProyectos tbProyectos { get; set; }
         public virtual tbRoles tbRoles { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbRupActividadAsignaciones> tbRupActividadAsignaciones { get; set; }
-        public virtual tbRupIteraciones tbRupIteraciones { get; set; }
+        public virtual tbRupFases tbRupFases { get; set; }
     }
 }

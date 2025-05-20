@@ -1,50 +1,26 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\Kenyi\\Desktop\\ultimo ultim poner\\G03_GestionCambios\\",
+  "WorkspaceRootPath": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|c:\\users\\kenyi\\desktop\\ultimo ultim poner\\g03_gestioncambios\\g03_proyectogestion\\views\\home\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|solutionrelative:g03_proyectogestion\\views\\home\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\g03_proyectogestion\\services\\rupservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|solutionrelative:g03_proyectogestion\\services\\rupservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|c:\\users\\kenyi\\desktop\\ultimo ultim poner\\g03_gestioncambios\\g03_proyectogestion\\views\\scrum\\equipo.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|solutionrelative:g03_proyectogestion\\views\\scrum\\equipo.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|C:\\Users\\Kenyi\\Desktop\\ultimo ultim poner\\G03_GestionCambios\\g03_proyectogestion\\models\\model1.edmx||{C99AEA30-8E36-4515-B76F-496F5A48A6AA}|",
-      "RelativeMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|solutionrelative:g03_proyectogestion\\models\\model1.edmx||{C99AEA30-8E36-4515-B76F-496F5A48A6AA}|"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|C:\\Users\\Kenyi\\Desktop\\ultimo ultim poner\\G03_GestionCambios\\g03_proyectogestion\\views\\shared\\layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|solutionrelative:g03_proyectogestion\\views\\shared\\layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|C:\\Users\\Kenyi\\Desktop\\ultimo ultim poner\\G03_GestionCambios\\g03_proyectogestion\\source\\css\\sidebar.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
-      "RelativeMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|solutionrelative:g03_proyectogestion\\source\\css\\sidebar.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|C:\\Users\\Kenyi\\Desktop\\ultimo ultim poner\\G03_GestionCambios\\g03_proyectogestion\\services\\scrumservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|solutionrelative:g03_proyectogestion\\services\\scrumservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|C:\\Users\\Kenyi\\Desktop\\ultimo ultim poner\\G03_GestionCambios\\g03_proyectogestion\\controllers\\scrumcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|solutionrelative:g03_proyectogestion\\controllers\\scrumcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|C:\\Users\\Kenyi\\Desktop\\ultimo ultim poner\\G03_GestionCambios\\g03_proyectogestion\\models\\proyectoscrumviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|solutionrelative:g03_proyectogestion\\models\\proyectoscrumviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|C:\\Users\\Kenyi\\Desktop\\ultimo ultim poner\\G03_GestionCambios\\g03_proyectogestion\\controllers\\rupcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\g03_proyectogestion\\controllers\\rupcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|solutionrelative:g03_proyectogestion\\controllers\\rupcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|C:\\Users\\Kenyi\\Desktop\\ultimo ultim poner\\G03_GestionCambios\\g03_proyectogestion\\views\\rup\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "AbsoluteMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|c:\\users\\usuario\\source\\repos\\g03_gestioncambios\\g03_proyectogestion\\views\\rup\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|solutionrelative:g03_proyectogestion\\views\\rup\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|C:\\Users\\Kenyi\\Desktop\\ultimo ultim poner\\G03_GestionCambios\\g03_proyectogestion\\services\\rupservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|solutionrelative:g03_proyectogestion\\services\\rupservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\g03_proyectogestion\\models\\proyectorupviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|solutionrelative:g03_proyectogestion\\models\\proyectorupviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\g03_proyectogestion\\models\\model1.edmx||{C99AEA30-8E36-4515-B76F-496F5A48A6AA}|",
+      "RelativeMoniker": "D:0:0:{BD8DB7FF-5A0F-4AAE-B520-AF242CDD9C17}|G03_ProyectoGestion\\G03_ProyectoGestion.csproj|solutionrelative:g03_proyectogestion\\models\\model1.edmx||{C99AEA30-8E36-4515-B76F-496F5A48A6AA}|"
     }
   ],
   "DocumentGroupContainers": [
@@ -54,145 +30,69 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "RUPController.cs",
-              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\ultimo ultim poner\\G03_GestionCambios\\G03_ProyectoGestion\\Controllers\\RUPController.cs",
-              "RelativeDocumentMoniker": "G03_ProyectoGestion\\Controllers\\RUPController.cs",
-              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\ultimo ultim poner\\G03_GestionCambios\\G03_ProyectoGestion\\Controllers\\RUPController.cs",
-              "RelativeToolTip": "G03_ProyectoGestion\\Controllers\\RUPController.cs",
-              "ViewState": "AgIAABUAAAAAAAAAAAAswCkAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-15T17:49:36.564Z",
-              "IsPinned": true
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\ultimo ultim poner\\G03_GestionCambios\\G03_ProyectoGestion\\Views\\RUP\\Index.cshtml",
-              "RelativeDocumentMoniker": "G03_ProyectoGestion\\Views\\RUP\\Index.cshtml",
-              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\ultimo ultim poner\\G03_GestionCambios\\G03_ProyectoGestion\\Views\\RUP\\Index.cshtml",
-              "RelativeToolTip": "G03_ProyectoGestion\\Views\\RUP\\Index.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAM8BAABmAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-05-15T18:14:53.556Z",
-              "IsPinned": true
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "RupService.cs",
-              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\ultimo ultim poner\\G03_GestionCambios\\G03_ProyectoGestion\\Services\\RupService.cs",
-              "RelativeDocumentMoniker": "G03_ProyectoGestion\\Services\\RupService.cs",
-              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\ultimo ultim poner\\G03_GestionCambios\\G03_ProyectoGestion\\Services\\RupService.cs",
-              "RelativeToolTip": "G03_ProyectoGestion\\Services\\RupService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAhAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-15T17:48:34.516Z",
-              "IsPinned": true
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "SCRUMController.cs",
-              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\ultimo ultim poner\\G03_GestionCambios\\G03_ProyectoGestion\\Controllers\\SCRUMController.cs",
-              "RelativeDocumentMoniker": "G03_ProyectoGestion\\Controllers\\SCRUMController.cs",
-              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\ultimo ultim poner\\G03_GestionCambios\\G03_ProyectoGestion\\Controllers\\SCRUMController.cs",
-              "RelativeToolTip": "G03_ProyectoGestion\\Controllers\\SCRUMController.cs",
-              "ViewState": "AgIAAKQAAAAAAAAAAAAswBcAAAANAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-15T20:44:17.161Z",
-              "IsPinned": true
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "ScrumService.cs",
-              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\ultimo ultim poner\\G03_GestionCambios\\G03_ProyectoGestion\\Services\\ScrumService.cs",
-              "RelativeDocumentMoniker": "G03_ProyectoGestion\\Services\\ScrumService.cs",
-              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\ultimo ultim poner\\G03_GestionCambios\\G03_ProyectoGestion\\Services\\ScrumService.cs",
-              "RelativeToolTip": "G03_ProyectoGestion\\Services\\ScrumService.cs",
-              "ViewState": "AgIAAOEAAAAAAAAAAAAUwAEBAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-15T20:44:08.308Z",
-              "IsPinned": true
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Login.cshtml",
-              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\ultimo ultim poner\\G03_GestionCambios\\G03_ProyectoGestion\\Views\\Home\\Login.cshtml",
-              "RelativeDocumentMoniker": "G03_ProyectoGestion\\Views\\Home\\Login.cshtml",
-              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\ultimo ultim poner\\G03_GestionCambios\\G03_ProyectoGestion\\Views\\Home\\Login.cshtml",
-              "RelativeToolTip": "G03_ProyectoGestion\\Views\\Home\\Login.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-05-15T23:16:51.565Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "Equipo.cshtml",
-              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\ultimo ultim poner\\G03_GestionCambios\\G03_ProyectoGestion\\Views\\SCRUM\\Equipo.cshtml",
-              "RelativeDocumentMoniker": "G03_ProyectoGestion\\Views\\SCRUM\\Equipo.cshtml",
-              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\ultimo ultim poner\\G03_GestionCambios\\G03_ProyectoGestion\\Views\\SCRUM\\Equipo.cshtml",
-              "RelativeToolTip": "G03_ProyectoGestion\\Views\\SCRUM\\Equipo.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAADkAAAA1AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-05-15T22:46:05.65Z",
+              "Title": "RUPController.cs",
+              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Controllers\\RUPController.cs",
+              "RelativeDocumentMoniker": "G03_ProyectoGestion\\Controllers\\RUPController.cs",
+              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Controllers\\RUPController.cs",
+              "RelativeToolTip": "G03_ProyectoGestion\\Controllers\\RUPController.cs",
+              "ViewState": "AgIAAFABAAAAAAAAAAAkwHABAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-19T19:33:33.274Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Model1.edmx [Diagram1]",
-              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\ultimo ultim poner\\G03_GestionCambios\\G03_ProyectoGestion\\Models\\Model1.edmx",
-              "RelativeDocumentMoniker": "G03_ProyectoGestion\\Models\\Model1.edmx",
-              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Models\\Model1.edmx [Diagram1]",
-              "RelativeToolTip": "..\\..\\..\\..\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Models\\Model1.edmx [Diagram1]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001116|",
-              "WhenOpened": "2025-05-15T22:30:24.474Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 4,
-              "Title": "sidebar.css",
-              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\ultimo ultim poner\\G03_GestionCambios\\G03_ProyectoGestion\\source\\css\\sidebar.css",
-              "RelativeDocumentMoniker": "G03_ProyectoGestion\\source\\css\\sidebar.css",
-              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\ultimo ultim poner\\G03_GestionCambios\\G03_ProyectoGestion\\source\\css\\sidebar.css",
-              "RelativeToolTip": "G03_ProyectoGestion\\source\\css\\sidebar.css",
-              "ViewState": "AgIAAMkAAAAAvQNf43wrwNIAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
-              "WhenOpened": "2025-05-15T22:03:52.53Z"
+              "Title": "Model1.edmx [Diagram1]",
+              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Models\\Model1.edmx",
+              "RelativeDocumentMoniker": "G03_ProyectoGestion\\Models\\Model1.edmx",
+              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Models\\Model1.edmx [Diagram1]",
+              "RelativeToolTip": "G03_ProyectoGestion\\Models\\Model1.edmx [Diagram1]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001116|",
+              "WhenOpened": "2025-05-19T19:32:28.597Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "RupService.cs",
+              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Services\\RupService.cs",
+              "RelativeDocumentMoniker": "G03_ProyectoGestion\\Services\\RupService.cs",
+              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Services\\RupService.cs",
+              "RelativeToolTip": "G03_ProyectoGestion\\Services\\RupService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAUwA8AAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-19T19:29:46.077Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "Layout.cshtml",
-              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\ultimo ultim poner\\G03_GestionCambios\\G03_ProyectoGestion\\Views\\Shared\\Layout.cshtml",
-              "RelativeDocumentMoniker": "G03_ProyectoGestion\\Views\\Shared\\Layout.cshtml",
-              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\ultimo ultim poner\\G03_GestionCambios\\G03_ProyectoGestion\\Views\\Shared\\Layout.cshtml",
-              "RelativeToolTip": "G03_ProyectoGestion\\Views\\Shared\\Layout.cshtml",
-              "ViewState": "AgIAABoAAAAAAAAAAAAswCcAAAAQAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-05-15T21:55:01.328Z"
+              "Title": "ProyectoRupViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Models\\ProyectoRupViewModel.cs",
+              "RelativeDocumentMoniker": "G03_ProyectoGestion\\Models\\ProyectoRupViewModel.cs",
+              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Models\\ProyectoRupViewModel.cs",
+              "RelativeToolTip": "G03_ProyectoGestion\\Models\\ProyectoRupViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEgAAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-19T19:28:48.71Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "ProyectoScrumViewModel.cs",
-              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\ultimo ultim poner\\G03_GestionCambios\\G03_ProyectoGestion\\Models\\ProyectoScrumViewModel.cs",
-              "RelativeDocumentMoniker": "G03_ProyectoGestion\\Models\\ProyectoScrumViewModel.cs",
-              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\ultimo ultim poner\\G03_GestionCambios\\G03_ProyectoGestion\\Models\\ProyectoScrumViewModel.cs",
-              "RelativeToolTip": "G03_ProyectoGestion\\Models\\ProyectoScrumViewModel.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACUAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-15T20:54:43.876Z"
+              "DocumentIndex": 2,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Views\\RUP\\Index.cshtml",
+              "RelativeDocumentMoniker": "G03_ProyectoGestion\\Views\\RUP\\Index.cshtml",
+              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\G03_GestionCambios\\G03_ProyectoGestion\\Views\\RUP\\Index.cshtml",
+              "RelativeToolTip": "G03_ProyectoGestion\\Views\\RUP\\Index.cshtml",
+              "ViewState": "AgIAAAIEAAAAAAAAAAAqwBYEAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-19T19:09:02.741Z",
+              "EditorCaption": ""
             }
           ]
         }

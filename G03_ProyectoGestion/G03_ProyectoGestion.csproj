@@ -184,6 +184,9 @@
     <Compile Include="Models\ProyectoScrumViewModel.cs" />
     <Compile Include="Models\ProyectoRupViewModel.cs" />
     <Compile Include="Models\ProyectoCardViewModel.cs" />
+    <Compile Include="Models\sysdiagrams.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\tbMetodologias.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -206,9 +209,6 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\tbRupFases.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\tbRupIteraciones.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\tbRupTiposDocumento.cs">

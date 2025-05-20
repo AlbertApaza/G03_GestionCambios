@@ -58,7 +58,8 @@ namespace G03_ProyectoGestion.Models
 
     public class ActivityCreatePostModel
     {
-        public int IterationId { get; set; }
+        public int ProjectId { get; set; }
+        public int PhaseId { get; set; }
         public string Description { get; set; }
         public int ContextRoleId { get; set; } // El rol general de la actividad
         public List<int> AssignedUserIds { get; set; } // IDs de los usuarios asignados
@@ -68,7 +69,8 @@ namespace G03_ProyectoGestion.Models
 
     public class DocumentCreatePostModel
     {
-        public int IterationId { get; set; }
+        public int ProjectId { get; set; }
+        public int PhaseId { get; set; }
         public string TypeClave { get; set; }
         public string Version { get; set; }
     }

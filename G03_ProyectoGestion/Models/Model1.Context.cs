@@ -25,6 +25,7 @@ namespace G03_ProyectoGestion.Models
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<tbMetodologias> tbMetodologias { get; set; }
         public virtual DbSet<tbProyectos> tbProyectos { get; set; }
         public virtual DbSet<tbProyectoUsuarios> tbProyectoUsuarios { get; set; }
@@ -33,7 +34,6 @@ namespace G03_ProyectoGestion.Models
         public virtual DbSet<tbRupActividades> tbRupActividades { get; set; }
         public virtual DbSet<tbRupDocumentos> tbRupDocumentos { get; set; }
         public virtual DbSet<tbRupFases> tbRupFases { get; set; }
-        public virtual DbSet<tbRupIteraciones> tbRupIteraciones { get; set; }
         public virtual DbSet<tbRupTiposDocumento> tbRupTiposDocumento { get; set; }
         public virtual DbSet<tbScrumBacklog> tbScrumBacklog { get; set; }
         public virtual DbSet<tbScrumDaily> tbScrumDaily { get; set; }

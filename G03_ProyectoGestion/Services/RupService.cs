@@ -4,107 +4,43 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using G03_ProyectoGestion.Models;
-using static G03_ProyectoGestion.Controllers.RUPController;
 
 namespace G03_ProyectoGestion.Services
 {
     public class RupService
     {
-
-        public List<object> ObtenerIteracionesPorFase(int projectId, int phaseId)
-        {
-            using (var db = new g03_databaseEntities())
-            {
-                var iterations = db.tbRupIteraciones
-                    .Where(i => i.idProyecto == projectId && i.idFase == phaseId)
-                    .Select(i => new
-                    {
-                        id = i.idIteracion,
-                        project_id = i.idProyecto,
-                        phase_id = i.idFase,
-                        name = i.nombre,
-                        objective = i.objetivo,
-                        start_date = i.fechaInicio,
-                        end_date = i.fechaFin,
-                        status = i.Estado
-                    })
-                    .ToList();
-
-                var result = iterations.Select(i => new
-                {
-                    i.id,
-                    i.project_id,
-                    i.phase_id,
-                    i.name,
-                    i.objective,
-                    start_date = i.start_date?.ToString("yyyy-MM-dd"),
-                    end_date = i.end_date?.ToString("yyyy-MM-dd"),
-                    i.status
-                }).ToList<object>();
-
-                return result;
-            }
-        }
+        // ELIMINADO: ObtenerIteracionesPorFase
+        // ELIMINADO: CrearIteracion
 
         public bool ActualizarFaseDelProyecto(int projectId, int phaseId)
         {
             using (var db = new g03_databaseEntities())
             {
-                var project = db.tbProyectos.FirstOrDefault(p => p.idProyecto == projectId && p.idMetodologia == 2);
+                var project = db.tbProyectos.FirstOrDefault(p => p.idProyecto == projectId && p.idMetodologia == 2); // 2 es RUP
                 if (project == null) return false;
 
                 var phaseExists = db.tbRupFases.Any(f => f.idFase == phaseId);
-                if (!phaseExists) return false;
+                if (!phaseExists) return false; // O manejar como error
 
+                // Verificar si la fase existe en tbRupFases (si no, podrías necesitar crearla o devolver error)
+                // Por ahora, se asume que phaseId es un ID válido de tbRupFases
                 project.idFase = phaseId;
                 db.SaveChanges();
                 return true;
             }
         }
 
-        public object CrearIteracion(IterationCreatePostModel iterationData)
-        {
-            using (var db = new g03_databaseEntities())
-            {
-                var nuevaIteracion = new tbRupIteraciones
-                {
-                    idProyecto = iterationData.ProjectId,
-                    idFase = iterationData.PhaseId,
-                    nombre = iterationData.Name,
-                    objetivo = iterationData.Objective,
-                    fechaInicio = iterationData.Start_Date,
-                    fechaFin = iterationData.End_Date,
-                    Estado = "Planificada"
-                };
-
-                db.tbRupIteraciones.Add(nuevaIteracion);
-                db.SaveChanges();
-
-                return new
-                {
-                    success = true,
-                    id = nuevaIteracion.idIteracion,
-                    project_id = nuevaIteracion.idProyecto,
-                    phase_id = nuevaIteracion.idFase,
-                    name = nuevaIteracion.nombre,
-                    objective = nuevaIteracion.objetivo,
-                    start_date = nuevaIteracion.fechaInicio?.ToString("yyyy-MM-dd"),
-                    end_date = nuevaIteracion.fechaFin?.ToString("yyyy-MM-dd"),
-                    status = nuevaIteracion.Estado
-                };
-            }
-        }
-
-        public List<object> ObtenerActividadesPorIteracion(int iterationId)
+        public List<object> ObtenerActividadesPorFase(int projectId, int phaseId) // Cambiado de Iteracion a Fase
         {
             using (var db = new g03_databaseEntities())
             {
                 var actividades = db.tbRupActividades
-                    .Where(a => a.idIteracion == iterationId)
+                    .Where(a => a.idProyecto == projectId && a.idFase == phaseId) // Cambiado
                     .Select(a => new
                     {
                         id = a.idActividad,
-                        iteration_id = a.idIteracion,
+                        project_id = a.idProyecto, // Añadido para consistencia
+                        phase_id = a.idFase,       // Añadido para consistencia
                         description = a.descripcion,
                         assigned_role = a.idRol,
                         status = a.estado,
@@ -122,7 +58,8 @@ namespace G03_ProyectoGestion.Services
                 var result = actividades.Select(a => new
                 {
                     a.id,
-                    a.iteration_id,
+                    a.project_id,
+                    a.phase_id,
                     a.description,
                     a.assigned_role,
                     a.status,
@@ -133,7 +70,8 @@ namespace G03_ProyectoGestion.Services
                 return result;
             }
         }
-        public object CrearActividad(ActivityCreatePostModel activityData)
+
+        public object CrearActividad(ActivityCreatePostModel activityData) // El modelo debe actualizarse
         {
             using (var db = new g03_databaseEntities())
             {
@@ -142,18 +80,31 @@ namespace G03_ProyectoGestion.Services
                     return new { success = false, message = "Debe asignar al menos un usuario a la actividad." };
                 }
 
-                var iteration = db.tbRupIteraciones.Find(activityData.IterationId);
-                if (iteration == null)
+                // Validar que el proyecto y la fase existen
+                var projectPhaseExists = db.tbProyectos.Any(p => p.idProyecto == activityData.ProjectId && p.idFase == activityData.PhaseId);
+                if (!projectPhaseExists) // Esta validación asume que la fase en el proyecto es la correcta.
+                                         // O podrías validar activityData.PhaseId contra tbRupFases
                 {
-                    return new { success = false, message = "Iteración no encontrada." };
+                    // Podrías verificar si la fase existe en tbRupFases de forma independiente
+                    var phaseExistsInTable = db.tbRupFases.Any(f => f.idFase == activityData.PhaseId);
+                    if (!phaseExistsInTable)
+                    {
+                        return new { success = false, message = "La fase especificada no existe." };
+                    }
+                    var projectExists = db.tbProyectos.Any(p => p.idProyecto == activityData.ProjectId);
+                    if (!projectExists)
+                    {
+                        return new { success = false, message = "El proyecto especificado no existe." };
+                    }
+                    // Si ambos existen pero no coinciden con el proyecto.idFase, es decisión de negocio si permitirlo
+                    // por ahora, asumimos que la actividad se crea para el proyecto y la fase dada.
                 }
 
-                int projectId = iteration.idProyecto;
 
                 foreach (var userId in activityData.AssignedUserIds)
                 {
                     var userInProjectWithRole = db.tbProyectoUsuarios
-                        .Any(pu => pu.idProyecto == projectId &&
+                        .Any(pu => pu.idProyecto == activityData.ProjectId &&
                                    pu.idUsuario == userId &&
                                    pu.idRol == activityData.ContextRoleId);
 
@@ -171,7 +122,8 @@ namespace G03_ProyectoGestion.Services
 
                 var newDbActivity = new tbRupActividades
                 {
-                    idIteracion = activityData.IterationId,
+                    idProyecto = activityData.ProjectId, // Cambiado
+                    idFase = activityData.PhaseId,       // Cambiado
                     descripcion = activityData.Description,
                     idRol = activityData.ContextRoleId,
                     estado = string.IsNullOrEmpty(activityData.Status) ? "Pendiente" : activityData.Status,
@@ -189,7 +141,6 @@ namespace G03_ProyectoGestion.Services
                         idUsuario = userId
                     });
                 }
-
                 db.SaveChanges();
 
                 var assignedUsers = db.tbUsuarios
@@ -201,7 +152,8 @@ namespace G03_ProyectoGestion.Services
                 {
                     success = true,
                     id = newDbActivity.idActividad,
-                    iteration_id = newDbActivity.idIteracion,
+                    project_id = newDbActivity.idProyecto,
+                    phase_id = newDbActivity.idFase,
                     description = newDbActivity.descripcion,
                     assigned_role = newDbActivity.idRol,
                     assigned_users = assignedUsers,
@@ -210,18 +162,20 @@ namespace G03_ProyectoGestion.Services
                 };
             }
         }
-        public List<object> ObtenerDocumentosPorIteracion(int iterationId)
+
+        public List<object> ObtenerDocumentosPorFase(int projectId, int phaseId) // Cambiado de Iteracion a Fase
         {
             using (var db = new g03_databaseEntities())
             {
                 var documentos = db.tbRupDocumentos
-                    .Where(d => d.idIteracion == iterationId)
-                    .Include(d => d.tbRupTiposDocumento)
+                    .Where(d => d.idProyecto == projectId && d.idFase == phaseId) // Cambiado
+                    .Include(d => d.tbRupTiposDocumento) // Asegúrate que esta navegación existe y es correcta
                     .Select(d => new
                     {
                         id = d.idDocumento,
-                        iteration_id = d.idIteracion,
-                        type = d.tbRupTiposDocumento.clave,
+                        project_id = d.idProyecto, // Añadido
+                        phase_id = d.idFase,       // Añadido
+                        type = d.tbRupTiposDocumento.clave, // Asegúrate que tbRupTiposDocumento está bien referenciado
                         file_name = d.nombreArchivo,
                         version = d.Version,
                         status = d.Estado,
@@ -232,7 +186,8 @@ namespace G03_ProyectoGestion.Services
                 var result = documentos.Select(d => new
                 {
                     d.id,
-                    d.iteration_id,
+                    d.project_id,
+                    d.phase_id,
                     d.type,
                     d.file_name,
                     d.version,
@@ -243,7 +198,6 @@ namespace G03_ProyectoGestion.Services
                 return result;
             }
         }
-
         public List<object> ObtenerUsuariosPorRolEnProyecto(int projectId, int roleId)
         {
             using (var db = new g03_databaseEntities())

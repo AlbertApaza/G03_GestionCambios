@@ -1,10 +1,4 @@
-﻿@{
-    ViewBag.Title = "Gestor RUP";
-}
-
-<script src="https://cdn.tailwindcss.com"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
+﻿
 <style>
     [x-cloak] {
         display: none !important;
@@ -452,18 +446,23 @@
         }
     }
 </style>
+
+
+@{
+    ViewBag.Title = "Gestor RUP por Fases"; // Cambiado
+}
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
 <body class="bg-gray-100 text-gray-800" x-data="app()">
     <div class="container mx-auto p-4">
         <header class="bg-blue-600 text-white p-6 rounded-t-lg shadow-lg mb-6">
-            <h1 class="text-4xl font-bold">Gestor RUP con Iteraciones</h1>
+            <h1 class="text-4xl font-bold">Gestor RUP por Fases</h1> @* Cambiado *@
             <p class="text-blue-100" x-show="selectedProject" x-text="`Gestionando Proyecto: ${selectedProject.name}`"></p>
             <p class="text-blue-100" x-show="!selectedProject">Cargando datos del proyecto...</p>
         </header>
 
-        @* ELIMINADA LA SECCIÓN DE LISTADO DE PROYECTOS *@
-        @* <main x-show="!selectedProjectId" class="p-6 bg-white rounded-lg shadow-lg"> ... </main> *@
-
-        @* Mostrar mensajes de error del controlador si los hay (por ejemplo, de DownloadDocument) *@
         @if (TempData["ErrorMessage"] != null)
         {
             <div class="my-4 p-4 bg-red-100 border-l-4 border-red-500 text-red-700 rounded-md shadow" role="alert">
@@ -472,10 +471,8 @@
             </div>
         }
 
-
         <main x-show="selectedProjectId" x-cloak class="p-6 bg-white rounded-lg shadow-lg">
             <div class="mb-6 flex justify-start">
-                @* Modificado para volver a la lista principal de proyectos generales *@
                 <a href="@Url.Action("Index", "Proyecto")" class="btn btn-secondary text-sm">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-1" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" /></svg>
                     Volver a Mis Proyectos
@@ -498,87 +495,12 @@
                     </div>
                 </div>
 
-                <!-- Modificar la estructura del contenedor de iteraciones para asegurar que ambos paneles tengan la misma altura -->
-                <div class="my-6 p-6 bg-blue-50 border border-blue-200 rounded-md shadow-lg">
-                    <h3 class="text-2xl font-semibold mb-8 text-blue-700 text-center">
-                        Iteraciones de la Fase: <span x-text="getPhaseName(selectedProject.current_phase)" class="font-bold"></span>
-                    </h3>
-                    <div class="iteration-container">
-                        <div class="iteration-box p-4">
-                            <h4 class="text-xl font-semibold mb-3 text-gray-800">Añadir Nueva Iteración</h4>
-                            <form @@submit.prevent="addIteration" class="p-6 bg-white rounded-xl border border-gray-300 space-y-4 shadow-xl flex-grow">
-                                <div>
-                                    <label for="iterationName" class="text-sm font-medium text-gray-600">Nombre Iteración:</label>
-                                    <input type="text" id="iterationName" x-model="newIteration.name" placeholder="Ej: Iteración 1, E1" required class="input-field input-field-sm">
-                                </div>
-                                <div>
-                                    <label for="iterationObjective" class="text-sm font-medium text-gray-600">Objetivo:</label>
-                                    <textarea id="iterationObjective" x-model="newIteration.objective" rows="3" placeholder="Describa el objetivo principal" required class="input-field input-field-sm"></textarea>
-                                </div>
-                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                    <div>
-                                        <label for="iterationStartDate" class="text-sm font-medium text-gray-600">Fecha Inicio:</label>
-                                        <input type="date" id="iterationStartDate" x-model="newIteration.start_date" class="input-field input-field-sm">
-                                    </div>
-                                    <div>
-                                        <label for="iterationEndDate" class="text-sm font-medium text-gray-600">Fecha Fin:</label>
-                                        <input type="date" id="iterationEndDate" x-model="newIteration.end_date" class="input-field input-field-sm">
-                                    </div>
-                                </div>
-                                <button type="submit" class="btn btn-primary btn-sm w-full sm:w-auto">
-                                    Crear Iteración
-                                </button>
-                            </form>
-                        </div>
+                @* SECCIÓN DE ITERACIONES ELIMINADA *@
 
-                        <div class="iteration-box p-4">
-                            <h4 class="text-xl font-semibold mb-3 text-gray-800">Iteraciones Existentes</h4>
-                            <div class="p-6 bg-white rounded-xl border border-gray-300 shadow-xl flex-grow flex flex-col">
-                                <div x-show="currentPhaseIterations.length > 0" class="space-y-4 iterations-list pr-2 custom-scrollbar flex-grow">
-                                    <template x-for="iter in currentPhaseIterations" :key="iter.id">
-                                        <div class="card p-4 transition-all duration-200 ease-in-out rounded-lg"
-                                             :class="{
-                                'selected-iteration': selectedIterationId === iter.id,
-                                'hover:shadow-lg hover:border-gray-300': selectedIterationId !== iter.id
-                             }">
-                                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
-                                                <div class="mb-2 sm:mb-0 flex-grow mr-2">
-                                                    <p class="font-semibold text-gray-800" x-text="iter.name"></p>
-                                                    <p class="text-xs text-gray-600" x-text="iter.objective"></p>
-                                                </div>
-                                                <div class="flex items-center space-x-2 w-full sm:w-auto mt-2 sm:mt-0 flex-shrink-0">
-                                                    <select x-model="iter.status" @@change="updateIterationStatus(iter)" class="input-field input-field-xs py-1 flex-grow sm:flex-grow-0">
-                                                        <template x-for="status_opt in iterationStatuses" :key="status_opt">
-                                                            <option :value="status_opt" x-text="status_opt"></option>
-                                                        </template>
-                                                    </select>
-                                                    <button @@click="selectIteration(iter.id)"
-                                                            class="btn btn-secondary btn-xs whitespace-nowrap"
-                                                            :disabled="selectedIterationId === iter.id"
-                                                            :class="{'bg-green-600 hover:bg-green-700 text-white pointer-events-none': selectedIterationId === iter.id }">
-                                                        <span x-text="selectedIterationId === iter.id ? 'Seleccionada' : 'Activar'"></span>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div class="mt-3 pt-3 border-t border-gray-200 text-xs text-gray-500">
-                                                <p>Inicio: <span x-text="iter.start_date || 'N/A'"></span> - Fin: <span x-text="iter.end_date || 'N/A'"></span></p>
-                                            </div>
-                                        </div>
-                                    </template>
-                                </div>
-                                <p x-show="currentPhaseIterations.length === 0" class="text-sm text-gray-500 italic py-4 text-center flex-grow flex items-center justify-center">No hay iteraciones definidas para esta fase.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @* Ya no se necesita la advertencia de "seleccione una iteración" *@
 
-                <div x-show="selectedProject && !selectedIterationId" class="my-6 p-4 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 rounded-md">
-                    <p class="font-bold">¡Atención!</p>
-                    <p>Por favor, seleccione o cree una iteración activa para esta fase para poder gestionar actividades y documentos.</p>
-                </div>
-
-                <!-- Modificar esta sección para añadir la clase de animación fade-in -->
-                <div class="mt-10" x-show="selectedIterationId && selectedIteration" x-transition:enter="fade-in-section">
+                <div class="mt-10" x-show="selectedProject" x-transition:enter="fade-in-section">
+                    @* Mostrar siempre si hay proyecto seleccionado *@
                     <div class="border-b border-gray-300">
                         <nav class="-mb-px flex space-x-1 md:space-x-4 overflow-x-auto custom-scrollbar pb-1" aria-label="Tabs">
                             <button @@click="activeTab = 'activities'" :class="{ 'active': activeTab === 'activities' }" class="tab-button whitespace-nowrap">
@@ -587,14 +509,14 @@
                             <button @@click="activeTab = 'documents'" :class="{ 'active': activeTab === 'documents' }" class="tab-button whitespace-nowrap">
                                 Documentos
                             </button>
-                            <button @@click="activeTab = 'overview_iteration'" :class="{ 'active': activeTab === 'overview_iteration' }" class="tab-button whitespace-nowrap">
-                                Resumen Iteración
+                            <button @@click="activeTab = 'overview_phase'" :class="{ 'active': activeTab === 'overview_phase' }" class="tab-button whitespace-nowrap">
+                                Resumen Fase @* Cambiado *@
                             </button>
                         </nav>
                     </div>
 
                     <div x-show="activeTab === 'activities'" class="tab-content mt-0">
-                        <h4 class="text-xl font-semibold mb-4 text-gray-700">Actividades de: <span x-text="selectedIteration.name" class="font-bold text-indigo-600"></span></h4>
+                        <h4 class="text-xl font-semibold mb-4 text-gray-700">Actividades de la Fase: <span x-text="getPhaseName(selectedProject.current_phase)" class="font-bold text-indigo-600"></span></h4>
                         <form @@submit.prevent="addActivity" class="space-y-4 mb-6 bg-white p-6 rounded-lg border border-gray-200 shadow-md">
                             <div>
                                 <label for="actDesc" class="block text-sm font-medium text-gray-700">Descripción:</label>
@@ -651,11 +573,10 @@
                             <button type="submit" class="btn btn-primary w-full md:w-auto">Añadir Actividad</button>
                         </form>
 
-                        <!-- Reemplazar la sección de "Actividades Registradas" en la pestaña "activities" -->
-
                         <h5 class="text-lg font-semibold mb-3 text-gray-600">Actividades Registradas:</h5>
                         <div class="max-h-[500px] overflow-y-auto pr-2 activities-grid custom-scrollbar">
-                            <template x-for="activity in currentIterationActivities" :key="activity.id">
+                            <template x-for="activity in currentPhaseActivities" :key="activity.id">
+                                @* Cambiado *@
                                 <div class="card mb-0 p-4 rounded-lg activity-card">
                                     <span :class="getStatusClass(activity.status)" class="status-badge whitespace-nowrap activity-status" x-text="activity.status"></span>
                                     <p class="text-md font-semibold text-gray-800 activity-title" x-text="activity.description"></p>
@@ -682,12 +603,12 @@
                                     </div>
                                 </div>
                             </template>
-                            <p x-show="currentIterationActivities.length === 0" class="text-sm text-gray-500 italic text-center py-6 md:col-span-3">No hay actividades para esta iteración.</p>
+                            <p x-show="currentPhaseActivities.length === 0" class="text-sm text-gray-500 italic text-center py-6 md:col-span-3">No hay actividades para esta fase.</p> @* Cambiado *@
                         </div>
                     </div>
 
                     <div x-show="activeTab === 'documents'" class="tab-content mt-0">
-                        <h4 class="text-xl font-semibold mb-4 text-gray-700">Documentos de: <span x-text="selectedIteration.name" class="font-bold text-indigo-600"></span></h4>
+                        <h4 class="text-xl font-semibold mb-4 text-gray-700">Documentos de la Fase: <span x-text="getPhaseName(selectedProject.current_phase)" class="font-bold text-indigo-600"></span></h4>
                         <form @@submit.prevent="addDocument" id="documentForm" class="space-y-4 mb-6 bg-white p-6 rounded-lg border border-gray-200 shadow-md">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
@@ -713,7 +634,8 @@
 
                         <h5 class="text-lg font-semibold mb-3 text-gray-600">Documentos Adjuntos:</h5>
                         <div class="max-h-[500px] overflow-y-auto space-y-3 pr-2 custom-scrollbar">
-                            <template x-for="doc in currentIterationDocuments" :key="doc.id">
+                            <template x-for="doc in currentPhaseDocuments" :key="doc.id">
+                                @* Cambiado *@
                                 <div class="card mb-0 p-4 rounded-lg">
                                     <div class="flex justify-between items-start">
                                         <div class="mr-2">
@@ -748,40 +670,38 @@
                                     </div>
                                 </div>
                             </template>
-                            <p x-show="currentIterationDocuments.length === 0" class="text-sm text-gray-500 italic text-center py-6">No hay documentos para esta iteración.</p>
+                            <p x-show="currentPhaseDocuments.length === 0" class="text-sm text-gray-500 italic text-center py-6">No hay documentos para esta fase.</p> @* Cambiado *@
                         </div>
                     </div>
 
-                    <div x-show="activeTab === 'overview_iteration'" class="tab-content mt-0">
+                    <div x-show="activeTab === 'overview_phase'" class="tab-content mt-0">
+                        @* Cambiado *@
                         <h4 class="text-xl font-semibold mb-4 text-gray-700">
-                            Resumen de la Iteración: <span x-text="selectedIteration.name" class="font-bold text-indigo-600"></span>
+                            Resumen de la Fase: <span x-text="getPhaseName(selectedProject.current_phase)" class="font-bold text-indigo-600"></span> @* Cambiado *@
                         </h4>
                         <div class="card mb-6 p-4 rounded-lg iteration-summary-card">
+                            @* Puede mantener esta clase o cambiarla por phase-summary-card *@
                             <div class="iteration-summary-grid">
+                                @* Puede mantener esta clase o cambiarla *@
                                 <div class="summary-item">
-                                    <strong>Fase RUP:</strong>
-                                    <span x-text="selectedProject ? getPhaseName(selectedProject.current_phase) : ''"></span>
+                                    <strong>Proyecto:</strong>
+                                    <span x-text="selectedProject.name"></span>
                                 </div>
                                 <div class="summary-item">
-                                    <strong>Objetivo:</strong>
-                                    <span x-text="selectedIteration.objective"></span>
+                                    <strong>Fase RUP Actual:</strong>
+                                    <span x-text="getPhaseName(selectedProject.current_phase)"></span>
                                 </div>
-                                <div class="summary-item">
-                                    <strong>Fechas:</strong>
-                                    <span x-text="(selectedIteration.start_date || 'N/A') + ' a ' + (selectedIteration.end_date || 'N/A')"></span>
-                                </div>
-                                <div class="summary-item">
-                                    <strong>Estado:</strong>
-                                    <span x-text="selectedIteration.status" class="font-semibold" :class="getIterationStatusClass(selectedIteration.status)"></span>
-                                </div>
+                                @* Ya no hay objetivo de iteración ni fechas de iteración *@
                             </div>
                         </div>
 
                         <div class="card mt-4 p-4 rounded-lg">
                             <h5 class="font-semibold text-gray-600 mb-3">Detalle de Actividades</h5>
-                            <template x-if="currentIterationActivities.length > 0">
+                            <template x-if="currentPhaseActivities.length > 0">
+                                @* Cambiado *@
                                 <div class="activities-grid max-h-96 overflow-y-auto pr-1 custom-scrollbar">
-                                    <template x-for="activity in currentIterationActivities" :key="activity.id">
+                                    <template x-for="activity in currentPhaseActivities" :key="activity.id">
+                                        @* Cambiado *@
                                         <div class="py-3 px-4 bg-slate-50 rounded-lg border border-gray-200 hover:shadow-md transition-shadow activity-card">
                                             <span :class="getStatusClass(activity.status)" class="status-badge whitespace-nowrap activity-status" x-text="activity.status"></span>
                                             <p class="font-medium text-gray-700 text-sm activity-title" x-text="activity.description" :title="activity.description"></p>
@@ -793,19 +713,19 @@
                                     </template>
                                 </div>
                             </template>
-                            <p x-show="currentIterationActivities.length === 0" class="text-sm text-gray-500 italic mt-2">No hay actividades en esta iteración.</p>
+                            <p x-show="currentPhaseActivities.length === 0" class="text-sm text-gray-500 italic mt-2">No hay actividades en esta fase.</p> @* Cambiado *@
                         </div>
 
                         <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div class="card mb-0 p-4 rounded-lg">
                                 <h5 class="font-semibold text-gray-600 mb-2">Progreso de Actividades</h5>
-                                <p class="text-sm text-gray-500">Total: <span x-text="currentIterationActivities.length"></span></p>
-                                <p class="text-sm text-green-600">Completadas: <span x-text="currentIterationActivities.filter(a => a.status === 'Completada').length"></span></p>
+                                <p class="text-sm text-gray-500">Total: <span x-text="currentPhaseActivities.length"></span></p> @* Cambiado *@
+                                <p class="text-sm text-green-600">Completadas: <span x-text="currentPhaseActivities.filter(a => a.status === 'Completada').length"></span></p> @* Cambiado *@
                             </div>
                             <div class="card mb-0 p-4 rounded-lg">
                                 <h5 class="font-semibold text-gray-600 mb-2">Estado de Documentos</h5>
-                                <p class="text-sm text-gray-500">Total: <span x-text="currentIterationDocuments.length"></span></p>
-                                <p class="text-sm text-green-600">Validados: <span x-text="currentIterationDocuments.filter(d => d.status === 'Validado').length"></span></p>
+                                <p class="text-sm text-gray-500">Total: <span x-text="currentPhaseDocuments.length"></span></p> @* Cambiado *@
+                                <p class="text-sm text-green-600">Validados: <span x-text="currentPhaseDocuments.filter(d => d.status === 'Validado').length"></span></p> @* Cambiado *@
                             </div>
                         </div>
                     </div>
@@ -814,122 +734,102 @@
         </main>
 
         <footer class="text-center text-sm text-gray-500 mt-12 pb-6">
-            Gestor RUP con Iteraciones © @DateTime.Now.Year - Aplicación MVC
+            Gestor RUP por Fases © @DateTime.Now.Year - Aplicación MVC @* Cambiado *@
         </footer>
     </div>
     <script>
     function app() {
         return {
-            // selectedProjectId se inicializará desde ViewBag
             selectedProjectId: null,
-            iterations: [],
-            selectedIterationId: null,
+            // ELIMINADO: iterations, selectedIterationId, newIteration
             activities: [],
             documents: [],
 
-            // newProject ya no se usa aquí, la creación de proyectos es externa
-            newIteration: { name: '', objective: '', start_date: '', end_date: '' },
             newDocument: { type_clave: '', file_name: '', file_data_obj: null, version: '1.0' },
+            newActivity: { description: '', context_role_id: null, selected_user_ids: [], status: 'Pendiente', due_date: '' },
 
             phases: [],
             roles: [],
             documentTypes: [],
+            availableUsersForRole: [],
 
             activityStatuses: ['Pendiente', 'En Progreso', 'Completada', 'Bloqueada', 'En Revisión'],
             documentStatuses: ['Pendiente', 'En Revisión', 'Validado', 'Obsoleto'],
-            iterationStatuses: ['Planificada', 'Activa', 'Completada', 'En Revisión', 'Cancelada'],
+            // ELIMINADO: iterationStatuses
             activeTab: 'activities',
-
-            // selectedProject será un objeto con los datos del proyecto actual.
             selectedProject: null,
 
-            get selectedIteration() {
-                return this.iterations.find(it => it.id === this.selectedIterationId) || null;
-            },
-            get currentPhaseIterations() {
-                if (!this.selectedProject) return [];
-                return this.iterations.filter(iter =>
-                    iter.project_id === this.selectedProject.id &&
-                    iter.phase_id === this.selectedProject.current_phase
-                ).sort((a, b) => a.name.localeCompare(b.name));
-            },
-            get currentIterationActivities() {
-                if (!this.selectedIterationId) return [];
-                return this.activities.filter(act => act.iteration_id === this.selectedIterationId);
-            },
-            get currentIterationDocuments() {
-                if (!this.selectedIterationId) return [];
-                return this.documents.filter(doc => doc.iteration_id === this.selectedIterationId);
-            },
+            // ELIMINADO: selectedIteration
 
-            newActivity: { description: '', context_role_id: null, selected_user_ids: [], status: 'Pendiente', due_date: '' },
-            availableUsersForRole: [],
+            get currentPhaseActivities() { // Cambiado
+                if (!this.selectedProject) return [];
+                // Las actividades ya se filtran por proyecto y fase en el backend
+                // Pero si el array 'activities' contiene de múltiples fases (no debería con la lógica actual), se necesitaría filtrar aquí:
+                // return this.activities.filter(act => act.project_id === this.selectedProject.id && act.phase_id === this.selectedProject.current_phase);
+                return this.activities; // Asumiendo que this.activities solo tiene las de la fase/proyecto actual
+            },
+            get currentPhaseDocuments() { // Cambiado
+                if (!this.selectedProject) return [];
+                // Similar a activities
+                // return this.documents.filter(doc => doc.project_id === this.selectedProject.id && doc.phase_id === this.selectedProject.current_phase);
+                return this.documents;
+            },
 
             async init() {
-                console.log("Alpine init starting..."); // Para depuración
+                console.log("Alpine init starting (Phase Mode)...");
                 this.phases = @Html.Raw(Json.Encode(ViewBag.Phases ?? new List<object>()));
                 this.roles = @Html.Raw(Json.Encode(ViewBag.Roles ?? new List<object>()));
                 this.documentTypes = @Html.Raw(Json.Encode(ViewBag.DocumentTypes ?? new List<object>()));
 
-                // Obtener datos del proyecto directamente desde ViewBag
                 const projectDataFromView = @Html.Raw(Json.Encode(ViewBag.SelectedProjectData));
                 const projectIdFromView = @Html.Raw(Json.Encode(ViewBag.ProjectId));
 
                 console.log("Project ID from ViewBag:", projectIdFromView);
                 console.log("Project Data from ViewBag:", projectDataFromView);
 
-
                 if (projectIdFromView && projectDataFromView) {
                     this.selectedProjectId = projectIdFromView;
-                    this.selectedProject = projectDataFromView; // Asignar el objeto del proyecto directamente
+                    this.selectedProject = projectDataFromView;
                     console.log("selectedProjectId set to:", this.selectedProjectId);
                     console.log("selectedProject set to:", this.selectedProject);
 
+                    if (this.phases.length > 0 && (this.selectedProject.current_phase === 0 || !this.phases.find(p => p.id === this.selectedProject.current_phase))) {
+                        // Si la fase actual no es válida o es 0, y hay fases disponibles, se asigna la primera.
+                        // Esto también debería manejarse en el backend al cargar el proyecto.
+                        console.warn("Project current_phase is invalid or 0. Defaulting if possible.");
+                        if (this.phases.length > 0) {
+                            this.selectedProject.current_phase = this.phases[0].id;
+                            // Idealmente, esto se informa al backend, pero updateProjectPhase() lo hará si el usuario cambia.
+                            // O el backend ya lo corrigió como se añadió en el controlador.
+                        }
+                    }
 
-                    // Inicializar valores por defecto para formularios si es necesario
-                    if (this.roles.length > 0 && this.newActivity.context_role_id === null) { // Evitar reasignar si ya tiene valor
-                        this.newActivity.context_role_id = null;
+
+                    if (this.roles.length > 0 && this.newActivity.context_role_id === null) {
+                        this.newActivity.context_role_id = null; // Mantener "Seleccione Rol"
                     }
                     if (this.documentTypes.length > 0 && !this.newDocument.type_clave) {
                         this.newDocument.type_clave = this.documentTypes[0].clave;
                     }
-
-                    // Cargar datos relacionados con el proyecto (iteraciones, etc.)
-                    await this.loadProjectRelatedData();
-
+                    await this.loadProjectPhaseData();
                 } else {
                     console.error("No se proporcionaron datos del proyecto a la vista RUP o son inválidos.");
-                    // Opcionalmente, podrías querer mostrar un mensaje de error más explícito en la UI
-                    // o redirigir si esta condición es crítica.
-                    // alert("Error: No se pudieron cargar los datos del proyecto.");
-                    // window.location.href = '@Url.Action("Index", "Proyecto")'; // Redirigir a la lista de proyectos
                 }
-                console.log("Alpine init finished.");
+                console.log("Alpine init finished (Phase Mode).");
             },
 
-            async loadProjectRelatedData() {
-                console.log("loadProjectRelatedData called for project:", this.selectedProject);
-                if (!this.selectedProject) {
-                     console.warn("loadProjectRelatedData: selectedProject is null, aborting.");
+            async loadProjectPhaseData() { // Renombrado y simplificado
+                console.log("loadProjectPhaseData called for project:", this.selectedProject);
+                if (!this.selectedProject || this.selectedProject.current_phase === 0) {
+                     console.warn("loadProjectPhaseData: selectedProject is null or current_phase is 0, aborting data load.");
+                     this.activities = [];
+                     this.documents = [];
                      return;
                 }
-
-                await this.fetchIterationsForCurrentProjectPhase();
-                const activeOrDefaultIter = this.currentPhaseIterations.find(it => it.status === 'Activa') ||
-                                            this.currentPhaseIterations.find(it => it.status === 'Planificada') ||
-                                            (this.currentPhaseIterations.length > 0 ? this.currentPhaseIterations[0] : null);
-
-                console.log("Default/Active iteration:", activeOrDefaultIter);
-
-                if (activeOrDefaultIter) {
-                    await this.selectIteration(activeOrDefaultIter.id);
-                } else {
-                    this.selectedIterationId = null;
-                    this.activities = [];
-                    this.documents = [];
-                    this.activeTab = 'activities';
-                    console.log("No active/default iteration found. Iteration views will be empty.");
-                }
+                await this.fetchActivitiesForCurrentPhase();
+                await this.fetchDocumentsForCurrentPhase();
+                this.activeTab = 'activities'; // Reset tab
+                console.log("Project phase data loaded.");
             },
 
             async fetchUsersForSelectedRole() {
@@ -948,7 +848,7 @@
             },
             async addActivity() {
                 if (!this.newActivity.description.trim() ||
-                    !this.selectedIterationId ||
+                    !this.selectedProject ||
                     this.newActivity.context_role_id === null ||
                     this.newActivity.selected_user_ids.length === 0) {
                     alert("Por favor, complete todos los campos requeridos, seleccione un rol y al menos un usuario.");
@@ -956,7 +856,8 @@
                 }
                 try {
                     const payload = {
-                        IterationId: this.selectedIterationId,
+                        ProjectId: this.selectedProject.id, // Cambiado
+                        PhaseId: this.selectedProject.current_phase, // Cambiado
                         Description: this.newActivity.description,
                         ContextRoleId: this.newActivity.context_role_id,
                         AssignedUserIds: this.newActivity.selected_user_ids,
@@ -970,6 +871,8 @@
                     });
                     const result = await response.json();
                     if (!response.ok || !result.success) throw new Error(result.message || 'Falló la creación de la actividad');
+
+                    // La respuesta 'result' debería ser la actividad creada con su 'id'
                     this.activities.push(result);
                     this.newActivity = { description: '', context_role_id: null, selected_user_ids: [], status: 'Pendiente', due_date: '' };
                     this.availableUsersForRole = [];
@@ -977,33 +880,24 @@
                 } catch (error) { console.error("Error añadiendo actividad:", error); alert("Error: " + error.message); }
             },
 
-            async fetchIterationsForCurrentProjectPhase() {
-                if (!this.selectedProject) { this.iterations = []; return; }
-                console.log(`Fetching iterations for project ${this.selectedProject.id}, phase ${this.selectedProject.current_phase}`);
-                try {
-                    const response = await fetch(`@Url.Action("GetIterationsForPhase", "RUP")?projectId=${this.selectedProject.id}&phaseId=${this.selectedProject.current_phase}`);
-                    if (!response.ok) throw new Error('Falló la carga de iteraciones');
-                    this.iterations = await response.json();
-                    console.log("Iterations fetched:", this.iterations);
-                } catch (error) { console.error("Error cargando iteraciones:", error); this.iterations = []; alert("Error: " + error.message); }
-            },
+            // ELIMINADO: fetchIterationsForCurrentProjectPhase
 
-            async fetchActivitiesForCurrentIteration() {
-                if (!this.selectedIterationId) { this.activities = []; return; }
-                console.log(`Fetching activities for iteration ${this.selectedIterationId}`);
+            async fetchActivitiesForCurrentPhase() { // Cambiado
+                if (!this.selectedProject || this.selectedProject.current_phase === 0) { this.activities = []; return; }
+                console.log(`Fetching activities for project ${this.selectedProject.id}, phase ${this.selectedProject.current_phase}`);
                 try {
-                    const response = await fetch(`@Url.Action("GetActivitiesForIteration", "RUP")?iterationId=${this.selectedIterationId}`);
+                    const response = await fetch(`@Url.Action("GetActivitiesForPhase", "RUP")?projectId=${this.selectedProject.id}&phaseId=${this.selectedProject.current_phase}`);
                     if (!response.ok) throw new Error('Falló la carga de actividades');
                     this.activities = await response.json();
                     console.log("Activities fetched:", this.activities);
                 } catch (error) { console.error("Error cargando actividades:", error); this.activities = []; alert("Error: " + error.message);}
             },
 
-            async fetchDocumentsForCurrentIteration() {
-                if (!this.selectedIterationId) { this.documents = []; return; }
-                console.log(`Fetching documents for iteration ${this.selectedIterationId}`);
+            async fetchDocumentsForCurrentPhase() { // Cambiado
+                if (!this.selectedProject || this.selectedProject.current_phase === 0) { this.documents = []; return; }
+                console.log(`Fetching documents for project ${this.selectedProject.id}, phase ${this.selectedProject.current_phase}`);
                 try {
-                    const response = await fetch(`@Url.Action("GetDocumentsForIteration", "RUP")?iterationId=${this.selectedIterationId}`);
+                    const response = await fetch(`@Url.Action("GetDocumentsForPhase", "RUP")?projectId=${this.selectedProject.id}&phaseId=${this.selectedProject.current_phase}`);
                     if (!response.ok) throw new Error('Falló la carga de documentos');
                     this.documents = await response.json();
                     console.log("Documents fetched:", this.documents);
@@ -1012,7 +906,7 @@
 
             async updateProjectPhase() {
                 if (!this.selectedProject) return;
-                console.log(`Updating project phase for project ${this.selectedProject.id} to phase ${this.selectedProject.current_phase}`);
+                console.log(`Updating project ${this.selectedProject.id} to phase ${this.selectedProject.current_phase}`);
                 try {
                     const response = await fetch('@Url.Action("UpdateProjectPhase", "RUP")', {
                         method: 'POST',
@@ -1022,109 +916,24 @@
                     const result = await response.json();
                     if (!response.ok || !result.success) throw new Error(result.message || 'Falló la actualización de fase');
 
-                    await this.loadProjectRelatedData();
-
+                    // Recargar datos para la nueva fase
+                    await this.loadProjectPhaseData();
+                    // La propiedad selectedProject.current_phase ya está actualizada por x-model
                 } catch (error) { console.error("Error actualizando fase del proyecto:", error); alert("Error: " + error.message); }
             },
 
-            async addIteration() {
-                if (!this.newIteration.name.trim() || !this.newIteration.objective.trim() || !this.selectedProject) {
-                     alert("Nombre y objetivo de la iteración son requeridos.");
-                     return;
-                }
-                try {
-                    const payload = {
-                        ProjectId: this.selectedProject.id,
-                        PhaseId: this.selectedProject.current_phase,
-                        Name: this.newIteration.name,
-                        Objective: this.newIteration.objective,
-                        Start_Date: this.newIteration.start_date || null,
-                        End_Date: this.newIteration.end_date || null
-                    };
-                    const response = await fetch('@Url.Action("CreateIteration", "RUP")', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-                    const result = await response.json();
-                    if (!response.ok || !result.success) throw new Error(result.message || 'Falló la creación de la iteración');
+            // ELIMINADO: addIteration
+            // ELIMINADO: selectIteration
+            // ELIMINADO: updateIterationStatus
 
-                    this.iterations.push(result);
-                    this.newIteration = { name: '', objective: '', start_date: '', end_date: '' };
-
-                    if (!this.selectedIterationId || this.currentPhaseIterations.length === 1) {
-                        await this.selectIteration(result.id);
-                    }
-                } catch (error) { console.error("Error añadiendo iteración:", error); alert("Error: " + error.message); }
-            },
-
-            async selectIteration(iterationId) {
-                console.log("selectIteration called with ID:", iterationId);
-                const previouslySelectedId = this.selectedIterationId;
-                this.selectedIterationId = iterationId;
-
-                const iter = this.iterations.find(i => i.id === iterationId);
-                console.log("Found iteration object:", iter);
-
-                if (iter && iter.status === 'Planificada') {
-                     console.log("Iteration is 'Planificada', attempting to set to 'Activa'");
-                     await this.updateIterationStatus(iter, 'Activa');
-                } else if (iter && previouslySelectedId !== iterationId) {
-                    const localIter = this.iterations.find(it => it.id === iterationId);
-                    if(localIter && iter.status !== localIter.status) { // Sync if needed (rare case now)
-                        localIter.status = iter.status;
-                        console.log("Synced local iteration status (rare).");
-                    }
-                }
-
-                await this.fetchActivitiesForCurrentIteration();
-                await this.fetchDocumentsForCurrentIteration();
-
-                if (previouslySelectedId !== iterationId) {
-                    this.activeTab = 'activities';
-                    console.log("Active tab set to 'activities' due to iteration change.");
-                }
-            },
-
-            async updateIterationStatus(iterationToUpdate, newStatusOverride = null) {
-                const newStatus = newStatusOverride || iterationToUpdate.status;
-                const localIter = this.iterations.find(it => it.id === iterationToUpdate.id);
-                if (!localIter) {
-                    console.error("Cannot update status, iteration not found locally:", iterationToUpdate.id);
-                    return;
-                }
-                const originalStatus = localIter.status; // Get original status from local copy
-
-                localIter.status = newStatus; // Optimistic update
-
-                console.log(`Updating iteration ${iterationToUpdate.id} status from ${originalStatus} to ${newStatus}`);
-
-                try {
-                    const response = await fetch('@Url.Action("UpdateIterationStatus", "RUP")', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ iterationId: iterationToUpdate.id, status: newStatus })
-                    });
-                    const result = await response.json();
-                    if (!response.ok || !result.success) {
-                        localIter.status = originalStatus; // Revert
-                        throw new Error(result.message || 'Falló la actualización del estado de la iteración');
-                    }
-                    console.log("Iteration status updated successfully on server.");
-                } catch (error) {
-                    console.error("Error actualizando estado de iteración:", error);
-                    alert("Error: " + error.message);
-                    if (localIter) localIter.status = originalStatus; // Revert
-                }
-            },
             async updateActivityStatus(activityToUpdate) {
                  const localActivity = this.activities.find(a => a.id === activityToUpdate.id);
                  if (!localActivity) {
                      console.error("Cannot update status, activity not found locally:", activityToUpdate.id);
                      return;
                  }
-                 const originalStatus = localActivity.status;
-                 localActivity.status = activityToUpdate.status;
+                 const originalStatus = localActivity.status; // Guardar estado original
+                 localActivity.status = activityToUpdate.status; // Actualización optimista
 
                  try {
                     const response = await fetch('@Url.Action("UpdateActivityStatus", "RUP")', {
@@ -1134,13 +943,14 @@
                     });
                     const result = await response.json();
                      if (!response.ok || !result.success) {
-                        if (localActivity) localActivity.status = originalStatus;
+                        if (localActivity) localActivity.status = originalStatus; // Revertir en caso de error
                         throw new Error(result.message || 'Falló la actualización del estado de la actividad');
                     }
+                    // El estado ya está actualizado localmente
                 } catch (error) {
                     console.error("Error actualizando estado de actividad:", error);
                     alert("Error: " + error.message);
-                    if (localActivity) localActivity.status = originalStatus;
+                    if (localActivity) localActivity.status = originalStatus; // Revertir en caso de error
                 }
             },
 
@@ -1151,11 +961,12 @@
             },
 
             async addDocument() {
-                if (!this.newDocument.file_data_obj || !this.selectedIterationId || !this.newDocument.type_clave) {
+                if (!this.newDocument.file_data_obj || !this.selectedProject || !this.newDocument.type_clave) {
                     alert("Por favor, complete todos los campos y seleccione un archivo."); return;
                 }
                 const formData = new FormData();
-                formData.append('IterationId', this.selectedIterationId);
+                formData.append('ProjectId', this.selectedProject.id); // Cambiado
+                formData.append('PhaseId', this.selectedProject.current_phase); // Cambiado
                 formData.append('TypeClave', this.newDocument.type_clave);
                 formData.append('Version', this.newDocument.version);
                 formData.append('docFile', this.newDocument.file_data_obj);
@@ -1164,9 +975,9 @@
                     const result = await response.json();
                     if (!response.ok || !result.success) throw new Error(result.message || 'Falló la subida del documento');
 
-                    this.documents.push(result);
+                    this.documents.push(result); // result debe ser el objeto del documento creado
                     this.newDocument = { type_clave: (this.documentTypes.length > 0 ? this.documentTypes[0].clave : ''), file_name: '', file_data_obj: null, version: '1.0' };
-                    document.getElementById('docFile').value = null;
+                    document.getElementById('docFile').value = null; // Limpiar input file
                 } catch (error) { console.error("Error añadiendo documento:", error); alert("Error: " + error.message); }
             },
 
@@ -1177,7 +988,7 @@
                     return;
                 }
                 const originalStatus = localDoc.status;
-                localDoc.status = docToUpdate.status;
+                localDoc.status = docToUpdate.status; // Actualización optimista
 
                 try {
                     const response = await fetch('@Url.Action("UpdateDocumentStatus", "RUP")', {
@@ -1187,16 +998,16 @@
                     });
                     const result = await response.json();
                     if (!response.ok || !result.success) {
-                        if(localDoc) localDoc.status = originalStatus;
+                        if(localDoc) localDoc.status = originalStatus; // Revertir
                         throw new Error(result.message || 'Falló la actualización del estado del documento');
                     }
                 } catch (error) {
                     console.error("Error actualizando estado de documento:", error);
                     alert("Error: " + error.message);
-                    if(localDoc) localDoc.status = originalStatus;
+                    if(localDoc) localDoc.status = originalStatus; // Revertir
                 }
             },
-            downloadDocument(documentId, originalFileName) { // No necesita ser async
+            downloadDocument(documentId, originalFileName) {
                 try {
                     const downloadUrl = `@Url.Action("DownloadDocument", "RUP")?documentId=${documentId}`;
                     window.location.href = downloadUrl;
@@ -1217,29 +1028,20 @@
                 const docType = this.documentTypes.find(dt => dt.clave === docTypeClave);
                 return docType ? docType.name : 'N/A';
             },
-            getStatusClass(status) {
+            getStatusClass(status) { // Esta función sigue siendo útil
                 switch (status) {
                     case 'Pendiente': return 'status-badge status-pending';
                     case 'En Progreso': return 'status-badge status-in-progress';
                     case 'Completada': return 'status-badge status-completed';
                     case 'En Revisión': return 'status-badge status-in-review';
                     case 'Validado': return 'status-badge status-validated';
-                    case 'Bloqueada': return 'status-badge status-pending';
-                    case 'Obsoleto': return 'status-badge status-cancelled';
+                    case 'Bloqueada': return 'status-badge status-pending'; // O un estilo específico para bloqueado
+                    case 'Obsoleto': return 'status-badge status-cancelled'; // O un estilo específico para obsoleto
                     default: return 'status-badge bg-gray-200 text-gray-700';
                 }
             },
-            getIterationStatusClass(status) {
-                 switch (status) {
-                    case 'Planificada': return 'status-badge status-planned';
-                    case 'Activa': return 'status-badge status-active';
-                    case 'Completada': return 'status-badge status-completed';
-                    case 'En Revisión': return 'status-badge status-in-review';
-                    case 'Cancelada': return 'status-badge status-cancelled';
-                    default: return 'status-badge bg-gray-200 text-gray-700';
-                }
-            },
-            formatDateTime(isoString) {
+            // ELIMINADO: getIterationStatusClass (o renombrar si las fases tuvieran un estado visual similar)
+            formatDateTime(isoString) { // Sigue siendo útil
                 if (!isoString) return null;
                 try {
                     let date = new Date(isoString);
@@ -1261,5 +1063,4 @@
         }
     }
     </script>
-
 </body>

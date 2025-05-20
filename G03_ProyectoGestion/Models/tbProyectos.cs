@@ -25,7 +25,8 @@ namespace G03_ProyectoGestion.Models
             this.tbXpHistoriasUsuario = new HashSet<tbXpHistoriasUsuario>();
             this.tbXpIteraciones = new HashSet<tbXpIteraciones>();
             this.tbXpParejasProgramacion = new HashSet<tbXpParejasProgramacion>();
-            this.tbRupIteraciones = new HashSet<tbRupIteraciones>();
+            this.tbRupActividades = new HashSet<tbRupActividades>();
+            this.tbRupDocumentos = new HashSet<tbRupDocumentos>();
         }
     
         public int idProyecto { get; set; }
@@ -58,6 +59,8 @@ namespace G03_ProyectoGestion.Models
         public virtual ICollection<tbXpParejasProgramacion> tbXpParejasProgramacion { get; set; }
         public virtual tbRupFases tbRupFases { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tbRupIteraciones> tbRupIteraciones { get; set; }
+        public virtual ICollection<tbRupActividades> tbRupActividades { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tbRupDocumentos> tbRupDocumentos { get; set; }
     }
 }

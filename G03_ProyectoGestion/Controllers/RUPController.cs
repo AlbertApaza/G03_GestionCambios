@@ -6,16 +6,14 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Renci.SshNet;
-using G03_ProyectoGestion.Models;
+using G03_ProyectoGestion.Models; // Asegúrate que los modelos de EF están aquí
 using G03_ProyectoGestion.Services;
 
 namespace G03_ProyectoGestion.Controllers
 {
     public class RUPController : Controller
     {
-
         RupService _rupService = new RupService();
-
         private g03_databaseEntities db = new g03_databaseEntities();
         private const int RUP_METHODOLOGY_ID = 2;
 
@@ -23,55 +21,79 @@ namespace G03_ProyectoGestion.Controllers
         {
             get
             {
-                return Convert.ToInt32(Session["idUsuario"]);
+                // Manejo robusto de sesión
+                var userId = Session["idUsuario"];
+                if (userId == null || !int.TryParse(userId.ToString(), out int parsedId))
+                {
+                    return 0; // O un valor que indique sesión inválida
+                }
+                return parsedId;
             }
         }
 
-        public ActionResult Detalles()
+        public ActionResult Index(int? id)
         {
-            return RedirectToAction("Index");
-        }
-
-        public ActionResult Index(int? id) // Recibe el ID del proyecto
-        {
-            if (DEFAULT_USER_ID == 0) // manejo de sesión inválida
+            if (DEFAULT_USER_ID == 0)
             {
                 TempData["ErrorMessage"] = "Sesión expirada o inválida. Por favor, inicie sesión nuevamente.";
-                return RedirectToAction("Login", "Home"); // O tu controlador/acción de login
+                return RedirectToAction("Login", "Home");
             }
 
             if (!id.HasValue)
             {
                 TempData["ErrorMessage"] = "No se especificó un proyecto para gestionar.";
-                return RedirectToAction("Index", "Proyecto"); // Redirige a tu lista principal de proyectos
+                return RedirectToAction("Index", "Proyecto");
             }
 
-            // Validar que el proyecto existe, es RUP y pertenece al usuario (o tiene acceso)
             var project = db.tbProyectos
                             .Where(p => p.idProyecto == id.Value &&
                                         p.idMetodologia == RUP_METHODOLOGY_ID &&
-                                        p.tbProyectoUsuarios.Any(pu => pu.idUsuario == DEFAULT_USER_ID && pu.idProyecto == id.Value)) // Asumiendo tbProyectoUsuarios para relación muchos-a-muchos
-                            .Select(p => new ProjectViewModel // Un ViewModel simple para los datos iniciales del proyecto
+                                        p.tbProyectoUsuarios.Any(pu => pu.idUsuario == DEFAULT_USER_ID && pu.idProyecto == id.Value))
+                            .Select(p => new ProjectViewModel
                             {
                                 id = p.idProyecto,
                                 name = p.nombreProyecto,
                                 scope = p.descripcionProyecto,
-                                current_phase = p.idFase ?? 0 // Asegurar que no sea null, o manejarlo
+                                current_phase = p.idFase ?? 0 // Usar 0 o un ID de fase por defecto si es null
                             })
                             .FirstOrDefault();
-
 
             if (project == null)
             {
                 TempData["ErrorMessage"] = "Proyecto no encontrado, no es un proyecto RUP válido o no tiene acceso.";
-                return RedirectToAction("Index", "Proyecto"); // Redirige a tu lista principal
+                return RedirectToAction("Index", "Proyecto");
+            }
+            // Si current_phase es 0 (o un valor por defecto inválido) y hay fases, asigna la primera fase.
+            if (project.current_phase == 0)
+            {
+                var firstPhase = db.tbRupFases.OrderBy(f => f.idFase).FirstOrDefault();
+                if (firstPhase != null)
+                {
+                    project.current_phase = firstPhase.idFase;
+                    // Actualizar en BD
+                    var dbProject = db.tbProyectos.Find(project.id);
+                    if (dbProject != null)
+                    {
+                        dbProject.idFase = firstPhase.idFase;
+                        db.SaveChanges();
+                    }
+                }
+                else
+                {
+                    // No hay fases definidas, esto es un problema de configuración
+                    TempData["ErrorMessage"] = "No hay fases RUP definidas en el sistema. Contacte al administrador.";
+                    // Podrías redirigir o mostrar una vista de error específica.
+                    // Por ahora, lo dejamos para que la vista lo maneje si es necesario.
+                }
             }
 
+
             ViewBag.Title = $"Gestor RUP - {project.name}";
-            ViewBag.SelectedProjectData = project; // Pasar los datos del proyecto directamente
-            ViewBag.ProjectId = project.id;       // Pasar el ID también para Alpine
+            ViewBag.SelectedProjectData = project;
+            ViewBag.ProjectId = project.id;
 
             ViewBag.Phases = db.tbRupFases
+                                .OrderBy(f => f.idFase) // Asegurar orden
                                 .Select(p => new { id = p.idFase, name = p.nombre })
                                 .ToList();
             ViewBag.Roles = db.tbRoles
@@ -82,7 +104,6 @@ namespace G03_ProyectoGestion.Controllers
                                 .ToList();
             return View();
         }
-
 
         [HttpPost]
         public JsonResult UpdateProjectPhase(int projectId, int phaseId)
@@ -95,57 +116,26 @@ namespace G03_ProyectoGestion.Controllers
             return Json(new { success = false, message = "No se pudo actualizar la fase del proyecto." });
         }
 
-        [HttpGet]
-        public JsonResult GetIterationsForPhase(int projectId, int phaseId)
-        {
-            var result = _rupService.ObtenerIteracionesPorFase(projectId, phaseId);
-            return Json(result, JsonRequestBehavior.AllowGet);
-        }
-
-        
-
-        [HttpPost]
-        public JsonResult CreateIteration(IterationCreatePostModel iterationData)
-        {
-            if (ModelState.IsValid)
-            {
-                var result = _rupService.CrearIteracion(iterationData);
-                return Json(result);
-            }
-
-            var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
-            return Json(new { success = false, message = "Datos inválidos.", errors = errors });
-        }
-
-        [HttpPost]
-        public JsonResult UpdateIterationStatus(int iterationId, string status)
-        {
-            var iteration = db.tbRupIteraciones.Find(iterationId);
-            if (iteration == null) return Json(new { success = false, message = "Iteración no encontrada." });
-
-            iteration.Estado = status;
-            db.SaveChanges();
-            return Json(new { success = true });
-        }
+        // ELIMINADO: GetIterationsForPhase
+        // ELIMINADO: CreateIteration
+        // ELIMINADO: UpdateIterationStatus
 
         [HttpGet]
-        public JsonResult GetActivitiesForIteration(int iterationId)
+        public JsonResult GetActivitiesForPhase(int projectId, int phaseId) // Cambiado
         {
-            var result = _rupService.ObtenerActividadesPorIteracion(iterationId);
+            var result = _rupService.ObtenerActividadesPorFase(projectId, phaseId);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-
-        
 
         [HttpPost]
         public JsonResult CreateActivity(ActivityCreatePostModel activityData)
         {
             if (ModelState.IsValid)
             {
+                // Asignar ProjectId y PhaseId desde el modelo que ya los tiene
                 var result = _rupService.CrearActividad(activityData);
                 return Json(result);
             }
-
             var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
             return Json(new { success = false, message = "Datos inválidos.", errors = errors });
         }
@@ -162,13 +152,11 @@ namespace G03_ProyectoGestion.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetDocumentsForIteration(int iterationId)
+        public JsonResult GetDocumentsForPhase(int projectId, int phaseId) // Cambiado
         {
-            var result = _rupService.ObtenerDocumentosPorIteracion(iterationId);
+            var result = _rupService.ObtenerDocumentosPorFase(projectId, phaseId);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-
-        
 
         [HttpPost]
         public JsonResult CreateDocument(DocumentCreatePostModel documentData, HttpPostedFileBase docFile)
@@ -184,11 +172,18 @@ namespace G03_ProyectoGestion.Controllers
                 return Json(new { success = false, message = "Tipo de documento inválido." });
             }
 
-            var iteration = db.tbRupIteraciones.Find(documentData.IterationId);
-            if (iteration == null)
+            // Validar que el proyecto y la fase existen y son coherentes
+            var project = db.tbProyectos.FirstOrDefault(p => p.idProyecto == documentData.ProjectId);
+            if (project == null)
             {
-                return Json(new { success = false, message = "Iteración no encontrada para el documento." });
+                return Json(new { success = false, message = "Proyecto no encontrado para el documento." });
             }
+            var phase = db.tbRupFases.FirstOrDefault(f => f.idFase == documentData.PhaseId);
+            if (phase == null)
+            {
+                return Json(new { success = false, message = "Fase no encontrada para el documento." });
+            }
+
 
             if (ModelState.IsValid)
             {
@@ -201,9 +196,9 @@ namespace G03_ProyectoGestion.Controllers
                 string vpsPassword = "patitochera123";
 
                 string remoteBaseUploadPath = "/root/rup_manager/uploads";
-                string remoteProjectFolder = $"Proyecto_{iteration.idProyecto}";
-                string remoteIterationFolder = $"Iteracion_{iteration.idIteracion}";
-                string remoteFilePathOnVps = $"{remoteBaseUploadPath}/{remoteProjectFolder}/{remoteIterationFolder}/{uniqueRemoteFileName}";
+                string remoteProjectFolder = $"Proyecto_{documentData.ProjectId}"; // Usar ProjectId
+                string remotePhaseFolder = $"Fase_{documentData.PhaseId}";       // Usar PhaseId
+                string remoteFilePathOnVps = $"{remoteBaseUploadPath}/{remoteProjectFolder}/{remotePhaseFolder}/{uniqueRemoteFileName}";
 
                 string tempUploadDir = Server.MapPath("~/App_Data/TempUploadsForVPS");
                 Directory.CreateDirectory(tempUploadDir);
@@ -219,14 +214,12 @@ namespace G03_ProyectoGestion.Controllers
                     using (var scpClient = new ScpClient(connectionInfo))
                     {
                         scpClient.Connect();
-
-                        using (var sshClient = new SshClient(connectionInfo))
+                        using (var sshClient = new SshClient(connectionInfo)) // Para crear directorios
                         {
                             sshClient.Connect();
-                            sshClient.RunCommand($"mkdir -p {remoteBaseUploadPath}/{remoteProjectFolder}/{remoteIterationFolder}");
+                            sshClient.RunCommand($"mkdir -p {remoteBaseUploadPath}/{remoteProjectFolder}/{remotePhaseFolder}");
                             sshClient.Disconnect();
                         }
-
                         using (var fs = new FileStream(tempFilePath, FileMode.Open, FileAccess.Read))
                         {
                             scpClient.Upload(fs, remoteFilePathOnVps);
@@ -236,12 +229,13 @@ namespace G03_ProyectoGestion.Controllers
 
                     tbRupDocumentos newDbDocument = new tbRupDocumentos
                     {
-                        idIteracion = documentData.IterationId,
+                        idProyecto = documentData.ProjectId, // Cambiado
+                        idFase = documentData.PhaseId,       // Cambiado
                         idTipoDocumento = tipoDocumento.idTipoDocumento,
                         nombreArchivo = originalFileName,
                         rutaArchivo = remoteFilePathOnVps,
                         Version = documentData.Version,
-                        Estado = "Pendiente",
+                        Estado = "Pendiente", // O el estado por defecto que prefieras
                         FechaSubida = DateTime.Now
                     };
 
@@ -252,7 +246,8 @@ namespace G03_ProyectoGestion.Controllers
                     {
                         success = true,
                         id = newDbDocument.idDocumento,
-                        iteration_id = newDbDocument.idIteracion,
+                        project_id = newDbDocument.idProyecto,
+                        phase_id = newDbDocument.idFase,
                         type = tipoDocumento.clave,
                         file_name = newDbDocument.nombreArchivo,
                         version = newDbDocument.Version,
@@ -266,6 +261,7 @@ namespace G03_ProyectoGestion.Controllers
                 }
                 catch (Exception ex)
                 {
+                    // Loggear ex.ToString() para más detalles en el servidor
                     return Json(new { success = false, message = "Error al subir o registrar el documento: " + ex.Message });
                 }
                 finally
@@ -280,6 +276,7 @@ namespace G03_ProyectoGestion.Controllers
             return Json(new { success = false, message = "Datos inválidos.", errors = errors });
         }
 
+
         [HttpPost]
         public JsonResult UpdateDocumentStatus(int documentId, string status)
         {
@@ -291,7 +288,6 @@ namespace G03_ProyectoGestion.Controllers
             return Json(new { success = true });
         }
 
-        // -----comentario(seccion modificada)
         [HttpGet]
         public ActionResult DownloadDocument(int documentId)
         {
@@ -299,7 +295,9 @@ namespace G03_ProyectoGestion.Controllers
             if (document == null || string.IsNullOrEmpty(document.rutaArchivo))
             {
                 TempData["ErrorMessage"] = "Documento no encontrado o ruta inválida.";
-                return RedirectToAction("Index");
+                // Redirigir al index del proyecto actual si es posible, o a la lista general de proyectos
+                var projectId = (db.tbRupDocumentos.Where(d => d.idDocumento == documentId).Select(d => (int?)d.idProyecto).FirstOrDefault());
+                return projectId.HasValue ? RedirectToAction("Index", new { id = projectId.Value }) : RedirectToAction("Index", "Proyecto");
             }
 
             string vpsHost = "161.132.38.250";
@@ -310,6 +308,7 @@ namespace G03_ProyectoGestion.Controllers
 
             string tempDownloadDir = Server.MapPath("~/App_Data/TempDownloads");
             Directory.CreateDirectory(tempDownloadDir);
+            // Usar un nombre de archivo temporal único para evitar colisiones
             string tempLocalFilePath = Path.Combine(tempDownloadDir, Guid.NewGuid().ToString() + Path.GetExtension(originalFileNameToDownload));
 
             try
@@ -328,23 +327,20 @@ namespace G03_ProyectoGestion.Controllers
                 }
 
                 byte[] fileBytes = System.IO.File.ReadAllBytes(tempLocalFilePath);
-
                 return File(fileBytes, MimeMapping.GetMimeMapping(originalFileNameToDownload), originalFileNameToDownload);
             }
-            catch (Renci.SshNet.Common.SftpPathNotFoundException)
+            catch (Renci.SshNet.Common.SftpPathNotFoundException) // SftpPathNotFoundException o genérica si no es SFTP
             {
                 TempData["ErrorMessage"] = "El archivo no fue encontrado en el servidor remoto.";
-                return RedirectToAction("Index");
             }
             catch (Renci.SshNet.Common.SshAuthenticationException authEx)
             {
                 TempData["ErrorMessage"] = "Error de autenticación SSH con el VPS: " + authEx.Message;
-                return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
+                // Loggear ex.ToString() para más detalles en el servidor
                 TempData["ErrorMessage"] = "Ocurrió un error al intentar descargar el archivo: " + ex.Message;
-                return RedirectToAction("Index");
             }
             finally
             {
@@ -353,8 +349,10 @@ namespace G03_ProyectoGestion.Controllers
                     System.IO.File.Delete(tempLocalFilePath);
                 }
             }
+            // Si hubo error, redirigir de vuelta al proyecto
+            var projIdForRedirect = (db.tbRupDocumentos.Where(d => d.idDocumento == documentId).Select(d => (int?)d.idProyecto).FirstOrDefault());
+            return projIdForRedirect.HasValue ? RedirectToAction("Index", new { id = projIdForRedirect.Value }) : RedirectToAction("Index", "Proyecto");
         }
-
 
         [HttpGet]
         public JsonResult GetUsersByRoleInProject(int projectId, int roleId)
