@@ -290,6 +290,8 @@
     <Content Include="Views\SCRUM\Equipo.cshtml" />
     <None Include="Properties\PublishProfiles\sistemag03 - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\sistemag03 - ReadOnly - FTP.pubxml" />
+    <Content Include="Views\SCRUM\Cronograma.cshtml" />
+    <Content Include="Views\SCRUM\TableroScrum.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
