@@ -1,17 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
+using System.Data.Entity; // Necesario si usas Include y otras funciones de EF aquí
 using System.Linq;
 using System.Web;
 using G03_ProyectoGestion.Models;
-
+using G03_ProyectoGestion.ViewModels; // Asegúrate que tus modelos EF y ViewModels estén aquí o referenciados
 namespace G03_ProyectoGestion.Services
 {
     public class RupService
     {
-        // ELIMINADO: ObtenerIteracionesPorFase
-        // ELIMINADO: CrearIteracion
-
+        // Helper para obtener la clave JS del rol (duplicado del controlador para independencia del servicio)
+        private string GetRoleJsKeyFromDb_Service(tbRoles role)
+        {
+            if (role == null) return $"unknown_role_{Guid.NewGuid().ToString().Substring(0, 4)}";
+            return role.nombreRol.Trim().ToLowerInvariant()
+            .Replace(" ", "_")
+            .Replace("á", "a").Replace("é", "e").Replace("í", "i").Replace("ó", "o").Replace("ú", "u")
+            .Replace("ñ", "n");
+        }
         public bool ActualizarFaseDelProyecto(int projectId, int phaseId)
         {
             using (var db = new g03_databaseEntities())
@@ -20,58 +26,18 @@ namespace G03_ProyectoGestion.Services
                 if (project == null) return false;
 
                 var phaseExists = db.tbRupFases.Any(f => f.idFase == phaseId);
-                if (!phaseExists) return false; // O manejar como error
+                if (!phaseExists) return false;
 
-                // Verificar si la fase existe en tbRupFases (si no, podrías necesitar crearla o devolver error)
-                // Por ahora, se asume que phaseId es un ID válido de tbRupFases
                 project.idFase = phaseId;
                 db.SaveChanges();
                 return true;
             }
         }
 
-        public List<object> ObtenerActividadesPorFase(int projectId, int phaseId) // Cambiado de Iteracion a Fase
-        {
-            using (var db = new g03_databaseEntities())
-            {
-                var actividades = db.tbRupActividades
-                    .Where(a => a.idProyecto == projectId && a.idFase == phaseId) // Cambiado
-                    .Select(a => new
-                    {
-                        id = a.idActividad,
-                        project_id = a.idProyecto, // Añadido para consistencia
-                        phase_id = a.idFase,       // Añadido para consistencia
-                        description = a.descripcion,
-                        assigned_role = a.idRol,
-                        status = a.estado,
-                        due_date = a.fechaLimite,
-                        assigned_users = db.tbRupActividadAsignaciones
-                                           .Where(aa => aa.idActividad == a.idActividad)
-                                           .Select(aa => new
-                                           {
-                                               id = aa.tbUsuarios.idUsuario,
-                                               name = aa.tbUsuarios.nombreUsuario
-                                           }).ToList()
-                    })
-                    .ToList();
-
-                var result = actividades.Select(a => new
-                {
-                    a.id,
-                    a.project_id,
-                    a.phase_id,
-                    a.description,
-                    a.assigned_role,
-                    a.status,
-                    due_date = a.due_date?.ToString("yyyy-MM-dd"),
-                    a.assigned_users
-                }).ToList<object>();
-
-                return result;
-            }
-        }
-
-        public object CrearActividad(ActivityCreatePostModel activityData) // El modelo debe actualizarse
+        // Este método es para la pestaña de Documentos/Alpine.js si usa su propio sistema de actividades.
+        // El `ActivityCreatePostModel` es el que usabas originalmente con Alpine.
+        // Ahora tbRupActividades tiene fechaInicio.
+        public object CrearActividad(ActivityCreatePostModel activityData)
         {
             using (var db = new g03_databaseEntities())
             {
@@ -80,26 +46,14 @@ namespace G03_ProyectoGestion.Services
                     return new { success = false, message = "Debe asignar al menos un usuario a la actividad." };
                 }
 
-                // Validar que el proyecto y la fase existen
                 var projectPhaseExists = db.tbProyectos.Any(p => p.idProyecto == activityData.ProjectId && p.idFase == activityData.PhaseId);
-                if (!projectPhaseExists) // Esta validación asume que la fase en el proyecto es la correcta.
-                                         // O podrías validar activityData.PhaseId contra tbRupFases
+                if (!projectPhaseExists)
                 {
-                    // Podrías verificar si la fase existe en tbRupFases de forma independiente
                     var phaseExistsInTable = db.tbRupFases.Any(f => f.idFase == activityData.PhaseId);
-                    if (!phaseExistsInTable)
-                    {
-                        return new { success = false, message = "La fase especificada no existe." };
-                    }
+                    if (!phaseExistsInTable) return new { success = false, message = "La fase especificada no existe." };
                     var projectExists = db.tbProyectos.Any(p => p.idProyecto == activityData.ProjectId);
-                    if (!projectExists)
-                    {
-                        return new { success = false, message = "El proyecto especificado no existe." };
-                    }
-                    // Si ambos existen pero no coinciden con el proyecto.idFase, es decisión de negocio si permitirlo
-                    // por ahora, asumimos que la actividad se crea para el proyecto y la fase dada.
+                    if (!projectExists) return new { success = false, message = "El proyecto especificado no existe." };
                 }
-
 
                 foreach (var userId in activityData.AssignedUserIds)
                 {
@@ -107,36 +61,36 @@ namespace G03_ProyectoGestion.Services
                         .Any(pu => pu.idProyecto == activityData.ProjectId &&
                                    pu.idUsuario == userId &&
                                    pu.idRol == activityData.ContextRoleId);
-
                     if (!userInProjectWithRole)
                     {
                         var user = db.tbUsuarios.Find(userId);
                         var role = db.tbRoles.Find(activityData.ContextRoleId);
-                        return new
-                        {
-                            success = false,
-                            message = $"El usuario '{user?.nombreUsuario ?? "Desconocido"}' no tiene el rol '{role?.nombreRol ?? "Desconocido"}' en este proyecto o no existe."
-                        };
+                        return new { success = false, message = $"El usuario '{user?.nombreUsuario ?? "Desconocido"}' no tiene el rol '{role?.nombreRol ?? "Desconocido"}' en este proyecto o no existe." };
                     }
                 }
 
                 var newDbActivity = new tbRupActividades
                 {
-                    idProyecto = activityData.ProjectId, // Cambiado
-                    idFase = activityData.PhaseId,       // Cambiado
+                    // idActividad se autogenera
+                    idProyecto = activityData.ProjectId,
+                    idFase = activityData.PhaseId,
                     descripcion = activityData.Description,
-                    idRol = activityData.ContextRoleId,
+                    idRol = activityData.ContextRoleId, // idRol es NOT NULL
                     estado = string.IsNullOrEmpty(activityData.Status) ? "Pendiente" : activityData.Status,
+                    // Asumiendo que Due_Date en ActivityCreatePostModel ahora representa la fecha límite.
+                    // Si necesitas fechaInicio también para estas actividades, ActivityCreatePostModel debe incluirla.
+                    fechaInicio = activityData.Due_Date, // O una nueva propiedad StartDate en el modelo
                     fechaLimite = activityData.Due_Date
                 };
 
                 db.tbRupActividades.Add(newDbActivity);
-                db.SaveChanges();
+                db.SaveChanges(); // Para obtener newDbActivity.idActividad
 
                 foreach (var userId in activityData.AssignedUserIds)
                 {
                     db.tbRupActividadAsignaciones.Add(new tbRupActividadAsignaciones
                     {
+                        // idActividadAsignacion se autogenera
                         idActividad = newDbActivity.idActividad,
                         idUsuario = userId
                     });
@@ -145,37 +99,41 @@ namespace G03_ProyectoGestion.Services
 
                 var assignedUsers = db.tbUsuarios
                     .Where(u => activityData.AssignedUserIds.Contains(u.idUsuario))
-                    .Select(u => new { id = u.idUsuario, name = u.nombreUsuario })
+                    .Select(u => new { id = u.idUsuario, name = u.nombreUsuario }) // Coincide con el formato esperado por Alpine
                     .ToList();
 
+                // Devolver un objeto que Alpine pueda usar para actualizar su lista local.
+                // Este formato debe coincidir con lo que `fetchActivitiesForCurrentPhase` en Alpine espera.
                 return new
                 {
                     success = true,
-                    id = newDbActivity.idActividad,
+                    id = newDbActivity.idActividad, // El ID de la BD
                     project_id = newDbActivity.idProyecto,
                     phase_id = newDbActivity.idFase,
                     description = newDbActivity.descripcion,
-                    assigned_role = newDbActivity.idRol,
-                    assigned_users = assignedUsers,
+                    assigned_role = newDbActivity.idRol, // ID de BD del rol
+                    assigned_users = assignedUsers, // Lista de {id, name}
                     status = newDbActivity.estado,
-                    due_date = newDbActivity.fechaLimite?.ToString("yyyy-MM-dd")
+                    due_date = newDbActivity.fechaLimite?.ToString("yyyy-MM-dd") // Fecha límite
+                                                                                 // Si Alpine también necesita fechaInicio, añádela aquí
+                                                                                 // start_date = newDbActivity.fechaInicio?.ToString("yyyy-MM-dd")
                 };
             }
         }
 
-        public List<object> ObtenerDocumentosPorFase(int projectId, int phaseId) // Cambiado de Iteracion a Fase
+        public List<object> ObtenerDocumentosPorFase(int projectId, int phaseId)
         {
             using (var db = new g03_databaseEntities())
             {
                 var documentos = db.tbRupDocumentos
-                    .Where(d => d.idProyecto == projectId && d.idFase == phaseId) // Cambiado
-                    .Include(d => d.tbRupTiposDocumento) // Asegúrate que esta navegación existe y es correcta
+                    .Where(d => d.idProyecto == projectId && d.idFase == phaseId)
+                    .Include(d => d.tbRupTiposDocumento)
                     .Select(d => new
                     {
                         id = d.idDocumento,
-                        project_id = d.idProyecto, // Añadido
-                        phase_id = d.idFase,       // Añadido
-                        type = d.tbRupTiposDocumento.clave, // Asegúrate que tbRupTiposDocumento está bien referenciado
+                        project_id = d.idProyecto,
+                        phase_id = d.idFase,
+                        type = d.tbRupTiposDocumento.clave,
                         file_name = d.nombreArchivo,
                         version = d.Version,
                         status = d.Estado,
@@ -183,6 +141,7 @@ namespace G03_ProyectoGestion.Services
                     })
                     .ToList();
 
+                // Formatear para el cliente (Alpine JS)
                 var result = documentos.Select(d => new
                 {
                     d.id,
@@ -198,13 +157,14 @@ namespace G03_ProyectoGestion.Services
                 return result;
             }
         }
+
         public List<object> ObtenerUsuariosPorRolEnProyecto(int projectId, int roleId)
         {
             using (var db = new g03_databaseEntities())
             {
                 var usuarios = db.tbProyectoUsuarios
                     .Where(pu => pu.idProyecto == projectId && pu.idRol == roleId)
-                    .Select(pu => new
+                    .Select(pu => new // Formato esperado por Alpine { id, name }
                     {
                         id = pu.tbUsuarios.idUsuario,
                         name = pu.tbUsuarios.nombreUsuario

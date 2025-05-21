@@ -12,12 +12,15 @@ namespace G03_ProyectoGestion.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class sysdiagrams
+    public partial class tbProyectoRupFases
     {
-        public string name { get; set; }
-        public int principal_id { get; set; }
-        public int diagram_id { get; set; }
-        public Nullable<int> version { get; set; }
-        public byte[] definition { get; set; }
+        public int idProyectoRupFase { get; set; }
+        public int idProyecto { get; set; }
+        public int idFase { get; set; }
+        public System.DateTime fechaInicio { get; set; }
+        public System.DateTime fechaFin { get; set; }
+    
+        public virtual tbProyectos tbProyectos { get; set; }
+        public virtual tbRupFases tbRupFases { get; set; }
     }
 }

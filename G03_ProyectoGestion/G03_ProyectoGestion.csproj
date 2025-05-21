@@ -62,6 +62,9 @@
     <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=8.0.0.3, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.Logging.Abstractions.8.0.3\lib\net462\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="Renci.SshNet, Version=2025.0.0.1, Culture=neutral, PublicKeyToken=1cee9f8bde3db106, processorArchitecture=MSIL">
       <HintPath>..\packages\SSH.NET.2025.0.0\lib\net462\Renci.SshNet.dll</HintPath>
     </Reference>
@@ -184,10 +187,10 @@
     <Compile Include="Models\ProyectoScrumViewModel.cs" />
     <Compile Include="Models\ProyectoRupViewModel.cs" />
     <Compile Include="Models\ProyectoCardViewModel.cs" />
-    <Compile Include="Models\sysdiagrams.cs">
+    <Compile Include="Models\tbMetodologias.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\tbMetodologias.cs">
+    <Compile Include="Models\tbProyectoRupFases.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\tbProyectos.cs">

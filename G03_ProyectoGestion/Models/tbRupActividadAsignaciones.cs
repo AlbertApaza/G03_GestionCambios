@@ -15,8 +15,8 @@ namespace G03_ProyectoGestion.Models
     public partial class tbRupActividadAsignaciones
     {
         public int idActividadAsignacion { get; set; }
-        public Nullable<int> idActividad { get; set; }
-        public int idUsuario { get; set; }
+        public int idActividad { get; set; }
+        public Nullable<int> idUsuario { get; set; }
     
         public virtual tbRupActividades tbRupActividades { get; set; }
         public virtual tbUsuarios tbUsuarios { get; set; }

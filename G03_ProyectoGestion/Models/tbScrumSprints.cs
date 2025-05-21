@@ -17,6 +17,7 @@ namespace G03_ProyectoGestion.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public tbScrumSprints()
         {
+            this.tbScrumBacklog = new HashSet<tbScrumBacklog>();
             this.tbScrumDaily = new HashSet<tbScrumDaily>();
         }
     
@@ -27,6 +28,8 @@ namespace G03_ProyectoGestion.Models
         public Nullable<System.DateTime> fechaFin { get; set; }
     
         public virtual tbProyectos tbProyectos { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tbScrumBacklog> tbScrumBacklog { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbScrumDaily> tbScrumDaily { get; set; }
     }

@@ -22,11 +22,12 @@ namespace G03_ProyectoGestion.Models
     
         public int idActividad { get; set; }
         public string descripcion { get; set; }
-        public int idRol { get; set; }
+        public Nullable<int> idRol { get; set; }
         public string estado { get; set; }
         public Nullable<System.DateTime> fechaLimite { get; set; }
         public int idFase { get; set; }
         public int idProyecto { get; set; }
+        public Nullable<System.DateTime> fechaInicio { get; set; }
     
         public virtual tbProyectos tbProyectos { get; set; }
         public virtual tbRoles tbRoles { get; set; }

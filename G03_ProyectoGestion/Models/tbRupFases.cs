@@ -17,6 +17,7 @@ namespace G03_ProyectoGestion.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public tbRupFases()
         {
+            this.tbProyectoRupFases = new HashSet<tbProyectoRupFases>();
             this.tbProyectos = new HashSet<tbProyectos>();
             this.tbRupActividades = new HashSet<tbRupActividades>();
             this.tbRupDocumentos = new HashSet<tbRupDocumentos>();
@@ -25,6 +26,8 @@ namespace G03_ProyectoGestion.Models
         public int idFase { get; set; }
         public string nombre { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tbProyectoRupFases> tbProyectoRupFases { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbProyectos> tbProyectos { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

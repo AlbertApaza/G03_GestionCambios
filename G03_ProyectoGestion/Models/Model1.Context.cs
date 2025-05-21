@@ -25,8 +25,8 @@ namespace G03_ProyectoGestion.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<tbMetodologias> tbMetodologias { get; set; }
+        public virtual DbSet<tbProyectoRupFases> tbProyectoRupFases { get; set; }
         public virtual DbSet<tbProyectos> tbProyectos { get; set; }
         public virtual DbSet<tbProyectoUsuarios> tbProyectoUsuarios { get; set; }
         public virtual DbSet<tbRoles> tbRoles { get; set; }

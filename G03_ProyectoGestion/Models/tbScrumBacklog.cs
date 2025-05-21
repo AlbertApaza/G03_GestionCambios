@@ -24,9 +24,11 @@ namespace G03_ProyectoGestion.Models
         public int idProyecto { get; set; }
         public string descripcionBacklog { get; set; }
         public string prioridad { get; set; }
+        public Nullable<int> idSprint { get; set; }
     
         public virtual tbProyectos tbProyectos { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbScrumDailyBacklog> tbScrumDailyBacklog { get; set; }
+        public virtual tbScrumSprints tbScrumSprints { get; set; }
     }
 }

@@ -1,73 +1,98 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+﻿// EN TU CARPETA ViewModels o similar
+// TuProyecto.ViewModels;
 
-namespace G03_ProyectoGestion.Models
+using System.Collections.Generic;
+using System;
+namespace G03_ProyectoGestion.ViewModels
 {
-    public class ProjectViewModel
+
+    public class ProjectTimelineViewModel
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string StartDate { get; set; } // Formato ISO: "yyyy-MM-dd"
+        public string EndDate { get; set; }   // Formato ISO: "yyyy-MM-dd"
+    }
+
+    public class RupPhaseViewModel
+    {
+        public int Id { get; set; }
+        public string Key { get; set; }
+        public string Name { get; set; }
+        public string TitleColorClass { get; set; }
+        public string TimelineBarColorClass { get; set; }
+        public List<string> DefaultActivities { get; set; }
+        public string StartDate { get; set; }
+        public string EndDate { get; set; }
+    }
+
+    public class RupActivityViewModel
+    {
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public string PhaseKey { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
+        public int DurationDays { get; set; }
+        public string Status { get; set; }
+        public string RoleJsKey { get; set; }
+        public int RoleDbId { get; set; }
+        public List<UserViewModel> Assignees { get; set; }
+        public int DbId { get; set; }
+    }
+
+    public class UserViewModel
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
+
+    public class RoleViewModel
+    {
+        public string Id { get; set; } // jsKey
+        public string Name { get; set; }
+        public List<UserViewModel> Members { get; set; }
+        public int DbId { get; set; }
+    }
+
+    public class CronogramaActivityCreateModel
+    {
+        public int ProjectId { get; set; }
+        public string Name { get; set; }
+        [System.ComponentModel.DataAnnotations.Required]
+        public string PhaseKey { get; set; }
+        [System.ComponentModel.DataAnnotations.Required]
+        public DateTime StartDate { get; set; }
+        [System.ComponentModel.DataAnnotations.Required]
+        public DateTime EndDate { get; set; }
+        [System.ComponentModel.DataAnnotations.Required]
+        public string Status { get; set; }
+        public string RoleJsKey { get; set; }
+        public List<int> AssigneeUserIds { get; set; }
+    }
+
+    // Modelo para la pestaña de documentos Alpine (si se mantiene la lógica original)
+    public class ProjectViewModel // Usado por Alpine
     {
         public int id { get; set; }
         public string name { get; set; }
         public string scope { get; set; }
-        public int current_phase { get; set; } // O Nullable<int> si puede ser null
-    }
-    public class ProjectCreatePostModel
-    {
-        public string Name { get; set; }
-        public string Scope { get; set; }
-        public int InitialPhaseId { get; set; }
-    }
-    public class ProjectCreateViewModel
-    {
-        [Required(ErrorMessage = "El nombre del proyecto es obligatorio.")]
-        [StringLength(100)]
-        public string Name { get; set; }
-
-        [Required(ErrorMessage = "El alcance es obligatorio.")]
-        public string Scope { get; set; }
-
-        [Required(ErrorMessage = "La fase inicial es obligatoria.")]
-        public string Current_Phase { get; set; } // This will be 'inception', 'elaboration', etc.
+        public int current_phase { get; set; }
     }
 
-    public class IterationCreateViewModel
-    {
-        [Required]
-        public int Project_Id { get; set; }
-        [Required]
-        public string Phase_Id { get; set; } // e.g. "inception"
-        [Required]
-        public string Name { get; set; }
-        [Required]
-        public string Objective { get; set; }
-        public string Start_Date { get; set; } // Expect "yyyy-MM-dd" string
-        public string End_Date { get; set; }   // Expect "yyyy-MM-dd" string
-    }
-
-    public class IterationCreatePostModel
-        {
-            public int ProjectId { get; set; }
-            public int PhaseId { get; set; }
-            public string Name { get; set; }
-            public string Objective { get; set; }
-            public DateTime? Start_Date { get; set; }
-            public DateTime? End_Date { get; set; }
-        }
-
-    public class ActivityCreatePostModel
+    public class ActivityCreatePostModel // Usado por Alpine si se mantiene CreateActivityOriginal
     {
         public int ProjectId { get; set; }
         public int PhaseId { get; set; }
         public string Description { get; set; }
-        public int ContextRoleId { get; set; } // El rol general de la actividad
-        public List<int> AssignedUserIds { get; set; } // IDs de los usuarios asignados
+        public int ContextRoleId { get; set; }
+        public List<int> AssignedUserIds { get; set; }
         public string Status { get; set; }
-        public DateTime? Due_Date { get; set; }
+        public DateTime? Due_Date { get; set; } // Podría ser StartDate
+                                                // public DateTime? End_Date { get; set; } // Si se añade EndDate
     }
 
-    public class DocumentCreatePostModel
+    public class DocumentCreatePostModel // Usado por Alpine
     {
         public int ProjectId { get; set; }
         public int PhaseId { get; set; }
