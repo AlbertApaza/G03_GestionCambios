@@ -12,18 +12,15 @@ namespace G03_ProyectoGestion.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class tbTareas
+    public partial class tbProyectoElemento
     {
-        public int idTarea { get; set; }
-        public int idProyecto { get; set; }
-        public int idUsuario { get; set; }
-        public string descripcionTareas { get; set; }
-        public string estadoTarea { get; set; }
+        public int idProyectoElemento { get; set; }
+        public Nullable<int> idProyecto { get; set; }
+        public Nullable<int> idElemento { get; set; }
         public Nullable<System.DateTime> fechaInicio { get; set; }
         public Nullable<System.DateTime> fechaFin { get; set; }
-        public string asdasd { get; set; }
     
+        public virtual tbElementos tbElementos { get; set; }
         public virtual tbProyectos tbProyectos { get; set; }
-        public virtual tbUsuarios tbUsuarios { get; set; }
     }
 }

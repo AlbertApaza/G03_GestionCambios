@@ -25,7 +25,10 @@ namespace G03_ProyectoGestion.Models
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<tbElementos> tbElementos { get; set; }
         public virtual DbSet<tbMetodologias> tbMetodologias { get; set; }
+        public virtual DbSet<tbProyectoEcsConfig> tbProyectoEcsConfig { get; set; }
+        public virtual DbSet<tbProyectoElemento> tbProyectoElemento { get; set; }
         public virtual DbSet<tbProyectoRupFases> tbProyectoRupFases { get; set; }
         public virtual DbSet<tbProyectos> tbProyectos { get; set; }
         public virtual DbSet<tbProyectoUsuarios> tbProyectoUsuarios { get; set; }

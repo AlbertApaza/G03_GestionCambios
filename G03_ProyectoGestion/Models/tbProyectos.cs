@@ -17,6 +17,7 @@ namespace G03_ProyectoGestion.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public tbProyectos()
         {
+            this.tbProyectoElemento = new HashSet<tbProyectoElemento>();
             this.tbProyectoRupFases = new HashSet<tbProyectoRupFases>();
             this.tbProyectoUsuarios = new HashSet<tbProyectoUsuarios>();
             this.tbScrumBacklog = new HashSet<tbScrumBacklog>();
@@ -39,8 +40,12 @@ namespace G03_ProyectoGestion.Models
         public int idMetodologia { get; set; }
         public Nullable<int> idFase { get; set; }
         public Nullable<int> estado { get; set; }
+        public Nullable<int> idEcsConfig { get; set; }
     
         public virtual tbMetodologias tbMetodologias { get; set; }
+        public virtual tbProyectoEcsConfig tbProyectoEcsConfig { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tbProyectoElemento> tbProyectoElemento { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbProyectoRupFases> tbProyectoRupFases { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

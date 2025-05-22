@@ -18,6 +18,7 @@ namespace G03_ProyectoGestion.Models
         public tbXpIteraciones()
         {
             this.tbXpEntregas = new HashSet<tbXpEntregas>();
+            this.tbXpHistoriasUsuario = new HashSet<tbXpHistoriasUsuario>();
             this.tbXpPlanningGame = new HashSet<tbXpPlanningGame>();
             this.tbXpRetroalimentacion = new HashSet<tbXpRetroalimentacion>();
         }
@@ -32,6 +33,8 @@ namespace G03_ProyectoGestion.Models
         public virtual tbProyectos tbProyectos { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbXpEntregas> tbXpEntregas { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tbXpHistoriasUsuario> tbXpHistoriasUsuario { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbXpPlanningGame> tbXpPlanningGame { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

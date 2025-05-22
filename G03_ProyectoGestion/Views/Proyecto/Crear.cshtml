@@ -166,6 +166,41 @@
         border-bottom: 2px solid var(--color-blue);
         display: inline-block;
     }
+    /* NUEVOS ESTILOS PARA ELEMENTOS DE CONFIGURACIÓN */
+    #elementosConfiguracionContainer {
+        margin-top: 1.5rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid #e0e0e0; /* Separador visual */
+    }
+
+    .elemento-config-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.75rem;
+        padding: 0.5rem;
+        border: 1px solid #eee;
+        border-radius: 6px;
+        background-color: #f9f9f9;
+    }
+
+        .elemento-config-item input[type="checkbox"] {
+            margin-right: 10px;
+            width: 1.15em; /* Hacer checkbox un poco más grande */
+            height: 1.15em;
+            cursor: pointer;
+        }
+
+        .elemento-config-item label {
+            margin-bottom: 0; /* Anular margen de form-label */
+            font-weight: normal;
+            cursor: pointer;
+        }
+
+        .elemento-config-item .descripcion-elemento {
+            font-size: 0.85em;
+            color: var(--color-text-light);
+            margin-left: 5px;
+        }
 
     /* --- FIN ESTILOS EMBEBIDOS --- */
 </style>
@@ -174,7 +209,7 @@
     <div class="create-project-container">
         <h2><i class="fas fa-folder-plus me-2"></i>Crear Nuevo Proyecto</h2>
 
-        @using (Html.BeginForm("Crear", "Proyecto", FormMethod.Post, new { @class = "needs-validation", novalidate = "novalidate" }))
+        @using (Html.BeginForm("Crear", "Proyecto", FormMethod.Post, new { @class = "needs-validation", novalidate = "novalidate", id = "formCrearProyecto" }))
         {
             @Html.AntiForgeryToken()
 
@@ -213,6 +248,19 @@
                 </select>
                 <div class="invalid-feedback">Por favor, selecciona una metodología.</div>
             </div>
+
+            <!-- NUEVA SECCIÓN PARA ELEMENTOS DE CONFIGURACIÓN -->
+            <div id="elementosConfiguracionContainer" style="display:none;">
+                <h4 class="section-title"><i class="fas fa-cogs me-2"></i>Elementos de Configuración</h4>
+                <div id="listaElementos" class="mb-3">
+                    <p class="text-muted small">Selecciona una metodología y fechas para ver los elementos disponibles.</p>
+                </div>
+                <div id="elementosLoading" style="display:none;">
+                    <p><i class="fas fa-spinner fa-spin me-2"></i>Cargando elementos...</p>
+                </div>
+            </div>
+            <!-- FIN NUEVA SECCIÓN -->
+
 
             <hr class="form-section-divider">
 
@@ -295,13 +343,14 @@
 
 
 <script>
+    // URL base para la acción AJAX, útil si tu app no está en la raíz del servidor
+    const baseUrl = '@Url.Content("~/")';
+
     function agregarMiembro() {
-        // Verificar si hay usuarios y roles (ya se hace en el botón, pero doble check)
         const hayUsuarios = @(usuarios.Any().ToString().ToLower());
         const hayRoles = @(roles.Any().ToString().ToLower());
 
         if (!hayUsuarios || !hayRoles) {
-            // console.log("No hay usuarios o roles disponibles para agregar.");
             return;
         }
 
@@ -310,22 +359,120 @@
             console.error("Plantilla de miembro no encontrada.");
             return;
         }
-        // Clonar el contenido de la plantilla
         const clone = plantilla.content.cloneNode(true);
-
         const container = document.getElementById("miembrosContainer");
         container.appendChild(clone);
+
+        // Habilitar el botón de remover para el nuevo miembro
+        // y asegurarse de que los anteriores (si hay más de uno) también lo tengan.
+        actualizarBotonesRemoverMiembro();
     }
 
     function removerMiembro(boton) {
         const miembroDiv = boton.closest('.miembro');
         if (miembroDiv) {
-            // Antes de remover, verificar si es el último. Si lo es y es el original, no permitir eliminarlo.
-            // O, como ahora el original tiene el botón deshabilitado, esta lógica es más simple.
             miembroDiv.remove();
+            actualizarBotonesRemoverMiembro();
         }
     }
 
+    function actualizarBotonesRemoverMiembro() {
+        const miembrosDivs = document.querySelectorAll("#miembrosContainer .miembro");
+        miembrosDivs.forEach((div, index) => {
+            const btnRemove = div.querySelector('.btn-remove-member');
+            if (btnRemove) {
+                // Deshabilitar el botón de remover si es el único miembro
+                btnRemove.disabled = (miembrosDivs.length === 1);
+            }
+        });
+    }
+
+
+    // --- LÓGICA PARA ELEMENTOS DE CONFIGURACIÓN ---
+    const metodologiaSelect = document.getElementById('idMetodologia');
+    const fechaInicioInput = document.getElementById('fechaInicio');
+    const fechaFinInput = document.getElementById('fechaFin');
+    const elementosContainer = document.getElementById('elementosConfiguracionContainer');
+    const listaElementosDiv = document.getElementById('listaElementos');
+    const elementosLoadingDiv = document.getElementById('elementosLoading');
+
+    function debenCargarElementos() {
+        const idMetodologia = metodologiaSelect.value;
+        const fechaInicio = fechaInicioInput.value;
+        const fechaFin = fechaFinInput.value;
+
+        return idMetodologia && fechaInicio && fechaFin;
+    }
+
+    async function cargarElementosConfiguracion() {
+        if (!debenCargarElementos()) {
+            elementosContainer.style.display = 'none';
+            listaElementosDiv.innerHTML = '<p class="text-muted small">Selecciona una metodología y fechas para ver los elementos disponibles.</p>';
+            return;
+        }
+
+        elementosContainer.style.display = 'block';
+        listaElementosDiv.innerHTML = ''; // Limpiar antes de cargar
+        elementosLoadingDiv.style.display = 'block';
+
+
+        const idMetodologia = metodologiaSelect.value;
+
+        try {
+            const response = await fetch(`${baseUrl}Proyecto/ObtenerElementosPorMetodologia?idMetodologia=${idMetodologia}`);
+            if (!response.ok) {
+                throw new Error(`Error HTTP: ${response.status}`);
+            }
+            const result = await response.json();
+
+            elementosLoadingDiv.style.display = 'none';
+
+            if (result.success && result.data && result.data.length > 0) {
+                result.data.forEach(elemento => {
+                    const div = document.createElement('div');
+                    div.className = 'elemento-config-item';
+
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.name = 'selectedElementos'; // Este nombre debe coincidir con el parámetro en el controlador
+                    checkbox.value = elemento.idElemento;
+                    checkbox.id = `elemento-${elemento.idElemento}`;
+
+                    const label = document.createElement('label');
+                    label.htmlFor = `elemento-${elemento.idElemento}`;
+                    label.textContent = elemento.nombre;
+
+                    if(elemento.descripcion){
+                        const descSpan = document.createElement('span');
+                        descSpan.className = 'descripcion-elemento';
+                        descSpan.textContent = `(${elemento.descripcion})`;
+                        label.appendChild(descSpan);
+                    }
+
+                    div.appendChild(checkbox);
+                    div.appendChild(label);
+                    listaElementosDiv.appendChild(div);
+                });
+            } else if (result.success && result.data && result.data.length === 0) {
+                listaElementosDiv.innerHTML = '<p class="text-muted small">No hay elementos de configuración para la metodología seleccionada.</p>';
+            }
+            else {
+                 listaElementosDiv.innerHTML = `<p class="text-danger small">${result.message || 'No se pudieron cargar los elementos.'}</p>`;
+            }
+        } catch (error) {
+            console.error("Error al cargar elementos:", error);
+            elementosLoadingDiv.style.display = 'none';
+            listaElementosDiv.innerHTML = '<p class="text-danger small">Error al conectar con el servidor para cargar elementos.</p>';
+        }
+    }
+
+    // Event listeners
+    metodologiaSelect.addEventListener('change', cargarElementosConfiguracion);
+    fechaInicioInput.addEventListener('change', cargarElementosConfiguracion);
+    fechaFinInput.addEventListener('change', cargarElementosConfiguracion);
+
+
+    // Bootstrap validation y manejo de form
     (function () {
         'use strict'
         var forms = document.querySelectorAll('.needs-validation')
@@ -341,7 +488,14 @@
                     // Asegura que todos los selects se envíen como listas
                     document.querySelectorAll("#miembrosContainer select[name='miembros']").forEach(x => x.name = "miembros");
                     document.querySelectorAll("#miembrosContainer select[name='roles']").forEach(x => x.name = "roles");
+
+                    // Los checkboxes con el mismo 'name' se envían como una lista de 'values' si están marcados.
+                    // No es necesario hacer nada especial para 'selectedElementos' aquí si los checkboxes están dentro del form.
+
                 }, false)
             })
+
+        // Inicializar estado de botones de remover miembro al cargar la página
+        actualizarBotonesRemoverMiembro();
     })()
 </script>

@@ -27,6 +27,7 @@ namespace G03_ProyectoGestion.Models
         public string titulo { get; set; }
         public string historia { get; set; }
         public string criteriosAceptacion { get; set; }
+        public int idIteracion { get; set; }
     
         public virtual tbProyectos tbProyectos { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -35,5 +36,6 @@ namespace G03_ProyectoGestion.Models
         public virtual ICollection<tbXpPlanningGame> tbXpPlanningGame { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbXpPruebasAceptacion> tbXpPruebasAceptacion { get; set; }
+        public virtual tbXpIteraciones tbXpIteraciones { get; set; }
     }
 }

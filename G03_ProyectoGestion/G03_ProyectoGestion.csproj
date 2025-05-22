@@ -187,7 +187,16 @@
     <Compile Include="Models\ProyectoScrumViewModel.cs" />
     <Compile Include="Models\ProyectoRupViewModel.cs" />
     <Compile Include="Models\ProyectoCardViewModel.cs" />
+    <Compile Include="Models\tbElementos.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\tbMetodologias.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tbProyectoEcsConfig.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tbProyectoElemento.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\tbProyectoRupFases.cs">

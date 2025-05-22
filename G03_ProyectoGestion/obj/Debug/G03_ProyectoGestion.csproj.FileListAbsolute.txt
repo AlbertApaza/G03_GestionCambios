@@ -727,3 +727,5 @@ C:\Users\HP\Desktop\G03_GestionCambios\G03_ProyectoGestion\obj\Debug\G03_Proyect
 C:\Users\HP\Desktop\G03_GestionCambios\G03_ProyectoGestion\obj\Debug\G03_Proy.F7ED8DEC.Up2Date
 C:\Users\HP\Desktop\G03_GestionCambios\G03_ProyectoGestion\obj\Debug\G03_ProyectoGestion.dll
 C:\Users\HP\Desktop\G03_GestionCambios\G03_ProyectoGestion\obj\Debug\G03_ProyectoGestion.pdb
+C:\Users\USUARIO\source\repos\G03_GestionCambios\G03_ProyectoGestion\bin\Newtonsoft.Json.dll
+C:\Users\USUARIO\source\repos\G03_GestionCambios\G03_ProyectoGestion\bin\Newtonsoft.Json.xml

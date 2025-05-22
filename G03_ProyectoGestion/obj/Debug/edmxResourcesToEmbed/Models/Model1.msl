@@ -1,11 +1,42 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="g03_databaseModelStoreContainer" CdmEntityContainer="g03_databaseEntities">
+    <EntitySetMapping Name="tbElementos">
+      <EntityTypeMapping TypeName="g03_databaseModel.tbElementos">
+        <MappingFragment StoreEntitySet="tbElementos">
+          <ScalarProperty Name="tipo" ColumnName="tipo" />
+          <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="idElemento" ColumnName="idElemento" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="tbMetodologias">
       <EntityTypeMapping TypeName="g03_databaseModel.tbMetodologias">
         <MappingFragment StoreEntitySet="tbMetodologias">
           <ScalarProperty Name="nombreMetodologia" ColumnName="nombreMetodologia" />
           <ScalarProperty Name="idMetodologia" ColumnName="idMetodologia" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbProyectoEcsConfig">
+      <EntityTypeMapping TypeName="g03_databaseModel.tbProyectoEcsConfig">
+        <MappingFragment StoreEntitySet="tbProyectoEcsConfig">
+          <ScalarProperty Name="descripcionConfiguracion" ColumnName="descripcionConfiguracion" />
+          <ScalarProperty Name="configuracionBooleana" ColumnName="configuracionBooleana" />
+          <ScalarProperty Name="configuracionValor1" ColumnName="configuracionValor1" />
+          <ScalarProperty Name="idEcsConfig" ColumnName="idEcsConfig" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbProyectoElemento">
+      <EntityTypeMapping TypeName="g03_databaseModel.tbProyectoElemento">
+        <MappingFragment StoreEntitySet="tbProyectoElemento">
+          <ScalarProperty Name="fechaFin" ColumnName="fechaFin" />
+          <ScalarProperty Name="fechaInicio" ColumnName="fechaInicio" />
+          <ScalarProperty Name="idElemento" ColumnName="idElemento" />
+          <ScalarProperty Name="idProyecto" ColumnName="idProyecto" />
+          <ScalarProperty Name="idProyectoElemento" ColumnName="idProyectoElemento" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -23,6 +54,7 @@
     <EntitySetMapping Name="tbProyectos">
       <EntityTypeMapping TypeName="g03_databaseModel.tbProyectos">
         <MappingFragment StoreEntitySet="tbProyectos">
+          <ScalarProperty Name="idEcsConfig" ColumnName="idEcsConfig" />
           <ScalarProperty Name="estado" ColumnName="estado" />
           <ScalarProperty Name="idFase" ColumnName="idFase" />
           <ScalarProperty Name="idMetodologia" ColumnName="idMetodologia" />
@@ -152,10 +184,11 @@
     <EntitySetMapping Name="tbTareas">
       <EntityTypeMapping TypeName="g03_databaseModel.tbTareas">
         <MappingFragment StoreEntitySet="tbTareas">
+          <ScalarProperty Name="asdasd" ColumnName="asdasd" />
           <ScalarProperty Name="fechaFin" ColumnName="fechaFin" />
           <ScalarProperty Name="fechaInicio" ColumnName="fechaInicio" />
           <ScalarProperty Name="estadoTarea" ColumnName="estadoTarea" />
-          <ScalarProperty Name="descripcionTarea" ColumnName="descripcionTarea" />
+          <ScalarProperty Name="descripcionTareas" ColumnName="descripcionTareas" />
           <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
           <ScalarProperty Name="idProyecto" ColumnName="idProyecto" />
           <ScalarProperty Name="idTarea" ColumnName="idTarea" />
@@ -200,6 +233,7 @@
     <EntitySetMapping Name="tbXpHistoriasUsuario">
       <EntityTypeMapping TypeName="g03_databaseModel.tbXpHistoriasUsuario">
         <MappingFragment StoreEntitySet="tbXpHistoriasUsuario">
+          <ScalarProperty Name="idIteracion" ColumnName="idIteracion" />
           <ScalarProperty Name="criteriosAceptacion" ColumnName="criteriosAceptacion" />
           <ScalarProperty Name="historia" ColumnName="historia" />
           <ScalarProperty Name="titulo" ColumnName="titulo" />
