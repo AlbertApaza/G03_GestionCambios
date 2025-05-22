@@ -1,0 +1,205 @@
+﻿@{
+    ViewBag.Title = "Gestor XP – Cronograma de Historias";
+}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" />
+
+<div class="container py-4">
+
+    <!-- Tarjetas estadísticas -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card text-white bg-primary h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <h3 id="xp-total" class="card-title">0</h3>
+                    <p class="card-text">Total de historias</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning text-dark h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <h3 id="xp-pendientes" class="card-title">0</h3>
+                    <p class="card-text">Pendientes</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-info text-white h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <h3 id="xp-asignadas" class="card-title">0</h3>
+                    <p class="card-text">Asignadas</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <h3 id="xp-completadas" class="card-title">0</h3>
+                    <p class="card-text">Completadas</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Tabla de cronograma -->
+    <div class="card shadow-sm">
+        <div class="card-header bg-light fw-bold">
+            📅 Cronograma de Historias
+        </div>
+        <div class="table-responsive">
+            <table class="table table-bordered mb-0 table-hover table-striped align-middle text-center">
+                <thead class="table-secondary text-center">
+                    <tr>
+                        <th>Título</th>
+                        <th>Dificultad</th>
+                        <th>Inicio</th>
+                        <th>Fin</th>
+                        <th>Estado</th>
+                        <th>Fase</th>
+                        <th>Responsables</th>
+                        <th>Progreso</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaHistoriasXP">
+                    <tr><td colspan="7" class="text-center text-muted">No hay historias registradas</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        let historiasXP = [];
+        let historiaId = 0;
+
+        $("#formHistoria").submit(function (e) {
+            e.preventDefault();
+            const titulo = $("#titulo").val();
+            const dificultad = $("#dificultad").val();
+            const historia = $("#historia").val();
+            const criterios = $("#criterios").val();
+
+            if (!titulo || !historia || !criterios) return;
+
+            const ultima = historiasXP[historiasXP.length - 1];
+            let fechaInicio = ultima ? new Date(ultima.fin) : new Date();
+            let dias = dificultad === "Media" ? 10 : (dificultad === "Difícil" ? 14 : 7);
+            const fechaFin = new Date(fechaInicio);
+            fechaFin.setDate(fechaFin.getDate() + dias);
+
+            historiasXP.push({
+                id: ++historiaId,
+                titulo,
+                dificultad,
+                historia,
+                criterios,
+                inicio: fechaInicio.toLocaleDateString('es-PE'),
+                fin: fechaFin.toLocaleDateString('es-PE'),
+                estado: "Pendiente",
+                fase: "Iteración XP " + historiaId,
+                asignados: "-",
+                progreso: "0%"
+            });
+
+            const modalEl = document.getElementById('modalAgregarHistoria');
+            const modal = bootstrap.Modal.getInstance(modalEl);
+            modal.hide();
+
+            document.body.classList.remove('modal-open');
+            document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+
+            $(document).ready(function () {
+                $('body').removeClass('modal-open');
+                $('.modal-backdrop').remove();
+            });
+
+            actualizarTabla();
+            actualizarStats();
+            this.reset();
+        });
+        function agregarHistoria() {
+            const titulo = $("#titulo").val();
+            const historia = $("#historia").val();
+            const criterios = $("#criterios").val();
+            const dificultad = $("#dificultad").val();
+
+            if (!titulo || !historia || !criterios) {
+                alert("Completa todos los campos");
+                return;
+            }
+
+            // Si hay una historia previa, la nueva empieza cuando termina esa
+            let fechaInicio = new Date();
+            if (historiasXP.length > 0) {
+                const ultima = historiasXP[historiasXP.length - 1];
+                const partes = ultima.fechaFin.split("/");
+                fechaInicio = new Date(partes[2], partes[1] - 1, parseInt(partes[0]) + 1); // Siguiente día
+            }
+
+            let dias = 7;
+            if (dificultad === "Media") dias = 10;
+            else if (dificultad === "Difícil") dias = 14;
+
+            const fechaFin = new Date(fechaInicio);
+            fechaFin.setDate(fechaInicio.getDate() + dias);
+
+            const historiaXP = {
+                id: ++historiaIdTemp,
+                titulo,
+                dificultad,
+                fechaInicio: fechaInicio.toLocaleDateString(),
+                fechaFin: fechaFin.toLocaleDateString(),
+                estado: "Pendiente",
+                asignados: "-",
+                progreso: 0
+            };
+
+            historiasXP.push(historiaXP);
+            renderizarCronograma();
+            prepararAsignacion(historiaXP);
+            limpiarInputs();
+        }
+        function actualizarTabla() {
+            const tbody = $("#tablaHistoriasXP");
+            tbody.empty();
+
+            if (historiasXP.length === 0) {
+                tbody.append(`<tr><td colspan="8" class="text-center text-muted">No hay historias registradas</td></tr>`);
+                return;
+            }
+
+            historiasXP.forEach(h => {
+                tbody.append(`
+                <tr class="text-center align-middle">
+                    <td>${h.titulo}</td>
+                    <td><span class="badge bg-${getColor(h.dificultad)}">${h.dificultad}</span></td>
+                    <td>${h.inicio}</td>
+                    <td>${h.fin}</td>
+                    <td><span class="badge bg-secondary">${h.estado}</span></td>
+                    <td>${h.fase || "-"}</td>
+                    <td>${h.asignados || "-"}</td>
+                    <td>
+                        <div class="progress" style="height: 20px;">
+                            <div class="progress-bar bg-info" role="progressbar" style="width: ${h.progreso};" aria-valuenow="${parseInt(h.progreso)}" aria-valuemin="0" aria-valuemax="100">${h.progreso}</div>
+                        </div>
+                    </td>
+                </tr>
+            `);
+            });
+        }
+
+        function getColor(dificultad) {
+            if (dificultad === "Fácil") return "success";
+            if (dificultad === "Media") return "warning text-dark";
+            return "danger";
+        }
+
+        function actualizarStats() {
+            $("#xp-total").text(historiasXP.length);
+            $("#xp-pendientes").text(historiasXP.filter(h => h.estado === "Pendiente").length);
+            $("#xp-asignadas").text(historiasXP.filter(h => h.asignados).length);
+            $("#xp-completadas").text(historiasXP.filter(h => h.progreso === "100%").length);
+        }
+    </script>
+}

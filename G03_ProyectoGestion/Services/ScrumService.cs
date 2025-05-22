@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using G03_ProyectoGestion.Models;
 using System.Data.Entity;
+using static G03_ProyectoGestion.Controllers.SCRUMController;
 
 
 namespace G03_ProyectoGestion.Services

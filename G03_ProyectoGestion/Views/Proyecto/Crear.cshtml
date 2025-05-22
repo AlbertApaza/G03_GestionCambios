@@ -3,6 +3,8 @@
     var usuarios = ViewBag.Usuarios as List<G03_ProyectoGestion.Models.tbUsuarios> ?? new List<G03_ProyectoGestion.Models.tbUsuarios>();
     var metodologias = ViewBag.Metodologias as List<G03_ProyectoGestion.Models.tbMetodologias> ?? new List<G03_ProyectoGestion.Models.tbMetodologias>();
     var roles = ViewBag.Roles as List<G03_ProyectoGestion.Models.tbRoles> ?? new List<G03_ProyectoGestion.Models.tbRoles>();
+    // Obtener el nombre de RUP para JS
+    string rupMetodologiaNombreJs = ViewBag.RupMetodologiaNombre != null ? ViewBag.RupMetodologiaNombre.ToString().ToUpper() : "";
 }
 
 <!-- Font Awesome (si no está ya en tu _Layout.cshtml) -->
@@ -166,7 +168,7 @@
         border-bottom: 2px solid var(--color-blue);
         display: inline-block;
     }
-    /* NUEVOS ESTILOS PARA ELEMENTOS DE CONFIGURACIÓN */
+    /* ESTILOS PARA ELEMENTOS DE CONFIGURACIÓN */
     #elementosConfiguracionContainer {
         margin-top: 1.5rem;
         padding-top: 1.5rem;
@@ -185,21 +187,35 @@
 
         .elemento-config-item input[type="checkbox"] {
             margin-right: 10px;
-            width: 1.15em; /* Hacer checkbox un poco más grande */
+            width: 1.15em;
             height: 1.15em;
             cursor: pointer;
         }
 
         .elemento-config-item label {
-            margin-bottom: 0; /* Anular margen de form-label */
+            margin-bottom: 0;
             font-weight: normal;
             cursor: pointer;
         }
 
-        .elemento-config-item .descripcion-elemento {
+        .elemento-config-item .descripcion-elemento { /* Para descripción de elementos no-RUP */
             font-size: 0.85em;
             color: var(--color-text-light);
             margin-left: 5px;
+        }
+
+    .fase-rup-titulo { /* NUEVO ESTILO PARA TÍTULOS DE FASE RUP */
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--color-blue); /* O el color que prefieras */
+        margin-top: 1.2rem;
+        margin-bottom: 0.8rem;
+        padding-bottom: 0.3rem;
+        border-bottom: 1px solid var(--color-purple);
+    }
+
+        .fase-rup-titulo:first-of-type { /* Evitar doble margen superior para el primer título de fase */
+            margin-top: 0.5rem;
         }
 
     /* --- FIN ESTILOS EMBEBIDOS --- */
@@ -229,11 +245,13 @@
                     <label for="fechaInicio" class="form-label">Fecha de Inicio:</label>
                     <input type="date" id="fechaInicio" name="fechaInicio" class="form-control" required />
                     <div class="invalid-feedback">Por favor, selecciona una fecha de inicio.</div>
+                    <div class="invalid-feedback" data-custom-validator="fechaInicioRup"></div> <!-- Para errores de RUP -->
                 </div>
                 <div class="col-md-6">
                     <label for="fechaFin" class="form-label">Fecha de Fin Estimada:</label>
                     <input type="date" id="fechaFin" name="fechaFin" class="form-control" required />
                     <div class="invalid-feedback">Por favor, selecciona una fecha de fin.</div>
+                    <div class="invalid-feedback" data-custom-validator="fechaFinRup">La fecha de fin no puede ser anterior a la de inicio. Para RUP, el proyecto debe durar al menos 3 meses.</div>
                 </div>
             </div>
 
@@ -243,13 +261,13 @@
                     <option value="">Selecciona una metodología...</option>
                     @foreach (var metodo in metodologias)
                     {
-                        <option value="@metodo.idMetodologia">@metodo.nombreMetodologia</option>
+                        <option value="@metodo.idMetodologia" data-nombre-metodologia="@metodo.nombreMetodologia">@metodo.nombreMetodologia</option>
                     }
                 </select>
                 <div class="invalid-feedback">Por favor, selecciona una metodología.</div>
             </div>
 
-            <!-- NUEVA SECCIÓN PARA ELEMENTOS DE CONFIGURACIÓN -->
+            <!-- SECCIÓN PARA ELEMENTOS DE CONFIGURACIÓN -->
             <div id="elementosConfiguracionContainer" style="display:none;">
                 <h4 class="section-title"><i class="fas fa-cogs me-2"></i>Elementos de Configuración</h4>
                 <div id="listaElementos" class="mb-3">
@@ -259,7 +277,7 @@
                     <p><i class="fas fa-spinner fa-spin me-2"></i>Cargando elementos...</p>
                 </div>
             </div>
-            <!-- FIN NUEVA SECCIÓN -->
+            <!-- FIN SECCIÓN -->
 
 
             <hr class="form-section-divider">
@@ -317,7 +335,7 @@
     </div>
 </div>
 
-@* Plantilla HTML para nuevos miembros (oculta y usada por JavaScript) *@
+@* Plantilla HTML para nuevos miembros *@
 <template id="miembroPlantilla">
     <div class="miembro mb-2">
         <select name="miembros" class="form-select">
@@ -343,28 +361,17 @@
 
 
 <script>
-    // URL base para la acción AJAX, útil si tu app no está en la raíz del servidor
     const baseUrl = '@Url.Content("~/")';
 
     function agregarMiembro() {
         const hayUsuarios = @(usuarios.Any().ToString().ToLower());
         const hayRoles = @(roles.Any().ToString().ToLower());
-
-        if (!hayUsuarios || !hayRoles) {
-            return;
-        }
+        if (!hayUsuarios || !hayRoles) return;
 
         const plantilla = document.getElementById("miembroPlantilla");
-        if (!plantilla) {
-            console.error("Plantilla de miembro no encontrada.");
-            return;
-        }
+        if (!plantilla) { console.error("Plantilla de miembro no encontrada."); return; }
         const clone = plantilla.content.cloneNode(true);
-        const container = document.getElementById("miembrosContainer");
-        container.appendChild(clone);
-
-        // Habilitar el botón de remover para el nuevo miembro
-        // y asegurarse de que los anteriores (si hay más de uno) también lo tengan.
+        document.getElementById("miembrosContainer").appendChild(clone);
         actualizarBotonesRemoverMiembro();
     }
 
@@ -378,15 +385,11 @@
 
     function actualizarBotonesRemoverMiembro() {
         const miembrosDivs = document.querySelectorAll("#miembrosContainer .miembro");
-        miembrosDivs.forEach((div, index) => {
+        miembrosDivs.forEach((div) => {
             const btnRemove = div.querySelector('.btn-remove-member');
-            if (btnRemove) {
-                // Deshabilitar el botón de remover si es el único miembro
-                btnRemove.disabled = (miembrosDivs.length === 1);
-            }
+            if (btnRemove) btnRemove.disabled = (miembrosDivs.length === 1);
         });
     }
-
 
     // --- LÓGICA PARA ELEMENTOS DE CONFIGURACIÓN ---
     const metodologiaSelect = document.getElementById('idMetodologia');
@@ -397,11 +400,7 @@
     const elementosLoadingDiv = document.getElementById('elementosLoading');
 
     function debenCargarElementos() {
-        const idMetodologia = metodologiaSelect.value;
-        const fechaInicio = fechaInicioInput.value;
-        const fechaFin = fechaFinInput.value;
-
-        return idMetodologia && fechaInicio && fechaFin;
+        return metodologiaSelect.value && fechaInicioInput.value && fechaFinInput.value;
     }
 
     async function cargarElementosConfiguracion() {
@@ -412,51 +411,50 @@
         }
 
         elementosContainer.style.display = 'block';
-        listaElementosDiv.innerHTML = ''; // Limpiar antes de cargar
+        listaElementosDiv.innerHTML = '';
         elementosLoadingDiv.style.display = 'block';
 
-
         const idMetodologia = metodologiaSelect.value;
+        // const nombreMetodologia = metodologiaSelect.options[metodologiaSelect.selectedIndex].dataset.nombreMetodologia; // Para verificar RUP en cliente si fuera necesario
 
         try {
             const response = await fetch(`${baseUrl}Proyecto/ObtenerElementosPorMetodologia?idMetodologia=${idMetodologia}`);
-            if (!response.ok) {
-                throw new Error(`Error HTTP: ${response.status}`);
-            }
-            const result = await response.json();
+            if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
 
+            const result = await response.json();
             elementosLoadingDiv.style.display = 'none';
 
-            if (result.success && result.data && result.data.length > 0) {
-                result.data.forEach(elemento => {
-                    const div = document.createElement('div');
-                    div.className = 'elemento-config-item';
+            if (result.success) {
+                if (result.data && result.data.length > 0) {
+                    if (result.isRup) {
+                        // Manejar RUP (datos agrupados por fase)
+                        result.data.forEach(grupoFase => {
+                            const faseTitulo = document.createElement('h5'); // O h6, p, etc.
+                            faseTitulo.className = 'fase-rup-titulo'; // Clase para estilizar
+                            faseTitulo.textContent = grupoFase.faseNombre; // "FASE 1", "FASE 2", etc.
+                            listaElementosDiv.appendChild(faseTitulo);
 
-                    const checkbox = document.createElement('input');
-                    checkbox.type = 'checkbox';
-                    checkbox.name = 'selectedElementos'; // Este nombre debe coincidir con el parámetro en el controlador
-                    checkbox.value = elemento.idElemento;
-                    checkbox.id = `elemento-${elemento.idElemento}`;
-
-                    const label = document.createElement('label');
-                    label.htmlFor = `elemento-${elemento.idElemento}`;
-                    label.textContent = elemento.nombre;
-
-                    if(elemento.descripcion){
-                        const descSpan = document.createElement('span');
-                        descSpan.className = 'descripcion-elemento';
-                        descSpan.textContent = `(${elemento.descripcion})`;
-                        label.appendChild(descSpan);
+                            if (grupoFase.elementos && grupoFase.elementos.length > 0) {
+                                grupoFase.elementos.forEach(elemento => {
+                                    crearCheckboxElemento(elemento, listaElementosDiv, false); // false para no mostrar desc. del elemento
+                                });
+                            } else {
+                                const pSinElementosFase = document.createElement('p');
+                                pSinElementosFase.className = 'text-muted small ms-3';
+                                pSinElementosFase.textContent = 'No hay elementos para esta fase.';
+                                listaElementosDiv.appendChild(pSinElementosFase);
+                            }
+                        });
+                    } else {
+                        // Manejar otras metodologías (datos como lista plana)
+                        result.data.forEach(elemento => {
+                            crearCheckboxElemento(elemento, listaElementosDiv, true); // true para mostrar desc. del elemento
+                        });
                     }
-
-                    div.appendChild(checkbox);
-                    div.appendChild(label);
-                    listaElementosDiv.appendChild(div);
-                });
-            } else if (result.success && result.data && result.data.length === 0) {
-                listaElementosDiv.innerHTML = '<p class="text-muted small">No hay elementos de configuración para la metodología seleccionada.</p>';
-            }
-            else {
+                } else {
+                    listaElementosDiv.innerHTML = `<p class="text-muted small">${result.message || 'No hay elementos de configuración para la selección actual.'}</p>`;
+                }
+            } else {
                  listaElementosDiv.innerHTML = `<p class="text-danger small">${result.message || 'No se pudieron cargar los elementos.'}</p>`;
             }
         } catch (error) {
@@ -466,11 +464,118 @@
         }
     }
 
+    function crearCheckboxElemento(elemento, contenedor, mostrarDescripcionElemento) {
+        const div = document.createElement('div');
+        div.className = 'elemento-config-item';
+        if (metodologiaSelect.options[metodologiaSelect.selectedIndex].dataset.nombreMetodologia.toUpperCase() === 'RUP'){
+            div.classList.add('ms-3'); // Añade un margen a la izquierda para elementos RUP bajo su fase
+        }
+
+
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.name = 'selectedElementos';
+        checkbox.value = elemento.idElemento;
+        checkbox.id = `elemento-${elemento.idElemento}`;
+
+        const label = document.createElement('label');
+        label.htmlFor = `elemento-${elemento.idElemento}`;
+        label.textContent = elemento.nombre;
+
+        // Para RUP, la descripción ya es la fase, así que no la repetimos aquí.
+        // Para otras metodologías, podemos mostrar la descripción del elemento si existe.
+        if (mostrarDescripcionElemento && elemento.descripcion) {
+            const descSpan = document.createElement('span');
+            descSpan.className = 'descripcion-elemento';
+            descSpan.textContent = ` (${elemento.descripcion})`; // O elemento.descripcionOriginal si lo usas
+            label.appendChild(descSpan);
+        }
+
+        div.appendChild(checkbox);
+        div.appendChild(label);
+        contenedor.appendChild(div);
+    }
+
+
     // Event listeners
     metodologiaSelect.addEventListener('change', cargarElementosConfiguracion);
     fechaInicioInput.addEventListener('change', cargarElementosConfiguracion);
     fechaFinInput.addEventListener('change', cargarElementosConfiguracion);
 
+    ///////////////////////////////
+    const fechaInicioInputJs = document.getElementById('fechaInicio');
+    const fechaFinInputJs = document.getElementById('fechaFin');
+    const metodologiaSelectJs = document.getElementById('idMetodologia');
+    const RUP_METODOLOGIA_NOMBRE_JS = '@rupMetodologiaNombreJs'; // "RUP" o ""
+
+    function validarFechasProyectoCliente() {
+        let esValido = true;
+        const inicio = fechaInicioInputJs.value;
+        const fin = fechaFinInputJs.value;
+        const errorContainerFin = document.querySelector('[data-custom-validator="fechaFinRup"]');
+        errorContainerFin.textContent = ''; // Limpiar error previo
+        errorContainerFin.style.display = 'none';
+
+
+        if (!inicio || !fin) { // Si alguna fecha no está seleccionada, la validación 'required' de HTML5 se encargará
+            return true;
+        }
+
+        const fechaInicioDate = new Date(inicio);
+        const fechaFinDate = new Date(fin);
+        // Asegurarse que las fechas no tengan componente de hora para la comparación de días
+        fechaInicioDate.setHours(0,0,0,0);
+        fechaFinDate.setHours(0,0,0,0);
+
+
+        if (fechaFinDate < fechaInicioDate) {
+            errorContainerFin.textContent = 'La fecha de fin no puede ser anterior a la fecha de inicio.';
+            errorContainerFin.style.display = 'block';
+            fechaFinInputJs.setCustomValidity('Fecha inválida.'); // Para Bootstrap
+            esValido = false;
+        } else {
+            fechaFinInputJs.setCustomValidity(''); // Válido hasta ahora
+        }
+
+        const metodologiaSeleccionadaOption = metodologiaSelectJs.options[metodologiaSelectJs.selectedIndex];
+        const nombreMetodologiaActual = metodologiaSeleccionadaOption ? metodologiaSeleccionadaOption.dataset.nombreMetodologia || metodologiaSeleccionadaOption.text : "";
+
+        if (nombreMetodologiaActual && nombreMetodologiaActual.toUpperCase() === RUP_METODOLOGIA_NOMBRE_JS && RUP_METODOLOGIA_NOMBRE_JS !== "") {
+            const fechaMinimaFinRup = new Date(fechaInicioDate);
+            fechaMinimaFinRup.setMonth(fechaMinimaFinRup.getMonth() + 3);
+
+            if (fechaFinDate < fechaMinimaFinRup) {
+                 if (esValido) { // Si no había error previo de fin < inicio
+                    errorContainerFin.textContent = 'Para la metodología RUP, el proyecto debe durar como mínimo 3 meses.';
+                } else { // Concatenar error
+                    errorContainerFin.textContent += ' Además, para RUP, el proyecto debe durar como mínimo 3 meses.';
+                }
+                errorContainerFin.style.display = 'block';
+                fechaFinInputJs.setCustomValidity('Duración RUP inválida.');
+                esValido = false;
+            }
+        }
+
+        // Forzar a Bootstrap a re-evaluar la validez si se usó setCustomValidity
+        if (!esValido) {
+             const form = document.getElementById('formCrearProyecto');
+             if(form.classList.contains('was-validated')){ // Solo si ya se intentó enviar
+                fechaFinInputJs.classList.remove('is-valid');
+                fechaFinInputJs.classList.add('is-invalid');
+             }
+        } else {
+            if(document.getElementById('formCrearProyecto').classList.contains('was-validated')){
+                fechaFinInputJs.classList.remove('is-invalid');
+                // No agregar is-valid automáticamente aquí, dejar que Bootstrap lo haga al submit
+            }
+        }
+        return esValido;
+    }
+
+    // Validar al cambiar las fechas o la metodología
+    fechaInicioInputJs.addEventListener('change', validarFechasProyectoCliente);
+    fechaFinInputJs.addEventListener('change', validarFechasProyectoCliente);
+    metodologiaSelectJs.addEventListener('change', validarFechasProyectoCliente); // También validar cuando cambie la metodología
 
     // Bootstrap validation y manejo de form
     (function () {
@@ -479,23 +584,32 @@
         Array.prototype.slice.call(forms)
             .forEach(function (form) {
                 form.addEventListener('submit', function (event) {
-                    if (!form.checkValidity()) {
-                        event.preventDefault()
-                        event.stopPropagation()
+                    // Ejecutar nuestra validación de fechas personalizada ANTES de la validación de Bootstrap
+                    if (!validarFechasProyectoCliente()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        // Asegurar que los mensajes de error se muestren si la validación personalizada falló
+                        // y el formulario ya fue marcado como 'was-validated' o está a punto de serlo.
+                        const errorContainerFin = document.querySelector('[data-custom-validator="fechaFinRup"]');
+                        if (errorContainerFin.textContent) {
+                            errorContainerFin.style.display = 'block';
+                            fechaFinInputJs.classList.add('is-invalid'); // Asegurar estilo de Bootstrap
+                        }
                     }
-                    form.classList.add('was-validated')
 
-                    // Asegura que todos los selects se envíen como listas
-                    document.querySelectorAll("#miembrosContainer select[name='miembros']").forEach(x => x.name = "miembros");
-                    document.querySelectorAll("#miembrosContainer select[name='roles']").forEach(x => x.name = "roles");
+                    if (!form.checkValidity()) { // Validación nativa de Bootstrap y HTML5
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
 
-                    // Los checkboxes con el mismo 'name' se envían como una lista de 'values' si están marcados.
-                    // No es necesario hacer nada especial para 'selectedElementos' aquí si los checkboxes están dentro del form.
-
+                    // La lógica de nombres para miembros y roles ya está aquí, eso es correcto.
+                    // document.querySelectorAll("#miembrosContainer select[name='miembros']").forEach(x => x.name = "miembros");
+                    // document.querySelectorAll("#miembrosContainer select[name='roles']").forEach(x => x.name = "roles");
                 }, false)
             })
-
-        // Inicializar estado de botones de remover miembro al cargar la página
-        actualizarBotonesRemoverMiembro();
+        actualizarBotonesRemoverMiembro(); // Asumo que esta función ya existe y es correcta
+        // Llamada inicial para validación de fechas si ya hay valores (ej. al recargar con error de servidor)
+        validarFechasProyectoCliente();
     })()
 </script>

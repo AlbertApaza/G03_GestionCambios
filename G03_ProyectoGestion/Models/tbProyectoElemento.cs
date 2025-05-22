@@ -14,13 +14,25 @@ namespace G03_ProyectoGestion.Models
     
     public partial class tbProyectoElemento
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public tbProyectoElemento()
+        {
+            this.tbRupActividadAsignaciones = new HashSet<tbRupActividadAsignaciones>();
+        }
+    
         public int idProyectoElemento { get; set; }
         public Nullable<int> idProyecto { get; set; }
         public Nullable<int> idElemento { get; set; }
         public Nullable<System.DateTime> fechaInicio { get; set; }
         public Nullable<System.DateTime> fechaFin { get; set; }
+        public Nullable<int> FASE_SPRINT_ITERACION { get; set; }
+        public Nullable<int> idRol { get; set; }
+        public string estado { get; set; }
     
         public virtual tbElementos tbElementos { get; set; }
         public virtual tbProyectos tbProyectos { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tbRupActividadAsignaciones> tbRupActividadAsignaciones { get; set; }
+        public virtual tbRoles tbRoles { get; set; }
     }
 }

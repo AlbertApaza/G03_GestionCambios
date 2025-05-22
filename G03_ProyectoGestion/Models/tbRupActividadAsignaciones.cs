@@ -15,10 +15,10 @@ namespace G03_ProyectoGestion.Models
     public partial class tbRupActividadAsignaciones
     {
         public int idActividadAsignacion { get; set; }
-        public int idActividad { get; set; }
         public Nullable<int> idUsuario { get; set; }
+        public Nullable<int> idElemento { get; set; }
     
-        public virtual tbRupActividades tbRupActividades { get; set; }
+        public virtual tbProyectoElemento tbProyectoElemento { get; set; }
         public virtual tbUsuarios tbUsuarios { get; set; }
     }
 }

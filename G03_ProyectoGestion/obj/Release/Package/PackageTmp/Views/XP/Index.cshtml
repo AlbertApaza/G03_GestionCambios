@@ -1,317 +1,94 @@
 ﻿@model G03_ProyectoGestion.Models.tbProyectos
 @{
-    ViewBag.Title = "Proyecto XP (Client-Side Demo)";
-    var projectName = Model?.nombreProyecto ?? "Demo Proyecto XP";
-    var projectDesc = Model?.descripcionProyecto ?? "Simulación cliente de XP.";
-    var startDate = Model?.fechaInicio?.ToString("dd MMMM yyyy") ?? DateTime.Now.ToString("dd MMMM yyyy");
-    var endDate = Model?.fechaFin?.ToString("dd MMMM yyyy") ?? DateTime.Now.AddMonths(1).ToString("dd MMMM yyyy");
+    ViewBag.Title = "Proyecto XP – Detalles";
+    var projectId = Model.idProyecto;
+    var projectName = Model?.nombreProyecto ?? "Proyecto XP";
+    var projectDesc = Model?.descripcionProyecto ?? "Sin descripción.";
+    var startDate = Model?.fechaInicio?.ToString("dd MMMM yyyy") ?? "N/A";
+    var endDate = Model?.fechaFin?.ToString("dd MMMM yyyy") ?? "N/A";
 }
 
-<div class="container mt-5">
-    <div class="card shadow-lg border-left-primary">
-        <div class="card-header bg-primary text-white">
-            <h4 class="mb-0"><i class="fas fa-code-branch"></i> Proyecto XP (Client-Side Demo)</h4>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" />
+
+<div class="container mt-4">
+    <div class="bg-primary text-white p-4 rounded shadow-sm mb-4 d-flex justify-content-between align-items-center">
+        <h2 class="mb-0 fw-bold">Gestor XP – Cronograma de Historias</h2>
+        <a href="@Url.Action("Index", "Proyecto")" class="btn btn-light btn-sm">
+            <i class="bi bi-arrow-left-circle"></i> Volver a proyectos
+        </a>
+    </div>
+
+    <!-- Pestañas -->
+    <ul class="nav nav-tabs" id="xpTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="detalles-tab" data-bs-toggle="tab" data-bs-target="#detalles" type="button" role="tab">Detalles</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="actividades-tab" data-bs-toggle="tab" data-bs-target="#actividades" type="button" role="tab">Mis Actividades</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="cronograma-tab" data-bs-toggle="tab" data-bs-target="#cronograma" type="button" role="tab">Cronograma</button>
+        </li>
+    </ul>
+
+    <!-- Contenido de pestañas -->
+    <div class="tab-content pt-3">
+        <!-- Detalles -->
+        <div class="tab-pane fade show active" id="detalles" role="tabpanel" aria-labelledby="detalles-tab">
+            <div class="card shadow-sm p-4">
+                <h5 class="fw-bold">📄 Descripción General:</h5>
+                <p class="mb-4 text-muted">@projectDesc</p>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="fw-bold">📌 Nombre del Proyecto</h6>
+                        <p class="text-muted">@projectName</p>
+                    </div>
+                    <div class="col-md-3">
+                        <h6 class="fw-bold">🗓️ Inicio</h6>
+                        <p class="text-muted">@startDate</p>
+                    </div>
+                    <div class="col-md-3">
+                        <h6 class="fw-bold">🏁 Fin</h6>
+                        <p class="text-muted">@endDate</p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="card-body">
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <h5>Nombre del Proyecto</h5>
-                    <p class="text-muted">@projectName</p>
-                </div>
-                <div class="col-md-6">
-                    <h5>Descripción</h5>
-                    <p class="text-muted">@projectDesc</p>
-                </div>
-            </div>
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <h5>Fecha de Inicio</h5>
-                    <p class="text-muted">@startDate</p>
-                </div>
-                <div class="col-md-6">
-                    <h5>Fecha de Fin</h5>
-                    <p class="text-muted">@endDate</p>
-                </div>
-            </div>
 
-            <hr />
+        <!-- Mis Actividades -->
+        <div class="tab-pane fade" id="actividades" role="tabpanel" aria-labelledby="actividades-tab">
+            <div id="contenedorActividades" class="pt-2 text-center text-muted">Cargando...</div>
+        </div>
 
-            <div class="row text-center mb-4">
-                @{
-                    var fases = new[] {
-                        "HistoriasUsuario", "PlanningGame", "DisenoSimple", "TDD", "Parejas", "Integracion", "Refactorizacion", "Aceptacion", "Entrega", "Retroalimentacion", "NuevaIteracion"
-                    };
-                    var nombres = new[] {
-                        "Historias de Usuario", "Planning Game", "Diseño Simple", "TDD", "Programación en Parejas", "Integración Continua", "Refactorización", "Pruebas de Aceptación", "Entrega de Iteración", "Retroalimentación", "Nueva Iteración"
-                    };
-                    for (int i = 0; i < fases.Length; i++)
-                    {
-                        <div class="col-md-4 mb-3">
-                            <button onclick="mostrarFase('@fases[i]')" class="btn btn-outline-primary w-100">
-                                @nombres[i]
-                            </button>
-                        </div>
-                    }
-                }
-                <div class="col-md-4 mb-3">
-                    <button onclick="mostrarFase('none')" class="btn btn-outline-secondary w-100">
-                        Ocultar Secciones
-                    </button>
-                </div>
-            </div>
-
-            <hr />
-
-            <div id="xpFasesContainer">
-                @foreach (var fase in fases)
-                {
-                    if (fase == "HistoriasUsuario")
-                    {
-                        <div id="HistoriasUsuario" class="fase-xp" style="display:none;">
-                            <h5><i class="fas fa-check-circle"></i> Historias de Usuario</h5>
-
-                            <div class="mb-3 row">
-                                <div class="col-md-3">
-                                    <input type="text" id="titulo" class="form-control" placeholder="Título">
-                                </div>
-                                <div class="col-md-4">
-                                    <textarea id="historia" class="form-control" placeholder="Historia de Usuario: Como... Quiero... Para..."></textarea>
-                                </div>
-                                <div class="col-md-4">
-                                    <textarea id="criterios" class="form-control" placeholder="Criterios de Aceptación (CA01, CA02...)"></textarea>
-                                </div>
-                                <div class="col-md-1 d-grid">
-                                    <button class="btn btn-success" onclick="agregarHistoria()">Agregar</button>
-                                </div>
-                            </div>
-
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-striped" id="tablaHistorias">
-                                    <thead class="table-primary">
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Título</th>
-                                            <th>Historia de Usuario</th>
-                                            <th>Criterios de Aceptación</th>
-                                            <th>Acciones</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody></tbody>
-                                </table>
-                            </div>
-
-                            <button class="btn btn-outline-secondary mt-2" onclick="mostrarFase('none')">Cerrar</button>
-                        </div>
-
-                    }
-                    else if (fase == "NuevaIteracion")
-                    {
-                        <div id="NuevaIteracion" class="fase-xp" style="display:none;">
-                            <h5><i class="fas fa-check-circle"></i> Nueva Iteración</h5>
-
-                            <div class="mb-3 row">
-                                <div class="col-md-4">
-                                    <input type="text" id="nombreIteracion" class="form-control" placeholder="Nombre de la iteración" />
-                                </div>
-                                <div class="col-md-3">
-                                    <input type="date" id="fechaInicioIteracion" class="form-control" />
-                                </div>
-                                <div class="col-md-3">
-                                    <input type="date" id="fechaFinIteracion" class="form-control" />
-                                </div>
-                                <div class="col-md-2 d-grid">
-                                    <button onclick="registrarIteracion()" class="btn btn-success">Guardar</button>
-                                </div>
-                            </div>
-
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-sm" id="tablaIteraciones">
-                                    <thead class="table-primary">
-                                        <tr>
-                                            <th>Nombre</th>
-                                            <th>Inicio</th>
-                                            <th>Fin</th>
-                                            <th>Estado</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody></tbody>
-                                </table>
-                            </div>
-
-                            <button class="btn btn-outline-secondary mt-2" onclick="mostrarFase('none')">Cerrar</button>
-                        </div>
-                    }
-
-                    else
-                    {
-                        <div id="@fase" class="fase-xp" style="display:none;">
-                            <h5><i class="fas fa-check-circle"></i> @fase</h5>
-                            <textarea class="form-control mb-3" rows="3" placeholder="Notas sobre la fase '@fase'"></textarea>
-                            <button class="btn btn-success">Guardar Nota</button>
-                        </div>
-                    }
-                }
-            </div>
-
-
-            <div class="text-center mt-4">
-                <a href="@Url.Action("Index", "Proyecto")" class="btn btn-outline-secondary">
-                    <i class="fas fa-arrow-left"></i> Volver a mis proyectos
-                </a>
-            </div>
+        <!-- Cronograma -->
+        <div class="tab-pane fade" id="cronograma" role="tabpanel" aria-labelledby="cronograma-tab">
+            <div id="contenedorCronograma" class="pt-2 text-center text-muted">Cargando...</div>
         </div>
     </div>
 </div>
 
 @section Scripts {
     <script>
-    function mostrarFase(id) {
-        document.querySelectorAll('.fase-xp').forEach(f => f.style.display = 'none');
-        if (id !== 'none') {
-            document.getElementById(id).style.display = 'block';
-        }
-    }
+        const idProyecto = @projectId;
 
-    // ---------------- HISTORIAS DE USUARIO ----------------
+        $(document).ready(function () {
+            let actividadesCargadas = false;
+            let cronogramaCargado = false;
 
-    let historiaIdEditar = null;
-
-    function listarHistorias() {
-        const idProyecto = @Model.idProyecto;
-
-        $.get('@Url.Action("ListarHistorias", "XP")', { idProyecto: idProyecto }, function (data) {
-            const tbody = document.querySelector("#tablaHistorias tbody");
-            tbody.innerHTML = "";
-            data.forEach((h) => {
-                tbody.innerHTML += `
-                    <tr>
-                        <td>${h.idHistoria}</td>
-                        <td>${h.titulo}</td>
-                        <td>${h.historia.replace(/\n/g, "<br/>")}</td>
-                        <td>${h.criteriosAceptacion.replace(/\n/g, "<br/>")}</td>
-                        <td>
-                            <button class="btn btn-sm btn-warning me-1" onclick="editarHistoria(${h.idHistoria}, '${h.titulo}', \`${h.historia}\`, \`${h.criteriosAceptacion}\`)">Editar</button>
-                            <button class="btn btn-sm btn-danger" onclick="eliminarHistoria(${h.idHistoria})">Eliminar</button>
-                        </td>
-                    </tr>`;
-            });
-        });
-    }
-
-    function agregarHistoria() {
-        const titulo = document.getElementById("titulo").value.trim();
-        const historia = document.getElementById("historia").value.trim();
-        const criterios = document.getElementById("criterios").value.trim();
-        const idProyecto = @Model.idProyecto;
-
-        if (!titulo || !historia || !criterios) {
-            alert("Completa todos los campos");
-            return;
-        }
-
-        const url = historiaIdEditar
-            ? '@Url.Action("ActualizarHistoria", "XP")'
-            : '@Url.Action("RegistrarHistoria", "XP")';
-
-        const payload = {
-            idHistoria: historiaIdEditar,
-            idProyecto: idProyecto,
-            titulo: titulo,
-            historia: historia,
-            criteriosAceptacion: criterios
-        };
-
-        $.ajax({
-            url: url,
-            type: "POST",
-            data: payload,
-            success: function (response) {
-                if (response.success) {
-                    listarHistorias();
-                    document.getElementById("titulo").value = "";
-                    document.getElementById("historia").value = "";
-                    document.getElementById("criterios").value = "";
-                    historiaIdEditar = null;
-                } else {
-                    console.error("Error del servidor:", response.errores || response);
-                    alert("Error al guardar historia");
-                }
-            },
-            error: function (xhr, status, error) {
-                console.error("Error AJAX:", error);
-                console.error("Respuesta del servidor:", xhr.responseText);
-                alert("Error inesperado al intentar guardar la historia.");
-            }
-        });
-    }
-
-    function editarHistoria(id, titulo, historia, criterios) {
-        document.getElementById("titulo").value = titulo;
-        document.getElementById("historia").value = historia;
-        document.getElementById("criterios").value = criterios;
-        historiaIdEditar = id;
-    }
-
-    function eliminarHistoria(id) {
-        if (confirm("¿Estás seguro de eliminar esta historia?")) {
-            $.post('@Url.Action("EliminarHistoria", "XP")', { id: id }, function (response) {
-                if (response.success) {
-                    listarHistorias();
-                } else {
-                    alert("No se pudo eliminar");
+            $("#actividades-tab").on("click", function () {
+                if (!actividadesCargadas) {
+                    $("#contenedorActividades").load("/XP/MisActividades/" + idProyecto);
+                    actividadesCargadas = true;
                 }
             });
-        }
-    }
 
-    // ---------------- ITERACIONES XP ----------------
-
-    function registrarIteracion() {
-        const nombre = document.getElementById("nombreIteracion").value;
-        const fechaInicio = document.getElementById("fechaInicioIteracion").value;
-        const fechaFin = document.getElementById("fechaFinIteracion").value;
-        const idProyecto = @Model.idProyecto;
-
-        if (!nombre || !fechaInicio || !fechaFin) {
-            alert("Completa todos los campos.");
-            return;
-        }
-
-        $.post('@Url.Action("RegistrarIteracion", "XP")', {
-            nombre: nombre,
-            fechaInicio: fechaInicio,
-            fechaFin: fechaFin,
-            estado: "Planificada",
-            idProyecto: idProyecto
-        }, function (response) {
-            if (response.success) {
-                listarIteraciones();
-                document.getElementById("nombreIteracion").value = "";
-            } else {
-                alert("Error al registrar");
-            }
-        });
-    }
-
-    function listarIteraciones() {
-        const idProyecto = @Model.idProyecto;
-        $.get('@Url.Action("ObtenerIteraciones", "XP")', { idProyecto: idProyecto }, function (data) {
-            const tbody = document.querySelector("#tablaIteraciones tbody");
-            tbody.innerHTML = "";
-            data.forEach(item => {
-                tbody.innerHTML += `<tr>
-                    <td>${item.nombre}</td>
-                    <td>${item.fechaInicio}</td>
-                    <td>${item.fechaFin}</td>
-                    <td>${item.estado}</td>
-                </tr>`;
+            $("#cronograma-tab").on("click", function () {
+                if (!cronogramaCargado) {
+                    $("#contenedorCronograma").load("/XP/Cronograma/" + idProyecto);
+                    cronogramaCargado = true;
+                }
             });
         });
-    }
-
-    document.addEventListener("DOMContentLoaded", function () {
-        listarIteraciones();
-        listarHistorias();
-    });
     </script>
 }

@@ -1,0 +1,172 @@
+﻿@model G03_ProyectoGestion.Models.tbProyectos
+@{
+    ViewBag.Title = $"Burndown Chart: {Model.nombreProyecto}"; 
+}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<div class="container mx-auto p-4">
+    <header class="bg-gray-700 text-white p-6 rounded-lg shadow-lg mb-6">
+        <div class="flex justify-between items-center">
+            <h1 class="text-3xl font-bold">@ViewBag.Title</h1>
+            <a href="@Url.Action("Index", "SCRUM", new { id = Model.idProyecto })" class="btn btn-sm bg-gray-600 hover:bg-gray-500">
+                <i class="fas fa-arrow-left mr-2"></i>Volver al Tablero SCRUM
+            </a>
+        </div>
+        <p class="text-gray-300 mt-1">Proyecto: @Model.nombreProyecto</p>
+    </header>
+
+    <main class="p-6 bg-white rounded-lg shadow-lg">
+        <h2 class="text-2xl font-semibold mb-4 text-gray-700">Gráfico de Burndown</h2>
+
+        @*
+            if (ViewBag.SprintsParaChart != null && ((List<dynamic>)ViewBag.SprintsParaChart).Any())
+            {
+                <div class="mb-4">
+                    <label for="sprintSelectorBurndown" class="block text-sm font-medium text-gray-700">Seleccionar Sprint (Simulado):</label>
+                    <select id="sprintSelectorBurndown" class="input-field">
+                        <option value="">-- General del Proyecto (Simulado) --</option>
+                        @foreach (var sprint in (List<dynamic>)ViewBag.SprintsParaChart) // Casteo si es lista dinámica
+                        {
+                            <option value="@sprint.idSprint">
+                                @sprint.nombreSprint
+                                (@(sprint.fechaInicio != null ? ((DateTime)sprint.fechaInicio).ToString("dd/MM") : "N/A") -
+                                 @(sprint.fechaFin != null ? ((DateTime)sprint.fechaFin).ToString("dd/MM") : "N/A"))
+                            </option>
+                        }
+                    </select>
+                </div>
+            }
+        *@
+
+        <div class="bg-gray-50 p-4 rounded-md border">
+
+            <div class="relative" style="height:400px;">
+                <canvas id="burndownChartCanvas"></canvas>
+            </div>
+        </div>
+    </main>
+</div>
+
+@section scripts { 
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const canvas = document.getElementById('burndownChartCanvas');
+            let chartInstance = null;
+
+            function getSampleChartData(sprintId = null) {
+                console.log("Cargando datos para sprintId (simulado):", sprintId);
+
+                const days = 10;
+                const totalWork = 100;
+                const labels = [];
+                const idealLine = [];
+                const actualLine = [];
+
+                for (let i = 0; i <= days; i++) {
+                    labels.push(`Día ${i}`);
+                    idealLine.push(Math.max(0, totalWork - (totalWork / days) * i));
+
+                    let workDoneToday = (totalWork / days) + (Math.random() * (totalWork / days * 0.5) - (totalWork / days * 0.25)); 
+                    if (i === 0) {
+                        actualLine.push(totalWork);
+                    } else {
+                        let remainingWork = actualLine[i - 1] - workDoneToday;
+                        if (i === days) remainingWork = 0;
+                        actualLine.push(Math.max(0, Math.round(remainingWork)));
+                    }
+                }
+                for (let i = 1; i < actualLine.length; i++) {
+                    if (actualLine[i] > actualLine[i - 1] && i > 0) {
+                        actualLine[i] = actualLine[i - 1];
+                    }
+                }
+
+
+                return {
+                    labels: labels,
+                    idealLine: idealLine,
+                    actualLine: actualLine
+                };
+            }
+
+            function renderChart(data) {
+                if (!canvas) {
+                    console.error("Elemento canvas no encontrado para el gráfico.");
+                    return;
+                }
+                const ctx = canvas.getContext('2d');
+                if (chartInstance) {
+                    chartInstance.destroy();
+                }
+                chartInstance = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: data.labels,
+                        datasets: [
+                            {
+                                label: 'Trabajo Ideal Restante',
+                                data: data.idealLine,
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                backgroundColor: 'rgba(54, 162, 235, 0.1)',
+                                tension: 0,
+                                borderDash: [5, 5],
+                                pointRadius: 3,
+                                pointBackgroundColor: 'rgba(54, 162, 235, 1)'
+                            },
+                            {
+                                label: 'Trabajo Real Restante',
+                                data: data.actualLine,
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                backgroundColor: 'rgba(255, 99, 132, 0.1)',
+                                tension: 0.1,
+                                fill: true,
+                                pointRadius: 4,
+                                pointBackgroundColor: 'rgba(255, 99, 132, 1)'
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Puntos de Esfuerzo / Tareas Restantes'
+                                }
+                            },
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Días del Sprint / Iteración'
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                            title: {
+                                display: true,
+                            },
+                            tooltip: {
+                                mode: 'index',
+                                intersect: false,
+                            }
+                        },
+                        interaction: {
+                            mode: 'nearest',
+                            axis: 'x',
+                            intersect: false
+                        }
+                    }
+                });
+            }
+
+            const initialChartData = getSampleChartData();
+            renderChart(initialChartData);
+        });
+    </script>
+}

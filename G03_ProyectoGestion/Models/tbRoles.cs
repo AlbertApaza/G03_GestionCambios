@@ -17,16 +17,16 @@ namespace G03_ProyectoGestion.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public tbRoles()
         {
+            this.tbProyectoElemento = new HashSet<tbProyectoElemento>();
             this.tbProyectoUsuarios = new HashSet<tbProyectoUsuarios>();
-            this.tbRupActividades = new HashSet<tbRupActividades>();
         }
     
         public int idRol { get; set; }
         public string nombreRol { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tbProyectoUsuarios> tbProyectoUsuarios { get; set; }
+        public virtual ICollection<tbProyectoElemento> tbProyectoElemento { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tbRupActividades> tbRupActividades { get; set; }
+        public virtual ICollection<tbProyectoUsuarios> tbProyectoUsuarios { get; set; }
     }
 }

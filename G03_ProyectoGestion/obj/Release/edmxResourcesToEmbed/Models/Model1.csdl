@@ -1,15 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="g03_databaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
   <EntityContainer Name="g03_databaseEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="sysdiagrams" EntityType="g03_databaseModel.sysdiagrams" />
+    <EntitySet Name="tbElementos" EntityType="g03_databaseModel.tbElementos" />
     <EntitySet Name="tbMetodologias" EntityType="g03_databaseModel.tbMetodologias" />
+    <EntitySet Name="tbProyectoEcsConfig" EntityType="g03_databaseModel.tbProyectoEcsConfig" />
+    <EntitySet Name="tbProyectoElemento" EntityType="g03_databaseModel.tbProyectoElemento" />
+    <EntitySet Name="tbProyectoRupFases" EntityType="g03_databaseModel.tbProyectoRupFases" />
     <EntitySet Name="tbProyectos" EntityType="g03_databaseModel.tbProyectos" />
     <EntitySet Name="tbProyectoUsuarios" EntityType="g03_databaseModel.tbProyectoUsuarios" />
     <EntitySet Name="tbRoles" EntityType="g03_databaseModel.tbRoles" />
     <EntitySet Name="tbRupActividadAsignaciones" EntityType="g03_databaseModel.tbRupActividadAsignaciones" />
-    <EntitySet Name="tbRupActividades" EntityType="g03_databaseModel.tbRupActividades" />
     <EntitySet Name="tbRupDocumentos" EntityType="g03_databaseModel.tbRupDocumentos" />
     <EntitySet Name="tbRupFases" EntityType="g03_databaseModel.tbRupFases" />
-    <EntitySet Name="tbRupIteraciones" EntityType="g03_databaseModel.tbRupIteraciones" />
     <EntitySet Name="tbRupTiposDocumento" EntityType="g03_databaseModel.tbRupTiposDocumento" />
     <EntitySet Name="tbScrumBacklog" EntityType="g03_databaseModel.tbScrumBacklog" />
     <EntitySet Name="tbScrumDaily" EntityType="g03_databaseModel.tbScrumDaily" />
@@ -27,9 +30,37 @@
     <EntitySet Name="tbXpRefactorizacion" EntityType="g03_databaseModel.tbXpRefactorizacion" />
     <EntitySet Name="tbXpRetroalimentacion" EntityType="g03_databaseModel.tbXpRetroalimentacion" />
     <EntitySet Name="tbXpTest" EntityType="g03_databaseModel.tbXpTest" />
+    <AssociationSet Name="FK__tbProyect__idEle__373B3228" Association="g03_databaseModel.FK__tbProyect__idEle__373B3228">
+      <End Role="tbElementos" EntitySet="tbElementos" />
+      <End Role="tbProyectoElemento" EntitySet="tbProyectoElemento" />
+    </AssociationSet>
     <AssociationSet Name="FK__tbProyect__idMet__18EBB532" Association="g03_databaseModel.FK__tbProyect__idMet__18EBB532">
       <End Role="tbMetodologias" EntitySet="tbMetodologias" />
       <End Role="tbProyectos" EntitySet="tbProyectos" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Proyecto_EcsConfig" Association="g03_databaseModel.FK_Proyecto_EcsConfig">
+      <End Role="tbProyectoEcsConfig" EntitySet="tbProyectoEcsConfig" />
+      <End Role="tbProyectos" EntitySet="tbProyectos" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbProyect__idPro__36470DEF" Association="g03_databaseModel.FK__tbProyect__idPro__36470DEF">
+      <End Role="tbProyectos" EntitySet="tbProyectos" />
+      <End Role="tbProyectoElemento" EntitySet="tbProyectoElemento" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbRupActi__idEle__3CF40B7E" Association="g03_databaseModel.FK__tbRupActi__idEle__3CF40B7E">
+      <End Role="tbProyectoElemento" EntitySet="tbProyectoElemento" />
+      <End Role="tbRupActividadAsignaciones" EntitySet="tbRupActividadAsignaciones" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tbProyectoElemento_tbRoles_irRol" Association="g03_databaseModel.FK_tbProyectoElemento_tbRoles_irRol">
+      <End Role="tbRoles" EntitySet="tbRoles" />
+      <End Role="tbProyectoElemento" EntitySet="tbProyectoElemento" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ProyectoRupFases_Proyectos" Association="g03_databaseModel.FK_ProyectoRupFases_Proyectos">
+      <End Role="tbProyectos" EntitySet="tbProyectos" />
+      <End Role="tbProyectoRupFases" EntitySet="tbProyectoRupFases" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ProyectoRupFases_RupFases" Association="g03_databaseModel.FK_ProyectoRupFases_RupFases">
+      <End Role="tbRupFases" EntitySet="tbRupFases" />
+      <End Role="tbProyectoRupFases" EntitySet="tbProyectoRupFases" />
     </AssociationSet>
     <AssociationSet Name="FK__tbProyect__idPro__1BC821DD" Association="g03_databaseModel.FK__tbProyect__idPro__1BC821DD">
       <End Role="tbProyectos" EntitySet="tbProyectos" />
@@ -71,9 +102,9 @@
       <End Role="tbRupFases" EntitySet="tbRupFases" />
       <End Role="tbProyectos" EntitySet="tbProyectos" />
     </AssociationSet>
-    <AssociationSet Name="FK_tbRupIteraciones_Proyecto" Association="g03_databaseModel.FK_tbRupIteraciones_Proyecto">
+    <AssociationSet Name="FK_tbRupDocumentos_tbProyectos" Association="g03_databaseModel.FK_tbRupDocumentos_tbProyectos">
       <End Role="tbProyectos" EntitySet="tbProyectos" />
-      <End Role="tbRupIteraciones" EntitySet="tbRupIteraciones" />
+      <End Role="tbRupDocumentos" EntitySet="tbRupDocumentos" />
     </AssociationSet>
     <AssociationSet Name="FK__tbProyect__idRol__1DB06A4F" Association="g03_databaseModel.FK__tbProyect__idRol__1DB06A4F">
       <End Role="tbRoles" EntitySet="tbRoles" />
@@ -83,37 +114,25 @@
       <End Role="tbUsuarios" EntitySet="tbUsuarios" />
       <End Role="tbProyectoUsuarios" EntitySet="tbProyectoUsuarios" />
     </AssociationSet>
-    <AssociationSet Name="FK_tbRupActividades_Rol" Association="g03_databaseModel.FK_tbRupActividades_Rol">
-      <End Role="tbRoles" EntitySet="tbRoles" />
-      <End Role="tbRupActividades" EntitySet="tbRupActividades" />
-    </AssociationSet>
-    <AssociationSet Name="FK__tbRupActi__idAct__7C1A6C5A" Association="g03_databaseModel.FK__tbRupActi__idAct__7C1A6C5A">
-      <End Role="tbRupActividades" EntitySet="tbRupActividades" />
-      <End Role="tbRupActividadAsignaciones" EntitySet="tbRupActividadAsignaciones" />
-    </AssociationSet>
-    <AssociationSet Name="FK__tbRupActi__idUsu__7D0E9093" Association="g03_databaseModel.FK__tbRupActi__idUsu__7D0E9093">
+    <AssociationSet Name="FK_tbRupActividadAsignaciones_Usuario" Association="g03_databaseModel.FK_tbRupActividadAsignaciones_Usuario">
       <End Role="tbUsuarios" EntitySet="tbUsuarios" />
       <End Role="tbRupActividadAsignaciones" EntitySet="tbRupActividadAsignaciones" />
     </AssociationSet>
-    <AssociationSet Name="FK_tbRupActividades_Iteracion" Association="g03_databaseModel.FK_tbRupActividades_Iteracion">
-      <End Role="tbRupIteraciones" EntitySet="tbRupIteraciones" />
-      <End Role="tbRupActividades" EntitySet="tbRupActividades" />
-    </AssociationSet>
-    <AssociationSet Name="FK_tbRupDocumentos_Iteracion" Association="g03_databaseModel.FK_tbRupDocumentos_Iteracion">
-      <End Role="tbRupIteraciones" EntitySet="tbRupIteraciones" />
+    <AssociationSet Name="FK_tbRupDocumentos_tbRupFases" Association="g03_databaseModel.FK_tbRupDocumentos_tbRupFases">
+      <End Role="tbRupFases" EntitySet="tbRupFases" />
       <End Role="tbRupDocumentos" EntitySet="tbRupDocumentos" />
     </AssociationSet>
     <AssociationSet Name="FK_tbRupDocumentos_Tipo" Association="g03_databaseModel.FK_tbRupDocumentos_Tipo">
       <End Role="tbRupTiposDocumento" EntitySet="tbRupTiposDocumento" />
       <End Role="tbRupDocumentos" EntitySet="tbRupDocumentos" />
     </AssociationSet>
-    <AssociationSet Name="FK_tbRupIteraciones_idFase" Association="g03_databaseModel.FK_tbRupIteraciones_idFase">
-      <End Role="tbRupFases" EntitySet="tbRupFases" />
-      <End Role="tbRupIteraciones" EntitySet="tbRupIteraciones" />
-    </AssociationSet>
     <AssociationSet Name="FK__tbScrumDa__idBac__2B0A656D" Association="g03_databaseModel.FK__tbScrumDa__idBac__2B0A656D">
       <End Role="tbScrumBacklog" EntitySet="tbScrumBacklog" />
       <End Role="tbScrumDailyBacklog" EntitySet="tbScrumDailyBacklog" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tbScrumBacklog_tbScrumSprints" Association="g03_databaseModel.FK_tbScrumBacklog_tbScrumSprints">
+      <End Role="tbScrumSprints" EntitySet="tbScrumSprints" />
+      <End Role="tbScrumBacklog" EntitySet="tbScrumBacklog" />
     </AssociationSet>
     <AssociationSet Name="FK__tbScrumDa__idDai__2A164134" Association="g03_databaseModel.FK__tbScrumDa__idDai__2A164134">
       <End Role="tbScrumDaily" EntitySet="tbScrumDaily" />
@@ -163,6 +182,10 @@
       <End Role="tbXpHistoriasUsuario" EntitySet="tbXpHistoriasUsuario" />
       <End Role="tbXpPruebasAceptacion" EntitySet="tbXpPruebasAceptacion" />
     </AssociationSet>
+    <AssociationSet Name="FK_tbXpHistoriasUsuario_idIteracion" Association="g03_databaseModel.FK_tbXpHistoriasUsuario_idIteracion">
+      <End Role="tbXpIteraciones" EntitySet="tbXpIteraciones" />
+      <End Role="tbXpHistoriasUsuario" EntitySet="tbXpHistoriasUsuario" />
+    </AssociationSet>
     <AssociationSet Name="FK__tbXpPlann__idIte__05A3D694" Association="g03_databaseModel.FK__tbXpPlann__idIte__05A3D694">
       <End Role="tbXpIteraciones" EntitySet="tbXpIteraciones" />
       <End Role="tbXpPlanningGame" EntitySet="tbXpPlanningGame" />
@@ -172,6 +195,26 @@
       <End Role="tbXpRetroalimentacion" EntitySet="tbXpRetroalimentacion" />
     </AssociationSet>
   </EntityContainer>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="tbElementos">
+    <Key>
+      <PropertyRef Name="idElemento" />
+    </Key>
+    <Property Name="idElemento" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="descripcion" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="tipo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="tbProyectoElemento" Relationship="g03_databaseModel.FK__tbProyect__idEle__373B3228" FromRole="tbElementos" ToRole="tbProyectoElemento" />
+  </EntityType>
   <EntityType Name="tbMetodologias">
     <Key>
       <PropertyRef Name="idMetodologia" />
@@ -179,6 +222,45 @@
     <Property Name="idMetodologia" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="nombreMetodologia" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="tbProyectos" Relationship="g03_databaseModel.FK__tbProyect__idMet__18EBB532" FromRole="tbMetodologias" ToRole="tbProyectos" />
+  </EntityType>
+  <EntityType Name="tbProyectoEcsConfig">
+    <Key>
+      <PropertyRef Name="idEcsConfig" />
+    </Key>
+    <Property Name="idEcsConfig" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="configuracionValor1" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="configuracionBooleana" Type="Boolean" />
+    <Property Name="descripcionConfiguracion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="tbProyectos" Relationship="g03_databaseModel.FK_Proyecto_EcsConfig" FromRole="tbProyectoEcsConfig" ToRole="tbProyectos" />
+  </EntityType>
+  <EntityType Name="tbProyectoElemento">
+    <Key>
+      <PropertyRef Name="idProyectoElemento" />
+    </Key>
+    <Property Name="idProyectoElemento" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idProyecto" Type="Int32" />
+    <Property Name="idElemento" Type="Int32" />
+    <Property Name="fechaInicio" Type="DateTime" Precision="0" />
+    <Property Name="fechaFin" Type="DateTime" Precision="0" />
+    <Property Name="FASE_SPRINT_ITERACION" Type="Int32" />
+    <Property Name="idRol" Type="Int32" />
+    <Property Name="estado" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="tbElementos" Relationship="g03_databaseModel.FK__tbProyect__idEle__373B3228" FromRole="tbProyectoElemento" ToRole="tbElementos" />
+    <NavigationProperty Name="tbProyectos" Relationship="g03_databaseModel.FK__tbProyect__idPro__36470DEF" FromRole="tbProyectoElemento" ToRole="tbProyectos" />
+    <NavigationProperty Name="tbRupActividadAsignaciones" Relationship="g03_databaseModel.FK__tbRupActi__idEle__3CF40B7E" FromRole="tbProyectoElemento" ToRole="tbRupActividadAsignaciones" />
+    <NavigationProperty Name="tbRoles" Relationship="g03_databaseModel.FK_tbProyectoElemento_tbRoles_irRol" FromRole="tbProyectoElemento" ToRole="tbRoles" />
+  </EntityType>
+  <EntityType Name="tbProyectoRupFases">
+    <Key>
+      <PropertyRef Name="idProyectoRupFase" />
+    </Key>
+    <Property Name="idProyectoRupFase" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idProyecto" Type="Int32" Nullable="false" />
+    <Property Name="idFase" Type="Int32" Nullable="false" />
+    <Property Name="fechaInicio" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="fechaFin" Type="DateTime" Nullable="false" Precision="0" />
+    <NavigationProperty Name="tbProyectos" Relationship="g03_databaseModel.FK_ProyectoRupFases_Proyectos" FromRole="tbProyectoRupFases" ToRole="tbProyectos" />
+    <NavigationProperty Name="tbRupFases" Relationship="g03_databaseModel.FK_ProyectoRupFases_RupFases" FromRole="tbProyectoRupFases" ToRole="tbRupFases" />
   </EntityType>
   <EntityType Name="tbProyectos">
     <Key>
@@ -193,7 +275,12 @@
     <Property Name="idMetodologia" Type="Int32" Nullable="false" />
     <Property Name="idFase" Type="Int32" />
     <Property Name="estado" Type="Int32" />
+    <Property Name="idEcsConfig" Type="Int32" />
+    <Property Name="num_fase_sprints_iteraciones" Type="Int32" />
     <NavigationProperty Name="tbMetodologias" Relationship="g03_databaseModel.FK__tbProyect__idMet__18EBB532" FromRole="tbProyectos" ToRole="tbMetodologias" />
+    <NavigationProperty Name="tbProyectoEcsConfig" Relationship="g03_databaseModel.FK_Proyecto_EcsConfig" FromRole="tbProyectos" ToRole="tbProyectoEcsConfig" />
+    <NavigationProperty Name="tbProyectoElemento" Relationship="g03_databaseModel.FK__tbProyect__idPro__36470DEF" FromRole="tbProyectos" ToRole="tbProyectoElemento" />
+    <NavigationProperty Name="tbProyectoRupFases" Relationship="g03_databaseModel.FK_ProyectoRupFases_Proyectos" FromRole="tbProyectos" ToRole="tbProyectoRupFases" />
     <NavigationProperty Name="tbProyectoUsuarios" Relationship="g03_databaseModel.FK__tbProyect__idPro__1BC821DD" FromRole="tbProyectos" ToRole="tbProyectoUsuarios" />
     <NavigationProperty Name="tbUsuarios" Relationship="g03_databaseModel.FK__tbProyect__idUsu__17F790F9" FromRole="tbProyectos" ToRole="tbUsuarios" />
     <NavigationProperty Name="tbScrumBacklog" Relationship="g03_databaseModel.FK__tbScrumBa__idPro__2180FB33" FromRole="tbProyectos" ToRole="tbScrumBacklog" />
@@ -204,7 +291,7 @@
     <NavigationProperty Name="tbXpIteraciones" Relationship="g03_databaseModel.FK__tbXpItera__idPro__01D345B0" FromRole="tbProyectos" ToRole="tbXpIteraciones" />
     <NavigationProperty Name="tbXpParejasProgramacion" Relationship="g03_databaseModel.FK__tbXpParej__idPro__1B9317B3" FromRole="tbProyectos" ToRole="tbXpParejasProgramacion" />
     <NavigationProperty Name="tbRupFases" Relationship="g03_databaseModel.FK_tbProyectos_idFase" FromRole="tbProyectos" ToRole="tbRupFases" />
-    <NavigationProperty Name="tbRupIteraciones" Relationship="g03_databaseModel.FK_tbRupIteraciones_Proyecto" FromRole="tbProyectos" ToRole="tbRupIteraciones" />
+    <NavigationProperty Name="tbRupDocumentos" Relationship="g03_databaseModel.FK_tbRupDocumentos_tbProyectos" FromRole="tbProyectos" ToRole="tbRupDocumentos" />
   </EntityType>
   <EntityType Name="tbProyectoUsuarios">
     <Key>
@@ -224,46 +311,34 @@
     </Key>
     <Property Name="idRol" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="nombreRol" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="tbProyectoElemento" Relationship="g03_databaseModel.FK_tbProyectoElemento_tbRoles_irRol" FromRole="tbRoles" ToRole="tbProyectoElemento" />
     <NavigationProperty Name="tbProyectoUsuarios" Relationship="g03_databaseModel.FK__tbProyect__idRol__1DB06A4F" FromRole="tbRoles" ToRole="tbProyectoUsuarios" />
-    <NavigationProperty Name="tbRupActividades" Relationship="g03_databaseModel.FK_tbRupActividades_Rol" FromRole="tbRoles" ToRole="tbRupActividades" />
   </EntityType>
   <EntityType Name="tbRupActividadAsignaciones">
     <Key>
       <PropertyRef Name="idActividadAsignacion" />
     </Key>
     <Property Name="idActividadAsignacion" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="idActividad" Type="Int32" />
-    <Property Name="idUsuario" Type="Int32" Nullable="false" />
-    <NavigationProperty Name="tbRupActividades" Relationship="g03_databaseModel.FK__tbRupActi__idAct__7C1A6C5A" FromRole="tbRupActividadAsignaciones" ToRole="tbRupActividades" />
-    <NavigationProperty Name="tbUsuarios" Relationship="g03_databaseModel.FK__tbRupActi__idUsu__7D0E9093" FromRole="tbRupActividadAsignaciones" ToRole="tbUsuarios" />
-  </EntityType>
-  <EntityType Name="tbRupActividades">
-    <Key>
-      <PropertyRef Name="idActividad" />
-    </Key>
-    <Property Name="idActividad" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="idIteracion" Type="Int32" Nullable="false" />
-    <Property Name="descripcion" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="idRol" Type="Int32" Nullable="false" />
-    <Property Name="estado" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="fechaLimite" Type="DateTime" Precision="0" />
-    <NavigationProperty Name="tbRoles" Relationship="g03_databaseModel.FK_tbRupActividades_Rol" FromRole="tbRupActividades" ToRole="tbRoles" />
-    <NavigationProperty Name="tbRupActividadAsignaciones" Relationship="g03_databaseModel.FK__tbRupActi__idAct__7C1A6C5A" FromRole="tbRupActividades" ToRole="tbRupActividadAsignaciones" />
-    <NavigationProperty Name="tbRupIteraciones" Relationship="g03_databaseModel.FK_tbRupActividades_Iteracion" FromRole="tbRupActividades" ToRole="tbRupIteraciones" />
+    <Property Name="idUsuario" Type="Int32" />
+    <Property Name="idElemento" Type="Int32" />
+    <NavigationProperty Name="tbProyectoElemento" Relationship="g03_databaseModel.FK__tbRupActi__idEle__3CF40B7E" FromRole="tbRupActividadAsignaciones" ToRole="tbProyectoElemento" />
+    <NavigationProperty Name="tbUsuarios" Relationship="g03_databaseModel.FK_tbRupActividadAsignaciones_Usuario" FromRole="tbRupActividadAsignaciones" ToRole="tbUsuarios" />
   </EntityType>
   <EntityType Name="tbRupDocumentos">
     <Key>
       <PropertyRef Name="idDocumento" />
     </Key>
     <Property Name="idDocumento" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="idIteracion" Type="Int32" Nullable="false" />
     <Property Name="idTipoDocumento" Type="Int32" Nullable="false" />
     <Property Name="nombreArchivo" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
     <Property Name="rutaArchivo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="Version" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
     <Property Name="Estado" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="FechaSubida" Type="DateTime" Nullable="false" Precision="3" />
-    <NavigationProperty Name="tbRupIteraciones" Relationship="g03_databaseModel.FK_tbRupDocumentos_Iteracion" FromRole="tbRupDocumentos" ToRole="tbRupIteraciones" />
+    <Property Name="idFase" Type="Int32" Nullable="false" />
+    <Property Name="idProyecto" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="tbProyectos" Relationship="g03_databaseModel.FK_tbRupDocumentos_tbProyectos" FromRole="tbRupDocumentos" ToRole="tbProyectos" />
+    <NavigationProperty Name="tbRupFases" Relationship="g03_databaseModel.FK_tbRupDocumentos_tbRupFases" FromRole="tbRupDocumentos" ToRole="tbRupFases" />
     <NavigationProperty Name="tbRupTiposDocumento" Relationship="g03_databaseModel.FK_tbRupDocumentos_Tipo" FromRole="tbRupDocumentos" ToRole="tbRupTiposDocumento" />
   </EntityType>
   <EntityType Name="tbRupFases">
@@ -272,25 +347,9 @@
     </Key>
     <Property Name="idFase" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="nombre" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="tbProyectoRupFases" Relationship="g03_databaseModel.FK_ProyectoRupFases_RupFases" FromRole="tbRupFases" ToRole="tbProyectoRupFases" />
     <NavigationProperty Name="tbProyectos" Relationship="g03_databaseModel.FK_tbProyectos_idFase" FromRole="tbRupFases" ToRole="tbProyectos" />
-    <NavigationProperty Name="tbRupIteraciones" Relationship="g03_databaseModel.FK_tbRupIteraciones_idFase" FromRole="tbRupFases" ToRole="tbRupIteraciones" />
-  </EntityType>
-  <EntityType Name="tbRupIteraciones">
-    <Key>
-      <PropertyRef Name="idIteracion" />
-    </Key>
-    <Property Name="idIteracion" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="idProyecto" Type="Int32" Nullable="false" />
-    <Property Name="nombre" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="objetivo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="fechaInicio" Type="DateTime" Precision="0" />
-    <Property Name="fechaFin" Type="DateTime" Precision="0" />
-    <Property Name="Estado" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="idFase" Type="Int32" Nullable="false" />
-    <NavigationProperty Name="tbProyectos" Relationship="g03_databaseModel.FK_tbRupIteraciones_Proyecto" FromRole="tbRupIteraciones" ToRole="tbProyectos" />
-    <NavigationProperty Name="tbRupActividades" Relationship="g03_databaseModel.FK_tbRupActividades_Iteracion" FromRole="tbRupIteraciones" ToRole="tbRupActividades" />
-    <NavigationProperty Name="tbRupDocumentos" Relationship="g03_databaseModel.FK_tbRupDocumentos_Iteracion" FromRole="tbRupIteraciones" ToRole="tbRupDocumentos" />
-    <NavigationProperty Name="tbRupFases" Relationship="g03_databaseModel.FK_tbRupIteraciones_idFase" FromRole="tbRupIteraciones" ToRole="tbRupFases" />
+    <NavigationProperty Name="tbRupDocumentos" Relationship="g03_databaseModel.FK_tbRupDocumentos_tbRupFases" FromRole="tbRupFases" ToRole="tbRupDocumentos" />
   </EntityType>
   <EntityType Name="tbRupTiposDocumento">
     <Key>
@@ -309,8 +368,10 @@
     <Property Name="idProyecto" Type="Int32" Nullable="false" />
     <Property Name="descripcionBacklog" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
     <Property Name="prioridad" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="idSprint" Type="Int32" />
     <NavigationProperty Name="tbProyectos" Relationship="g03_databaseModel.FK__tbScrumBa__idPro__2180FB33" FromRole="tbScrumBacklog" ToRole="tbProyectos" />
     <NavigationProperty Name="tbScrumDailyBacklog" Relationship="g03_databaseModel.FK__tbScrumDa__idBac__2B0A656D" FromRole="tbScrumBacklog" ToRole="tbScrumDailyBacklog" />
+    <NavigationProperty Name="tbScrumSprints" Relationship="g03_databaseModel.FK_tbScrumBacklog_tbScrumSprints" FromRole="tbScrumBacklog" ToRole="tbScrumSprints" />
   </EntityType>
   <EntityType Name="tbScrumDaily">
     <Key>
@@ -347,6 +408,7 @@
     <Property Name="fechaInicio" Type="DateTime" Precision="0" />
     <Property Name="fechaFin" Type="DateTime" Precision="0" />
     <NavigationProperty Name="tbProyectos" Relationship="g03_databaseModel.FK__tbScrumSp__idPro__245D67DE" FromRole="tbScrumSprints" ToRole="tbProyectos" />
+    <NavigationProperty Name="tbScrumBacklog" Relationship="g03_databaseModel.FK_tbScrumBacklog_tbScrumSprints" FromRole="tbScrumSprints" ToRole="tbScrumBacklog" />
     <NavigationProperty Name="tbScrumDaily" Relationship="g03_databaseModel.FK__tbScrumDa__idSpr__2739D489" FromRole="tbScrumSprints" ToRole="tbScrumDaily" />
   </EntityType>
   <EntityType Name="tbTareas">
@@ -356,10 +418,11 @@
     <Property Name="idTarea" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="idProyecto" Type="Int32" Nullable="false" />
     <Property Name="idUsuario" Type="Int32" Nullable="false" />
-    <Property Name="descripcionTarea" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="descripcionTareas" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
     <Property Name="estadoTarea" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
     <Property Name="fechaInicio" Type="DateTime" Precision="0" />
     <Property Name="fechaFin" Type="DateTime" Precision="0" />
+    <Property Name="asdasd" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
     <NavigationProperty Name="tbProyectos" Relationship="g03_databaseModel.FK__tbTareas__idProy__42E1EEFE" FromRole="tbTareas" ToRole="tbProyectos" />
     <NavigationProperty Name="tbUsuarios" Relationship="g03_databaseModel.FK__tbTareas__idUsua__43D61337" FromRole="tbTareas" ToRole="tbUsuarios" />
   </EntityType>
@@ -375,7 +438,7 @@
     <Property Name="estadoUsuario" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="tbProyectos" Relationship="g03_databaseModel.FK__tbProyect__idUsu__17F790F9" FromRole="tbUsuarios" ToRole="tbProyectos" />
     <NavigationProperty Name="tbProyectoUsuarios" Relationship="g03_databaseModel.FK__tbProyect__idUsu__1CBC4616" FromRole="tbUsuarios" ToRole="tbProyectoUsuarios" />
-    <NavigationProperty Name="tbRupActividadAsignaciones" Relationship="g03_databaseModel.FK__tbRupActi__idUsu__7D0E9093" FromRole="tbUsuarios" ToRole="tbRupActividadAsignaciones" />
+    <NavigationProperty Name="tbRupActividadAsignaciones" Relationship="g03_databaseModel.FK_tbRupActividadAsignaciones_Usuario" FromRole="tbUsuarios" ToRole="tbRupActividadAsignaciones" />
     <NavigationProperty Name="tbScrumDailyBacklog" Relationship="g03_databaseModel.FK__tbScrumDa__idUsu__2BFE89A6" FromRole="tbUsuarios" ToRole="tbScrumDailyBacklog" />
     <NavigationProperty Name="tbTareas" Relationship="g03_databaseModel.FK__tbTareas__idUsua__43D61337" FromRole="tbUsuarios" ToRole="tbTareas" />
     <NavigationProperty Name="tbXpParejasProgramacion" Relationship="g03_databaseModel.FK__tbXpParej__idUsu__1C873BEC" FromRole="tbUsuarios" ToRole="tbXpParejasProgramacion" />
@@ -415,10 +478,12 @@
     <Property Name="titulo" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
     <Property Name="historia" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
     <Property Name="criteriosAceptacion" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="idIteracion" Type="Int32" Nullable="false" />
     <NavigationProperty Name="tbProyectos" Relationship="g03_databaseModel.FK__tbXpHisto__idPro__74794A92" FromRole="tbXpHistoriasUsuario" ToRole="tbProyectos" />
     <NavigationProperty Name="tbXpParejasProgramacion" Relationship="g03_databaseModel.FK__tbXpParej__histo__1E6F845E" FromRole="tbXpHistoriasUsuario" ToRole="tbXpParejasProgramacion" />
     <NavigationProperty Name="tbXpPlanningGame" Relationship="g03_databaseModel.FK__tbXpPlann__idHis__0697FACD" FromRole="tbXpHistoriasUsuario" ToRole="tbXpPlanningGame" />
     <NavigationProperty Name="tbXpPruebasAceptacion" Relationship="g03_databaseModel.FK__tbXpPrueb__idHis__0F2D40CE" FromRole="tbXpHistoriasUsuario" ToRole="tbXpPruebasAceptacion" />
+    <NavigationProperty Name="tbXpIteraciones" Relationship="g03_databaseModel.FK_tbXpHistoriasUsuario_idIteracion" FromRole="tbXpHistoriasUsuario" ToRole="tbXpIteraciones" />
   </EntityType>
   <EntityType Name="tbXpIteraciones">
     <Key>
@@ -432,6 +497,7 @@
     <Property Name="estado" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="tbProyectos" Relationship="g03_databaseModel.FK__tbXpItera__idPro__01D345B0" FromRole="tbXpIteraciones" ToRole="tbProyectos" />
     <NavigationProperty Name="tbXpEntregas" Relationship="g03_databaseModel.FK__tbXpEntre__idIte__18B6AB08" FromRole="tbXpIteraciones" ToRole="tbXpEntregas" />
+    <NavigationProperty Name="tbXpHistoriasUsuario" Relationship="g03_databaseModel.FK_tbXpHistoriasUsuario_idIteracion" FromRole="tbXpIteraciones" ToRole="tbXpHistoriasUsuario" />
     <NavigationProperty Name="tbXpPlanningGame" Relationship="g03_databaseModel.FK__tbXpPlann__idIte__05A3D694" FromRole="tbXpIteraciones" ToRole="tbXpPlanningGame" />
     <NavigationProperty Name="tbXpRetroalimentacion" Relationship="g03_databaseModel.FK__tbXpRetro__idIte__13F1F5EB" FromRole="tbXpIteraciones" ToRole="tbXpRetroalimentacion" />
   </EntityType>
@@ -505,6 +571,18 @@
     <Property Name="fechaTest" Type="DateTime" Precision="0" />
     <NavigationProperty Name="tbXpActividades" Relationship="g03_databaseModel.FK__tbXpTest__idActi__3C34F16F" FromRole="tbXpTest" ToRole="tbXpActividades" />
   </EntityType>
+  <Association Name="FK__tbProyect__idEle__373B3228">
+    <End Type="g03_databaseModel.tbElementos" Role="tbElementos" Multiplicity="0..1" />
+    <End Type="g03_databaseModel.tbProyectoElemento" Role="tbProyectoElemento" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbElementos">
+        <PropertyRef Name="idElemento" />
+      </Principal>
+      <Dependent Role="tbProyectoElemento">
+        <PropertyRef Name="idElemento" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK__tbProyect__idMet__18EBB532">
     <End Type="g03_databaseModel.tbMetodologias" Role="tbMetodologias" Multiplicity="1" />
     <End Type="g03_databaseModel.tbProyectos" Role="tbProyectos" Multiplicity="*" />
@@ -514,6 +592,80 @@
       </Principal>
       <Dependent Role="tbProyectos">
         <PropertyRef Name="idMetodologia" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Proyecto_EcsConfig">
+    <End Type="g03_databaseModel.tbProyectoEcsConfig" Role="tbProyectoEcsConfig" Multiplicity="0..1" />
+    <End Type="g03_databaseModel.tbProyectos" Role="tbProyectos" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbProyectoEcsConfig">
+        <PropertyRef Name="idEcsConfig" />
+      </Principal>
+      <Dependent Role="tbProyectos">
+        <PropertyRef Name="idEcsConfig" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tbProyect__idPro__36470DEF">
+    <End Type="g03_databaseModel.tbProyectos" Role="tbProyectos" Multiplicity="0..1" />
+    <End Type="g03_databaseModel.tbProyectoElemento" Role="tbProyectoElemento" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbProyectos">
+        <PropertyRef Name="idProyecto" />
+      </Principal>
+      <Dependent Role="tbProyectoElemento">
+        <PropertyRef Name="idProyecto" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tbRupActi__idEle__3CF40B7E">
+    <End Type="g03_databaseModel.tbProyectoElemento" Role="tbProyectoElemento" Multiplicity="0..1" />
+    <End Type="g03_databaseModel.tbRupActividadAsignaciones" Role="tbRupActividadAsignaciones" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbProyectoElemento">
+        <PropertyRef Name="idProyectoElemento" />
+      </Principal>
+      <Dependent Role="tbRupActividadAsignaciones">
+        <PropertyRef Name="idElemento" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tbProyectoElemento_tbRoles_irRol">
+    <End Type="g03_databaseModel.tbRoles" Role="tbRoles" Multiplicity="0..1" />
+    <End Type="g03_databaseModel.tbProyectoElemento" Role="tbProyectoElemento" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbRoles">
+        <PropertyRef Name="idRol" />
+      </Principal>
+      <Dependent Role="tbProyectoElemento">
+        <PropertyRef Name="idRol" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ProyectoRupFases_Proyectos">
+    <End Type="g03_databaseModel.tbProyectos" Role="tbProyectos" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="g03_databaseModel.tbProyectoRupFases" Role="tbProyectoRupFases" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbProyectos">
+        <PropertyRef Name="idProyecto" />
+      </Principal>
+      <Dependent Role="tbProyectoRupFases">
+        <PropertyRef Name="idProyecto" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ProyectoRupFases_RupFases">
+    <End Type="g03_databaseModel.tbRupFases" Role="tbRupFases" Multiplicity="1" />
+    <End Type="g03_databaseModel.tbProyectoRupFases" Role="tbProyectoRupFases" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbRupFases">
+        <PropertyRef Name="idFase" />
+      </Principal>
+      <Dependent Role="tbProyectoRupFases">
+        <PropertyRef Name="idFase" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -637,16 +789,14 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_tbRupIteraciones_Proyecto">
-    <End Type="g03_databaseModel.tbProyectos" Role="tbProyectos" Multiplicity="1">
-      <OnDelete Action="Cascade" />
-    </End>
-    <End Type="g03_databaseModel.tbRupIteraciones" Role="tbRupIteraciones" Multiplicity="*" />
+  <Association Name="FK_tbRupDocumentos_tbProyectos">
+    <End Type="g03_databaseModel.tbProyectos" Role="tbProyectos" Multiplicity="1" />
+    <End Type="g03_databaseModel.tbRupDocumentos" Role="tbRupDocumentos" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="tbProyectos">
         <PropertyRef Name="idProyecto" />
       </Principal>
-      <Dependent Role="tbRupIteraciones">
+      <Dependent Role="tbRupDocumentos">
         <PropertyRef Name="idProyecto" />
       </Dependent>
     </ReferentialConstraint>
@@ -675,34 +825,8 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_tbRupActividades_Rol">
-    <End Type="g03_databaseModel.tbRoles" Role="tbRoles" Multiplicity="1" />
-    <End Type="g03_databaseModel.tbRupActividades" Role="tbRupActividades" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="tbRoles">
-        <PropertyRef Name="idRol" />
-      </Principal>
-      <Dependent Role="tbRupActividades">
-        <PropertyRef Name="idRol" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__tbRupActi__idAct__7C1A6C5A">
-    <End Type="g03_databaseModel.tbRupActividades" Role="tbRupActividades" Multiplicity="0..1">
-      <OnDelete Action="Cascade" />
-    </End>
-    <End Type="g03_databaseModel.tbRupActividadAsignaciones" Role="tbRupActividadAsignaciones" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="tbRupActividades">
-        <PropertyRef Name="idActividad" />
-      </Principal>
-      <Dependent Role="tbRupActividadAsignaciones">
-        <PropertyRef Name="idActividad" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__tbRupActi__idUsu__7D0E9093">
-    <End Type="g03_databaseModel.tbUsuarios" Role="tbUsuarios" Multiplicity="1" />
+  <Association Name="FK_tbRupActividadAsignaciones_Usuario">
+    <End Type="g03_databaseModel.tbUsuarios" Role="tbUsuarios" Multiplicity="0..1" />
     <End Type="g03_databaseModel.tbRupActividadAsignaciones" Role="tbRupActividadAsignaciones" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="tbUsuarios">
@@ -713,31 +837,15 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_tbRupActividades_Iteracion">
-    <End Type="g03_databaseModel.tbRupIteraciones" Role="tbRupIteraciones" Multiplicity="1">
-      <OnDelete Action="Cascade" />
-    </End>
-    <End Type="g03_databaseModel.tbRupActividades" Role="tbRupActividades" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="tbRupIteraciones">
-        <PropertyRef Name="idIteracion" />
-      </Principal>
-      <Dependent Role="tbRupActividades">
-        <PropertyRef Name="idIteracion" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_tbRupDocumentos_Iteracion">
-    <End Type="g03_databaseModel.tbRupIteraciones" Role="tbRupIteraciones" Multiplicity="1">
-      <OnDelete Action="Cascade" />
-    </End>
+  <Association Name="FK_tbRupDocumentos_tbRupFases">
+    <End Type="g03_databaseModel.tbRupFases" Role="tbRupFases" Multiplicity="1" />
     <End Type="g03_databaseModel.tbRupDocumentos" Role="tbRupDocumentos" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="tbRupIteraciones">
-        <PropertyRef Name="idIteracion" />
+      <Principal Role="tbRupFases">
+        <PropertyRef Name="idFase" />
       </Principal>
       <Dependent Role="tbRupDocumentos">
-        <PropertyRef Name="idIteracion" />
+        <PropertyRef Name="idFase" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -753,18 +861,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_tbRupIteraciones_idFase">
-    <End Type="g03_databaseModel.tbRupFases" Role="tbRupFases" Multiplicity="1" />
-    <End Type="g03_databaseModel.tbRupIteraciones" Role="tbRupIteraciones" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="tbRupFases">
-        <PropertyRef Name="idFase" />
-      </Principal>
-      <Dependent Role="tbRupIteraciones">
-        <PropertyRef Name="idFase" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK__tbScrumDa__idBac__2B0A656D">
     <End Type="g03_databaseModel.tbScrumBacklog" Role="tbScrumBacklog" Multiplicity="1" />
     <End Type="g03_databaseModel.tbScrumDailyBacklog" Role="tbScrumDailyBacklog" Multiplicity="*" />
@@ -774,6 +870,18 @@
       </Principal>
       <Dependent Role="tbScrumDailyBacklog">
         <PropertyRef Name="idBacklog" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tbScrumBacklog_tbScrumSprints">
+    <End Type="g03_databaseModel.tbScrumSprints" Role="tbScrumSprints" Multiplicity="0..1" />
+    <End Type="g03_databaseModel.tbScrumBacklog" Role="tbScrumBacklog" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbScrumSprints">
+        <PropertyRef Name="idSprint" />
+      </Principal>
+      <Dependent Role="tbScrumBacklog">
+        <PropertyRef Name="idSprint" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -918,6 +1026,18 @@
       </Principal>
       <Dependent Role="tbXpPruebasAceptacion">
         <PropertyRef Name="idHistoria" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tbXpHistoriasUsuario_idIteracion">
+    <End Type="g03_databaseModel.tbXpIteraciones" Role="tbXpIteraciones" Multiplicity="1" />
+    <End Type="g03_databaseModel.tbXpHistoriasUsuario" Role="tbXpHistoriasUsuario" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbXpIteraciones">
+        <PropertyRef Name="idIteracion" />
+      </Principal>
+      <Dependent Role="tbXpHistoriasUsuario">
+        <PropertyRef Name="idIteracion" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

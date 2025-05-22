@@ -1,655 +1,82 @@
 ﻿@{
-    ViewBag.Title = "Gestor RUP: " + (ViewBag.ProjectTimelineData != null ? ViewBag.ProjectTimelineData.Name : "Proyecto");
-    // Convertir datos del ViewBag a JSON para JavaScript
-    var projectTimelineDataJson = Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.ProjectTimelineData);
-    var rupPhasesForJsJson = Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.RupPhasesForJs);
-    var projectUsersForJsJson = Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.ProjectUsersForJs);
-    var projectRolesForJsJson = Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.ProjectRolesForJs);
-    var activityStatusesForJsJson = Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.ActivityStatusesForJs);
-
-    // Para la pestaña de documentos (Alpine.js)
-    var selectedProjectDataForAlpineJson = Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.SelectedProjectDataForAlpine);
-    var phasesForAlpineJson = Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.PhasesForAlpine);
-    var rolesForAlpineJson = Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.RolesForAlpine); // Roles generales del sistema
-    var documentTypesForAlpineJson = Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.DocumentTypesForAlpine);
-    var coreuiCssUrl = "https://cdn.jsdelivr.net/npm/@coreui/coreui@4.3.2/dist/css/coreui.min.css";
-    var coreuiJsUrl = "https://cdn.jsdelivr.net/npm/@coreui/coreui@4.3.2/dist/js/coreui.bundle.min.js";
+    ViewBag.Title = "Gestor RUP por Fases";
 }
 
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <link href="@coreuiCssUrl" rel="stylesheet" />
-
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-            background-color: #f8f9fa;
-        }
-
-        .phase-title-inception {
-            background-color: #e0e7ff;
-        }
-
-        .phase-timeline-area-inception {
-            background-color: #e0e7ff;
-        }
-
-        .phase-title-elaboration {
-            background-color: #d1fae5;
-        }
-
-        .phase-timeline-area-elaboration {
-            background-color: #d1fae5;
-        }
-
-        .phase-title-construction {
-            background-color: #fef3c7;
-        }
-
-        .phase-timeline-area-construction {
-            background-color: #fef3c7;
-        }
-
-        .phase-title-transition {
-            background-color: #ede9fe;
-        }
-
-        .phase-timeline-area-transition {
-            background-color: #ede9fe;
-        }
-
-        .status-select {
-            border: none;
-            padding: 0.3em 0.5em;
-            border-radius: 0.25rem;
-            font-size: 0.85em;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-            background-position: right 0.5rem center;
-            background-repeat: no-repeat;
-            background-size: 16px 12px;
-            min-width: 100px;
-        }
-
-        .status-not_started {
-            background-color: #e5e7eb;
-            color: #374151;
-            border: 1px solid #d1d5db;
-        }
-
-        .status-in_progress {
-            background-color: #bfdbfe;
-            color: #1d4ed8;
-            border: 1px solid #93c5fd;
-        }
-
-        .status-completed {
-            background-color: #bbf7d0;
-            color: #065f46;
-            border: 1px solid #86efac;
-        }
-
-        .status-delayed {
-            background-color: #fecaca;
-            color: #991b1b;
-            border: 1px solid #fca5a5;
-        }
-        /* Mapeado a 'Bloqueada' */
-
-        .card-dashboard {
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            height: 100%;
-        }
-
-            .card-dashboard .card-body {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                padding: 1.25rem;
-            }
-
-            .card-dashboard .card-title {
-                font-size: 2.25rem;
-                font-weight: bold;
-                margin-bottom: 0.25rem;
-            }
-
-            .card-dashboard .card-text {
-                font-size: 0.85rem;
-                text-align: center;
-            }
-
-        .card-blue {
-            background-color: #0d6efd;
-            color: white;
-        }
-
-            .card-blue .card-title {
-                color: white;
-            }
-
-        .timeline-activity {
-            position: absolute;
-            height: 26px;
-            border-radius: 3px;
-            top: 50%;
-            transform: translateY(-50%);
-            min-width: 4px;
-            box-sizing: border-box;
-            cursor: pointer;
-        }
-
-            .timeline-activity:hover {
-                opacity: 0.8;
-            }
-
-        .btn-add {
-            background-color: #0d6efd;
-            color: white;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 0.25rem;
-            font-weight: 500;
-        }
-
-            .btn-add:hover {
-                background-color: #0b5ed7;
-            }
-
-        .modal-content {
-            border-radius: 8px;
-        }
-
-        .modal-header {
-            border-bottom: 1px solid #adb5bd;
-            padding: 1rem 1.5rem;
-        }
-
-        .modal-body {
-            padding: 1.5rem;
-            max-height: 75vh;
-            overflow-y: auto;
-        }
-
-        .modal-footer {
-            border-top: 1px solid #adb5bd;
-            padding: 1rem 1.5rem;
-        }
-
-        .phase-header-container {
-            display: flex;
-            width: 100%;
-            border-left: 1px solid #dee2e6;
-            border-right: 1px solid #dee2e6;
-            border-top: 1px solid #dee2e6;
-            background-color: #f0f3f5;
-        }
-
-            .phase-header-container.timeline-dates-row {
-                border-top: none;
-                border-bottom: 1px solid #dee2e6;
-            }
-
-        .phase-header-left {
-            width: 45%;
-            border-right: 1px solid #dee2e6;
-            display: flex;
-            flex-shrink: 0;
-            min-width: 450px; /* Ancho mínimo para columnas de datos */
-        }
-
-        .phase-header-right {
-            width: 55%;
-            text-align: center;
-            padding: 0.5rem;
-            font-weight: 600;
-            font-size: 0.9rem;
-            flex-grow: 1;
-        }
-
-        .table-header-cell {
-            padding: 0.5rem 0.75rem;
-            font-weight: 600;
-            border-right: 1px solid #e0e0e0;
-            font-size: 0.8rem;
-            text-align: center;
-            vertical-align: middle;
-            box-sizing: border-box;
-        }
-
-            .table-header-cell:last-child {
-                border-right: none;
-            }
-
-        .col-actividades {
-            width: 35%;
-        }
-
-        .col-responsable {
-            width: 25%;
-        }
-
-        .col-fecha-ini {
-            width: 15%;
-        }
-
-        .col-fecha-fin {
-            width: 15%;
-        }
-
-        .col-dias {
-            width: 7%;
-        }
-
-        .col-estado {
-            width: 8%;
-        }
-
-        .phase-block {
-            border: 1px solid #dee2e6;
-            border-top: none;
-            margin-bottom: 0px;
-            background-color: #fff;
-        }
-
-        .phase-title-row {
-            display: flex;
-            width: 100%;
-            border-bottom: 1px solid #dee2e6;
-        }
-
-        .phase-title-left {
-            width: 45%;
-            padding: 0.6rem 0.75rem;
-            font-weight: bold;
-            border-right: 1px solid #dee2e6;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.9rem;
-            flex-shrink: 0;
-            min-width: 450px;
-        }
-
-        .phase-title-right {
-            width: 55%;
-            position: relative;
-            display: flex;
-            align-items: center;
-            flex-grow: 1;
-        }
-
-        .activity-row-item {
-            display: flex;
-            width: 100%;
-            border-top: 1px solid #f3f4f6;
-        }
-
-            .activity-row-item:first-child {
-                border-top: none;
-            }
-
-        .activity-details-left {
-            width: 45%;
-            display: flex;
-            border-right: 1px solid #dee2e6;
-            background-color: #fff;
-            flex-shrink: 0;
-            min-width: 450px;
-        }
-
-        .activity-detail-cell {
-            padding: 0.5rem 0.75rem;
-            font-size: 0.875rem;
-            border-right: 1px solid #f3f4f6;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            word-break: break-word;
-            box-sizing: border-box;
-        }
-
-            .activity-detail-cell:last-child {
-                border-right: none;
-            }
-
-        .activity-timeline-right {
-            width: 55%;
-            position: relative;
-            height: 42px;
-            background-color: #fff;
-            border-top: 1px solid #f3f4f6;
-            flex-grow: 1;
-        }
-
-        .activity-row-item:first-child .activity-timeline-right {
-            border-top: none;
-        }
-
-        .empty-message {
-            text-align: center;
-            padding: 1rem;
-            color: #6c757d;
-            font-style: italic;
-            font-size: 0.875rem;
-            width: 100%;
-            line-height: 38px;
-        }
-
-        .empty-message-timeline {
-            height: 38px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .timeline-dates-header {
-            display: flex;
-            background-color: #f0f3f5;
-            align-items: center;
-            height: 100%;
-            width: 100%;
-            overflow: hidden;
-        }
-
-        .timeline-date-item {
-            flex-shrink: 0;
-            text-align: center;
-            padding: 0.5rem 0;
-            border-right: 1px solid #dee2e6;
-            font-size: 0.75rem;
-            color: #6c757d;
-            box-sizing: border-box;
-            min-width: 50px;
-        }
-
-            .timeline-date-item:last-child {
-                border-right: none;
-            }
-
-        .main-scroll-container {
-            overflow-x: auto;
-            width: 100%;
-            border: 1px solid #dee2e6;
-            border-radius: 0.25rem;
-            background-color: #fff;
-        }
-
-        .main-content-wrapper {
-            display: table; /* min-width: 100%; */ /* Se ajustará dinámicamente */
-        }
-
-        .date-range-picker-container {
-            margin-bottom: 1rem;
-        }
-
-        .date-input-fallback {
-            padding: .375rem .75rem;
-            font-size: 1rem;
-            border-radius: .25rem;
-            border: 1px solid #ced4da;
-            width: calc(50% - .5rem);
-            display: inline-block;
-        }
-
-        .role-name-display {
-            font-weight: 600;
-            font-size: 0.8em;
-            color: #555;
-            margin-bottom: 0.15rem;
-        }
-
-        .assignees-display {
-            font-size: 0.85em;
-            color: #333;
-        }
-
-        .nav-tabs .nav-link {
-            font-size: 0.9rem;
-            padding: 0.75rem 1rem;
-        }
-
-        /* Estilos para la pestaña de documentos Alpine.js (del CSS antiguo) */
-        [x-cloak] {
-            display: none !important;
-        }
-
-        .tab-button {
-            padding: 0.75rem 1.5rem;
-            cursor: pointer;
-            border: 1px solid transparent;
-            border-bottom: none;
-            margin-right: 0.25rem;
-            font-weight: 500;
-            color: #4B5563;
-        }
-
-            .tab-button.active {
-                background-color: white;
-                border-color: #D1D5DB;
-                border-bottom: 1px solid white;
-                margin-bottom: -1px;
-                color: #3B82F6;
-            }
-
-        .input-field {
-            margin-top: 0.25rem;
-            display: block;
-            width: 100%;
-            padding: 0.5rem 0.75rem;
-            border: 1px solid #D1D5DB;
-            border-radius: 0.375rem;
-            box-shadow: inset 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-        }
-
-            .input-field:focus {
-                outline: none;
-                border-color: #2563EB;
-                box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25);
-            }
-
-        .input-field-xs {
-            padding: 0.25rem 0.5rem;
-            font-size: 0.75rem;
-        }
-        /* .btn { padding: 0.6rem 1.2rem; border-radius: 0.375rem; font-weight: 600; } */ /* Comentado para evitar conflicto con .btn-add */
-        .btn-primary-alpine {
-            background-color: #3B82F6;
-            color: white;
-        }
-            /* Renombrado para Alpine */
-            .btn-primary-alpine:hover {
-                background-color: #2563EB;
-            }
-
-        .btn-secondary-alpine {
-            background-color: #6B7280;
-            color: white;
-        }
-            /* Renombrado para Alpine */
-            .btn-secondary-alpine:hover {
-                background-color: #4B5563;
-            }
-
-        .status-badge {
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-
-        .status-pending {
-            background-color: #FEF3C7;
-            color: #92400E;
-        }
-
-        .status-in-review {
-            background-color: #E0E7FF;
-            color: #3730A3;
-        }
-
-        .status-validated {
-            background-color: #C6F6D5;
-            color: #2F855A;
-        }
-
-        .status-obsolete {
-            background-color: #FECACA;
-            color: #B91C1C;
-        }
-
-        .card-alpine {
-            background-color: white;
-            padding: 1rem;
-            border-radius: 0.375rem;
-            border: 1px solid #E5E7EB;
-            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-            margin-bottom: 1rem;
-        }
-        /* Renombrado */
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 10px;
-        }
-
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #c4c4c4;
-            border-radius: 10px;
-        }
-
-            .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-                background: #a3a3a3;
-            }
-
-        #user-activities-pane .activity-item {
-            border: 1px solid #e0e0e0;
-            padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            background-color: #fff;
-        }
-
-            #user-activities-pane .activity-item h5 {
-                margin-top: 0;
-            }
-    </style>
-</head>
-<body>
-    <div class="container py-4">
-        <header class="bg-primary text-white p-4 rounded-top shadow-sm mb-4">
-            <div class="d-flex justify-content-between align-items-center">
-                <h1 class="h2 mb-0 fw-bold">Gestor RUP: @(ViewBag.ProjectTimelineData != null ? ViewBag.ProjectTimelineData.Name : "Proyecto")</h1>
-                <a href="@Url.Action("Index", "Proyecto")" class="btn btn-light btn-sm">
-                    <i class="bi bi-arrow-left-circle"></i> Volver a Mis Proyectos
-                </a>
-            </div>
+<script src="https://cdn.tailwindcss.com"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+<body class="bg-gray-100 text-gray-800" x-data="app()">
+    <div class="container mx-auto p-4">
+        <header class="bg-blue-600 text-white p-6 rounded-t-lg shadow-lg mb-6">
+            <h1 class="text-4xl font-bold">Gestor RUP por Fases</h1>
+            <p class="text-blue-100" x-show="selectedProject" x-text="`Gestionando Proyecto: ${selectedProject.name}`"></p>
+            <p class="text-blue-100" x-show="!selectedProject">Cargando datos del proyecto...</p>
         </header>
 
         @if (TempData["ErrorMessage"] != null)
         {
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>Error:</strong> @TempData["ErrorMessage"]
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        }
-        @if (TempData["SuccessMessage"] != null)
-        {
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                @TempData["SuccessMessage"]
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <div class="my-4 p-4 bg-red-100 border-l-4 border-red-500 text-red-700 rounded-md shadow" role="alert">
+                <p class="font-bold">Error</p>
+                <p>@TempData["ErrorMessage"]</p>
             </div>
         }
 
+        <main x-show="selectedProjectId" x-cloak class="p-6 bg-white rounded-lg shadow-lg">
+            <div class="mb-6 flex justify-between items-center">
+                <a href="@Url.Action("Index", "Proyecto")" class="btn btn-secondary text-sm flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-1" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                    </svg>
+                    Volver a Mis Proyectos
+                </a>
 
-        <ul class="nav nav-tabs mb-3" id="mainTabs" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="cronograma-tab" data-bs-toggle="tab" data-bs-target="#cronograma-pane" type="button" role="tab" aria-controls="cronograma-pane" aria-selected="true">Cronograma RUP</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="documentos-tab" data-bs-toggle="tab" data-bs-target="#documentos-pane" type="button" role="tab" aria-controls="documentos-pane" aria-selected="false">Gestión de Documentos</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="user-activities-tab" data-bs-toggle="tab" data-bs-target="#user-activities-pane" type="button" role="tab" aria-controls="user-activities-pane" aria-selected="false">Mis Actividades</button>
-            </li>
-        </ul>
+                <a href="@Url.Action("Index", "Config", new { id = ViewBag.ProjectId })" class="btn btn-secondary text-sm flex items-center">
+                    Asignar Actividades a Miembros
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block ml-1" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                </a>
+            </div>
 
-        <div class="tab-content" id="mainTabsContent">
-            <!-- Pestaña 1: Cronograma RUP -->
-            <div class="tab-pane fade show active" id="cronograma-pane" role="tabpanel" aria-labelledby="cronograma-tab">
-                <div class="d-flex align-items-center mb-4">
-                    <h2 class="h4 mb-0 fw-bold">Cronograma de Actividades RUP</h2>
-                </div>
-                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-3 mb-4">
-                    <div class="col"><div class="card card-dashboard card-blue"><div class="card-body"><h3 class="card-title" id="stats-total">0</h3><p class="card-text">Actividades Total</p></div></div></div>
-                    <div class="col"><div class="card card-dashboard"><div class="card-body"><h3 class="card-title" id="stats-not-started">0</h3><p class="card-text">Sin Empezar</p></div></div></div>
-                    <div class="col"><div class="card card-dashboard"><div class="card-body"><h3 class="card-title text-primary" id="stats-in-progress">0</h3><p class="card-text">En Proceso</p></div></div></div>
-                    <div class="col"><div class="card card-dashboard"><div class="card-body"><h3 class="card-title text-danger" id="stats-delayed">0</h3><p class="card-text">Atrasado/Bloqueado</p></div></div></div>
-                    <div class="col"><div class="card card-dashboard"><div class="card-body"><h3 class="card-title text-success" id="stats-completed">0</h3><p class="card-text">Completado</p></div></div></div>
-                </div>
-                <div class="mb-4"><button class="btn btn-add" id="btn-add-activity"><i class="bi bi-plus-circle-fill me-2"></i>Añadir Actividad</button></div>
-                <div class="main-scroll-container mb-4">
-                    <div class="main-content-wrapper">
-                        <div class="phase-header-container">
-                            <div class="phase-header-left">
-                                <div class="table-header-cell col-actividades">Actividades</div>
-                                <div class="table-header-cell col-responsable">Rol / Responsable</div>
-                                <div class="table-header-cell col-fecha-ini">Fecha Ini.</div>
-                                <div class="table-header-cell col-fecha-fin">Fecha Fin</div>
-                                <div class="table-header-cell col-dias">Nº Días</div>
-                                <div class="table-header-cell col-estado">Estado</div>
-                            </div>
-                            <div class="phase-header-right">Cronograma</div>
-                        </div>
-                        <div class="phase-header-container timeline-dates-row">
-                            <div class="phase-header-left" style="border-right: 1px solid #dee2e6;"></div>
-                            <div class="phase-header-right timeline-dates-header" id="timeline-dates-container" style="padding:0;"></div>
-                        </div>
-                        <div id="phases-container">
-                            <div class="p-5 text-center text-muted">Cargando cronograma...</div>
-                        </div>
+            <div x-show="selectedProject">
+                <div class="flex flex-col md:flex-row items-center justify-between mb-10 p-6 bg-gray-50 rounded-lg shadow-md">
+                    <div class="flex-grow text-center md:text-left md:pr-6 w-full md:w-auto mb-4 md:mb-0">
+                        <h2 class="text-3xl lg:text-4xl font-bold text-blue-700" x-text="selectedProject.name"></h2>
+                        <p class="text-gray-600 mt-1 text-sm lg:text-base"><strong class="font-medium">Descripción:</strong> <span x-text="selectedProject.scope"></span></p>
+                    </div>
+                    <div class="md:ml-auto flex-shrink-0">
+                        <label for="currentPhase" class="block text-sm font-medium text-gray-700 mb-1 text-left md:text-right">Fase Activa RUP:</label>
+                        <select id="currentPhase" x-model.number="selectedProject.current_phase" @@change="updateProjectPhase()" class="input-field w-full sm:w-56">
+                            <template x-for="phase in phases" :key="phase.id">
+                                <option :value="phase.id" x-text="phase.name"></option>
+                            </template>
+                        </select>
                     </div>
                 </div>
-            </div>
 
-            <!-- Pestaña 2: Gestión de Documentos -->
-            <div class="tab-pane fade" id="documentos-pane" role="tabpanel" aria-labelledby="documentos-tab">
-                <div x-data="rupDocumentManagementApp()" x-cloak class="p-3 bg-white rounded-lg shadow-lg">
-                    <div x-show="selectedProjectForDocs">
-                        <div class="flex flex-col md:flex-row items-center justify-between mb-6 p-4 bg-gray-50 rounded-lg shadow-md">
-                            <div class="flex-grow text-center md:text-left md:pr-6 w-full md:w-auto mb-4 md:mb-0">
-                                <h2 class="text-2xl font-bold text-blue-700" x-text="selectedProjectForDocs.name"></h2>
-                            </div>
-                            <div class="md:ml-auto flex-shrink-0">
-                                <label for="currentPhaseForDocs" class="block text-sm font-medium text-gray-700 mb-1 text-left md:text-right">Fase Activa (Documentos):</label>
-                                <select id="currentPhaseForDocs" x-model.number="selectedProjectForDocs.current_phase" @@change="updateProjectPhaseForDocs()" class="input-field w-full sm:w-56">
-                                    <template x-for="phase in phasesForDocs" :key="phase.id">
-                                        <option :value="phase.id" x-text="phase.name"></option>
-                                    </template>
-                                </select>
-                            </div>
-                        </div>
+                <div class="mt-10" x-show="selectedProject" x-transition:enter="fade-in-section">
+                    @* SECCIÓN DE PESTAÑAS SIMPLIFICADA - SOLO DOCUMENTOS VISIBLE *@
+                    <div class="border-b border-gray-300">
+                        <nav class="-mb-px flex space-x-1 md:space-x-4 overflow-x-auto custom-scrollbar pb-1" aria-label="Tabs">
+                            @* Solo la pestaña de Documentos, marcada como activa por defecto visualmente si se quiere *@
+                            <button class="tab-button whitespace-nowrap active">
+                                Documentos
+                            </button>
+                        </nav>
+                    </div>
 
-                        <h4 class="text-xl font-semibold mb-4 text-gray-700">Documentos de la Fase: <span x-text="getPhaseNameForDocs(selectedProjectForDocs.current_phase)" class="font-bold text-indigo-600"></span></h4>
+                    @* SECCIÓN DE ACTIVIDADES ELIMINADA *@
+
+                    @* SECCIÓN DE DOCUMENTOS (SIEMPRE VISIBLE SI HAY PROYECTO) *@
+                    <div class="tab-content mt-0">
+                        @* Quitamos x-show="activeTab === 'documents'" *@
+                        <h4 class="text-xl font-semibold mb-4 text-gray-700">Documentos de la Fase: <span x-text="getPhaseName(selectedProject.current_phase)" class="font-bold text-indigo-600"></span></h4>
                         <form @@submit.prevent="addDocument" id="documentForm" class="space-y-4 mb-6 bg-white p-6 rounded-lg border border-gray-200 shadow-md">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label for="docType" class="block text-sm font-medium text-gray-700">Tipo Documento RUP:</label>
                                     <select id="docType" x-model="newDocument.type_clave" class="input-field">
-                                        <template x-for="docType in documentTypesForDocs" :key="docType.clave">
+                                        <template x-for="docType in documentTypes" :key="docType.clave">
                                             <option :value="docType.clave" x-text="docType.name"></option>
                                         </template>
                                     </select>
@@ -661,29 +88,29 @@
                             </div>
                             <div>
                                 <label for="docFile" class="block text-sm font-medium text-gray-700">Adjuntar Archivo:</label>
-                                <input type="file" name="docFile" id="docFileAlpine" @@change="handleFileUpload" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
+                                <input type="file" name="docFile" id="docFile" @@change="handleFileUpload" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
                                 <p x-show="newDocument.file_name" class="text-xs text-gray-500 mt-1">Archivo: <span x-text="newDocument.file_name"></span></p>
                             </div>
-                            <button type="submit" class="btn btn-primary-alpine w-full md:w-auto">Subir Documento</button>
+                            <button type="submit" class="btn btn-primary w-full md:w-auto">Subir Documento</button>
                         </form>
 
                         <h5 class="text-lg font-semibold mb-3 text-gray-600">Documentos Adjuntos:</h5>
                         <div class="max-h-[500px] overflow-y-auto space-y-3 pr-2 custom-scrollbar">
                             <template x-for="doc in currentPhaseDocuments" :key="doc.id">
-                                <div class="card-alpine mb-0 p-4 rounded-lg">
+                                <div class="card mb-0 p-4 rounded-lg">
                                     <div class="flex justify-between items-start">
                                         <div class="mr-2">
-                                            <p class="text-md font-semibold text-gray-800" x-text="getDocumentTypeNameForDocs(doc.type)"></p>
+                                            <p class="text-md font-semibold text-gray-800" x-text="getDocumentTypeName(doc.type)"></p>
                                             <p class="text-sm text-gray-500">Archivo: <span x-text="doc.file_name"></span></p>
-                                            <p class="text-xs text-gray-500">Subido: <span x-text="formatDateTimeForDocs(doc.uploaded_at) || 'N/A'"></span></p>
+                                            <p class="text-xs text-gray-500">Subido: <span x-text="formatDateTime(doc.uploaded_at) || 'N/A'"></span></p>
                                         </div>
-                                        <span :class="getStatusClassForDocs(doc.status)" class="status-badge whitespace-nowrap" x-text="doc.status"></span>
+                                        <span :class="getStatusClass(doc.status)" class="status-badge whitespace-nowrap" x-text="doc.status"></span>
                                     </div>
                                     <div class="mt-3 flex items-center space-x-3">
                                         <div>
                                             <label :for="'doc_status_'+doc.id" class="text-xs font-medium text-gray-600">Estado:</label>
                                             <select :id="'doc_status_'+doc.id" x-model="doc.status" @@change="updateDocumentStatus(doc)" class="input-field input-field-xs py-1">
-                                                <template x-for="status_opt in documentStatusesForDocs" :key="status_opt">
+                                                <template x-for="status_opt in documentStatuses" :key="status_opt">
                                                     <option :value="status_opt" x-text="status_opt"></option>
                                                 </template>
                                             </select>
@@ -695,8 +122,10 @@
                                         <div class="ml-auto">
                                             <button @@click="downloadDocument(doc.id, doc.file_name)"
                                                     title="Descargar Documento"
-                                                    class="btn btn-sm btn-secondary-alpine">
-                                                <i class="bi bi-download"></i>
+                                                    class="btn btn-secondary btn-xs">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block" viewBox="0 0 20 20" fill="currentColor">
+                                                    <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                                </svg>
                                             </button>
                                         </div>
                                     </div>
@@ -705,515 +134,397 @@
                             <p x-show="currentPhaseDocuments.length === 0" class="text-sm text-gray-500 italic text-center py-6">No hay documentos para esta fase.</p>
                         </div>
                     </div>
-                    <p x-show="!selectedProjectForDocs" class="text-center text-gray-500 py-8">Cargando datos del proyecto para documentos...</p>
+
+                    @* SECCIÓN DE RESUMEN DE FASE ELIMINADA *@
                 </div>
             </div>
+        </main>
 
-            <!-- Pestaña 3: Mis Actividades / Todas -->
-            <div class="tab-pane fade" id="user-activities-pane" role="tabpanel" aria-labelledby="user-activities-tab">
-                <h3 class="mb-3">Actividades del Proyecto</h3>
-                <div class="btn-group mb-3" role="group" aria-label="Filtro de actividades">
-                    <input type="radio" class="btn-check" name="activityFilter" id="filterMyActivities" autocomplete="off" checked>
-                    <label class="btn btn-outline-primary" for="filterMyActivities"><i class="bi bi-person-check-fill me-2"></i>Mis Actividades Asignadas</label>
-
-                    <input type="radio" class="btn-check" name="activityFilter" id="filterAllActivities" autocomplete="off">
-                    <label class="btn btn-outline-primary" for="filterAllActivities"><i class="bi bi-list-task me-2"></i>Todas las Actividades</label>
-                </div>
-                <div id="user-activities-list" class="mt-3">
-                    <p class="text-muted">Seleccione un filtro para ver las actividades.</p>
-                </div>
-            </div>
-        </div>
         <footer class="text-center text-sm text-gray-500 mt-12 pb-6">
-            Gestor de Proyectos RUP © @DateTime.Now.Year
+            Gestor RUP por Fases © @DateTime.Now.Year - Aplicación MVC
         </footer>
     </div>
-
-    <!-- Modales del Cronograma -->
-    <div class="modal fade" id="add-activity-modal" tabindex="-1" aria-labelledby="add-activity-modal-label" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="add-activity-modal-label">Añadir Nueva Actividad al Cronograma</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="add-activity-form">
-                        <div class="mb-3">
-                            <label class="form-label fw-medium">Nombre de la Actividad:</label>
-                            <ul class="nav nav-tabs" id="activity-name-tabs" role="tablist">
-                                <li class="nav-item" role="presentation"><button class="nav-link active" id="manual-tab" data-bs-toggle="tab" data-bs-target="#manual-content" type="button" role="tab">Ingresar manualmente</button></li>
-                                <li class="nav-item" role="presentation"><button class="nav-link" id="predefined-tab" data-bs-toggle="tab" data-bs-target="#predefined-content" type="button" role="tab">Seleccionar predefinida</button></li>
-                            </ul>
-                            <div class="tab-content mt-2" id="activity-name-content">
-                                <div class="tab-pane fade show active" id="manual-content" role="tabpanel"><input type="text" class="form-control" id="activity-name-input" placeholder="Nombre de la actividad" required></div>
-                                <div class="tab-pane fade" id="predefined-content" role="tabpanel">
-                                    <select class="form-select" id="activity-predefined-select"><option value="" selected disabled>Seleccionar actividad predefinida</option></select>
-                                    <div id="predefined-activities-message" class="text-warning small mt-1 d-none"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-3"><label for="activity-phase-select" class="form-label fw-medium">Fase RUP:</label><select class="form-select" id="activity-phase-select" required></select></div>
-                        <div class="mb-3">
-                            <label class="form-label fw-medium">Rol Principal de la Actividad:</label>
-                            <select class="form-select" id="activity-role-select" required></select>
-                        </div>
-                        <div id="role-assignment-container" class="border rounded p-3 bg-light mb-3">
-                            <label class="form-label fw-medium">Asignar Miembros del Rol:</label>
-                            <div class="mb-2">
-                                <div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="assignment-mode" id="individual-mode" value="individual" checked><label class="form-check-label" for="individual-mode">Seleccionar específicos</label></div>
-                                <div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="assignment-mode" id="all-mode" value="all"><label class="form-check-label" for="all-mode">Asignar a todos</label></div>
-                            </div>
-                            <div id="individual-assignment-container">
-                                <label class="form-label visually-hidden">Seleccionar personas:</label>
-                                <div id="role-members-container" class="d-grid gap-2" style="max-height: 150px; overflow-y: auto;">
-                                    <p class="text-muted small">Seleccione un rol para ver miembros.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- El contenedor "individual-responsible-container" se elimina ya que la asignación siempre es por rol -->
-
-                        <div class="mb-3">
-                            <label class="form-label fw-medium">Rango de Fechas:</label>
-                            <div class="date-range-picker-container" id="activity-date-picker-wrapper">
-                                <div id="activity-date-range-picker" data-coreui-toggle="date-range-picker" data-coreui-locale="es-ES" data-coreui-placeholder="Seleccione un rango" data-coreui-required="true"></div>
-                                <div id="activity-native-date-inputs" class="d-none mt-2 d-flex">
-                                    <input type="date" id="activity-native-start-date" class="form-control date-input-fallback me-2" aria-label="Fecha de inicio nativa" required>
-                                    <input type="date" id="activity-native-end-date" class="form-control date-input-fallback" aria-label="Fecha de fin nativa" required>
-                                </div>
-                            </div>
-                            <div id="phase-date-range-hint" class="small text-muted mt-1"></div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="activity-duration-input" class="form-label fw-medium">Duración (días):</label>
-                            <input type="number" class="form-control" id="activity-duration-input" min="1" value="1" readonly>
-                            <p class="small text-muted mt-1">La duración se calcula automáticamente.</p>
-                        </div>
-                        <div class="mb-3"><label for="activity-status-select" class="form-label fw-medium">Estado Inicial:</label><select class="form-select" id="activity-status-select" required></select></div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" id="save-activity-btn">Guardar Actividad</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal fade" id="edit-phase-modal" tabindex="-1" aria-labelledby="edit-phase-modal-label" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header"><h5 class="modal-title" id="edit-phase-modal-label">Editar Fechas de Fase (Visual)</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
-                <div class="modal-body">
-                    <div class="alert alert-info small">Nota: La edición de fechas de fase aquí es solo para la visualización del cronograma y no se persiste en la base de datos. Las actividades deben estar dentro del rango general del proyecto.</div>
-                    <div class="mb-3">
-                        <label class="form-label fw-medium">Rango de Fechas:</label>
-                        <div class="date-range-picker-container" id="phase-date-picker-wrapper">
-                            <div id="phase-date-range-picker" data-coreui-toggle="date-range-picker" data-coreui-locale="es-ES" data-coreui-placeholder="Seleccione un rango"></div>
-                            <div id="phase-native-date-inputs" class="d-none mt-2 d-flex">
-                                <input type="date" id="phase-native-start-date" class="form-control date-input-fallback me-2" aria-label="Fecha de inicio de fase nativa">
-                                <input type="date" id="phase-native-end-date" class="form-control date-input-fallback" aria-label="Fecha de fin de fase nativa">
-                            </div>
-                        </div>
-                        <div id="phase-error-message" class="small text-danger mt-1 d-none"></div>
-                        <p class="small text-muted mt-1">Seleccione el rango de fechas para esta fase.</p>
-                    </div>
-                </div>
-                <div class="modal-footer"><button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button><button type="button" class="btn btn-primary" id="save-phase-btn">Guardar Cambios Visuales</button></div>
-            </div>
-        </div>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="@coreuiJsUrl"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
     <script>
-    // --- INICIO: Datos desde el Backend (Razor) ---
-    const RUP_PROJECT_ID = @Html.Raw(ViewBag.ProjectId);
-    const CURRENT_USER_ID = @Html.Raw(ViewBag.CurrentUserId);
-
-    let initialProjectData = @Html.Raw(projectTimelineDataJson);
-    let initialPhasesData = @Html.Raw(rupPhasesForJsJson);
-    let initialUsersData = @Html.Raw(projectUsersForJsJson);
-    let initialRolesData = @Html.Raw(projectRolesForJsJson);
-    let initialStatusesData = @Html.Raw(activityStatusesForJsJson);
-
-    const alpineProjectData = @Html.Raw(selectedProjectDataForAlpineJson);
-    const alpinePhases = @Html.Raw(phasesForAlpineJson);
-    const alpineRoles = @Html.Raw(rolesForAlpineJson); // Roles generales para Alpine
-    const alpineDocumentTypes = @Html.Raw(documentTypesForAlpineJson);
-    // --- FIN: Datos desde el Backend ---
-
-    // --- INICIO: Script del Cronograma RUP (adaptado) ---
-    function manualFormatDate(date, formatStr, localeObj) { if (!date || !(date instanceof Date) || isNaN(date.getTime())) return 'N/A'; const d = date.getDate().toString().padStart(2, '0'); const m = (date.getMonth() + 1).toString().padStart(2, '0'); const y = date.getFullYear(); if (formatStr === 'dd/MM/yyyy') return `${d}/${m}/${y}`; if (formatStr === 'dd MMM yyyy') { const monthNames = (localeObj && localeObj.locale && localeObj.locale.options && localeObj.locale.options.monthNames) ? localeObj.locale.options.monthNames : ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']; return `${d} ${monthNames[date.getMonth()]} ${y}`; } if (formatStr === 'dd/MM') return `${d}/${m}`; return `${d}/${m}/${y}`; }
-    function manualAddDays(date, amount) { if (!date || !(date instanceof Date) || isNaN(date.getTime())) return new Date(NaN); const result = new Date(date); result.setDate(result.getDate() + amount); return result; }
-    function manualDifferenceInDays(dateLeft, dateRight) { if (!dateLeft || !dateRight || !(dateLeft instanceof Date) || !(dateRight instanceof Date) || isNaN(dateLeft.getTime()) || isNaN(dateRight.getTime())) return 0; const _dateLeftUTC = Date.UTC(dateLeft.getFullYear(), dateLeft.getMonth(), dateLeft.getDate()); const _dateRightUTC = Date.UTC(dateRight.getFullYear(), dateRight.getMonth(), dateRight.getDate()); return Math.floor((_dateLeftUTC - _dateRightUTC) / (1000 * 60 * 60 * 24));}
-    function manualIsWithinInterval(date, intervalStart, intervalEnd) { if (!date || !(date instanceof Date) || isNaN(date.getTime()) || !intervalStart || !(intervalStart instanceof Date) || isNaN(intervalStart.getTime()) || !intervalEnd || !(intervalEnd instanceof Date) || isNaN(intervalEnd.getTime())) return false; const d = new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime(); const s = new Date(intervalStart.getFullYear(), intervalStart.getMonth(), intervalStart.getDate()).getTime(); const e = new Date(intervalEnd.getFullYear(), intervalEnd.getMonth(), intervalEnd.getDate()).getTime(); return d >= s && d <= e; }
-    function manualEachDayOfInterval(start, end) { if (!start || !end || !(start instanceof Date) || !(end instanceof Date) || isNaN(start.getTime()) || isNaN(end.getTime()) || manualIsBefore(end,start) ) return []; const dates = []; let currentDate = new Date(start.getFullYear(), start.getMonth(), start.getDate()); const finalDate = new Date(end.getFullYear(), end.getMonth(), end.getDate()); while (currentDate <= finalDate) { dates.push(new Date(currentDate)); currentDate.setDate(currentDate.getDate() + 1); } return dates; }
-    function manualIsBefore(date1, date2) { if (!date1 || !date2 || !(date1 instanceof Date) || !(date2 instanceof Date) || isNaN(date1.getTime()) || isNaN(date2.getTime())) return false; return new Date(date1.getFullYear(), date1.getMonth(), date1.getDate()).getTime() < new Date(date2.getFullYear(), date2.getMonth(), date2.getDate()).getTime(); }
-    function manualIsAfter(date1, date2) { if (!date1 || !date2 || !(date1 instanceof Date) || !(date2 instanceof Date) || isNaN(date1.getTime()) || isNaN(date2.getTime())) return false; return new Date(date1.getFullYear(), date1.getMonth(), date1.getDate()).getTime() > new Date(date2.getFullYear(), date2.getMonth(), date2.getDate()).getTime(); }
-    function isSameDay(d1, d2) { if (!d1 || !d2 || !(d1 instanceof Date) || !(d2 instanceof Date) || isNaN(d1.getTime()) || isNaN(d2.getTime())) return false; return d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth() && d1.getDate() === d2.getDate(); }
-
-    const CUI_DATE_RANGE_PICKER_LOCALES = { 'es-ES': { applyButton: 'Aplicar', cancelButton: 'Cancelar', fromLabel: 'Desde', toLabel: 'Hasta', weekdays: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'], months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'], customRangeLabel: 'Rango personalizado', todayLabel: 'Hoy', yesterdayLabel: 'Ayer', last7DaysLabel: 'Últimos 7 días', last30DaysLabel: 'Últimos 30 días', thisMonthLabel: 'Este mes', lastMonthLabel: 'Mes pasado'}};
-
-    let currentProject = {
-        id: initialProjectData.Id,
-        name: initialProjectData.Name,
-        startDate: new Date(initialProjectData.StartDate + "T00:00:00"),
-        endDate: new Date(initialProjectData.EndDate + "T00:00:00")
-    };
-    let phases = initialPhasesData.map(p => ({
-        ...p,
-        startDate: new Date(p.StartDate + "T00:00:00"),
-        endDate: new Date(p.EndDate + "T00:00:00")
-    }));
-    let activities = [];
-    let USERS = initialUsersData; // Array de {Id, Name}
-    let ROLES = initialRolesData; // Array de {DbId, Id (jsKey), Name, Members: Array<{Id, Name}>}
-    let STATUSES = initialStatusesData;
-
-    let newActivityState = { phase: phases.length > 0 ? phases[0].key : "inception", startDate: null, endDate: null, durationDays: 1, status: "not_started", role: ROLES.length > 0 ? ROLES[0].Id : null, assignees: [] };
-    let activityNameMode = "manual"; let assignmentMode = "individual";
-    let editingPhaseKey = null; let phaseDateEditRange = { from: null, to: null };
-    let addActivityModalInstance, editPhaseModalInstance;
-    let useCoreUIDatePickers = false;
-
-    document.addEventListener('DOMContentLoaded', function() {
-        addActivityModalInstance = new bootstrap.Modal(document.getElementById('add-activity-modal'));
-        editPhaseModalInstance = new bootstrap.Modal(document.getElementById('edit-phase-modal'));
-
-        waitForCoreUIToLoad(function(coreUILoaded) {
-            useCoreUIDatePickers = coreUILoaded;
-            if (useCoreUIDatePickers && typeof coreui !== 'undefined' && coreui.DateRangePicker) {
-                coreui.DateRangePicker.locales = {...(coreui.DateRangePicker.locales || {}), ...CUI_DATE_RANGE_PICKER_LOCALES};
-            }
-            initializeDatePickers(useCoreUIDatePickers);
-            setupEventListeners(useCoreUIDatePickers);
-            loadActivitiesAndRender();
-        });
-
-        document.getElementById('filterMyActivities').addEventListener('change', loadUserActivitiesView);
-        document.getElementById('filterAllActivities').addEventListener('change', loadUserActivitiesView);
-        loadUserActivitiesView();
-    });
-
-    async function loadActivitiesAndRender() {
-        try {
-            const response = await fetch(`@Url.Action("GetActivitiesForCronograma", "RUP")?projectId=${RUP_PROJECT_ID}`);
-            if (!response.ok) throw new Error('Error al cargar actividades del cronograma');
-            const data = await response.json();
-            activities = data.map(act => ({
-                ...act,
-                startDate: act.startDate ? new Date(act.startDate) : null,
-                endDate: act.endDate ? new Date(act.endDate) : null,
-                assignees: act.assignees || [] // Asegurar que assignees sea un array
-            }));
-        } catch (error) {
-            console.error("Error cargando actividades para cronograma:", error);
-            activities = [];
-            document.getElementById('phases-container').innerHTML = '<div class="p-5 text-center text-danger">Error al cargar actividades del cronograma.</div>';
-        }
-        renderAllCronograma();
-    }
-
-    function waitForCoreUIToLoad(callback) { let attempts = 0; const maxAttempts = 30; const interval = setInterval(function() { attempts++; if (typeof coreui !== 'undefined' && coreui.DateRangePicker && typeof coreui.DateRangePicker.getOrCreateInstance === 'function') { clearInterval(interval); callback(true); } else if (attempts >= maxAttempts) { clearInterval(interval); console.warn("CoreUI DateRangePicker did not load properly. Falling back to native date inputs."); callback(false); } }, 100); }
-    function dateToCoreUIDateString(date) { if (!date || !(date instanceof Date) || isNaN(date.getTime())) return ''; const year = date.getFullYear(); const month = (date.getMonth() + 1).toString().padStart(2, '0'); const day = date.getDate().toString().padStart(2, '0'); return `${year}/${month}/${day}`; }
-    function dateToNativeISO(date) { if (!date || !(date instanceof Date) || isNaN(date.getTime())) return ''; return date.toISOString().split('T')[0]; }
-
-    function initializeDatePickers(useCoreUI) {
-        const activityPickerEl = document.getElementById('activity-date-range-picker');
-        const activityNativeInputsEl = document.getElementById('activity-native-date-inputs');
-        const activityNativeStartEl = document.getElementById('activity-native-start-date');
-        const activityNativeEndEl = document.getElementById('activity-native-end-date');
-        const phasePickerEl = document.getElementById('phase-date-range-picker');
-        const phaseNativeInputsEl = document.getElementById('phase-native-date-inputs');
-        const phaseNativeStartEl = document.getElementById('phase-native-start-date');
-        const phaseNativeEndEl = document.getElementById('phase-native-end-date');
-
-        const projectStartDateStr = dateToCoreUIDateString(currentProject.startDate);
-        const projectEndDateStr = dateToCoreUIDateString(currentProject.endDate);
-        const projectStartDateISO = dateToNativeISO(currentProject.startDate);
-        const projectEndDateISO = dateToNativeISO(currentProject.endDate);
-
-        if (useCoreUI && typeof coreui !== 'undefined' && coreui.DateRangePicker) {
-            if(activityPickerEl) { activityPickerEl.classList.remove('d-none'); activityPickerEl.dataset.coreuiMinDate = projectStartDateStr; activityPickerEl.dataset.coreuiMaxDate = projectEndDateStr; coreui.DateRangePicker.getOrCreateInstance(activityPickerEl); activityPickerEl.addEventListener('dateRangeChange.coreui.date-range-picker', function(event) { if (event.detail.startDate && event.detail.endDate) { try { newActivityState.startDate = new Date(event.detail.startDate); newActivityState.endDate = new Date(event.detail.endDate); } catch(e) { newActivityState.startDate = null; newActivityState.endDate = null; } } else { newActivityState.startDate = null; newActivityState.endDate = null; } updateActivityDurationDisplay(); });}
-            if(activityNativeInputsEl) activityNativeInputsEl.classList.add('d-none');
-            if(phasePickerEl) { phasePickerEl.classList.remove('d-none'); phasePickerEl.dataset.coreuiMinDate = projectStartDateStr; phasePickerEl.dataset.coreuiMaxDate = projectEndDateStr; coreui.DateRangePicker.getOrCreateInstance(phasePickerEl); phasePickerEl.addEventListener('dateRangeChange.coreui.date-range-picker', function(event) { if (event.detail.startDate && event.detail.endDate) { try { phaseDateEditRange.from = new Date(event.detail.startDate); phaseDateEditRange.to = new Date(event.detail.endDate); } catch(e) { phaseDateEditRange.from = null; phaseDateEditRange.to = null; } } else { phaseDateEditRange.from = null; phaseDateEditRange.to = null; } });}
-            if(phaseNativeInputsEl) phaseNativeInputsEl.classList.add('d-none');
-        } else {
-            if(activityPickerEl) activityPickerEl.classList.add('d-none');
-            if(activityNativeInputsEl) { activityNativeInputsEl.classList.remove('d-none'); if(activityNativeStartEl) {activityNativeStartEl.min = projectStartDateISO; activityNativeStartEl.max = projectEndDateISO; activityNativeStartEl.addEventListener('change', (e) => { newActivityState.startDate = e.target.value ? new Date(e.target.value + "T00:00:00") : null; updateActivityDurationDisplay(); });} if(activityNativeEndEl) {activityNativeEndEl.min = projectStartDateISO; activityNativeEndEl.max = projectEndDateISO; activityNativeEndEl.addEventListener('change', (e) => { newActivityState.endDate = e.target.value ? new Date(e.target.value + "T00:00:00") : null; updateActivityDurationDisplay(); });} }
-            if(phasePickerEl) phasePickerEl.classList.add('d-none');
-            if(phaseNativeInputsEl) { phaseNativeInputsEl.classList.remove('d-none'); if(phaseNativeStartEl) {phaseNativeStartEl.min = projectStartDateISO; phaseNativeStartEl.max = projectEndDateISO; phaseNativeStartEl.addEventListener('change', (e) => { phaseDateEditRange.from = e.target.value ? new Date(e.target.value + "T00:00:00") : null; });} if(phaseNativeEndEl) {phaseNativeEndEl.min = projectStartDateISO; phaseNativeEndEl.max = projectEndDateISO; phaseNativeEndEl.addEventListener('change', (e) => { phaseDateEditRange.to = e.target.value ? new Date(e.target.value + "T00:00:00") : null; });} }
-        }
-    }
-    function setupEventListeners(coreUILoaded) { document.getElementById('btn-add-activity')?.addEventListener('click', () => { resetNewActivityForm(coreUILoaded); addActivityModalInstance?.show(); }); document.getElementById('manual-tab')?.addEventListener('click', () => activityNameMode = "manual"); document.getElementById('predefined-tab')?.addEventListener('click', () => { activityNameMode = "predefined"; updatePredefinedActivitiesSelectInModal(); }); document.getElementById('activity-phase-select')?.addEventListener('change', (e) => handleActivityPhaseChangeInModal(e, coreUILoaded)); document.getElementById('activity-role-select')?.addEventListener('change', handleActivityRoleChangeInModal); document.querySelectorAll('input[name="assignment-mode"]').forEach(radio => radio.addEventListener('change', handleAssignmentModeChangeInModal)); document.getElementById('activity-status-select')?.addEventListener('change', (e) => newActivityState.status = e.target.value); document.getElementById('save-activity-btn')?.addEventListener('click', handleSaveActivity); document.getElementById('save-phase-btn')?.addEventListener('click', handleSavePhaseDates); }
-
-    function renderAllCronograma() { try { renderStats(); renderTimelineDatesHeader(); renderPhasesWithActivities(); } catch (error) { console.error("Error during renderAllCronograma:", error); document.getElementById('phases-container').innerHTML = '<div class="p-5 text-center text-danger">Error al renderizar el cronograma.</div>'; } }
-    function renderStats() { const total = activities.length; const notStarted = activities.filter(a => a.status === "not_started").length; const inProgress = activities.filter(a => a.status === "in_progress").length; const delayed = activities.filter(a => a.status === "delayed").length; const completed = activities.filter(a => a.status === "completed").length; document.getElementById('stats-total').textContent = total; document.getElementById('stats-not-started').textContent = notStarted; document.getElementById('stats-in-progress').textContent = inProgress; document.getElementById('stats-delayed').textContent = delayed; document.getElementById('stats-completed').textContent = completed; }
-
-    function getDisplayTimelineDates() { if (!currentProject.startDate || !currentProject.endDate || manualIsBefore(currentProject.endDate, currentProject.startDate) ) return []; const projectDaysArray = manualEachDayOfInterval(currentProject.startDate, currentProject.endDate); const totalDays = projectDaysArray.length; if (totalDays === 0) return []; let interval = 7; if (totalDays <= 14) interval = 1; else if (totalDays <= 30) interval = 2; else if (totalDays <= 60) interval = 3; else if (totalDays <= 90) interval = 5; const dates = []; if (totalDays > 0) { for (let i = 0; i < totalDays; i += interval) { if (projectDaysArray[i]) dates.push(projectDaysArray[i]); } const lastProjectDay = projectDaysArray[totalDays - 1]; if (dates.length === 0 || !isSameDay(dates[dates.length - 1], lastProjectDay)) { if (dates.length === 0 || manualIsBefore(dates[dates.length -1], lastProjectDay)) { dates.push(lastProjectDay); } } } return dates.filter((date, index, self) => index === self.findIndex(d => isSameDay(d, date))); }
-
-    function renderTimelineDatesHeader() {
-        const container = document.getElementById('timeline-dates-container'); if (!container) return; container.innerHTML = '';
-        const displayDates = getDisplayTimelineDates(); if (displayDates.length === 0) return;
-        const projectTotalDaysForTimeline = manualDifferenceInDays(currentProject.endDate, currentProject.startDate) + 1;
-        if (projectTotalDaysForTimeline <= 0) return;
-
-        const minCellWidthPx = 50; let totalTimelinePixelWidth = 0;
-        const estimatedContainerWidth = container.offsetWidth || document.querySelector('.phase-header-right')?.offsetWidth || 600;
-
-
-        displayDates.forEach((date, index) => {
-            let segmentStartDate = date;
-            let segmentEndDate = (index < displayDates.length - 1) ? manualAddDays(displayDates[index+1], -1) : currentProject.endDate;
-            if (manualIsBefore(segmentEndDate, segmentStartDate)) segmentEndDate = new Date(segmentStartDate);
-            const segmentDuration = manualDifferenceInDays(segmentEndDate, segmentStartDate) + 1;
-            const cellWidthPercentage = (segmentDuration / projectTotalDaysForTimeline) * 100;
-            totalTimelinePixelWidth += Math.max(minCellWidthPx, (cellWidthPercentage / 100) * estimatedContainerWidth );
-        });
-
-        const mainContentWrapper = document.querySelector('.main-content-wrapper');
-        const phaseHeaderLeft = document.querySelector('.phase-header-left');
-        if(mainContentWrapper && phaseHeaderLeft) {
-            const dataColsWidth = phaseHeaderLeft.offsetWidth;
-            mainContentWrapper.style.minWidth = `${dataColsWidth + totalTimelinePixelWidth + 30}px`; // +30 for buffer/borders
-        }
-
-        displayDates.forEach((date, index) => {
-            const dateEl = document.createElement('div'); dateEl.className = 'timeline-date-item';
-            dateEl.style.minWidth = `${minCellWidthPx}px`; dateEl.textContent = manualFormatDate(date, 'dd/MM');
-            let segmentEndDate = (index < displayDates.length - 1) ? manualAddDays(displayDates[index+1], -1) : currentProject.endDate;
-            if (manualIsBefore(segmentEndDate, date)) segmentEndDate = new Date(date);
-            const segmentDuration = manualDifferenceInDays(segmentEndDate, date) + 1;
-            const cellWidthPercentage = (segmentDuration / projectTotalDaysForTimeline) * 100;
-            dateEl.style.width = `${cellWidthPercentage}%`;
-            container.appendChild(dateEl);
-        });
-    }
-
-    function renderPhasesWithActivities() {
-        const container = document.getElementById('phases-container'); if (!container) return; container.innerHTML = '';
-        const projectTotalDurationDays = manualDifferenceInDays(currentProject.endDate, currentProject.startDate) + 1;
-        if (projectTotalDurationDays <=0 || phases.length === 0) { container.innerHTML = '<div class="empty-message p-3">No hay fases definidas o la duración del proyecto es inválida.</div>'; return; }
-
-        phases.forEach(phase => {
-            const phaseBlock = document.createElement('div'); phaseBlock.className = `phase-block`;
-            const phaseTitleRow = document.createElement('div'); phaseTitleRow.className = 'phase-title-row';
-            const phaseTitleLeft = document.createElement('div'); phaseTitleLeft.className = `phase-title-left ${phase.titleColorClass}`;
-            phaseTitleLeft.innerHTML = `<span>${phase.name} (${manualFormatDate(phase.startDate, 'dd/MM/yyyy')} - ${manualFormatDate(phase.endDate, 'dd/MM/yyyy')})</span><button class="btn btn-sm btn-outline-secondary edit-phase-btn" data-phase-key="${phase.key}"><i class="bi bi-pencil-square"></i> Fechas</button>`;
-            phaseTitleRow.appendChild(phaseTitleLeft);
-            const timelineAreaClass = phase.titleColorClass ? phase.titleColorClass.replace('title','timeline-area') : '';
-            const phaseTitleRight = document.createElement('div'); phaseTitleRight.className = `phase-title-right ${timelineAreaClass}`;
-            phaseTitleRow.appendChild(phaseTitleRight); phaseBlock.appendChild(phaseTitleRow);
-
-            const phaseActivities = getActivitiesByPhase(phase.key);
-            if (phaseActivities.length > 0) {
-                phaseActivities.forEach(activity => {
-                    const activityRowItem = document.createElement('div'); activityRowItem.className = 'activity-row-item';
-                    const activityDetailsLeft = document.createElement('div'); activityDetailsLeft.className = 'activity-details-left';
-                    let responsibleHTML = '';
-                    const roleForActivity = ROLES.find(r => r.id === activity.roleJsKey);
-                    if (roleForActivity) { responsibleHTML += `<div class="role-name-display">${roleForActivity.name}</div>`; }
-                    else { responsibleHTML += `<div class="role-name-display text-muted"><em>Rol no especificado</em></div>`; }
-
-                    if (activity.assignees && activity.assignees.length > 0) { responsibleHTML += `<div class="assignees-display">${activity.assignees.map(a => a.Name).join(', ')}</div>`; }
-                    else { responsibleHTML += `<div class="assignees-display text-muted"><em>Sin asignar</em></div>`;}
-
-                    const statusSelectId = `status-select-${activity.dbId}`;
-                    let statusOptionsHTML = STATUSES.map(s => `<option value="${s.key}" ${s.key === activity.status ? 'selected' : ''}>${s.name}</option>`).join('');
-                    let statusElementHTML = `<select id="${statusSelectId}" data-activity-dbid="${activity.dbId}" class="status-select ${STATUSES.find(s => s.key === activity.status)?.colorClass || 'status-not_started'}">${statusOptionsHTML}</select>`;
-
-                    activityDetailsLeft.innerHTML = `
-                        <div class="activity-detail-cell col-actividades">${activity.name}</div>
-                        <div class="activity-detail-cell col-responsable">${responsibleHTML}</div>
-                        <div class="activity-detail-cell col-fecha-ini">${manualFormatDate(activity.startDate, 'dd/MM/yyyy')}</div>
-                        <div class="activity-detail-cell col-fecha-fin">${manualFormatDate(activity.endDate, 'dd/MM/yyyy')}</div>
-                        <div class="activity-detail-cell col-dias" style="text-align:center;">${activity.durationDays > 0 ? activity.durationDays : '-'}</div>
-                        <div class="activity-detail-cell col-estado">${statusElementHTML}</div>`;
-                    activityRowItem.appendChild(activityDetailsLeft);
-
-                    const activityTimelineRight = document.createElement('div'); activityTimelineRight.className = 'activity-timeline-right';
-                    if (activity.startDate && activity.endDate && activity.durationDays > 0) {
-                        const timelineActivity = document.createElement('div');
-                        const statusObj = STATUSES.find(s => s.key === activity.status);
-                        timelineActivity.className = `timeline-activity ${statusObj ? statusObj.colorClass : 'status-not_started'}`;
-                        const pos = getActivityTimelinePosition(activity);
-                        timelineActivity.style.left = `${pos.left}%`; timelineActivity.style.width = `${pos.width}%`;
-                        timelineActivity.title = `${activity.name}: ${manualFormatDate(activity.startDate, 'dd/MM/yyyy')} - ${manualFormatDate(activity.endDate, 'dd/MM/yyyy')} (${activity.status})`;
-                        activityTimelineRight.appendChild(timelineActivity);
-                    }
-                    activityRowItem.appendChild(activityTimelineRight); phaseBlock.appendChild(activityRowItem);
-
-                    const statusSelectElement = phaseBlock.querySelector(`#${statusSelectId}`);
-                    statusSelectElement?.addEventListener('change', async (e) => {
-                        const newStatusKey = e.target.value; const activityDbId = e.target.dataset.activityDbid;
-                        const actToUpdate = activities.find(a => a.dbId == activityDbId);
-                        if (actToUpdate) {
-                            const originalStatus = actToUpdate.status; actToUpdate.status = newStatusKey; // Optimistic update
-                             e.target.className = `status-select ${STATUSES.find(s => s.key === newStatusKey)?.colorClass || 'status-not_started'}`;
-                            renderAllCronograma(); // Re-render to update timeline bar color
-                            try {
-                                const response = await fetch(`@Url.Action("UpdateActivityStatusCronograma", "RUP")`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ activityDbId: parseInt(activityDbId), newJsStatus: newStatusKey }) });
-                                const result = await response.json();
-                                if (!result.success) { actToUpdate.status = originalStatus; throw new Error(result.message || "Error al actualizar estado"); }
-                            } catch (err) { console.error("Error actualizando estado:", err); alert("Error al actualizar estado: " + err.message); actToUpdate.status = originalStatus; e.target.value = originalStatus; e.target.className = `status-select ${STATUSES.find(s => s.key === originalStatus)?.colorClass || 'status-not_started'}`; renderAllCronograma(); }
-                        }
-                    });
-                });
-            } else { const emptyRow = document.createElement('div'); emptyRow.className = 'activity-row-item'; emptyRow.innerHTML = `<div class="activity-details-left"><div class="empty-message">No hay actividades en esta fase.</div></div><div class="activity-timeline-right"><div class="empty-message empty-message-timeline"></div></div>`; phaseBlock.appendChild(emptyRow); }
-            container.appendChild(phaseBlock);
-        });
-        document.querySelectorAll('.edit-phase-btn').forEach(button => button.addEventListener('click', (e) => handleEditPhaseClick(e, useCoreUIDatePickers)));
-    }
-
-    function handleEditPhaseClick(event, useCoreUI) { const phaseKey = event.target.closest('.edit-phase-btn').dataset.phaseKey; const phaseToEdit = phases.find(p => p.key === phaseKey); if (!phaseToEdit) return; if (getActivitiesByPhase(phaseKey).length > 0 && confirm("Esta fase ya contiene actividades. Cambiar sus fechas podría invalidarlas o desajustarlas del cronograma general del proyecto. ¿Desea continuar editando las fechas visuales de la fase? (Esto no se guardará en la base de datos)")) { /* allow edit */ } else if (getActivitiesByPhase(phaseKey).length > 0) { return; } editingPhaseKey = phaseKey; phaseDateEditRange.from = new Date(phaseToEdit.startDate); phaseDateEditRange.to = new Date(phaseToEdit.endDate); const pickerEl = document.getElementById('phase-date-range-picker'); const nativeStartEl = document.getElementById('phase-native-start-date'); const nativeEndEl = document.getElementById('phase-native-end-date'); if (useCoreUI && pickerEl && typeof coreui !== 'undefined' && coreui.DateRangePicker) { pickerEl.dataset.coreuiStartDate = dateToCoreUIDateString(phaseToEdit.startDate); pickerEl.dataset.coreuiEndDate = dateToCoreUIDateString(phaseToEdit.endDate); const instance = coreui.DateRangePicker.getOrCreateInstance(pickerEl); if(instance && typeof instance.update === 'function') instance.update(); else if (instance && typeof instance.reset === 'function') instance.reset(); } else if (!useCoreUI && nativeStartEl && nativeEndEl) { nativeStartEl.value = dateToNativeISO(phaseToEdit.startDate); nativeEndEl.value = dateToNativeISO(phaseToEdit.endDate); } document.getElementById('phase-error-message')?.classList.add('d-none'); editPhaseModalInstance?.show(); }
-
-    function resetNewActivityForm(useCoreUI) {
-        newActivityState = { phase: phases.length > 0 ? phases[0].key : "inception", startDate: null, endDate: null, durationDays: 1, status: "not_started", role: ROLES.length > 0 ? ROLES[0].Id : null, assignees: [] }; // role es jsKey
-        activityNameMode = "manual"; assignmentMode = "individual";
-        document.getElementById('add-activity-form')?.reset();
-        const manualTabEl = document.getElementById('manual-tab'); if (manualTabEl) { const tab = bootstrap.Tab.getInstance(manualTabEl) || new bootstrap.Tab(manualTabEl); tab.show(); }
-
-        const phaseSelectEl = document.getElementById('activity-phase-select');
-        if(phaseSelectEl) { phaseSelectEl.innerHTML = phases.map(p => `<option value="${p.key}" ${p.key === newActivityState.phase ? 'selected' : ''}>${p.name}</option>`).join(''); phaseSelectEl.value = newActivityState.phase; }
-
-        const roleSelectEl = document.getElementById('activity-role-select');
-        if(roleSelectEl) {
-            if (ROLES.length > 0) { roleSelectEl.innerHTML = ROLES.map(r => `<option value="${r.id}">${r.name}</option>`).join(''); roleSelectEl.value = newActivityState.role; }
-            else { roleSelectEl.innerHTML = '<option value="" disabled selected>No hay roles con miembros en este proyecto</option>'; newActivityState.role = null; }
-        }
-
-        const statusSelectEl = document.getElementById('activity-status-select');
-        if(statusSelectEl) {statusSelectEl.innerHTML = STATUSES.map(s => `<option value="${s.key}" ${s.key === newActivityState.status ? 'selected' : ''}>${s.name}</option>`).join(''); statusSelectEl.value = newActivityState.status;}
-
-        updatePredefinedActivitiesSelectInModal(); updateActivityPhaseDateHintInModal(useCoreUI); updateRoleAssignmentVisibilityInModal();
-
-        if(useCoreUI && typeof coreui !== 'undefined' && coreui.DateRangePicker) { const pickerEl = document.getElementById('activity-date-range-picker'); if (pickerEl) { pickerEl.removeAttribute('data-coreui-start-date'); pickerEl.removeAttribute('data-coreui-end-date'); const instance = coreui.DateRangePicker.getOrCreateInstance(pickerEl); if (instance && typeof instance.clear === 'function') instance.clear(); else if (instance && typeof instance.reset === 'function') instance.reset(); } }
-        else { const nativeStart = document.getElementById('activity-native-start-date'); if(nativeStart) nativeStart.value = ''; const nativeEnd = document.getElementById('activity-native-end-date'); if(nativeEnd) nativeEnd.value = ''; }
-        updateActivityDurationDisplay();
-    }
-
-    function updatePredefinedActivitiesSelectInModal() { const selectEl = document.getElementById('activity-predefined-select'); const messageEl = document.getElementById('predefined-activities-message'); if(!selectEl || !messageEl) return; selectEl.innerHTML = '<option value="" selected disabled>Seleccionar actividad predefinida</option>'; const currentPhaseKey = document.getElementById('activity-phase-select')?.value || newActivityState.phase; const phase = phases.find(p => p.key === currentPhaseKey); if (!phase || !phase.defaultActivities) { selectEl.disabled = true; messageEl.classList.add('d-none'); return; } const existingActivityNamesInPhase = activities.filter(a => a.phaseKey === phase.key).map(a => a.name); const available = phase.defaultActivities.filter(da => !existingActivityNamesInPhase.includes(da)); if (available.length === 0) { selectEl.disabled = true; messageEl.classList.remove('d-none'); messageEl.textContent = "Todas las actividades predefinidas para esta fase ya han sido utilizadas o no hay."; } else { selectEl.disabled = false; messageEl.classList.add('d-none'); available.forEach(actName => selectEl.innerHTML += `<option value="${actName}">${actName}</option>`); } }
-    function updateActivityPhaseDateHintInModal(useCoreUI) { const hintEl = document.getElementById('phase-date-range-hint'); const currentPhaseKey = document.getElementById('activity-phase-select')?.value || newActivityState.phase; const phase = phases.find(p => p.key === currentPhaseKey); const pickerEl = document.getElementById('activity-date-range-picker'); const nativeStartEl = document.getElementById('activity-native-start-date'); const nativeEndEl = document.getElementById('activity-native-end-date'); if (!hintEl) return; const phaseStartDateStr = phase ? dateToCoreUIDateString(phase.startDate) : dateToCoreUIDateString(currentProject.startDate); const phaseEndDateStr = phase ? dateToCoreUIDateString(phase.endDate) : dateToCoreUIDateString(currentProject.endDate); const phaseStartDateISO = phase ? dateToNativeISO(phase.startDate) : dateToNativeISO(currentProject.startDate); const phaseEndDateISO = phase ? dateToNativeISO(phase.endDate) : dateToNativeISO(currentProject.endDate); if (phase) { hintEl.textContent = `Fechas disponibles para esta fase: ${manualFormatDate(phase.startDate, 'dd/MM/yyyy')} - ${manualFormatDate(phase.endDate, 'dd/MM/yyyy')}`; } else { hintEl.textContent = `Fechas generales del proyecto: ${manualFormatDate(currentProject.startDate, 'dd/MM/yyyy')} - ${manualFormatDate(currentProject.endDate, 'dd/MM/yyyy')}`; } if (useCoreUI && pickerEl && typeof coreui !== 'undefined' && coreui.DateRangePicker) { pickerEl.dataset.coreuiMinDate = phaseStartDateStr; pickerEl.dataset.coreuiMaxDate = phaseEndDateStr; const instance = coreui.DateRangePicker.getOrCreateInstance(pickerEl); if(instance && typeof instance.update === 'function') instance.update(); else if (instance && typeof instance.reset === 'function') instance.reset(); } else if (!useCoreUI && nativeStartEl && nativeEndEl) { nativeStartEl.min = phaseStartDateISO; nativeStartEl.max = phaseEndDateISO; nativeEndEl.min = phaseStartDateISO; nativeEndEl.max = phaseEndDateISO; } }
-    function updateRoleAssignmentVisibilityInModal() { const roleContainer = document.getElementById('role-assignment-container'); if(!roleContainer) return; if (newActivityState.role) { roleContainer.classList.remove('d-none'); updateRoleMembersCheckboxesInModal(); const individualAssignContainer = document.getElementById('individual-assignment-container'); if(individualAssignContainer) individualAssignContainer.style.display = assignmentMode === "individual" ? "block" : "none"; } else { roleContainer.classList.add('d-none'); } }
-
-    function updateRoleMembersCheckboxesInModal() {
-        const container = document.getElementById('role-members-container'); if(!container) return; container.innerHTML = '';
-        if (!newActivityState.role) { container.innerHTML = '<p class="text-muted small">Seleccione un rol primero.</p>'; return; }
-        const selectedRoleObj = ROLES.find(r => r.id === newActivityState.role);
-        const members = selectedRoleObj?.Members || [];
-        if (members.length === 0) { container.innerHTML = '<p class="text-muted small">Este rol no tiene miembros asignados en el proyecto.</p>'; newActivityState.assignees = []; return;}
-
-        if (assignmentMode === "all") newActivityState.assignees = members.map(m => m.Id);
-
-        members.forEach(member => { const div = document.createElement('div'); div.className = 'form-check'; div.innerHTML = `<input class="form-check-input role-member-checkbox" type="checkbox" value="${member.Id}" id="modal-member-${member.Id}" ${newActivityState.assignees.includes(member.Id) ? 'checked' : ''}><label class="form-check-label" for="modal-member-${member.Id}">${member.Name}</label>`; container.appendChild(div); });
-        document.querySelectorAll('.role-member-checkbox').forEach(cb => cb.addEventListener('change', (e) => { const memberId = parseInt(e.target.value); if (e.target.checked) { if (!newActivityState.assignees.includes(memberId)) newActivityState.assignees.push(memberId); } else { newActivityState.assignees = newActivityState.assignees.filter(id => id !== memberId); } }));
-    }
-
-    function handleActivityPhaseChangeInModal(event, useCoreUI) { newActivityState.phase = event.target.value; newActivityState.startDate = null; newActivityState.endDate = null; if (activityNameMode === "predefined") document.getElementById('activity-predefined-select').value = ''; document.getElementById('activity-name-input').value = ''; if(useCoreUI && typeof coreui !== 'undefined' && coreui.DateRangePicker) { const pickerEl = document.getElementById('activity-date-range-picker'); if (pickerEl) { pickerEl.removeAttribute('data-coreui-start-date'); pickerEl.removeAttribute('data-coreui-end-date'); const instance = coreui.DateRangePicker.getOrCreateInstance(pickerEl); if (instance && typeof instance.clear === 'function') instance.clear(); else if (instance && typeof instance.reset === 'function') instance.reset(); } } else { document.getElementById('activity-native-start-date').value = ''; document.getElementById('activity-native-end-date').value = ''; } updatePredefinedActivitiesSelectInModal(); updateActivityPhaseDateHintInModal(useCoreUI); updateActivityDurationDisplay(); }
-    function handleActivityRoleChangeInModal(event) { newActivityState.role = event.target.value; newActivityState.assignees = []; if (newActivityState.role && assignmentMode === 'all') { const roleObj = ROLES.find(r => r.id === newActivityState.role); newActivityState.assignees = roleObj ? roleObj.Members.map(m => m.Id) : []; } updateRoleAssignmentVisibilityInModal(); }
-    function handleAssignmentModeChangeInModal(event) { assignmentMode = event.target.value; if (newActivityState.role && assignmentMode === 'all') { const roleObj = ROLES.find(r => r.id === newActivityState.role); newActivityState.assignees = roleObj ? roleObj.Members.map(m => m.Id) : []; } else if (newActivityState.role && assignmentMode === 'individual') { newActivityState.assignees = []; /* Se seleccionarán manualmente */ } updateRoleAssignmentVisibilityInModal(); }
-    function updateActivityDurationDisplay() { const duration = calculateActivityDuration(newActivityState.startDate, newActivityState.endDate); newActivityState.durationDays = duration; const durationInput = document.getElementById('activity-duration-input'); if(durationInput) durationInput.value = duration > 0 ? duration : ""; }
-
-    async function handleSaveActivity() {
-        let activityName = activityNameMode === "manual" ? document.getElementById('activity-name-input').value.trim() : document.getElementById('activity-predefined-select').value;
-        const activityPhase = document.getElementById('activity-phase-select').value;
-        const activityRoleJsKey = document.getElementById('activity-role-select').value;
-        const activityStatus = document.getElementById('activity-status-select').value;
-
-        if (!activityName) { alert("Por favor, ingrese o seleccione un nombre para la actividad."); return; }
-        if (!newActivityState.startDate || !newActivityState.endDate) { alert("Por favor, seleccione un rango de fechas para la actividad."); return; }
-        if (manualIsBefore(newActivityState.endDate, newActivityState.startDate)) { alert("La fecha de fin no puede ser anterior a la fecha de inicio."); return; }
-        if (!activityRoleJsKey) { alert("Por favor, seleccione un rol para la actividad."); return; }
-        if (newActivityState.assignees.length === 0) { alert("Debe seleccionar al menos un miembro para asignar a la actividad."); return; }
-
-
-        const payload = {
-            ProjectId: RUP_PROJECT_ID, Name: activityName, PhaseKey: activityPhase,
-            StartDate: newActivityState.startDate.toISOString().split('T')[0],
-            EndDate: newActivityState.endDate.toISOString().split('T')[0],
-            Status: activityStatus, RoleJsKey: activityRoleJsKey,
-            AssigneeUserIds: newActivityState.assignees // Ya son IDs
-        };
-
-        document.getElementById('save-activity-btn').disabled = true;
-        try {
-            const response = await fetch(`@Url.Action("CreateCronogramaActivity", "RUP")`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-            const result = await response.json();
-            if (!result.success || !result.activity) throw new Error(result.message || "Error al guardar actividad");
-            const newActDataFromServer = result.activity;
-            const newAct = { ...newActDataFromServer, startDate: newActDataFromServer.startDate ? new Date(newActDataFromServer.startDate) : null, endDate: newActDataFromServer.endDate ? new Date(newActDataFromServer.endDate) : null, assignees: newActDataFromServer.assignees || [] };
-            activities.push(newAct); addActivityModalInstance?.hide(); renderAllCronograma();
-            // Opcional: Mostrar un TempData de éxito (requiere recarga o manejo JS)
-        } catch (error) { console.error("Error guardando actividad:", error); alert("Error al guardar la actividad: " + error.message); }
-        finally { document.getElementById('save-activity-btn').disabled = false; }
-    }
-    function arePhaseDatesValid(phaseKey, startDate, endDate, errorElId) { const errorEl = document.getElementById(errorElId); if(!errorEl) return false; errorEl.classList.add('d-none'); errorEl.textContent = ''; if (!startDate || !endDate) { errorEl.textContent = "Debe seleccionar un rango de fechas."; errorEl.classList.remove('d-none'); return false; } if (manualIsBefore(startDate, currentProject.startDate) || manualIsAfter(endDate, currentProject.endDate)) { errorEl.textContent = `Las fechas deben estar dentro del rango del proyecto (${manualFormatDate(currentProject.startDate, 'dd/MM/yyyy')} - ${manualFormatDate(currentProject.endDate, 'dd/MM/yyyy')}).`; errorEl.classList.remove('d-none'); return false; } if (manualIsBefore(endDate, startDate)) { errorEl.textContent = "La fecha de fin debe ser posterior a la fecha de inicio."; errorEl.classList.remove('d-none'); return false; } const currentIdx = phases.findIndex(p => p.key === phaseKey); if (currentIdx > 0) { const prevPhase = phases[currentIdx - 1]; if (prevPhase && manualIsBefore(startDate, manualAddDays(prevPhase.endDate, 1))) { errorEl.textContent = `Esta fase debe comenzar después de la fase anterior (${manualFormatDate(prevPhase.endDate, 'dd/MM/yyyy')}).`; errorEl.classList.remove('d-none'); return false; } } if (currentIdx < phases.length - 1) { const nextPhase = phases[currentIdx + 1]; if (nextPhase && manualIsAfter(endDate, manualAddDays(nextPhase.startDate, -1))) { errorEl.textContent = `Esta fase debe terminar antes de la siguiente fase (${manualFormatDate(nextPhase.startDate, 'dd/MM/yyyy')}).`; errorEl.classList.remove('d-none'); return false; } } return true; }
-    function handleSavePhaseDates() { if (!editingPhaseKey || !phaseDateEditRange.from || !phaseDateEditRange.to) return; if (!arePhaseDatesValid(editingPhaseKey, phaseDateEditRange.from, phaseDateEditRange.to, 'phase-error-message')) return; phases = phases.map(p => (p.key === editingPhaseKey) ? { ...p, startDate: new Date(phaseDateEditRange.from), endDate: new Date(phaseDateEditRange.to) } : p); editPhaseModalInstance?.hide(); renderAllCronograma(); }
-
-    function calculateActivityDuration(startDate, endDate) { if (!startDate || !endDate || !(startDate instanceof Date) || !(endDate instanceof Date) || isNaN(startDate.getTime()) || isNaN(endDate.getTime()) || manualIsBefore(endDate, startDate)) return 0; return manualDifferenceInDays(endDate, startDate) + 1;  }
-    function getActivitiesByPhase(phaseKey) { return activities.filter(activity => activity.phaseKey === phaseKey).sort((a,b) => (a.startDate && b.startDate) ? new Date(a.startDate).getTime() - new Date(b.startDate).getTime() : (a.startDate ? -1 : 1)); }
-    function getActivityTimelinePosition(activity) { if (!activity.startDate || !activity.endDate || !currentProject.startDate || !currentProject.endDate) return { left: 0, width: 0 }; const projectTotalDays = manualDifferenceInDays(currentProject.endDate, currentProject.startDate) + 1; if (projectTotalDays <= 0) return { left: 0, width: 0 }; const activityStartDate = new Date(activity.startDate); const projectStartDate = new Date(currentProject.startDate); if (isNaN(activityStartDate.getTime()) || isNaN(projectStartDate.getTime())) return {left:0, width:0}; const startOffsetDays = Math.max(0, manualDifferenceInDays(activityStartDate, projectStartDate)); const activityDurationDays = Math.max(1, activity.durationDays); const left = (startOffsetDays / projectTotalDays) * 100; const width = (activityDurationDays / projectTotalDays) * 100; const clampedLeft = Math.max(0, Math.min(100, left)); const clampedWidth = Math.max(0.1, Math.min(100 - clampedLeft, width)); return { left: clampedLeft, width: clampedWidth }; }
-    // --- FIN: Script del Cronograma RUP ---
-
-    // --- INICIO: Script para Pestaña de Documentos (Alpine.js) ---
-    function rupDocumentManagementApp() {
+    function app() {
         return {
-            selectedProjectId: RUP_PROJECT_ID, documents: [],
-            newDocument: { type_clave: (alpineDocumentTypes.length > 0 ? alpineDocumentTypes[0].clave : ''), file_name: '', file_data_obj: null, version: '1.0' },
-            phasesForDocs: alpinePhases, rolesForDocs: alpineRoles, documentTypesForDocs: alpineDocumentTypes,
-            documentStatusesForDocs: ['Pendiente', 'En Revisión', 'Validado', 'Obsoleto'],
-            selectedProjectForDocs: alpineProjectData,
-            get currentPhaseDocuments() { if (!this.selectedProjectForDocs) return []; return this.documents.filter(doc => doc.phase_id === this.selectedProjectForDocs.current_phase); },
-            async init() { if (this.selectedProjectId && this.selectedProjectForDocs) { await this.loadProjectPhaseDataForDocs(); } else { console.error("Alpine (Docs): No se proporcionaron datos del proyecto."); } },
-            async loadProjectPhaseDataForDocs() { if (!this.selectedProjectForDocs || this.selectedProjectForDocs.current_phase === 0) { this.documents = []; return; } await this.fetchDocumentsForCurrentPhase(); },
-            async fetchDocumentsForCurrentPhase() { if (!this.selectedProjectForDocs || this.selectedProjectForDocs.current_phase === 0) { this.documents = []; return; } try { const response = await fetch(`@Url.Action("GetDocumentsForPhase", "RUP")?projectId=${this.selectedProjectForDocs.id}&phaseId=${this.selectedProjectForDocs.current_phase}`); if (!response.ok) throw new Error('Falló la carga de documentos'); this.documents = await response.json(); } catch (error) { console.error("Alpine (Docs) Error cargando documentos:", error); this.documents = []; alert("Error cargando documentos: " + error.message);} },
-            async updateProjectPhaseForDocs() { if (!this.selectedProjectForDocs) return; try { const response = await fetch('@Url.Action("UpdateProjectPhase", "RUP")', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ projectId: this.selectedProjectForDocs.id, phaseId: this.selectedProjectForDocs.current_phase }) }); const result = await response.json(); if (!response.ok || !result.success) throw new Error(result.message || 'Falló la actualización de fase'); await this.loadProjectPhaseDataForDocs(); } catch (error) { console.error("Alpine (Docs) Error actualizando fase:", error); alert("Error actualizando fase: " + error.message); } },
-            handleFileUpload(event) { const file = event.target.files[0]; if (file) { this.newDocument.file_name = file.name; this.newDocument.file_data_obj = file; } else { this.newDocument.file_name = ''; this.newDocument.file_data_obj = null; } },
-            async addDocument() { if (!this.newDocument.file_data_obj || !this.selectedProjectForDocs || !this.newDocument.type_clave) { alert("Por favor, complete todos los campos y seleccione un archivo."); return; } const formData = new FormData(); formData.append('ProjectId', this.selectedProjectForDocs.id); formData.append('PhaseId', this.selectedProjectForDocs.current_phase); formData.append('TypeClave', this.newDocument.type_clave); formData.append('Version', this.newDocument.version); formData.append('docFile', this.newDocument.file_data_obj); try { const response = await fetch('@Url.Action("CreateDocument", "RUP")', { method: 'POST', body: formData }); const result = await response.json(); if (!response.ok || !result.success) throw new Error(result.message || 'Falló la subida del documento'); this.documents.push(result); this.newDocument = { type_clave: (this.documentTypesForDocs.length > 0 ? this.documentTypesForDocs[0].clave : ''), file_name: '', file_data_obj: null, version: '1.0' }; document.getElementById('docFileAlpine').value = null; } catch (error) { console.error("Alpine (Docs) Error añadiendo documento:", error); alert("Error: " + error.message); } },
-            async updateDocumentStatus(docToUpdate) { const localDoc = this.documents.find(d => d.id === docToUpdate.id); if (!localDoc) return; const originalStatus = localDoc.status; localDoc.status = docToUpdate.status; try { const response = await fetch('@Url.Action("UpdateDocumentStatus", "RUP")', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ documentId: docToUpdate.id, status: docToUpdate.status }) }); const result = await response.json(); if (!response.ok || !result.success) { if(localDoc) localDoc.status = originalStatus; throw new Error(result.message || 'Falló la actualización del estado del documento'); } } catch (error) { console.error("Alpine (Docs) Error actualizando estado doc:", error); alert("Error: " + error.message); if(localDoc) localDoc.status = originalStatus; } },
-            downloadDocument(documentId, originalFileName) { try { const downloadUrl = `@Url.Action("DownloadDocument", "RUP")?documentId=${documentId}`; window.location.href = downloadUrl; } catch (error) { console.error("Alpine (Docs) Error descarga:", error); alert("Error al iniciar la descarga: " + error.message); } },
-            getPhaseNameForDocs(phaseId) { const phase = this.phasesForDocs.find(p => p.id === phaseId); return phase ? phase.name : 'N/A'; },
-            getDocumentTypeNameForDocs(docTypeClave) { const docType = this.documentTypesForDocs.find(dt => dt.clave === docTypeClave); return docType ? docType.name : 'N/A'; },
-            getStatusClassForDocs(status) { switch (status) { case 'Pendiente': return 'status-badge status-pending'; case 'En Revisión': return 'status-badge status-in-review'; case 'Validado': return 'status-badge status-validated'; case 'Obsoleto': return 'status-badge status-obsolete'; default: return 'status-badge bg-gray-200 text-gray-700'; } },
-            formatDateTimeForDocs(isoString) { if (!isoString) return null; try { let date = new Date(isoString); if (isNaN(date.getTime())) { const msDateMatch = isoString.match(/\/Date\((\d+)\)\//); if (msDateMatch && msDateMatch[1]) { date = new Date(parseInt(msDateMatch[1])); } else { return "Fecha Inválida"; } } if (isNaN(date.getTime())) return "Fecha Inválida"; return date.toLocaleString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }); } catch (e) { return "Fecha Inválida"; } }
+            selectedProjectId: null,
+            // ELIMINADO: activities
+            documents: [],
+
+            newDocument: { type_clave: '', file_name: '', file_data_obj: null, version: '1.0' },
+            // ELIMINADO: newActivity
+
+            phases: [],
+            // ELIMINADO: roles
+            documentTypes: [],
+            // ELIMINADO: availableUsersForRole
+
+            // ELIMINADO: activityStatuses
+            documentStatuses: ['Pendiente', 'En Revisión', 'Validado', 'Obsoleto'],
+            // ELIMINADO: activeTab (ya no se necesita para cambiar vistas)
+            selectedProject: null,
+
+            get currentPhaseDocuments() {
+                if (!this.selectedProject) return [];
+                return this.documents; // Asumiendo que this.documents solo tiene las de la fase/proyecto actual
+            },
+
+            async init() {
+                console.log("Alpine init starting (Simplified Phase Mode)...");
+                this.phases = @Html.Raw(Json.Encode(ViewBag.Phases ?? new List<object>()));
+                // ELIMINADO: this.roles = ...
+                this.documentTypes = @Html.Raw(Json.Encode(ViewBag.DocumentTypes ?? new List<object>()));
+
+                const projectDataFromView = @Html.Raw(Json.Encode(ViewBag.SelectedProjectData));
+                const projectIdFromView = @Html.Raw(Json.Encode(ViewBag.ProjectId));
+
+                console.log("Project ID from ViewBag:", projectIdFromView);
+                console.log("Project Data from ViewBag:", projectDataFromView);
+
+                if (projectIdFromView && projectDataFromView) {
+                    this.selectedProjectId = projectIdFromView;
+                    this.selectedProject = projectDataFromView;
+                    console.log("selectedProjectId set to:", this.selectedProjectId);
+                    console.log("selectedProject set to:", this.selectedProject);
+
+                    if (this.phases.length > 0 && (this.selectedProject.current_phase === 0 || !this.phases.find(p => p.id === this.selectedProject.current_phase))) {
+                        console.warn("Project current_phase is invalid or 0. Defaulting if possible.");
+                        if (this.phases.length > 0) {
+                            this.selectedProject.current_phase = this.phases[0].id;
+                        }
+                    }
+
+                    // ELIMINADO: Lógica de newActivity.context_role_id
+                    if (this.documentTypes.length > 0 && !this.newDocument.type_clave) {
+                        this.newDocument.type_clave = this.documentTypes[0].clave;
+                    }
+                    await this.loadProjectPhaseData();
+                } else {
+                    console.error("No se proporcionaron datos del proyecto a la vista RUP o son inválidos.");
+                }
+                console.log("Alpine init finished (Simplified Phase Mode).");
+            },
+
+            async loadProjectPhaseData() {
+                console.log("loadProjectPhaseData called for project:", this.selectedProject);
+                if (!this.selectedProject || this.selectedProject.current_phase === 0) {
+                     console.warn("loadProjectPhaseData: selectedProject is null or current_phase is 0, aborting data load.");
+                     // ELIMINADO: this.activities = [];
+                     this.documents = [];
+                     return;
+                }
+                // ELIMINADO: await this.fetchActivitiesForCurrentPhase();
+                await this.fetchDocumentsForCurrentPhase();
+                // ELIMINADO: this.activeTab = 'activities';
+                console.log("Project phase data loaded.");
+            },
+
+            // ELIMINADO: fetchUsersForSelectedRole
+            // ELIMINADO: addActivity
+            // ELIMINADO: fetchActivitiesForCurrentPhase
+
+            async fetchDocumentsForCurrentPhase() {
+                if (!this.selectedProject || this.selectedProject.current_phase === 0) { this.documents = []; return; }
+                console.log(`Fetching documents for project ${this.selectedProject.id}, phase ${this.selectedProject.current_phase}`);
+                try {
+                    const response = await fetch(`@Url.Action("GetDocumentsForPhase", "RUP")?projectId=${this.selectedProject.id}&phaseId=${this.selectedProject.current_phase}`);
+                    if (!response.ok) throw new Error('Falló la carga de documentos');
+                    this.documents = await response.json();
+                    console.log("Documents fetched:", this.documents);
+                } catch (error) { console.error("Error cargando documentos:", error); this.documents = []; alert("Error: " + error.message); }
+            },
+
+            async updateProjectPhase() {
+                if (!this.selectedProject) return;
+                console.log(`Updating project ${this.selectedProject.id} to phase ${this.selectedProject.current_phase}`);
+                try {
+                    const response = await fetch('@Url.Action("UpdateProjectPhase", "RUP")', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ projectId: this.selectedProject.id, phaseId: this.selectedProject.current_phase })
+                    });
+                    const result = await response.json();
+                    if (!response.ok || !result.success) throw new Error(result.message || 'Falló la actualización de fase');
+                    await this.loadProjectPhaseData();
+                } catch (error) { console.error("Error actualizando fase del proyecto:", error); alert("Error: " + error.message); }
+            },
+
+            // ELIMINADO: updateActivityStatus
+
+            handleFileUpload(event) {
+                const file = event.target.files[0];
+                if (file) { this.newDocument.file_name = file.name; this.newDocument.file_data_obj = file; }
+                else { this.newDocument.file_name = ''; this.newDocument.file_data_obj = null; }
+            },
+
+            async addDocument() {
+                if (!this.newDocument.file_data_obj || !this.selectedProject || !this.newDocument.type_clave) {
+                    alert("Por favor, complete todos los campos y seleccione un archivo."); return;
+                }
+                const formData = new FormData();
+                formData.append('ProjectId', this.selectedProject.id);
+                formData.append('PhaseId', this.selectedProject.current_phase);
+                formData.append('TypeClave', this.newDocument.type_clave);
+                formData.append('Version', this.newDocument.version);
+                formData.append('docFile', this.newDocument.file_data_obj);
+                try {
+                    const response = await fetch('@Url.Action("CreateDocument", "RUP")', { method: 'POST', body: formData });
+                    const result = await response.json();
+                    if (!response.ok || !result.success) throw new Error(result.message || 'Falló la subida del documento');
+
+                    this.documents.push(result);
+                    this.newDocument = { type_clave: (this.documentTypes.length > 0 ? this.documentTypes[0].clave : ''), file_name: '', file_data_obj: null, version: '1.0' };
+                    document.getElementById('docFile').value = null;
+                } catch (error) { console.error("Error añadiendo documento:", error); alert("Error: " + error.message); }
+            },
+
+            async updateDocumentStatus(docToUpdate) {
+                const localDoc = this.documents.find(d => d.id === docToUpdate.id);
+                if (!localDoc) {
+                    console.error("Cannot update status, document not found locally:", docToUpdate.id);
+                    return;
+                }
+                const originalStatus = localDoc.status;
+                localDoc.status = docToUpdate.status;
+
+                try {
+                    const response = await fetch('@Url.Action("UpdateDocumentStatus", "RUP")', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ documentId: docToUpdate.id, status: docToUpdate.status })
+                    });
+                    const result = await response.json();
+                    if (!response.ok || !result.success) {
+                        if(localDoc) localDoc.status = originalStatus;
+                        throw new Error(result.message || 'Falló la actualización del estado del documento');
+                    }
+                } catch (error) {
+                    console.error("Error actualizando estado de documento:", error);
+                    alert("Error: " + error.message);
+                    if(localDoc) localDoc.status = originalStatus;
+                }
+            },
+            downloadDocument(documentId, originalFileName) {
+                try {
+                    const downloadUrl = `@Url.Action("DownloadDocument", "RUP")?documentId=${documentId}`;
+                    window.location.href = downloadUrl;
+                } catch (error) {
+                    console.error("Error al iniciar descarga de documento:", error);
+                    alert("Error al iniciar la descarga del documento: " + error.message);
+                }
+            },
+            getPhaseName(phaseId) {
+                const phase = this.phases.find(p => p.id === phaseId);
+                return phase ? phase.name : 'N/A';
+            },
+            // ELIMINADO: getRoleName
+            getDocumentTypeName(docTypeClave) {
+                const docType = this.documentTypes.find(dt => dt.clave === docTypeClave);
+                return docType ? docType.name : 'N/A';
+            },
+            getStatusClass(status) {
+                switch (status) {
+                    case 'Pendiente': return 'status-badge status-pending';
+                    case 'En Progreso': return 'status-badge status-in-progress'; // Puede ser útil si los docs pasan por progreso
+                    case 'Completada': return 'status-badge status-completed'; // Puede ser útil
+                    case 'En Revisión': return 'status-badge status-in-review';
+                    case 'Validado': return 'status-badge status-validated';
+                    case 'Bloqueada': return 'status-badge status-pending';
+                    case 'Obsoleto': return 'status-badge status-cancelled';
+                    default: return 'status-badge bg-gray-200 text-gray-700';
+                }
+            },
+            formatDateTime(isoString) {
+                if (!isoString) return null;
+                try {
+                    let date = new Date(isoString);
+                    if (isNaN(date.getTime())) {
+                        const msDateMatch = isoString.match(/\/Date\((\d+)\)\//);
+                        if (msDateMatch && msDateMatch[1]) {
+                            date = new Date(parseInt(msDateMatch[1]));
+                        } else {
+                            return "Fecha Inválida";
+                        }
+                    }
+                    if (isNaN(date.getTime())) return "Fecha Inválida";
+                    return date.toLocaleString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+                } catch (e) {
+                    console.warn("Error formateando fecha:", isoString, e);
+                    return "Fecha Inválida";
+                }
+            }
         }
     }
-    // --- FIN: Script para Pestaña de Documentos ---
-
-    // --- INICIO: Script para Pestaña "Mis Actividades / Todas" ---
-    async function loadUserActivitiesView() {
-        const listContainer = document.getElementById('user-activities-list');
-        listContainer.innerHTML = '<div class="text-center p-3"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Cargando...</span></div> <p class="mt-2">Cargando actividades...</p></div>';
-        const filterMy = document.getElementById('filterMyActivities').checked;
-        const endpoint = filterMy
-            ? `@Url.Action("GetMyProjectActivities", "RUP")?projectId=${RUP_PROJECT_ID}`
-            : `@Url.Action("GetAllProjectActivities", "RUP")?projectId=${RUP_PROJECT_ID}`;
-        try {
-            const response = await fetch(endpoint); const result = await response.json();
-            if (!result.success || !result.activities) { listContainer.innerHTML = `<p class="text-danger p-3">Error al cargar actividades: ${result.message || 'Error desconocido'}</p>`; return; }
-            if (result.activities.length === 0) { listContainer.innerHTML = '<p class="text-muted p-3">No hay actividades para mostrar según el filtro seleccionado.</p>'; return; }
-            let html = '<div class="list-group">';
-            result.activities.forEach(act => {
-                html += `
-                    <div class="list-group-item list-group-item-action activity-item">
-                        <div class="d-flex w-100 justify-content-between">
-                            <h5 class="mb-1">${act.description || 'Sin descripción'}</h5>
-                            <small class="text-muted"><strong>Estado:</strong> ${act.status || 'N/A'}</small>
-                        </div>
-                        <p class="mb-1 small">
-                            <strong>Fase:</strong> ${act.phase || 'N/A'} <br>
-                            <strong>Rol Principal:</strong> ${act.role || 'N/A'} <br>
-                            <strong>Fechas:</strong> ${act.startDate || 'N/A'} - ${act.endDate || 'N/A'}
-                        </p>
-                        <small class="text-muted"><strong>Asignado a:</strong> ${act.assignees && act.assignees.length > 0 ? act.assignees.join(', ') : '<em>No asignado directamente</em>'}</small>
-                    </div>`;
-            });
-            html += '</div>'; listContainer.innerHTML = html;
-        } catch (error) { console.error("Error en loadUserActivitiesView:", error); listContainer.innerHTML = `<p class="text-danger p-3">Ocurrió un error al cargar las actividades.</p>`; }
-    }
-    // --- FIN: Script para Pestaña "Mis Actividades / Todas" ---
     </script>
+    <style>
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            font-weight: 600;
+            transition: background-color 0.2s;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background-color: #2563eb;
+            color: white;
+        }
+
+            .btn-primary:hover {
+                background-color: #1d4ed8;
+            }
+
+        .btn-secondary {
+            background-color: #6b7280;
+            color: white;
+        }
+
+            .btn-secondary:hover {
+                background-color: #4b5563;
+            }
+
+        .btn-sm {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.875rem;
+        }
+
+        .btn-xs {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            box-shadow: inset 0 1px 2px 0 rgba(0,0,0,0.05);
+        }
+
+            .input-field:focus {
+                border-color: #2563eb;
+                outline: 2px solid transparent;
+                outline-offset: 2px;
+                box-shadow: 0 0 0 2px #bfdbfe;
+            }
+
+        .input-field-sm {
+            padding: 0.4rem 0.6rem;
+            font-size: 0.875rem;
+        }
+
+        .input-field-xs {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+        }
+
+        .card {
+            background-color: white;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1), 0 1px 2px 0 rgba(0,0,0,0.06);
+        }
+
+        /* ELIMINADO: .activity-card y sus :hover */
+
+        .status-badge {
+            padding: 0.2em 0.6em;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-block;
+            line-height: 1.2;
+        }
+
+        .status-pending {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-in-progress {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+
+        .status-completed {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-in-review {
+            background-color: #ede9fe;
+            color: #5b21b6;
+        }
+
+        .status-validated {
+            background-color: #ccfbf1;
+            color: #0f766e;
+        }
+
+        .status-cancelled {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+        /* ELIMINADO: .status-planned, .status-active (usados por iteraciones/fases antes) */
+
+        .tab-button {
+            padding: 0.75rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #4b5563;
+            border-bottom: 2px solid transparent;
+        }
+
+            .tab-button:hover {
+                color: #1f2937;
+                border-bottom-color: #d1d5db;
+            }
+
+            .tab-button.active { /* Para dar estilo a la única pestaña de "Documentos" si se desea */
+                color: #2563eb;
+                border-bottom-color: #2563eb;
+                font-weight: 600;
+            }
+
+        .tab-content {
+            padding-top: 1.5rem;
+        }
+
+        [x-cloak] {
+            display: none !important;
+        }
+
+        .fade-in-section {
+            transition: opacity 0.5s ease-out;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #c7c7c7;
+            border-radius: 10px;
+        }
+
+            .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+                background: #a3a3a3;
+            }
+
+        .custom-scrollbar {
+            scrollbar-width: thin;
+            scrollbar-color: #c7c7c7 #f1f1f1;
+        }
+
+        /* ELIMINADO: .activities-grid, .activity-title, .activity-status, .activity-details p */
+        /* ELIMINADO: .iteration-summary-card, .iteration-summary-grid, .summary-item */
+    </style>
 </body>
-</html>

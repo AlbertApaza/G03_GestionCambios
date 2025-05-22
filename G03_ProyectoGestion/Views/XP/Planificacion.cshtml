@@ -1,0 +1,163 @@
+﻿@model G03_ProyectoGestion.Models.tbProyectos
+@{
+    ViewBag.Title = "Planificacion";
+}
+
+<div id="xpFasesContainer">
+    <div id="HistoriasUsuario" class="fase-xp">
+        <input type="hidden" id="idIteracion" value="1" />
+
+        <h5><i class="fas fa-check-circle"></i> Historias de Usuario</h5>
+
+        <div class="mb-3 row">
+            <div class="col-md-3">
+                <input type="text" id="titulo" class="form-control" placeholder="Título">
+            </div>
+            <div class="col-md-4">
+                <textarea id="historia" class="form-control" placeholder="Historia de Usuario: Como... Quiero... Para..."></textarea>
+            </div>
+            <div class="col-md-4">
+                <textarea id="criterios" class="form-control" placeholder="Criterios de Aceptación (CA01, CA02...)"></textarea>
+            </div>
+            <div class="col-md-1 d-grid">
+                <button class="btn btn-success" onclick="agregarHistoria()">Agregar</button>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped" id="tablaHistorias">
+                <thead class="table-primary">
+                    <tr>
+                        <th>ID</th>
+                        <th>Título</th>
+                        <th>Historia de Usuario</th>
+                        <th>Criterios de Aceptación</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    let historiaIdEditar = null;
+
+    function listarHistorias() {
+        const idProyecto = @Model.idProyecto;
+        $.get('@Url.Action("ListarHistorias", "XP")', { idProyecto: idProyecto }, function (data) {
+            const tbody = document.querySelector("#tablaHistorias tbody");
+            tbody.innerHTML = "";
+            data.forEach((h) => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${h.idHistoria}</td>
+                        <td>${h.titulo}</td>
+                        <td>${h.historia.replace(/\n/g, "<br/>")}</td>
+                        <td>${h.criteriosAceptacion.replace(/\n/g, "<br/>")}</td>
+                        <td>
+                            <button class="btn btn-sm btn-warning me-1" onclick="editarHistoria(${h.idHistoria}, '${h.titulo}', \`${h.historia}\`, \`${h.criteriosAceptacion}\`)">Editar</button>
+                            <button class="btn btn-sm btn-danger" onclick="eliminarHistoria(${h.idHistoria})">Eliminar</button>
+                        </td>
+                    </tr>`;
+            });
+        }).fail(function (xhr) {
+            console.error("Error al listar historias:", xhr.responseText);
+        });
+    }
+
+    function agregarHistoria() {
+        const idIteracion = document.getElementById("idIteracion").value;
+        const titulo = document.getElementById("titulo").value.trim();
+        const historia = document.getElementById("historia").value.trim();
+        const criterios = document.getElementById("criterios").value.trim();
+        const idProyecto = @Model.idProyecto;
+
+        if (!titulo || !historia || !criterios) {
+            alert("Completa todos los campos");
+            return;
+        }
+
+        const url = historiaIdEditar
+            ? '@Url.Action("ActualizarHistoria", "XP")'
+            : '@Url.Action("RegistrarHistoria", "XP")';
+
+        const payload = {
+            idHistoria: historiaIdEditar,
+            idProyecto: idProyecto,
+            idIteracion: idIteracion, // <-- este es el fix
+            titulo: titulo,
+            historia: historia,
+            criteriosAceptacion: criterios
+        };
+
+
+        $.ajax({
+            url: url,
+            type: "POST",
+            data: payload,
+            success: function (response) {
+                if (response.success) {
+                    listarHistorias();
+                    document.getElementById("titulo").value = "";
+                    document.getElementById("historia").value = "";
+                    document.getElementById("criterios").value = "";
+                    historiaIdEditar = null;
+                } else {
+                    console.error("Error del servidor:", response.errores || response);
+                    alert("Error al guardar historia");
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("Error AJAX:", error);
+                console.error("Respuesta del servidor:", xhr.responseText);
+                alert("Error inesperado al intentar guardar la historia.");
+            }
+        });
+    }
+
+    function editarHistoria(id, titulo, historia, criterios) {
+        document.getElementById("titulo").value = titulo;
+        document.getElementById("historia").value = historia;
+        document.getElementById("criterios").value = criterios;
+        historiaIdEditar = id;
+    }
+
+    function eliminarHistoria(id) {
+        if (confirm("¿Estás seguro de eliminar esta historia?")) {
+            $.post('@Url.Action("EliminarHistoria", "XP")', { id: id }, function (response) {
+                if (response.success) {
+                    listarHistorias();
+                } else {
+                    alert("No se pudo eliminar");
+                }
+            });
+        }
+    }
+    function cargarIteraciones() {
+        const idProyecto = @Model.idProyecto;
+
+        $.get('@Url.Action("ObtenerIteraciones", "XP")', { idProyecto }, function (data) {
+            const select = document.getElementById("idIteracion");
+            select.innerHTML = "";
+            data.forEach(i => {
+                const option = document.createElement("option");
+                option.value = i.idIteracion;
+                option.text = i.nombre;
+                select.appendChild(option);
+            });
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        cargarIteraciones();
+        listarHistorias();
+    });
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+        listarHistorias();
+    });
+</script>

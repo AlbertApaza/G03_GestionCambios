@@ -1,0 +1,530 @@
+﻿@model G03_ProyectoGestion.ViewModels.ConfigRupViewModel
+
+@{
+    ViewBag.Title = ViewBag.Title ?? "Asignación de Elementos de Configuración";
+    var project = Model.Project;
+}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+
+<body class="bg-gray-100 text-gray-800">
+    <div class="container mx-auto p-4">
+        <header class="bg-blue-600 text-white p-6 rounded-t-lg shadow-lg mb-6 flex justify-between items-start">
+            <div>
+                <h1 class="text-3xl md:text-4xl font-bold">Asignación Elementos RUP</h1>
+                @if (project != null)
+                {
+                    <p class="text-blue-100 text-sm md:text-base">Proyecto: @project.name</p>
+                    <p class="text-xs text-blue-200 mt-1">
+                        Fechas del Proyecto: @Model.ProjectStartDate.ToString("dd/MM/yyyy") - @Model.ProjectEndDate.ToString("dd/MM/yyyy")
+                    </p>
+                }
+                else
+                {
+                    <p class="text-blue-100">Cargando datos del proyecto...</p>
+                }
+            </div>
+            @if (project != null && Model.RupPhases.Any())
+            {
+                <div class="relative mt-2 md:mt-0">
+                    <label for="phaseSelector" class="block text-xs text-blue-100 mb-1">Fase Actual:</label>
+                    <select id="phaseSelector" class="bg-blue-500 border border-blue-400 text-white text-sm rounded-lg focus:ring-blue-300 focus:border-blue-300 block w-full p-2.5 appearance-none">
+                        <option value="">Seleccione Fase</option>
+                        @foreach (var phase in Model.RupPhases)
+                        {
+                            var phaseDates = Model.ProjectPhaseDates.FirstOrDefault(pfd => pfd.PhaseId == phase.idFase);
+                            <option value="@phase.idFase"
+                                    data-start-date="@(phaseDates?.StartDate.ToString("yyyy-MM-dd"))"
+                                    data-end-date="@(phaseDates?.EndDate.ToString("yyyy-MM-dd"))"
+                                    data-phase-name="@phase.nombre">
+                                @phase.nombre
+                            </option>
+                        }
+                    </select>
+                </div>
+            }
+        </header>
+
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div id="errorMessageGlobal" class="my-4 p-4 bg-red-100 border-l-4 border-red-500 text-red-700 rounded-md shadow" role="alert">
+                <p class="font-bold">Error</p>
+                <p>@TempData["ErrorMessage"]</p>
+            </div>
+        }
+        <div id="actionMessage" class="my-4 p-4 hidden rounded-md shadow" role="alert">
+            <p class="font-bold" id="actionMessageTitle"></p>
+            <p id="actionMessageText"></p>
+        </div>
+
+
+        @if (project != null)
+        {
+            <main class="p-6 bg-white rounded-lg shadow-lg">
+                <div class="mb-6 flex justify-start">
+                    <a href="@Url.Action("Index", "Proyecto")" class="btn btn-secondary text-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-1" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" /></svg>
+                        Volver a Mis Proyectos
+                    </a>
+                </div>
+
+                <div>
+                    <div class="mt-10">
+                        <h3 class="text-2xl font-semibold text-gray-700 mb-2">
+                            Panel de Asignación de Elementos
+                        </h3>
+                        <p id="phaseDateInfo" class="text-sm text-gray-500 mb-6">Seleccione una fase para ver sus fechas y elementos.</p>
+
+                        <div id="assignmentPanel" class="p-6 border border-gray-200 rounded-lg bg-gray-50 min-h-[300px] shadow-sm hidden">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-4">
+                                <!-- Columna 1: Selector de Elemento y Fechas -->
+                                <div class="space-y-4">
+                                    <div>
+                                        <label for="elementSelector" class="block text-sm font-medium text-gray-700 mb-1">Elemento de Configuración:</label>
+                                        <select id="elementSelector" class="input-field">
+                                            <option value="">Seleccione un elemento</option>
+                                        </select>
+                                    </div>
+                                    <div id="elementDateContainer" style="display: none;">
+                                        <p class="text-sm text-gray-600 mb-1">Fechas del Elemento:</p>
+                                        <div class="flex space-x-2">
+                                            <div>
+                                                <label for="elementStartDate" class="block text-xs font-medium text-gray-500">Inicio:</label>
+                                                <input type="date" id="elementStartDate" class="input-field text-sm p-1.5">
+                                            </div>
+                                            <div>
+                                                <label for="elementEndDate" class="block text-xs font-medium text-gray-500">Fin:</label>
+                                                <input type="date" id="elementEndDate" class="input-field text-sm p-1.5">
+                                            </div>
+                                        </div>
+                                        <p id="elementDateWarning" class="text-xs text-red-500 mt-1"></p>
+                                    </div>
+                                </div>
+
+                                <!-- Columna 2: Selector de Rol -->
+                                <div>
+                                    <label for="roleSelector" class="block text-sm font-medium text-gray-700 mb-1">Rol Responsable:</label>
+                                    <select id="roleSelector" class="input-field" disabled>
+                                        <option value="">Seleccione un rol</option>
+                                    </select>
+                                </div>
+
+                                <!-- Columna 3: Selector de Miembros -->
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Miembros del Equipo (con ese rol):</label>
+                                    <div id="userSelectorContainer" class="border border-gray-300 rounded-md p-3 h-40 overflow-y-auto bg-white" data-disabled="true">
+                                        <p class="text-gray-400 text-sm">Seleccione un rol para ver usuarios.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-8 text-right">
+                                <button id="saveAssignmentButton" class="btn btn-primary" disabled>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5 4a3 3 0 00-3 3v6a3 3 0 003 3h10a3 3 0 003-3V7a3 3 0 00-3-3H5zm0 2h10a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1V7a1 1 0 011-1zm2 2a1 1 0 00-1 1v2a1 1 0 102 0V9a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
+                                    Guardar Asignación
+                                </button>
+                            </div>
+                        </div>
+                        <div id="noPhaseSelectedMessage" class="p-6 border border-dashed border-gray-300 rounded-lg bg-gray-50 min-h-[300px]">
+                            <p class="text-gray-500 text-center">
+                                Por favor, seleccione una fase RUP desde el menú desplegable en la esquina superior derecha para comenzar.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        }
+        else if (TempData["ErrorMessage"] == null)
+        {
+            <main class="p-6 bg-white rounded-lg shadow-lg text-center">
+                <p class="text-gray-600">No se han podido cargar los datos del proyecto especificado.</p>
+                <div class="mt-4">
+                    <a href="@Url.Action("Index", "Proyecto")" class="btn btn-primary text-sm">
+                        Ir a Mis Proyectos
+                    </a>
+                </div>
+            </main>
+        }
+
+        <footer class="text-center text-sm text-gray-500 mt-12 pb-6">
+            Gestor de Proyectos © @DateTime.Now.Year - Aplicación MVC
+        </footer>
+    </div>
+
+    <script>
+$(document).ready(function () {
+    const projectId = @(Model?.ProjectId ?? 0);
+    let currentPhaseData = { startDate: null, endDate: null, id: null, name: null };
+
+    function showMessage(title, text, isError) {
+        const $messageDiv = $('#actionMessage');
+        const $title = $('#actionMessageTitle');
+        const $text = $('#actionMessageText');
+
+        $title.text(title);
+        $text.text(text);
+
+        $messageDiv.removeClass('hidden bg-red-100 border-red-500 text-red-700 bg-green-100 border-green-500 text-green-700');
+        if (isError) {
+            $messageDiv.addClass('bg-red-100 border-l-4 border-red-500 text-red-700');
+        } else {
+            $messageDiv.addClass('bg-green-100 border-l-4 border-green-500 text-green-700');
+        }
+        $messageDiv.stop(true, true).fadeIn();
+        setTimeout(() => $messageDiv.fadeOut(), 7000);
+    }
+
+    function resetAssignmentFields() {
+        $('#elementSelector, #roleSelector').val('');
+        $('#userSelectorContainer').html('<p class="text-gray-400 text-sm">Seleccione un rol para ver usuarios.</p>');
+        $('#elementSelector, #roleSelector, #userSelectorContainer, #saveAssignmentButton').prop('disabled', true);
+        $('#userSelectorContainer').attr('data-disabled', 'true');
+        $('#elementDateContainer').hide();
+        $('#elementStartDate, #elementEndDate').val('');
+        $('#elementDateWarning').text('');
+    }
+
+    $('#phaseSelector').change(function () {
+        const selectedOption = $(this).find('option:selected');
+        currentPhaseData.id = $(this).val();
+        currentPhaseData.name = selectedOption.data('phase-name');
+        currentPhaseData.startDate = selectedOption.data('start-date');
+        currentPhaseData.endDate = selectedOption.data('end-date');
+
+        resetAssignmentFields();
+
+        if (currentPhaseData.id) {
+            $('#assignmentPanel').removeClass('hidden');
+            $('#noPhaseSelectedMessage').addClass('hidden');
+            $('#phaseDateInfo').text(`Fase: ${currentPhaseData.name}. Fechas: ${formatDateDisplay(currentPhaseData.startDate)} - ${formatDateDisplay(currentPhaseData.endDate)}.`);
+            $('#elementSelector').prop('disabled', false);
+            loadElements(currentPhaseData.id);
+        } else {
+            $('#assignmentPanel').addClass('hidden');
+            $('#noPhaseSelectedMessage').removeClass('hidden');
+            $('#phaseDateInfo').text('Seleccione una fase para ver sus fechas y elementos.');
+        }
+         checkSaveButtonState();
+    });
+
+    function loadElements(phaseId) {
+        if (!projectId || !phaseId) return;
+        $.ajax({
+            url: '@Url.Action("GetElementosPorFase", "Config")',
+            type: 'GET',
+            data: { idProyecto: projectId, idFase: phaseId },
+            success: function (data) {
+                const $elementSelector = $('#elementSelector');
+                $elementSelector.empty().append('<option value="">Seleccione un elemento</option>');
+                if (data.length > 0) {
+                    $.each(data, function (i, item) {
+                        $elementSelector.append($('<option>', {
+                            value: item.idElemento,
+                            text: item.nombre,
+                            'data-start-date': item.fechaInicio, // Ya viene como yyyy-MM-dd
+                            'data-end-date': item.fechaFin     // Ya viene como yyyy-MM-dd
+                        }));
+                    });
+                } else {
+                     $elementSelector.append('<option value="" disabled>No hay elementos no asignados para esta fase</option>');
+                }
+                $elementSelector.prop('disabled', data.length === 0);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                showMessage('Error', `No se pudieron cargar los elementos: ${errorThrown}`, true);
+            }
+        });
+    }
+
+    $('#elementSelector').change(function () {
+        const elementId = $(this).val();
+        const selectedOption = $(this).find('option:selected');
+        $('#roleSelector').val('').prop('disabled', true);
+        $('#userSelectorContainer').html('<p class="text-gray-400 text-sm">Seleccione un rol para ver usuarios.</p>').attr('data-disabled', 'true');
+
+
+        if (elementId) {
+            const elStartDate = selectedOption.data('start-date');
+            const elEndDate = selectedOption.data('end-date');
+            $('#elementStartDate').val(elStartDate);
+            $('#elementEndDate').val(elEndDate);
+            $('#elementDateContainer').show();
+            validateElementDates();
+
+            $('#roleSelector').prop('disabled', false);
+            loadRoles();
+        } else {
+            $('#elementDateContainer').hide();
+            $('#elementStartDate, #elementEndDate').val('');
+            $('#elementDateWarning').text('');
+        }
+        checkSaveButtonState();
+    });
+
+    $('#elementStartDate, #elementEndDate').change(function() {
+        validateElementDates();
+        checkSaveButtonState();
+    });
+
+
+    function validateElementDates() {
+        const elStartDateStr = $('#elementStartDate').val();
+        const elEndDateStr = $('#elementEndDate').val();
+        const $warning = $('#elementDateWarning');
+        $warning.text('');
+
+        if (!elStartDateStr || !elEndDateStr) { // Fechas deben estar presentes
+            $warning.text('Ambas fechas del elemento son requeridas.');
+            return false; // Indica error
+        }
+
+        const elStartDate = new Date(elStartDateStr + "T00:00:00"); // Asegurar que se interprete como local
+        const elEndDate = new Date(elEndDateStr + "T00:00:00");
+        const phaseStart = new Date(currentPhaseData.startDate + "T00:00:00");
+        const phaseEnd = new Date(currentPhaseData.endDate + "T00:00:00");
+
+        if (elStartDate >= elEndDate) {
+            $warning.text('La fecha de inicio debe ser anterior a la fecha de fin.');
+            return false;
+        }
+        if (elStartDate < phaseStart || elEndDate > phaseEnd) {
+            $warning.text(`Fechas fuera del rango de la fase (${formatDateDisplay(currentPhaseData.startDate)} - ${formatDateDisplay(currentPhaseData.endDate)}).`);
+            return false;
+        }
+        return true; // Indica éxito
+    }
+
+
+    function loadRoles() {
+        if (!projectId) return;
+        $.ajax({
+            url: '@Url.Action("GetRolesEnProyecto", "Config")',
+            type: 'GET',
+            data: { idProyecto: projectId },
+            success: function (data) {
+                const $roleSelector = $('#roleSelector');
+                $roleSelector.empty().append('<option value="">Seleccione un rol</option>');
+                if (data.length > 0) {
+                    $.each(data, function (i, item) {
+                        $roleSelector.append($('<option>', {
+                            value: item.idRol,
+                            text: item.nombreRol
+                        }));
+                    });
+                } else {
+                    $roleSelector.append('<option value="" disabled>No hay roles definidos</option>');
+                }
+                $roleSelector.prop('disabled', data.length === 0);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                 showMessage('Error',`No se pudieron cargar los roles: ${errorThrown}`, true);
+            }
+        });
+    }
+
+    $('#roleSelector').change(function () {
+        const roleId = $(this).val();
+        $('#userSelectorContainer').html('').attr('data-disabled', 'true');
+
+        if (roleId) {
+            $('#userSelectorContainer').attr('data-disabled', 'false');
+            loadUsers(roleId);
+        } else {
+            $('#userSelectorContainer').html('<p class="text-gray-400 text-sm">Seleccione un rol para ver usuarios.</p>');
+        }
+        checkSaveButtonState();
+    });
+
+    function loadUsers(roleId) {
+        if (!projectId || !roleId) return;
+        $.ajax({
+            url: '@Url.Action("GetUsuariosPorRolEnProyecto", "Config")',
+            type: 'GET',
+            data: { idProyecto: projectId, idRol: roleId },
+            success: function (data) {
+                const $userContainer = $('#userSelectorContainer');
+                $userContainer.empty();
+                if (data.length > 0) {
+                    $.each(data, function (i, item) {
+                        $userContainer.append(
+                            `<div class="flex items-center mb-2">
+                                <input id="user-${item.idUsuario}" name="selectedUsers" type="checkbox" value="${item.idUsuario}" class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                <label for="user-${item.idUsuario}" class="ml-2 block text-sm text-gray-900">${item.nombreUsuario}</label>
+                            </div>`
+                        );
+                    });
+                } else {
+                    $userContainer.html('<p class="text-gray-400 text-sm">No hay usuarios con este rol.</p>');
+                }
+                checkSaveButtonState();
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                 showMessage('Error', `No se pudieron cargar los usuarios: ${errorThrown}`, true);
+            }
+        });
+    }
+
+    $('#userSelectorContainer').on('change', 'input[name="selectedUsers"]', checkSaveButtonState);
+
+    function checkSaveButtonState() {
+        const phaseId = $('#phaseSelector').val();
+        const elementId = $('#elementSelector').val();
+        const roleId = $('#roleSelector').val();
+        const usersSelected = $('input[name="selectedUsers"]:checked').length > 0;
+        const elStartDateStr = $('#elementStartDate').val();
+        const elEndDateStr = $('#elementEndDate').val();
+        let datesValid = false;
+        if (elStartDateStr && elEndDateStr) { // Solo validar si ambas fechas están presentes
+            datesValid = validateElementDates(); // esta función ahora retorna true/false
+        }
+
+
+        if (phaseId && elementId && roleId && usersSelected && elStartDateStr && elEndDateStr && datesValid) {
+            $('#saveAssignmentButton').prop('disabled', false);
+        } else {
+            $('#saveAssignmentButton').prop('disabled', true);
+        }
+    }
+
+
+    $('#saveAssignmentButton').click(function () {
+        const elementId = $('#elementSelector').val();
+        const selectedUsers = $('input[name="selectedUsers"]:checked').map(function () {
+            return parseInt($(this).val());
+        }).get();
+        const fechaInicio = $('#elementStartDate').val();
+        const fechaFin = $('#elementEndDate').val();
+
+        if (!currentPhaseData.id) { showMessage('Advertencia', 'Seleccione una fase.', true); return; }
+        if (!elementId) { showMessage('Advertencia','Seleccione un elemento.', true); return; }
+        if (selectedUsers.length === 0) { showMessage('Advertencia','Seleccione al menos un usuario.', true); return; }
+        if (!fechaInicio || !fechaFin) { showMessage('Advertencia','Ingrese fechas de inicio y fin para el elemento.', true); return; }
+        if (!validateElementDates()) { // Llama a la validación de nuevo
+             showMessage('Advertencia','Corrija los errores en las fechas del elemento.', true);
+             return;
+        }
+
+
+        $(this).prop('disabled', true).html('Guardando...');
+
+        $.ajax({
+            url: '@Url.Action("GuardarAsignaciones", "Config")',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                idProyecto: projectId,
+                idFaseSeleccionada: parseInt(currentPhaseData.id),
+                idElemento: parseInt(elementId),
+                idUsuarios: selectedUsers,
+                fechaInicioElementoStr: fechaInicio,
+                fechaFinElementoStr: fechaFin
+            }),
+            success: function (response) {
+                if (response.success) {
+                    showMessage('Éxito', response.message, false);
+                    $('#phaseSelector').trigger('change'); // Recargar todo para la fase actual
+                } else {
+                    showMessage('Error', response.message, true);
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                 showMessage('Error',`Ocurrió un error al guardar: ${errorThrown}`, true);
+            },
+            complete: function() {
+                // No re-habilitar aquí directamente, dejar que checkSaveButtonState lo haga
+                // basado en el nuevo estado de los campos (especialmente el selector de elementos que se recargará)
+                $('#saveAssignmentButton').html('<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5 4a3 3 0 00-3 3v6a3 3 0 003 3h10a3 3 0 003-3V7a3 3 0 00-3-3H5zm0 2h10a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1V7a1 1 0 011-1zm2 2a1 1 0 00-1 1v2a1 1 0 102 0V9a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>Guardar Asignación');
+                 // checkSaveButtonState() se llamará indirectamente por el trigger('change') en phaseSelector
+            }
+        });
+    });
+
+    function formatDateDisplay(dateStr) {
+        if (!dateStr) return 'N/A';
+        // Las fechas de data attributes ya vienen como yyyy-MM-dd
+        const parts = dateStr.split('-');
+        if (parts.length === 3) {
+            return `${parts[2]}/${parts[1]}/${parts[0]}`; // dd/MM/yyyy
+        }
+        return dateStr; //Fallback
+    }
+
+    // Initial state
+    if (!$('#phaseSelector').val()) {
+        $('#assignmentPanel').addClass('hidden');
+        $('#noPhaseSelectedMessage').removeClass('hidden');
+    } else {
+        $('#phaseSelector').trigger('change');
+    }
+    checkSaveButtonState(); // Estado inicial del botón
+});
+    </script>
+
+    <style>
+        /* Estilos base con la paleta azul original */
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem; /* rounded-md */
+            font-weight: 600;
+            transition: background-color 0.2s, opacity 0.2s;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background-color: #2563eb; /* blue-600 */
+            color: white;
+        }
+
+            .btn-primary:hover {
+                background-color: #1d4ed8; /* blue-700 */
+            }
+
+            .btn-primary:disabled {
+                background-color: #93c5fd; /* blue-300 */
+                cursor: not-allowed;
+                opacity: 0.7;
+            }
+
+
+        .btn-secondary {
+            background-color: #6b7280; /* gray-500 */
+            color: white;
+        }
+
+            .btn-secondary:hover {
+                background-color: #4b5563; /* gray-600 */
+            }
+
+        .input-field {
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #d1d5db; /* gray-300 */
+            border-radius: 0.375rem; /* rounded-md */
+            box-shadow: inset 0 1px 2px 0 rgba(0,0,0,0.05);
+        }
+
+            .input-field:focus {
+                border-color: #2563eb; /* blue-600 */
+                outline: 2px solid transparent;
+                outline-offset: 2px;
+                box-shadow: 0 0 0 2px #bfdbfe; /* blue-200 */
+            }
+
+            .input-field:disabled {
+                background-color: #f3f4f6; /* gray-100 */
+                cursor: not-allowed;
+                opacity: 0.7;
+            }
+
+        #userSelectorContainer[data-disabled="true"] { /* Usar data attribute para estilizar */
+            background-color: #f3f4f6; /* gray-100 */
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+    </style>
+</body>

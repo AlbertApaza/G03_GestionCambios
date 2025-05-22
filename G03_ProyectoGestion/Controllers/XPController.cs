@@ -20,23 +20,73 @@ namespace G03_ProyectoGestion.Controllers
             return View(proyecto);
         }
 
+        public ActionResult MisActividades(int id) // id = idProyecto
+        {
+            int idUsuario = Convert.ToInt32(Session["idUsuario"]);
+
+            // Buscar la relación usuario-proyecto
+            var relacion = _dbContext.tbProyectoUsuarios
+                .FirstOrDefault(pu => pu.idProyecto == id && pu.idUsuario == idUsuario);
+
+            if (relacion == null)
+                return PartialView("_SinAsignacion");
+
+            int idRol = (int)relacion.idRol;
+
+            // Puedes verificar según ID o por nombre si deseas
+            var rolNombre = _dbContext.tbRoles.Find(idRol)?.nombreRol?.ToLower();
+
+            switch (rolNombre)
+            {
+                case "cliente":
+                    var proyecto = _dbContext.tbProyectos.Find(id);
+                    return PartialView("Planificacion", proyecto); // 👈 Este return es correcto
+                case "desarrollador":
+                    return PartialView("Programacion");
+                case "tester":
+                    return PartialView("Pruebas");
+                case "refactor":
+                case "refactorizador":
+                    return PartialView("Refactorizacion");
+                default:
+                    return PartialView("_SinAsignacion");
+            }
+        }
+        public ActionResult Planificacion(int id)
+        {
+            var proyecto = _dbContext.tbProyectos.Find(id);
+            if (proyecto == null)
+                return HttpNotFound();
+
+            return View("Planificacion", proyecto); // Asegúrate que la vista se llama así y está en la carpeta /Views/XP/
+        }
+        public ActionResult Cronograma(int id)
+        {
+            var historias = _dbContext.tbXpHistoriasUsuario
+                .Where(h => h.idProyecto == id)
+                .ToList();
+            return PartialView("Cronograma", historias);
+        }
+
+
+
+
+
         // GET: XP/ObtenerIteraciones?idProyecto=#
+
+
         public ActionResult ObtenerIteraciones(int idProyecto)
         {
             var iteraciones = _dbContext.tbXpIteraciones
                 .Where(i => i.idProyecto == idProyecto)
-                .ToList() // ← Primero convierte los resultados a memoria
-                .Select(i => new
-                {
+                .Select(i => new {
                     i.idIteracion,
-                    i.nombre,
-                    fechaInicio = i.fechaInicio?.ToString("yyyy-MM-dd") ?? "",
-                    fechaFin = i.fechaFin?.ToString("yyyy-MM-dd") ?? "",
-                    i.estado
+                    i.nombre
                 }).ToList();
 
             return Json(iteraciones, JsonRequestBehavior.AllowGet);
         }
+
 
         [HttpPost]
         public ActionResult RegistrarIteracion(tbXpIteraciones iteracion)
@@ -56,6 +106,7 @@ namespace G03_ProyectoGestion.Controllers
             var historia = new tbXpHistoriasUsuario
             {
                 idProyecto = Convert.ToInt32(form["idProyecto"]),
+                idIteracion = Convert.ToInt32(form["idIteracion"]),
                 titulo = form["titulo"],
                 historia = form["historia"],
                 criteriosAceptacion = form["criteriosAceptacion"]

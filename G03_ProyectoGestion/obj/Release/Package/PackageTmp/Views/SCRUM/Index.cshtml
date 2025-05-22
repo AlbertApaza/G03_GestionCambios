@@ -2,10 +2,8 @@
 @{
     ViewBag.Title = ViewBag.Title ?? $"Tablero SCRUM: {Model.nombreProyecto}";
     int currentProjectId = Model.idProyecto;
-    // Pasar fechas del proyecto a JavaScript para validación, en formato yyyy-MM-dd
     string projectStartDate = Model.fechaInicio?.ToString("yyyy-MM-dd");
     string projectEndDate = Model.fechaFin?.ToString("yyyy-MM-dd");
-    // Asumo que ViewBag.ProjectUsersAndRoles se carga en el controlador
     var projectUsersAndRoles = ViewBag.ProjectUsersAndRoles as List<dynamic> ?? new List<dynamic>();
 }
 
@@ -105,7 +103,7 @@
     .column-content-wrapper {
         flex-grow: 1;
         overflow-y: auto;
-        max-height: calc(100vh - 400px); /* Ajusta altura para scroll */
+        max-height: calc(100vh - 400px);
     }
 
     .backlog-item-card {
@@ -251,22 +249,7 @@
                         <i class="fas fa-user-cog mr-2"></i>Gestionar Equipo
                     </a>
                 </div>
-                @*<div class="card bg-gray-50 border">
-                        <h3 class="text-xl font-semibold mb-3 text-gray-700"><i class="fas fa-users mr-2"></i>Equipo del Proyecto</h3>
-                        @if (projectUsersAndRoles.Any())
-                        {
-                            <ul class="list-disc list-inside space-y-1 text-sm max-h-48 overflow-y-auto">
-                                @foreach (var userRole in projectUsersAndRoles)
-                                {
-                                    <li><strong class="text-gray-700">@userRole.userName:</strong> <span class="text-blue-600">@userRole.roleName</span></li>
-                                }
-                            </ul>
-                        }
-                        else
-                        {
-                            <p class="text-sm text-gray-500 italic">No hay usuarios o roles definidos para este proyecto.</p>
-                        }
-                    </div>*@
+
             </div>
             <hr class="my-6 border-gray-300" />
 
@@ -551,10 +534,7 @@
 
             async fetchApi(url, method = 'GET', body = null) {
                 const options = { method, headers: { 'Content-Type': 'application/json' } };
-                // const csrfTokenInput = document.querySelector('input[name="__RequestVerificationToken"]');
-                // if (csrfTokenInput) {
-                //     options.headers['RequestVerificationToken'] = csrfTokenInput.value;
-                // }
+
                 if (body) options.body = JSON.stringify(body);
                 try {
                     const response = await fetch(url, options);
@@ -821,7 +801,7 @@
                 }
             },
 
-            formatDisplayDate(dateString) { // Espera yyyy-MM-dd
+            formatDisplayDate(dateString) {
                 if (!dateString) return 'N/A';
                 const parts = dateString.split('-');
                 if (parts.length === 3) {
