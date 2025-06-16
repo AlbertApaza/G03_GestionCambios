@@ -1,0 +1,118 @@
+﻿@model G03_GestionDeCambios.Models.HomeViewModel
+
+@{
+    ViewBag.Title = "Inicio";
+}
+
+<div class="p-5 mb-4 bg-light rounded-3">
+    <div class="container-fluid py-5">
+        <h1 class="display-5 fw-bold">¡Bienvenido, @Model.NombreCompleto!</h1>
+        <p class="col-md-8 fs-4">
+            Esta es su plataforma central para la gestión de cambios y el seguimiento de proyectos.
+            Actualmente participas en <strong>@Model.CantidadMisProyectos</strong> proyecto(s) y tienes <strong>@Model.CantidadMisTareasPendientes</strong> tarea(s) activas.
+        </p>
+    </div>
+</div>
+
+<hr />
+
+<h3 class="mb-3">Mis Tareas Asignadas</h3>
+
+@if (!Model.ProyectosConTareas.Any())
+{
+    <div class="alert alert-success text-center">
+        <h4>¡Felicidades!</h4>
+        <p>No tienes ninguna tarea asignada en este momento.</p>
+    </div>
+}
+else
+{
+    <div class="accordion" id="acordeonMisTareas">
+        @foreach (var proyecto in Model.ProyectosConTareas)
+        {
+            var collapseId = "collapse-" + proyecto.IdProyecto;
+            var headingId = "heading-" + proyecto.IdProyecto;
+            var isFirst = Model.ProyectosConTareas.First() == proyecto;
+
+            <div class="card mb-2">
+                <div class="card-header" id="@headingId">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <button class="btn btn-link btn-block text-left" type="button" data-bs-toggle="collapse" data-bs-target="#@collapseId" aria-expanded="@isFirst.ToString().ToLower()" aria-controls="@collapseId" style="text-decoration: none;">
+                            <i class="fa fa-folder-open"></i> @proyecto.NombreProyecto
+                            <span class="badge bg-primary rounded-pill ml-2">@proyecto.Tareas.Count() Tarea(s)</span>
+                        </button>
+                        <a href="@Url.Action("Tareas", "Tareas", new { idProyecto = proyecto.IdProyecto })" class="btn btn-outline-primary btn-sm ml-auto">
+                            Ir a Tareas
+                            <i class="fa fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="@collapseId" class="collapse @(isFirst ? "show" : "")" aria-labelledby="@headingId" data-bs-parent="#acordeonMisTareas">
+                    <div class="card-body p-0">
+                        <ul class="list-group list-group-flush">
+                            @foreach (var tarea in proyecto.Tareas)
+                            {
+                                <li class="list-group-item">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h5 class="mb-1">@tarea.NombreTarea</h5>
+                                        @{
+                                            string badgeBgClass = "bg-secondary";
+                                            if (tarea.Estado == "Finalizado") { badgeBgClass = "bg-success"; }
+                                            else if (tarea.Estado == "En Proceso") { badgeBgClass = "bg-info"; }
+                                            else if (tarea.Estado == "Pendiente") { badgeBgClass = "bg-warning text-dark"; }
+                                        }
+                                        <span class="badge @badgeBgClass">@tarea.Estado</span>
+                                    </div>
+                                    <p class="mb-1">@tarea.Descripcion</p>
+                                    <small class="text-muted">Etapa del Proyecto: @tarea.NombreCiclo</small>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+<hr class="my-4" />
+
+<h3 class="mb-3">Acciones Rápidas</h3>
+<div class="row">
+    @if (Model.EsAdminDeAlgunProyecto)
+    {
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="bi bi-bar-chart-line display-3 text-info"></i>
+                    <h5 class="card-title mt-3">Dashboard de Administrador</h5>
+                    <p class="card-text">Obtén una vista global y métricas de los proyectos que administras.</p>
+                    <a href="@Url.Action("Dashboard", "Home")" class="btn btn-info">Ir al Dashboard</a>
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="bi bi-folder-plus display-3 text-primary"></i>
+                <h5 class="card-title mt-3">Mis Proyectos</h5>
+                <p class="card-text">Visualiza o crea nuevos proyectos para tu equipo.</p>
+                <a href="@Url.Action("Index", "Proyecto")" class="btn btn-primary">Gestionar Proyectos</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="bi bi-person-circle display-3 text-secondary"></i>
+                <h5 class="card-title mt-3">Mi Perfil</h5>
+                <p class="card-text">Actualiza tu información personal, contraseña y foto de perfil.</p>
+                <a href="@Url.Action("Profile", "Usuarios")" class="btn btn-secondary">Ver mi Perfil</a>
+            </div>
+        </div>
+    </div>
+</div>

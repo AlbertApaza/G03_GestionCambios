@@ -1,0 +1,55 @@
+﻿@model List<G03_GestionDeCambios.Models.UserProjectDetailViewModel>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info mt-2 mb-0" role="alert">
+        <i class="fa fa-info-circle"></i> Este usuario no tiene tareas asignadas actualmente.
+    </div>
+}
+else
+{
+    <div class="mt-2 mb-2">
+        @foreach (var proyecto in Model.OrderBy(p => p.NombreProyecto))
+        {
+            <div class="mb-3">
+                <div class="d-flex justify-content-between align-items-center" style="border-bottom: 1px solid #eee; padding-bottom: 5px;">
+                    <h5 style="font-size: 1.1rem; color: #4361ee; margin-bottom: 0;">
+                        <i class="fa fa-folder-open"></i> @proyecto.NombreProyecto
+                    </h5>
+                    <a href="@Url.Action("Crear", "Tareas", new { idProyecto = proyecto.IdProyecto })" class="btn btn-outline-primary btn-sm">
+                        Ir a Tareas
+                        <i class="fa fa-arrow-right"></i>
+                    </a>
+                </div>
+                
+                @if (!proyecto.Tareas.Any())
+                {
+                    <p class="text-muted ml-3">- No hay tareas específicas en este proyecto.</p>
+                }
+                else
+                {
+                    <ul class="list-group list-group-flush">
+                        @foreach (var tarea in proyecto.Tareas)
+                        {
+                            <li class="list-group-item d-flex justify-content-between align-items-center" style="border: none; padding-left: 20px;">
+                                <div>
+                                    <strong>@tarea.NombreTarea</strong>
+                                    <small class="d-block text-muted">Etapa: @tarea.NombreCiclo</small>
+                                </div>
+                                @{
+                                    string badgeBgClass = "bg-secondary";
+                                    if (tarea.EstadoTarea == "Finalizado") { badgeBgClass = "bg-success"; }
+                                    else if (tarea.EstadoTarea == "En Proceso") { badgeBgClass = "bg-info"; }
+                                    else if (tarea.EstadoTarea == "Pendiente") { badgeBgClass = "bg-warning text-dark"; }
+                                }
+                                <span class="badge @badgeBgClass" style="padding: 0.5em 0.7em;">
+                                    @tarea.EstadoTarea
+                                </span>
+                            </li>
+                        }
+                    </ul>
+                }
+            </div>
+        }
+    </div>
+}

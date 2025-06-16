@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="BD_GestionDeCambiosModelStoreContainer" CdmEntityContainer="BD_GestionDeCambiosEntities">
+    <EntitySetMapping Name="tbCiclos">
+      <EntityTypeMapping TypeName="BD_GestionDeCambiosModel.tbCiclos">
+        <MappingFragment StoreEntitySet="tbCiclos">
+          <ScalarProperty Name="idMetodologia" ColumnName="idMetodologia" />
+          <ScalarProperty Name="orden" ColumnName="orden" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="codCiclo" ColumnName="codCiclo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbDocumentos">
+      <EntityTypeMapping TypeName="BD_GestionDeCambiosModel.tbDocumentos">
+        <MappingFragment StoreEntitySet="tbDocumentos">
+          <ScalarProperty Name="idUsuarioSubida" ColumnName="idUsuarioSubida" />
+          <ScalarProperty Name="comentarios" ColumnName="comentarios" />
+          <ScalarProperty Name="idProyecto" ColumnName="idProyecto" />
+          <ScalarProperty Name="codCiclo" ColumnName="codCiclo" />
+          <ScalarProperty Name="fechaSubida" ColumnName="fechaSubida" />
+          <ScalarProperty Name="estado" ColumnName="estado" />
+          <ScalarProperty Name="version" ColumnName="version" />
+          <ScalarProperty Name="rutaArchivo" ColumnName="rutaArchivo" />
+          <ScalarProperty Name="nombreArchivo" ColumnName="nombreArchivo" />
+          <ScalarProperty Name="idTipoDocumento" ColumnName="idTipoDocumento" />
+          <ScalarProperty Name="idDocumento" ColumnName="idDocumento" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbElementos">
+      <EntityTypeMapping TypeName="BD_GestionDeCambiosModel.tbElementos">
+        <MappingFragment StoreEntitySet="tbElementos">
+          <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="idElemento" ColumnName="idElemento" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbMetodologias">
+      <EntityTypeMapping TypeName="BD_GestionDeCambiosModel.tbMetodologias">
+        <MappingFragment StoreEntitySet="tbMetodologias">
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="idMetodologia" ColumnName="idMetodologia" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbProyectoCiclo">
+      <EntityTypeMapping TypeName="BD_GestionDeCambiosModel.tbProyectoCiclo">
+        <MappingFragment StoreEntitySet="tbProyectoCiclo">
+          <ScalarProperty Name="finCiclo" ColumnName="finCiclo" />
+          <ScalarProperty Name="inicioCiclo" ColumnName="inicioCiclo" />
+          <ScalarProperty Name="codCiclo" ColumnName="codCiclo" />
+          <ScalarProperty Name="idProyecto" ColumnName="idProyecto" />
+          <ScalarProperty Name="idProyectoCiclo" ColumnName="idProyectoCiclo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbProyectoElemento">
+      <EntityTypeMapping TypeName="BD_GestionDeCambiosModel.tbProyectoElemento">
+        <MappingFragment StoreEntitySet="tbProyectoElemento">
+          <ScalarProperty Name="codCiclo" ColumnName="codCiclo" />
+          <ScalarProperty Name="estado" ColumnName="estado" />
+          <ScalarProperty Name="idRol" ColumnName="idRol" />
+          <ScalarProperty Name="fechaFin" ColumnName="fechaFin" />
+          <ScalarProperty Name="fechaInicio" ColumnName="fechaInicio" />
+          <ScalarProperty Name="idElemento" ColumnName="idElemento" />
+          <ScalarProperty Name="idProyecto" ColumnName="idProyecto" />
+          <ScalarProperty Name="idProyectoElemento" ColumnName="idProyectoElemento" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbProyectos">
+      <EntityTypeMapping TypeName="BD_GestionDeCambiosModel.tbProyectos">
+        <MappingFragment StoreEntitySet="tbProyectos">
+          <ScalarProperty Name="estado" ColumnName="estado" />
+          <ScalarProperty Name="codCicloActual" ColumnName="codCicloActual" />
+          <ScalarProperty Name="idMetodologia" ColumnName="idMetodologia" />
+          <ScalarProperty Name="idUsuarioCreador" ColumnName="idUsuarioCreador" />
+          <ScalarProperty Name="fechaFin" ColumnName="fechaFin" />
+          <ScalarProperty Name="fechaInicio" ColumnName="fechaInicio" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="idProyecto" ColumnName="idProyecto" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbProyectoUsuario">
+      <EntityTypeMapping TypeName="BD_GestionDeCambiosModel.tbProyectoUsuario">
+        <MappingFragment StoreEntitySet="tbProyectoUsuario">
+          <ScalarProperty Name="idRol" ColumnName="idRol" />
+          <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+          <ScalarProperty Name="idProyecto" ColumnName="idProyecto" />
+          <ScalarProperty Name="idProyectoUsuario" ColumnName="idProyectoUsuario" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbRoles">
+      <EntityTypeMapping TypeName="BD_GestionDeCambiosModel.tbRoles">
+        <MappingFragment StoreEntitySet="tbRoles">
+          <ScalarProperty Name="idMetodologia" ColumnName="idMetodologia" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="idRol" ColumnName="idRol" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbSolicitudesCambio">
+      <EntityTypeMapping TypeName="BD_GestionDeCambiosModel.tbSolicitudesCambio">
+        <MappingFragment StoreEntitySet="tbSolicitudesCambio">
+          <ScalarProperty Name="ModificacionVersionFecha" ColumnName="ModificacionVersionFecha" />
+          <ScalarProperty Name="GiroJefeProyectoFecha" ColumnName="GiroJefeProyectoFecha" />
+          <ScalarProperty Name="fechaEstado" ColumnName="fechaEstado" />
+          <ScalarProperty Name="estadoSolicitud" ColumnName="estadoSolicitud" />
+          <ScalarProperty Name="observaciones" ColumnName="observaciones" />
+          <ScalarProperty Name="fechaCierreDelCambio" ColumnName="fechaCierreDelCambio" />
+          <ScalarProperty Name="fechaInicioImplementacionCambio" ColumnName="fechaInicioImplementacionCambio" />
+          <ScalarProperty Name="pasoActualProceso" ColumnName="pasoActualProceso" />
+          <ScalarProperty Name="fechaRecibida" ColumnName="fechaRecibida" />
+          <ScalarProperty Name="idUsuarioReceptor" ColumnName="idUsuarioReceptor" />
+          <ScalarProperty Name="esfuerzoEstimado" ColumnName="esfuerzoEstimado" />
+          <ScalarProperty Name="impactoEstimado" ColumnName="impactoEstimado" />
+          <ScalarProperty Name="idElementoAfectado" ColumnName="idElementoAfectado" />
+          <ScalarProperty Name="descripcionSolicitud" ColumnName="descripcionSolicitud" />
+          <ScalarProperty Name="objetivoSolicitud" ColumnName="objetivoSolicitud" />
+          <ScalarProperty Name="idUsuarioSolicitante" ColumnName="idUsuarioSolicitante" />
+          <ScalarProperty Name="idProyecto" ColumnName="idProyecto" />
+          <ScalarProperty Name="fechaSolicitud" ColumnName="fechaSolicitud" />
+          <ScalarProperty Name="codigoDocumentoSolicitd" ColumnName="codigoDocumentoSolicitd" />
+          <ScalarProperty Name="idSolicitudCambio" ColumnName="idSolicitudCambio" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbTareas">
+      <EntityTypeMapping TypeName="BD_GestionDeCambiosModel.tbTareas">
+        <MappingFragment StoreEntitySet="tbTareas">
+          <ScalarProperty Name="estado" ColumnName="estado" />
+          <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="idProyectoElemento" ColumnName="idProyectoElemento" />
+          <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+          <ScalarProperty Name="idTareas" ColumnName="idTareas" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbTiposDocumento">
+      <EntityTypeMapping TypeName="BD_GestionDeCambiosModel.tbTiposDocumento">
+        <MappingFragment StoreEntitySet="tbTiposDocumento">
+          <ScalarProperty Name="codCiclo" ColumnName="codCiclo" />
+          <ScalarProperty Name="clave" ColumnName="clave" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="idTipoDocumento" ColumnName="idTipoDocumento" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbUsuarios">
+      <EntityTypeMapping TypeName="BD_GestionDeCambiosModel.tbUsuarios">
+        <MappingFragment StoreEntitySet="tbUsuarios">
+          <ScalarProperty Name="foto_perfil" ColumnName="foto_perfil" />
+          <ScalarProperty Name="metodo_registro" ColumnName="metodo_registro" />
+          <ScalarProperty Name="estado" ColumnName="estado" />
+          <ScalarProperty Name="fechaCreacion" ColumnName="fechaCreacion" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="apellido" ColumnName="apellido" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="contrasena" ColumnName="contrasena" />
+          <ScalarProperty Name="usuario" ColumnName="usuario" />
+          <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

@@ -1,0 +1,219 @@
+﻿@model G03_GestionDeCambios.ViewModels.TareasViewModels.TareasUsuarioIndexViewModel
+
+@{
+    ViewBag.Title = "Mis Tareas del Proyecto: " + Model.NombreProyecto;
+    var estadosPosibles = new List<SelectListItem>
+{
+        new SelectListItem { Value = "Pendiente", Text = "Pendiente" },
+        new SelectListItem { Value = "En Proceso", Text = "En Proceso" },
+        new SelectListItem { Value = "Finalizado", Text = "Finalizado" }
+    };
+}
+
+<style>
+    .tarea-card {
+        border: 1px solid #ddd;
+        margin-bottom: 15px;
+        padding: 15px;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+
+    .tarea-inactiva {
+        background-color: #e9ecef; /* Un gris más claro para inactivas */
+        opacity: 0.7;
+    }
+
+    .tarea-finalizada {
+        border-left: 5px solid #28a745; /* Verde para finalizadas */
+    }
+
+    .tarea-en-proceso {
+        border-left: 5px solid #ffc107; /* Amarillo para en proceso */
+    }
+
+    .tarea-pendiente {
+        border-left: 5px solid #007bff; /* Azul para pendientes */
+    }
+
+    .tarea-card h5 {
+        margin-top: 0;
+    }
+
+    .tarea-meta {
+        font-size: 0.9em;
+        color: #6c757d;
+    }
+
+    .estado-select {
+        min-width: 150px;
+    }
+</style>
+
+<h2>@ViewBag.Title</h2>
+<p>
+    <strong>Ciclo Actual del Proyecto:</strong> @Model.CicloActualProyecto
+</p>
+<p>
+    @Html.ActionLink("Administrar Tareas", "Crear", "Tareas", new { idProyecto = Model.IdProyecto }, new { @class = "btn btn-info" })
+</p>
+
+<hr />
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+
+}
+@if (TempData["ErrorMessagePermiso"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessagePermiso"]</div>
+}
+
+@if (!Model.Tareas.Any())
+{
+    <div class="alert alert-info">No tienes tareas asignadas en este proyecto.</div>
+}
+else
+{
+    <div class="row">
+        @foreach (var tarea in Model.Tareas)
+        {
+            string cardClass = "tarea-card";
+            if (!tarea.EsDelCicloActual)
+            {
+                cardClass += " tarea-inactiva";
+            }
+            else if (tarea.EstadoTarea == "Finalizado")
+            {
+                cardClass += " tarea-finalizada";
+            }
+            else if (tarea.EstadoTarea == "En Proceso")
+            {
+                cardClass += " tarea-en-proceso";
+            }
+            else
+            {
+                cardClass += " tarea-pendiente";
+            }
+
+            <div class="col-md-6 col-lg-4">
+                <div class="@cardClass" id="tarea-card-@tarea.IdTarea">
+                    <h5>@tarea.NombreTarea</h5>
+                    <p class="tarea-meta">
+                        <strong>Elemento:</strong> @tarea.NombreElementoAsociado <br />
+                        <strong>Ciclo del Elemento:</strong> @tarea.CicloDelElemento
+                        @if (tarea.FechaInicioElemento.HasValue)
+                        {
+                            <br /><span><strong>Inicio Elemento:</strong> @tarea.FechaInicioElemento.Value.ToString("dd/MM/yyyy")</span>
+                        }
+                        @if (tarea.FechaFinElemento.HasValue)
+                        {
+                            <span><strong>Fin Elemento:</strong> @tarea.FechaFinElemento.Value.ToString("dd/MM/yyyy")</span>
+                        }
+                    </p>
+                    <p>@Html.Raw(tarea.DescripcionTarea?.Replace(Environment.NewLine, "<br />"))</p>
+
+                    <div>
+                        <strong>Estado: </strong>
+                        @if (tarea.PuedeEditarEstado)
+                        {
+                            using (Html.BeginForm("ActualizarEstadoTarea", "Tareas", FormMethod.Post, new { @class = "form-inline d-inline", @id = "form-estado-" + tarea.IdTarea }))
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.Hidden("idTarea", tarea.IdTarea)
+                                @Html.Hidden("idProyecto", Model.IdProyecto)
+                                @Html.DropDownList("nuevoEstado", new SelectList(estadosPosibles, "Value", "Text", tarea.EstadoTarea), new { @class = "form-control form-control-sm estado-select", @onchange = "$(this).closest('form').submit();" })
+                            }
+                        }
+                        else
+                        {
+                            <span class="badge @(tarea.EstadoTarea == "Finalizado" ? "text-success" : (tarea.EstadoTarea == "En Proceso" ? "text-warning" : "text-primary"))" id="estado-texto-@tarea.IdTarea">
+                                @tarea.EstadoTarea
+                            </span>
+                            if (!tarea.EsDelCicloActual)
+                            {
+                                <small class="text-muted">(Tarea de un ciclo diferente al actual del proyecto)</small>
+                            }
+                            else if (tarea.EstadoTarea == "Finalizado")
+                            {
+                                <small class="text-muted">(Tarea finalizada, no editable)</small>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@section Scripts {
+    <script>
+        $(function () {
+
+            $(document).on('change', '.estado-select', function (e) {
+                e.preventDefault();
+                var form = $(this).closest('form');
+                var idTarea = form.find('input[name="idTarea"]').val();
+                var nuevoEstado = $(this).val();
+
+                $(this).prop('disabled', true);
+                var selectActual = $(this);
+
+
+                $.ajax({
+                    url: form.attr('action'),
+                    type: form.attr('method'),
+                    data: form.serialize(),
+                    success: function (response) {
+                        if (response.success) {
+                            var card = $('#tarea-card-' + response.idTarea);
+                            card.removeClass('tarea-pendiente tarea-en-proceso tarea-finalizada tarea-inactiva');
+
+                            if (response.nuevoEstado === "Finalizado") {
+                                card.addClass('tarea-finalizada');
+                                var estadoTexto = '<span class="badge text-success">Finalizado</span> <small class="text-muted">(Tarea finalizada, no editable)</small>';
+                                selectActual.closest('div').html('<strong>Estado: </strong>' + estadoTexto);
+                            } else if (response.nuevoEstado === "En Proceso") {
+                                card.addClass('tarea-en-proceso');
+                                selectActual.prop('disabled', false); // Reactivar
+                            } else { // Pendiente
+                                card.addClass('tarea-pendiente');
+                                selectActual.prop('disabled', false); // Reactivar
+                            }
+
+                            if ($('.alert-success').length === 0) {
+                                $('<div class="alert alert-success" style="display:none;"></div>').insertBefore('hr').text(response.message).fadeIn();
+                            } else {
+                                $('.alert-success').text(response.message).fadeIn();
+                            }
+                            $('.alert-danger').fadeOut();
+
+
+                        } else {
+                            if ($('.alert-danger').length === 0) {
+                                $('<div class="alert alert-danger" style="display:none;"></div>').insertBefore('hr').text(response.message).fadeIn();
+                            } else {
+                                $('.alert-danger').text(response.message).fadeIn();
+                            }
+                            $('.alert-success').fadeOut();
+                            selectActual.prop('disabled', false);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        if ($('.alert-danger').length === 0) {
+                            $('<div class="alert alert-danger" style="display:none;"></div>').insertBefore('hr').text("Error de comunicación con el servidor.").fadeIn();
+                        } else {
+                            $('.alert-danger').text("Error de comunicación con el servidor.").fadeIn();
+                        }
+                        $('.alert-success').fadeOut();
+                        selectActual.prop('disabled', false);
+                    }
+                });
+            });
+        });
+    </script>
+}

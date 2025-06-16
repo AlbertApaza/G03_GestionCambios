@@ -1,0 +1,87 @@
+﻿@model G03_GestionDeCambios.Models.CrearProyectoViewModel
+
+@{
+    ViewBag.Title = "Crear Proyecto";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h2 class="text-primary mb-4">Crear Nuevo Proyecto</h2>
+
+            @using (Html.BeginForm("Crear", "Proyecto", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="mb-3">
+                    @Html.LabelFor(m => m.Nombre, htmlAttributes: new { @class = "form-label" })
+                    @Html.EditorFor(m => m.Nombre, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(m => m.Nombre, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        @Html.LabelFor(m => m.FechaInicio, htmlAttributes: new { @class = "form-label" })
+                        @Html.TextBoxFor(m => m.FechaInicio, new { @type = "date", @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.FechaInicio, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        @Html.LabelFor(m => m.FechaFin, htmlAttributes: new { @class = "form-label" })
+                        @Html.TextBoxFor(m => m.FechaFin, new { @type = "date", @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.FechaFin, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    @Html.LabelFor(m => m.Metodologias, htmlAttributes: new { @class = "form-label" })
+                    @Html.DropDownListFor(m => m.IdMetodologia, Model.Metodologias, "--Seleccione una Metodología--", new { @class = "form-select", id = "IdMetodologia" })
+                    @Html.ValidationMessageFor(m => m.IdMetodologia, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="mb-4">
+                    @Html.LabelFor(m => m.Ciclos, htmlAttributes: new { @class = "form-label" })
+                    @Html.DropDownListFor(m => m.CodCicloActual, Model.Ciclos, "--Seleccione el Ciclo Actual--", new { @class = "form-select", id = "CodCicloActual", disabled = "disabled" })
+                    @Html.ValidationMessageFor(m => m.CodCicloActual, "", new { @class = "text-danger" })
+                </div>
+
+                <button type="submit" class="btn btn-success">
+                    💾 Crear Proyecto
+                </button>
+            }
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#IdMetodologia').change(function () {
+                var selectedValue = $(this).val();
+                var $codCicloActual = $('#CodCicloActual');
+
+                if (selectedValue) {
+                    $.ajax({
+                        url: '@Url.Action("ObtenerCiclos", "Proyecto")',
+                        type: 'GET',
+                        data: { idMetodologia: selectedValue },
+                        success: function (data) {
+                            $codCicloActual.empty();
+                            $codCicloActual.append('<option value="">--Seleccione el Ciclo Actual--</option>');
+                            $.each(data, function (index, ciclo) {
+                                $codCicloActual.append('<option value="' + ciclo.Value + '">' + ciclo.Text + '</option>');
+                            });
+                            $codCicloActual.prop('disabled', false);
+                        },
+                        error: function () {
+                            alert('Error al cargar los ciclos.');
+                        }
+                    });
+                } else {
+                    $codCicloActual.empty().append('<option value="">--Seleccione el Ciclo Actual--</option>').prop('disabled', true);
+                }
+            });
+        });
+    </script>
+}

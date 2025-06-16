@@ -1,0 +1,176 @@
+﻿@model G03_GestionDeCambios.Models.SolicitudDetalleViewModel
+@{
+    ViewBag.Title = "Detalle de Solicitud de Cambio";
+}
+
+<style>
+    .form-container {
+        border: 2px solid #333;
+        padding: 15px;
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: auto;
+    }
+
+    .form-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 10px;
+    }
+
+        .form-table th, .form-table td {
+            border: 1px solid #666;
+            padding: 8px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        .form-table th {
+            background-color: #e0e0e0;
+            font-weight: bold;
+        }
+
+    .header-title {
+        background-color: #a5d6a7; /* Verde claro como en la imagen */
+        color: #333;
+        font-size: 1.2em;
+        font-weight: bold;
+        text-align: center;
+        padding: 10px;
+        border: 1px solid #666;
+    }
+
+    .label-cell {
+        font-weight: bold;
+        width: 30%;
+        background-color: #f5f5f5;
+    }
+
+    .data-cell {
+        width: 70%;
+        white-space: pre-wrap; /* Para respetar saltos de línea en descripción, etc. */
+    }
+
+    .sub-header {
+        background-color: #c8e6c9; /* Un verde un poco más claro */
+        font-weight: bold;
+        text-align: center;
+    }
+</style>
+
+<div class="form-container">
+    <!-- Encabezado con logos (opcional) y título -->
+    <div class="header-title">SOLICITUD DE CAMBIO</div>
+
+    <!-- Tabla de Información General -->
+    <table class="form-table">
+        <tr>
+            <td class="label-cell">@Html.DisplayNameFor(m => m.CodigoDocumento)</td>
+            <td class="data-cell">@Html.DisplayFor(m => m.CodigoDocumento)</td>
+            <td class="label-cell">@Html.DisplayNameFor(m => m.NoSolicitudCompleto)</td>
+            <td class="data-cell">@Html.DisplayFor(m => m.NoSolicitudCompleto)</td>
+        </tr>
+        <tr>
+            <td class="label-cell">@Html.DisplayNameFor(m => m.Version)</td>
+            <td class="data-cell">@Html.DisplayFor(m => m.Version)</td>
+            <td class="label-cell">@Html.DisplayNameFor(m => m.FechaSolicitud)</td>
+            <td class="data-cell">@Html.DisplayFor(m => m.FechaSolicitud)</td>
+        </tr>
+        <tr>
+            <td class="label-cell">@Html.DisplayNameFor(m => m.Pagina)</td>
+            <td class="data-cell" colspan="3">@Html.DisplayFor(m => m.Pagina)</td>
+        </tr>
+    </table>
+
+    <!-- Sección Solicitante -->
+    <table class="form-table">
+        <thead>
+            <tr><th colspan="2" class="sub-header">SOLICITANTE</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="label-cell">@Html.DisplayNameFor(m => m.SolicitadoPor)</td>
+                <td class="data-cell">@Html.DisplayFor(m => m.SolicitadoPor)</td>
+            </tr>
+            <tr>
+                <td class="label-cell">@Html.DisplayNameFor(m => m.ProyectoProducto)</td>
+                <td class="data-cell">@Html.DisplayFor(m => m.ProyectoProducto)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Sección Solicitud -->
+    <table class="form-table">
+        <thead>
+            <tr><th colspan="2" class="sub-header">SOLICITUD</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="label-cell">@Html.DisplayNameFor(m => m.Objetivo)</td>
+                <td class="data-cell">@Html.DisplayFor(m => m.Objetivo)</td>
+            </tr>
+            <tr>
+                <td class="label-cell">@Html.DisplayNameFor(m => m.DescripcionCambio)</td>
+                <td class="data-cell">@Html.DisplayFor(m => m.DescripcionCambio)</td>
+            </tr>
+            <tr>
+                <td class="label-cell">@Html.DisplayNameFor(m => m.ElementoConfiguracion)</td>
+                <td class="data-cell">@Html.DisplayFor(m => m.ElementoConfiguracion)</td>
+            </tr>
+            <tr>
+                <td class="label-cell">@Html.DisplayNameFor(m => m.Impacto)</td>
+                <td class="data-cell">@Html.DisplayFor(m => m.Impacto)</td>
+            </tr>
+            <tr>
+                <td class="label-cell">@Html.DisplayNameFor(m => m.EsfuerzoEstimado)</td>
+                <td class="data-cell">@Html.DisplayFor(m => m.EsfuerzoEstimado)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Sección Atención de la Solicitud -->
+    <table class="form-table">
+        <thead>
+            <tr><th colspan="4" class="sub-header">ATENCIÓN DE LA SOLICITUD</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="label-cell">@Html.DisplayNameFor(m => m.RecibidoPor)</td>
+                <td class="data-cell">@(Model.RecibidoPor ?? "---")</td>
+                <td class="label-cell">@Html.DisplayNameFor(m => m.FechaRecibido)</td>
+                <td class="data-cell">@(Model.FechaRecibido?.ToString("dd/MM/yyyy") ?? "---")</td>
+            </tr>
+            <tr>
+                <td colspan="4" class="sub-header" style="text-align:center; background-color:#e0e0e0;">Detalles</td>
+            </tr>
+            <tr>
+                <td class="label-cell">@Html.DisplayNameFor(m => m.Estado)</td>
+                <td class="data-cell">@Html.DisplayFor(m => m.Estado)</td>
+                <td class="label-cell">@Html.DisplayNameFor(m => m.FechaEstado)</td>
+                <td class="data-cell">@(Model.FechaEstado?.ToString("dd/MM/yyyy") ?? "---")</td>
+            </tr>
+            <tr>
+                <td class="label-cell">@Html.DisplayNameFor(m => m.ImplementacionFecha)</td>
+                <td class="data-cell">@(Model.ImplementacionFecha?.ToString("dd/MM/yyyy") ?? "---")</td>
+                <td class="label-cell">@Html.DisplayNameFor(m => m.GiroJefeProyectoFecha)</td>
+                <td class="data-cell">@(Model.GiroJefeProyectoFecha?.ToString("dd/MM/yyyy") ?? "---")</td>
+            </tr>
+            <tr>
+                <td class="label-cell">@Html.DisplayNameFor(m => m.ModificacionVersionFecha)</td>
+                <td class="data-cell">@(Model.ModificacionVersionFecha?.ToString("dd/MM/yyyy") ?? "---")</td>
+                <td class="label-cell">@Html.DisplayNameFor(m => m.CierreCambioFecha)</td>
+                <td class="data-cell">@(Model.CierreCambioFecha?.ToString("dd/MM/yyyy") ?? "---")</td>
+            </tr>
+            <tr>
+                <td class="label-cell">@Html.DisplayNameFor(m => m.Observaciones)</td>
+                <td class="data-cell" colspan="3">@(Model.Observaciones ?? "---")</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="text-center" style="margin-top: 20px;">
+    @Html.ActionLink("Volver al Listado", "Index", "Solicitud", null, new { @class = "btn btn-secondary" })
+    <!-- Aquí podrías agregar botones para avanzar en el wizard, por ejemplo -->
+    <!-- <a href="@Url.Action("VerAnalisis", new { idSolicitud = Model.IdSolicitud })" class="btn btn-primary">Siguiente: Analizar Solicitud »</a> -->
+</div>

@@ -1,0 +1,433 @@
+﻿@model G03_GestionDeCambios.ViewModels.TareasViewModels.TareasIndexViewModel
+
+@{
+    ViewBag.Title = "Gestor de Tareas - " + Model.NombreProyecto;
+}
+
+<h2>@ViewBag.Title</h2>
+<p><strong>Ciclo Actual del Proyecto:</strong> @Model.CicloActual</p>
+<hr />
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+<div class="row">
+    <div class="col-md-7">
+        <h4>Elementos de Configuración del Ciclo Actual (@Model.CicloActual)</h4>
+        @if (Model.ElementosConfiguracion.Any())
+        {
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Elemento</th>
+                        <th>Rol Requerido</th>
+                        <th>Inicio</th>
+                        <th>Fin</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.ElementosConfiguracion)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.NombreElemento)</td>
+                            <td>@Html.DisplayFor(modelItem => item.NombreRolAsignadoAlElemento)</td>
+                            <td>@item.FechaInicio.ToString("dd/MM/yyyy")</td>
+                            <td>@(item.FechaFin.HasValue ? item.FechaFin.Value.ToString("dd/MM/yyyy") : "Abierto")</td>
+                            <td>@Html.DisplayFor(modelItem => item.EstadoElemento)</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>No hay elementos de configuración activos o disponibles en el ciclo actual para asignar tareas.</p>
+        }
+    </div>
+
+    <div class="col-md-5">
+        <h4>Crear y Asignar Nueva Tarea</h4>
+        @using (Html.BeginForm("Crear", "Tareas", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.FormularioCrearTarea.IdProyecto)
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.FormularioCrearTarea.IdProyectoElemento, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.DropDownListFor(model => model.FormularioCrearTarea.IdProyectoElemento, Model.ElementosSelectList, "Seleccione un Elemento...", new { @class = "form-control", id = "ddlProyectoElemento" })
+                    @Html.ValidationMessageFor(model => model.FormularioCrearTarea.IdProyectoElemento, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div id="elementoDetalles" style="margin-left: 15px; margin-bottom:15px; padding: 10px; border: 1px solid #eee; display:none;">
+                <small>
+                    <strong>Detalles del Elemento:</strong><br />
+                    <span id="elemNombre"></span><br />
+                    Fechas: <span id="elemFechas"></span><br />
+                    Rol: <span id="elemRol"></span>
+                </small>
+            </div>
+
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.FormularioCrearTarea.IdUsuario, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.DropDownListFor(model => model.FormularioCrearTarea.IdUsuario, Model.UsuariosSelectList, "Seleccione un Usuario...", new { @class = "form-control", id = "ddlUsuario" })
+                    @Html.ValidationMessageFor(model => model.FormularioCrearTarea.IdUsuario, "", new { @class = "text-danger" })
+                    <div id="usuariosLoading" style="display:none;"><small>Cargando usuarios...</small></div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.FormularioCrearTarea.NombreTarea, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.FormularioCrearTarea.NombreTarea, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.FormularioCrearTarea.NombreTarea, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.FormularioCrearTarea.DescripcionTarea, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.TextAreaFor(model => model.FormularioCrearTarea.DescripcionTarea, new { @class = "form-control", rows = 3 })
+                    @Html.ValidationMessageFor(model => model.FormularioCrearTarea.DescripcionTarea, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-4 col-md-8">
+                    <input type="submit" value="Crear Tarea" class="btn btn-primary" />
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+@* Aquí puedes añadir otra sección para listar las tareas ya creadas para este proyecto si lo deseas *@
+
+<hr />
+<h4>Tareas Existentes en el Ciclo Actual (@Model.CicloActual)</h4>
+
+@if (Model.TareasExistentes.Any())
+{
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover table-striped" id="tablaTareasExistentes">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre Tarea</th>
+                    <th>Descripción</th>
+                    <th>Estado</th>
+                    <th>Usuario Asignado</th>
+                    <th>Elemento</th>
+                    <th>Rol Elemento</th>
+                    <th>Acciones</th>
+                    <th>Inicio Elemento</th>
+                    <th>Fin Elemento</th>
+                    <th>Estado Elemento</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var tarea in Model.TareasExistentes)
+                {
+                    <tr data-idtarea="@tarea.IdTarea" data-idproyectoelemento="@tarea.IdProyectoElemento">
+                        <td>@tarea.IdTarea</td>
+                        <td>
+                            <span class="display-mode nombre-tarea-display">@tarea.NombreTarea</span>
+                            <input type="text" class="edit-mode form-control input-sm nombre-tarea-edit" value="@tarea.NombreTarea" style="display:none;" />
+                        </td>
+                        <td>
+                            <span class="display-mode descripcion-tarea-display">
+                                @if (!string.IsNullOrEmpty(tarea.DescripcionTarea) && tarea.DescripcionTarea.Length > 70)
+                                {
+                                    <span title="@tarea.DescripcionTarea">@tarea.DescripcionTarea.Substring(0, 70)...</span>
+                                }
+                                else
+                                {
+                                    @tarea.DescripcionTarea
+                                }
+                            </span>
+                            <textarea class="edit-mode form-control input-sm descripcion-tarea-edit" rows="2" style="display:none;">@tarea.DescripcionTarea</textarea>
+                        </td>
+                        <td>
+                            <span class="display-mode estado-tarea-display label @GetEstadoLabelClass(tarea.EstadoTarea)">@tarea.EstadoTarea</span>
+                            @{
+                                var estadosPosibles = new List<SelectListItem> {
+                new SelectListItem { Value = "Pendiente", Text = "Pendiente" },
+                new SelectListItem { Value = "En Proceso", Text = "En Proceso" },
+                new SelectListItem { Value = "Finalizado", Text = "Finalizado" }
+            };
+                            }
+                            @Html.DropDownList("estadoTareaEdit", new SelectList(estadosPosibles, "Value", "Text", tarea.EstadoTarea), new { @class = "edit-mode form-control input-sm estado-tarea-edit", style = "display:none;" })
+                        </td>
+                        <td>
+                            <span class="usuario-asignado-display">@tarea.NombreUsuarioAsignado</span>
+                            @* Guardamos el ID del usuario pa otra cosa, pero no es editable
+                            *@
+                            <input type="hidden" class="usuario-asignado-id-hidden" value="@tarea.IdUsuarioAsignado" data-selecteduserid="@tarea.IdUsuarioAsignado" />
+                        </td>
+                        <td>@Html.DisplayFor(modelItem => tarea.NombreElementoAsociado)</td>
+                        <td>@Html.DisplayFor(modelItem => tarea.RolUsuarioEnElemento)</td>
+                        <td>@(tarea.FechaInicioElemento.HasValue ? tarea.FechaInicioElemento.Value.ToString("dd/MM/yyyy") : "N/A")</td>
+                        <td>@(tarea.FechaFinElemento.HasValue ? tarea.FechaFinElemento.Value.ToString("dd/MM/yyyy") : "N/A")</td>
+                        <td><span class="label @GetEstadoLabelClass(tarea.EstadoElemento)">@Html.DisplayFor(modelItem => tarea.EstadoElemento)</span></td>
+
+                        <td>
+                            <button type="button" class="btn btn-xs btn-info btn-edit-tarea">Editar</button>
+                            <button type="button" class="btn btn-xs btn-success btn-save-tarea" style="display:none;">Guardar</button>
+                            <button type="button" class="btn btn-xs btn-warning btn-cancel-tarea" style="display:none;">Cancelar</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <p>No hay tareas registradas para este proyecto en el ciclo actual.</p>
+}
+@helper GetEstadoLabelClass(string estado)
+{
+    switch (estado?.ToLower())
+    {
+        case "finalizado":
+            @Html.Raw("label-success")
+            break;
+        case "en proceso":
+            @Html.Raw("label-warning")
+            break;
+        case "pendiente":
+            @Html.Raw("label-info")
+            break;
+        default:
+            @Html.Raw("label-default")
+            break;
+    }
+}
+
+
+@section Scripts {
+    <script type="text/javascript">
+    $(document).ready(function () {
+        $('#ddlProyectoElemento').change(function () {
+            var elementoId = $(this).val();
+            var ddlUsuario = $('#ddlUsuario');
+            var elementoDetallesDiv = $('#elementoDetalles');
+            var usuariosLoading = $('#usuariosLoading');
+
+            ddlUsuario.empty().append($('<option></option>').val('').text('Seleccione un Usuario...'));
+            elementoDetallesDiv.hide();
+            $('#elemNombre').text(''); $('#elemFechas').text(''); $('#elemRol').text('');
+
+            if (elementoId) {
+                usuariosLoading.show();
+                $.getJSON('@Url.Action("GetElementoDetallesJson", "Tareas")', { idProyectoElemento: elementoId }, function(data) {
+                    if (data && !data.error) {
+                        $('#elemNombre').text(data.nombreElemento || 'N/A');
+                        $('#elemFechas').text((data.fechaInicio || 'N/A') + ' - ' + (data.fechaFin || 'Abierto'));
+                        $('#elemRol').text(data.rolRequerido || 'N/A');
+                        elementoDetallesDiv.show();
+                    } else { console.error(data.error || 'No se pudieron cargar los detalles del elemento.'); }
+                }).fail(function(j, t, e) { console.error("Error AJAX GetElementoDetallesJson: " + t, e); });
+
+                $.getJSON('@Url.Action("GetUsuariosDisponiblesJson", "Tareas")', { idProyectoElemento: elementoId }, function (data) { // ESTA LLAMADA USA EL MÉTODO CON VALIDACIÓN DE FECHAS
+                    usuariosLoading.hide();
+                    ddlUsuario.empty();
+                    if (data && !data.error) {
+                        if (data.length > 0) {
+                             ddlUsuario.append($('<option></option>').val('').text('Seleccione un Usuario...'));
+                             $.each(data, function (index, item) { ddlUsuario.append($('<option></option>').val(item.Value).text(item.Text)); });
+                        } else { ddlUsuario.append($('<option></option>').val('').text('No hay usuarios disponibles')); }
+                    } else {
+                        ddlUsuario.append($('<option></option>').val('').text('Error al cargar usuarios'));
+                        console.error(data.error || 'Error al cargar usuarios.');
+                    }
+                }).fail(function(j,t,e) {
+                    usuariosLoading.hide();
+                    ddlUsuario.empty().append($('<option></option>').val('').text('Error en la solicitud de usuarios'));
+                    console.error("Error AJAX GetUsuariosDisponiblesJson: " + t, e);
+                });
+            }
+        });
+        if ($('#ddlProyectoElemento').val()) { $('#ddlProyectoElemento').trigger('change'); }
+        // --- FIN SCRIPT CREACIÓN ---
+
+
+        // --- SCRIPT PARA EDICIÓN EN LÍNEA DE TAREAS EXISTENTES ---
+        var originalValues = {};
+
+        $('#tablaTareasExistentes').on('click', '.btn-edit-tarea', function () {
+            var $row = $(this).closest('tr');
+            var idTarea = $row.data('idtarea');
+
+            var $otraFilaEditando = $('#tablaTareasExistentes tr.editing-row');
+            if ($otraFilaEditando.length && $otraFilaEditando.data('idtarea') !== idTarea) {
+                $otraFilaEditando.find('.btn-cancel-tarea').click();
+            }
+            $row.addClass('editing-row');
+
+            originalValues[idTarea] = {
+                nombre: $row.find('.nombre-tarea-display').text().trim(),
+                descripcion: $row.find('.descripcion-tarea-edit').val(),
+                estado: $row.find('.estado-tarea-edit').val(),
+                nombreUsuario: $row.find('.usuario-asignado-display').text().trim(),
+                idUsuario: $row.find('.usuario-asignado-id-hidden').val()
+            };
+
+            $row.find('.display-mode').hide();
+            $row.find('.edit-mode').show();
+            $row.find('.usuario-asignado-display').show(); 
+            $row.find('.usuario-asignado-edit').hide(); 
+
+
+            $(this).hide();
+            $row.find('.btn-save-tarea, .btn-cancel-tarea').show();
+
+        });
+
+        $('#tablaTareasExistentes').on('click', '.btn-cancel-tarea', function () {
+            var $row = $(this).closest('tr');
+            var idTarea = $row.data('idtarea');
+            $row.removeClass('editing-row');
+
+            if (originalValues[idTarea]) {
+                var original = originalValues[idTarea];
+                $row.find('.nombre-tarea-display').text(original.nombre);
+                $row.find('.nombre-tarea-edit').val(original.nombre);
+
+                var descCompleta = original.descripcion;
+                $row.find('.descripcion-tarea-edit').val(descCompleta);
+                if (descCompleta && descCompleta.length > 70) {
+                     $row.find('.descripcion-tarea-display').html($('<span></span>').attr('title', descCompleta).text(descCompleta.substring(0, 70) + '...'));
+                } else {
+                     $row.find('.descripcion-tarea-display').text(descCompleta || '');
+                }
+
+                $row.find('.estado-tarea-display').text(original.estado).attr('class', 'display-mode estado-tarea-display label ' + getEstadoLabelClassJS(original.estado));
+                $row.find('.estado-tarea-edit').val(original.estado);
+
+                $row.find('.usuario-asignado-display').text(original.nombreUsuario);
+
+                delete originalValues[idTarea];
+            }
+
+            $row.find('.edit-mode').hide();
+            $row.find('.display-mode').show();
+            $(this).hide();
+            $row.find('.btn-save-tarea').hide();
+            $row.find('.btn-edit-tarea').show();
+        });
+
+        $('#tablaTareasExistentes').on('click', '.btn-save-tarea', function () {
+            var $row = $(this).closest('tr');
+            var $button = $(this);
+            $button.prop('disabled', true).text('Guardando...');
+
+            var idTarea = $row.attr('data-idtarea'); // USA ESTA EN SU LUGAR
+
+            var nombreTarea = $row.find('.nombre-tarea-edit').val();
+            var descripcionTarea = $row.find('.descripcion-tarea-edit').val();
+            var estadoTarea = $row.find('.estado-tarea-edit').val();
+
+            console.log("Enviando a ActualizarTareaAdmin:");
+            console.log("idTarea:", idTarea, "(Tipo:", typeof idTarea, ")"); 
+            console.log("nombreTarea:", nombreTarea);
+            console.log("descripcionTarea:", descripcionTarea);
+            console.log("estadoTarea:", estadoTarea);
+            console.log("idProyecto:", @Model.IdProyecto);
+
+            if (!nombreTarea.trim()) {
+                alert("El nombre de la tarea no puede estar vacío.");
+                $button.prop('disabled', false).text('Guardar');
+                return;
+            }
+            if (idTarea === undefined || idTarea === null || idTarea === "" || isNaN(parseInt(idTarea))) { 
+                alert("Error: El ID de la tarea no se pudo obtener o no es válido. No se puede guardar.");
+                $button.prop('disabled', false).text('Guardar');
+                console.error("idTarea es inválido:", idTarea);
+                return;
+            }
+
+            var token = $('form').find('input[name="__RequestVerificationToken"]').first().val();
+
+            $.ajax({
+                url: '@Url.Action("ActualizarTareaAdmin", "Tareas")',
+                type: 'POST',
+                data: {
+                    __RequestVerificationToken: token,
+                    idTarea: parseInt(idTarea),
+                    nombreTarea: nombreTarea,
+                    descripcionTarea: descripcionTarea,
+                    estadoTarea: estadoTarea,
+                    idProyecto: @Model.IdProyecto
+                },
+                success: function (response) {
+                    if (response.success) {
+                        $row.removeClass('editing-row');
+                        $row.find('.nombre-tarea-display').text(response.nombreTarea);
+
+                        var descText = response.descripcionTarea;
+                        $row.find('.descripcion-tarea-edit').val(descText);
+                        if(descText && descText.length > 70) {
+                            $row.find('.descripcion-tarea-display').html($('<span></span>').attr('title', descText).text(descText.substring(0, 70) + '...'));
+                        } else {
+                            $row.find('.descripcion-tarea-display').text(descText || '');
+                        }
+                        $row.find('.estado-tarea-display').text(response.estadoTarea).attr('class', 'display-mode estado-tarea-display label ' + getEstadoLabelClassJS(response.estadoTarea));
+
+                        $row.find('.edit-mode').hide();
+                        $row.find('.display-mode').show();
+                        $button.hide();
+                        $row.find('.btn-cancel-tarea').hide();
+                        $row.find('.btn-edit-tarea').show();
+                        delete originalValues[idTarea];
+
+                        var $successAlert = $('.alert-success');
+                        if ($successAlert.length) {
+                             $successAlert.text(response.message).show(); $('.alert-danger').hide();
+                        } else { $('<div class="alert alert-success">' + response.message + '</div>').insertBefore('div.row'); }
+                        setTimeout(function() { $successAlert.fadeOut(); }, 5000);
+
+                    } else {
+                        alert('Error al actualizar: ' + response.message);
+                         var $errorAlert = $('.alert-danger');
+                         if ($errorAlert.length) { $errorAlert.text('Error al actualizar: ' + response.message).show(); $('.alert-success').hide();
+                         } else { $('<div class="alert alert-danger">Error al actualizar: ' + response.message + '</div>').insertBefore('div.row');}
+
+                    }
+                },
+                error: function (xhr, status, error) {
+                    alert('Error de comunicación con el servidor.');
+                    var $errorAlert = $('.alert-danger');
+                     if ($errorAlert.length) { $errorAlert.text('Error de comunicación con el servidor.').show(); $('.alert-success').hide();
+                     } else { $('<div class="alert alert-danger">Error de comunicación con el servidor.</div>').insertBefore('div.row');}
+                    console.error("Error AJAX ActualizarTareaAdmin:", status, error, xhr.responseText);
+                },
+                complete: function () {
+                    $button.prop('disabled', false).text('Guardar');
+                }
+            });
+        });
+
+        function getEstadoLabelClassJS(estado) { /* ... (igual que antes) ... */
+            switch (estado ? estado.toLowerCase() : '') {
+                case "finalizado": return "label-success";
+                case "en proceso": return "label-warning";
+                case "pendiente": return "label-info";
+                default: return "label-default";
+            }
+        }
+    }); 
+    </script>
+}

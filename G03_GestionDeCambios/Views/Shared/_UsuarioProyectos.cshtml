@@ -1,0 +1,22 @@
+﻿@model List<G03_GestionDeCambios.Models.UserProjectAssignmentViewModel>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-warning mt-2 mb-0" role="alert">
+        Este miembro no está asignado a ningún proyecto actualmente.
+    </div>
+}
+else
+{
+    <div class="p-2">
+        <h6 class="text-muted">Proyectos Asignados:</h6>
+        <ul class="list-group list-group-flush">
+            @foreach (var proyecto in Model)
+            {
+                <li class="list-group-item" style="border:none; padding-left: 10px;">
+                    <i class="fa fa-folder text-primary"></i> @proyecto.NombreProyecto
+                </li>
+            }
+        </ul>
+    </div>
+}

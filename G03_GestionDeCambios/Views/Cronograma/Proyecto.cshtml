@@ -1,0 +1,135 @@
+﻿@{
+    ViewBag.Title = "Cronograma del Proyecto - " + ViewBag.NombreProyecto;
+}
+<h2>@ViewBag.Title</h2>
+
+<link href="https://cdn.dhtmlx.com/gantt/edge/dhtmlxgantt.css" rel="stylesheet" type="text/css">
+
+<style type="text/css">
+    /* Importante: Asegurar que el layout principal no interfiera de forma extraña */
+    .gantt_container_wrapper {
+        width: 100%;
+        height: 700px; /* Aumenta o disminuye según necesites */
+        padding-top: 10px; /* Espacio desde el título */
+        border: 1px solid #cecece; /* Opcional: para ver los límites del contenedor */
+    }
+
+    #gantt_here {
+        width: 100%;
+        height: 100%;
+        position: relative;
+    }
+
+    /* Estilos para las barras de tareas (sin cambios) */
+    .gantt_task_line.estado_pendiente .gantt_task_progress {
+        background-color: #3db9d3;
+    }
+
+    .gantt_task_line.estado_en_proceso .gantt_task_progress {
+        background-color: #f2d40d;
+    }
+
+    .gantt_task_line.estado_finalizado .gantt_task_progress {
+        background-color: #50c240;
+    }
+
+    .gantt_task_line.estado_pendiente,
+    .gantt_task_line.estado_en_proceso,
+    .gantt_task_line.estado_finalizado {
+        background-color: #b0b0b0;
+    }
+
+    /* Opcional: si quieres que el texto se ajuste en la celda del grid */
+    /* .gantt_tree_content {
+        white-space: normal !important;
+        line-height: normal !important;
+    }
+    .gantt_cell {
+        white-space: normal !important;
+    } */
+</style>
+
+<div class="gantt_container_wrapper">
+    <div id="gantt_here"></div>
+</div>
+
+<script src="https://cdn.dhtmlx.com/gantt/edge/dhtmlxgantt.js"></script>
+<script type="text/javascript">
+    // Configuración estricta de formato de fecha
+    gantt.config.date_format = "%d-%m-%Y";
+    gantt.config.xml_date = "%d-%m-%Y";
+
+    // Desactivar autosize para controlar el tamaño con CSS y la configuración
+    gantt.config.autosize = false; // Ya lo tenías, es importante
+
+    // --- MODIFICACIÓN CLAVE ---
+    // Define un ancho para la sección de la cuadrícula (el panel izquierdo)
+    // Si la suma de los anchos de las columnas es mayor que esto, la cuadrícula tendrá scroll.
+    gantt.config.grid_width = 450; // Ajusta este valor según tus necesidades.
+                                  // Este será el ancho visible de tu panel izquierdo.
+
+    gantt.config.columns = [
+        // --- MODIFICACIÓN CLAVE ---
+        // Dale a la columna 'text' un ancho fijo y generoso. Ya no usamos '*'
+        // La suma de los anchos de las columnas debe ser mayor que grid_width para que aparezca el scroll de la cuadrícula.
+        // Ejemplo: 350 + 90 + 70 + 80 + 120 + 100 = 810. Como 810 > 450, la cuadrícula tendrá scroll.
+        { name: "text", label: "Nombre", tree: true, width: 250 }, // Aumenta este ancho para ver más texto
+        { name: "start_date", label: "Inicio", align: "center", width: 100 },
+        { name: "duration", label: "Duración", align: "center", width: 70 },
+        { name: "estado", label: "Estado", width: 80, align: "center", template: function (task) { return task.estado || ""; } },
+        { name: "responsable", label: "Responsable", width: 120, template: function (task) { return task.responsable || ""; } },
+        { name: "rol", label: "Rol Req.", width: 100, template: function (task) { return task.rol || ""; } }
+        // Puedes añadir más columnas si necesitas
+        // { name: "add", label: "", width: 44 } // Columna para el botón '+'
+    ];
+
+    // Escala de tiempo
+    gantt.config.scale_unit = "month";
+    gantt.config.date_scale = "%F, %Y";
+    gantt.config.subscales = [
+        { unit: "week", step: 1, date: "Sem %W" }
+    ];
+    gantt.config.min_column_width = 60;
+
+    // Solo lectura
+    gantt.config.readonly = true;
+
+    // Tooltip
+    gantt.templates.tooltip_text = function(start, end, task){
+        var html = "<b>" + task.text + "</b><br/>";
+        html += "<b>Inicio:</b> " + gantt.templates.tooltip_date_format(start) + "<br/>";
+        html += "<b>Duración:</b> " + task.duration + " día(s)<br/>";
+        if (task.estado) html += "<b>Estado:</b> " + task.estado + "<br/>";
+        if (task.responsable) html += "<b>Responsable:</b> " + task.responsable + "<br/>";
+        if (task.rol) html += "<b>Rol Requerido:</b> " + task.rol + "<br/>";
+        if (task.progress != undefined) html += "<b>Progreso:</b> " + Math.round(task.progress * 100) + "%<br/>";
+        return html;
+    };
+
+    // Clases para las barras
+    gantt.templates.task_class = function (start, end, task) {
+        if (task.estado) {
+            switch (task.estado.toLowerCase()) {
+                case "pendiente": return "estado_pendiente";
+                case "en proceso": return "estado_en_proceso";
+                case "finalizado": return "estado_finalizado";
+            }
+        }
+        return "";
+    };
+
+    // Inicializar el Gantt en el div especificado
+    gantt.init("gantt_here");
+
+    // Cargar datos
+    var idProyecto = @ViewBag.IdProyecto;
+    gantt.load("/Cronograma/GanttData/" + idProyecto, "json");
+
+    // Opcional: Ajustar el layout después de cargar.
+    // A veces, si hay cambios dinámicos, un `gantt.render()` o un `gantt.layout.resize()`
+    // puede ser útil, pero `grid_width` debería manejarlo bien.
+    // gantt.attachEvent("onLoadEnd", function(){
+    //    gantt.render();
+    // });
+
+</script>

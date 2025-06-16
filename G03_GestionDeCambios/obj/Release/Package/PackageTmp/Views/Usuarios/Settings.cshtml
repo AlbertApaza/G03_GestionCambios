@@ -1,0 +1,145 @@
+﻿@model G03_GestionDeCambios.Models.UsuarioViewModel
+@{
+    ViewBag.Title = "Configuración de Perfil";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0"><i class="bi bi-gear-fill me-2"></i>@ViewBag.Title</h4>
+        </div>
+        <div class="card-body p-4">
+
+            @if (ViewBag.SuccessMessage != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    @ViewBag.SuccessMessage
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+            @if (ViewBag.ErrorMessage != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    @ViewBag.ErrorMessage
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+
+            @using (Html.BeginForm("Settings", "Usuarios", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(model => model.IdUsuario)
+                @Html.HiddenFor(model => model.MetodoRegistro)
+                @Html.HiddenFor(model => model.Email)
+                @Html.HiddenFor(model => model.FechaCreacion)
+                @Html.HiddenFor(model => model.FotoPerfilAlmacenada)
+
+
+                <div class="row">
+                    <div class="col-md-8">
+                        <h5 class="mb-3 text-secondary">Información Personal</h5>
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.NombrePilaEditable, new { @class = "form-label" })
+                            @Html.TextBoxFor(m => m.NombrePilaEditable, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.NombrePilaEditable, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.ApellidoEditable, new { @class = "form-label" })
+                            @Html.TextBoxFor(m => m.ApellidoEditable, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.ApellidoEditable, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.NombreUsuarioEditable, new { @class = "form-label" })
+                            @Html.TextBoxFor(m => m.NombreUsuarioEditable, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.NombreUsuarioEditable, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">@Html.DisplayNameFor(m => m.Email)</label>
+                            <p class="form-control-plaintext">@Model.Email</p>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">@Html.DisplayNameFor(m => m.FechaCreacion)</label>
+                            <p class="form-control-plaintext">@(Model.FechaCreacion.HasValue ? Model.FechaCreacion.Value.ToString("dd/MM/yyyy HH:mm") : "N/D")</p>
+                        </div>
+
+                        @if (Model.MetodoRegistro == "Credenciales")
+                        {
+                            <h5 class="mt-4 mb-3 text-secondary">Cambiar Contraseña</h5>
+                            <div class="mb-3">
+                                @Html.LabelFor(m => m.NuevaContrasena, new { @class = "form-label" })
+                                @Html.PasswordFor(m => m.NuevaContrasena, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.NuevaContrasena, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="mb-3">
+                                @Html.LabelFor(m => m.ConfirmarNuevaContrasena, new { @class = "form-label" })
+                                @Html.PasswordFor(m => m.ConfirmarNuevaContrasena, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.ConfirmarNuevaContrasena, "", new { @class = "text-danger" })
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="alert alert-info mt-4">
+                                <i class="bi bi-info-circle-fill me-2"></i>
+                                Has iniciado sesión con Google. La gestión de tu contraseña se realiza directamente a través de tu cuenta de Google.
+                            </div>
+                        }
+                    </div>
+                    <div class="col-md-4">
+                        <h5 class="mb-3 text-secondary">Foto de Perfil</h5>
+                        <div class="text-center">
+                            <img src="@Model.FotoPerfilUrlCompleta"
+                                 id="currentProfilePic" alt="Foto de perfil actual"
+                                 class="img-fluid rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover; border: 3px solid #eee;" />
+                        </div>
+
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.FotoSubida, new { @class = "form-label" })
+                            @Html.TextBoxFor(m => m.FotoSubida, new { type = "file", @class = "form-control form-control-sm", accept = "image/*", onchange = "previewImage(event)" })
+                            @Html.ValidationMessageFor(m => m.FotoSubida, "", new { @class = "text-danger" })
+                        </div>
+                        <p class="text-muted small my-2 text-center">o introduce un enlace URL:</p>
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.LinkFotoPerfil, new { @class = "form-label" })
+                            @Html.TextBoxFor(m => m.LinkFotoPerfil, new { @class = "form-control form-control-sm", placeholder = "https://ejemplo.com/imagen.jpg", type = "url" })
+                            @Html.ValidationMessageFor(m => m.LinkFotoPerfil, "", new { @class = "text-danger" })
+                        </div>
+                        <small class="form-text text-muted d-block text-center">Si subes un archivo, este tendrá prioridad.</small>
+                    </div>
+                </div>
+
+                <hr class="my-4">
+                <div class="d-flex justify-content-end">
+                    <a href="@Url.Action("Profile", "Usuarios")" class="btn btn-outline-secondary me-2">
+                        <i class="bi bi-x-circle me-1"></i> Cancelar
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-save me-1"></i> Guardar Cambios
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function previewImage(event) {
+            var reader = new FileReader();
+            var output = document.getElementById('currentProfilePic');
+            reader.onload = function () {
+                if (output) {
+                    output.src = reader.result;
+                }
+            }
+            if (event.target.files[0]) {
+                reader.readAsDataURL(event.target.files[0]);
+            } else {
+                 var currentUrlFromModel = "@Model.FotoPerfilUrlCompleta";
+                 if (output) {
+                    output.src = currentUrlFromModel;
+                 }
+            }
+        }
+    </script>
+}

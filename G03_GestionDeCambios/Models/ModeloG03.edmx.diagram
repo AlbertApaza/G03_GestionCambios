@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="4133477a5c5d432e93361f49370ebe8d" Name="Diagram1">
+        <EntityTypeShape EntityType="BD_GestionDeCambiosModel.tbCiclos" Width="1.5" PointX="3" PointY="5.5" />
+        <EntityTypeShape EntityType="BD_GestionDeCambiosModel.tbDocumentos" Width="1.5" PointX="5.25" PointY="9.5" />
+        <EntityTypeShape EntityType="BD_GestionDeCambiosModel.tbElementos" Width="1.5" PointX="6" PointY="18" />
+        <EntityTypeShape EntityType="BD_GestionDeCambiosModel.tbMetodologias" Width="1.5" PointX="0.75" PointY="6" />
+        <EntityTypeShape EntityType="BD_GestionDeCambiosModel.tbProyectoCiclo" Width="1.5" PointX="5.25" PointY="6.25" />
+        <EntityTypeShape EntityType="BD_GestionDeCambiosModel.tbProyectoElemento" Width="1.5" PointX="8.25" PointY="9.5" />
+        <EntityTypeShape EntityType="BD_GestionDeCambiosModel.tbProyectos" Width="1.5" PointX="3" PointY="9.375" />
+        <EntityTypeShape EntityType="BD_GestionDeCambiosModel.tbProyectoUsuario" Width="1.5" PointX="5.25" PointY="14.25" />
+        <EntityTypeShape EntityType="BD_GestionDeCambiosModel.tbRoles" Width="1.5" PointX="6" PointY="3" />
+        <EntityTypeShape EntityType="BD_GestionDeCambiosModel.tbSolicitudesCambio" Width="1.5" PointX="10.5" PointY="8.875" />
+        <EntityTypeShape EntityType="BD_GestionDeCambiosModel.tbTareas" Width="1.5" PointX="13.5" PointY="10.125" />
+        <EntityTypeShape EntityType="BD_GestionDeCambiosModel.tbTiposDocumento" Width="1.5" PointX="3" PointY="15.125" />
+        <EntityTypeShape EntityType="BD_GestionDeCambiosModel.tbUsuarios" Width="1.5" PointX="0.75" PointY="9.5" />
+        <AssociationConnector Association="BD_GestionDeCambiosModel.FK__tbCiclos__idMeto__3F466844" />
+        <AssociationConnector Association="BD_GestionDeCambiosModel.FK__tbDocumen__codCi__693CA210" />
+        <AssociationConnector Association="BD_GestionDeCambiosModel.FK__tbProyect__codCi__440B1D61" />
+        <AssociationConnector Association="BD_GestionDeCambiosModel.FK__tbProyect__codCi__48CFD27E" />
+        <AssociationConnector Association="BD_GestionDeCambiosModel.FK__tbProyect__codCi__5535A963" />
+        <AssociationConnector Association="BD_GestionDeCambiosModel.FK__tbTiposDo__codCi__628FA481" />
+        <AssociationConnector Association="BD_GestionDeCambiosModel.FK__tbDocumen__idPro__6A30C649" />
+        <AssociationConnector Association="BD_GestionDeCambiosModel.FK__tbDocumen__idTip__656C112C" />
+        <AssociationConnector Association="BD_GestionDeCambiosModel.FK__tbDocumen__idUsu__6B24EA82" />
+        <AssociationConnector Association="BD_GestionDeCambiosModel.FK__tbProyect__idEle__5165187F" />
+        <AssociationConnector Association="BD_GestionDeCambiosModel.FK__tbProyect__idMet__4316F928" />
+        <AssociationConnector Association="BD_GestionDeCambiosModel.FK__tbRoles__idMetod__4D94879B" />
+        <AssociationConnector Association="BD_GestionDeCambiosModel.FK__tbProyect__idPro__47DBAE45" />
+        <AssociationConnector Association="BD_GestionDeCambiosModel.FK__tbProyect__idPro__5070F446" />
+        <AssociationConnector Association="BD_GestionDeCambiosModel.FK__tbProyect__idRol__52593CB8" />
+        <AssociationConnector Association="BD_GestionDeCambiosModel.FK__tbSolicit__idEle__72C60C4A" />
+        <AssociationConnector Association="BD_GestionDeCambiosModel.FK__tbTareas__idProy__5DCAEF64" />
+        <AssociationConnector Association="BD_GestionDeCambiosModel.FK__tbProyect__idPro__5812160E" />
+        <AssociationConnector Association="BD_GestionDeCambiosModel.FK__tbProyect__idUsu__4222D4EF" />
+        <AssociationConnector Association="BD_GestionDeCambiosModel.FK__tbSolicit__idPro__70DDC3D8" />
+        <AssociationConnector Association="BD_GestionDeCambiosModel.FK__tbProyect__idRol__59FA5E80" />
+        <AssociationConnector Association="BD_GestionDeCambiosModel.FK__tbProyect__idUsu__59063A47" />
+        <AssociationConnector Association="BD_GestionDeCambiosModel.FK__tbSolicit__idUsu__71D1E811" />
+        <AssociationConnector Association="BD_GestionDeCambiosModel.FK__tbSolicit__idUsu__73BA3083" />
+        <AssociationConnector Association="BD_GestionDeCambiosModel.FK__tbTareas__idUsua__5CD6CB2B" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

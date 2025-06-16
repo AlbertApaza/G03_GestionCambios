@@ -1,0 +1,230 @@
+﻿@model G03_GestionDeCambios.Models.DocumentosIndexViewModel
+@{
+    ViewBag.Title = "Documentos del Proyecto: " + Model.NombreProyecto;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <div class="mb-3">
+        <h3>@ViewBag.Title</h3>
+    </div>
+    <p>
+        <strong>Ciclo Actual:</strong> @(string.IsNullOrWhiteSpace(Model.NombreCicloActual) || Model.NombreCicloActual == "N/D" ? "No hay ciclo actual definido para subir documentos." : Model.NombreCicloActual)
+    </p>
+    <hr />
+
+    <div id="uploadMessages">
+        @if (ViewBag.SuccessMessage != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                @ViewBag.SuccessMessage
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+        @if (ViewBag.ErrorMessage != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                @ViewBag.ErrorMessage
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+    </div>
+
+    @if (Model.PuedeSubirDocumentos)
+    {
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header">
+                <h5 class="mb-0">Subir Nuevo Documento (para el ciclo: @Model.NombreCicloActual)</h5>
+            </div>
+            <div class="card-body">
+                <form id="formSubirDocumento" action="@Url.Action("SubirDocumento", "Documentos")" method="post" enctype="multipart/form-data">
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(m => m.IdProyecto)
+                    @Html.HiddenFor(m => m.CodCicloActual)
+                    @Html.HiddenFor(m => m.NombreProyecto)
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            @Html.LabelFor(m => m.ArchivoSubido, new { @class = "form-label" })
+                            @Html.TextBoxFor(m => m.ArchivoSubido, new { type = "file", @class = "form-control", name = "ArchivoSubido" })
+                            @Html.ValidationMessageFor(m => m.ArchivoSubido, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            @Html.LabelFor(m => m.VersionDocumento, new { @class = "form-label" })
+                            @Html.TextBoxFor(m => m.VersionDocumento, new { @class = "form-control", placeholder = "Ej: 1.0, 1.1, Draft" })
+                            @Html.ValidationMessageFor(m => m.VersionDocumento, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        @Html.LabelFor(m => m.ComentariosDocumento, new { @class = "form-label" })
+                        @Html.TextAreaFor(m => m.ComentariosDocumento, new { @class = "form-control", rows = 3 })
+                        @Html.ValidationMessageFor(m => m.ComentariosDocumento, "", new { @class = "text-danger" })
+                    </div>
+                    <button type="submit" class="btn btn-primary"><i class="bi bi-upload me-1"></i> Subir Documento</button>
+                </form>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-warning">
+            No se pueden subir documentos porque el proyecto no tiene un ciclo actual activo o definido.
+        </div>
+    }
+
+    <h4 class="mt-4">Documentos Existentes (<span id="docCount">@(Model.Documentos.Any() ? Model.Documentos.Count.ToString() : "0")</span>)</h4>
+    <div id="listaDocumentosContainer">
+        @if (!Model.Documentos.Any() && !string.IsNullOrWhiteSpace(Model.CodCicloActual))
+        {
+            <div class="alert alert-info" id="noDocsMessage">No hay documentos para el ciclo actual '@Model.NombreCicloActual'.</div>
+        }
+        else if (string.IsNullOrWhiteSpace(Model.CodCicloActual))
+        {
+            <div class="alert alert-info" id="noCicloMessage">No hay un ciclo actual definido para mostrar documentos.</div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-hover table-striped">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Nombre Archivo</th>
+                            <th>Versión</th>
+                            <th>Subido por</th>
+                            <th>Fecha Subida</th>
+                            <th>Comentarios</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var doc in Model.Documentos)
+                        {
+                            <tr id="doc-row-@doc.IdDocumento">
+                                <td>@doc.NombreArchivoOriginal</td>
+                                <td>@doc.Version</td>
+                                <td>@doc.NombreUsuarioSubida</td>
+                                <td>@doc.FechaSubida.ToString("dd/MM/yyyy HH:mm")</td>
+                                <td>@doc.Comentarios</td>
+                                <td>
+                                    <a href="@Url.Action("DescargarDocumento", "Documentos", new { idDocumento = doc.IdDocumento })" class="btn btn-sm btn-success" title="Descargar">
+                                        <i class="bi bi-download"></i>
+                                    </a>
+                                    <button type="button" class="btn btn-sm btn-danger btn-eliminar-documento"
+                                            data-id-documento="@doc.IdDocumento"
+                                            data-id-proyecto="@Model.IdProyecto"
+                                            data-nombre-archivo="@doc.NombreArchivoOriginal"
+                                            title="Eliminar">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(function () {
+            $('#formSubirDocumento').on('submit', function (e) {
+                e.preventDefault();
+                var form = $(this);
+                var formData = new FormData(form[0]);
+                $('#uploadMessages').html('');
+                $.ajax({
+                    url: form.attr('action'),
+                    type: form.attr('method'),
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        var messageHtml = '';
+                        if (response.success) {
+                            messageHtml = '<div class="alert alert-success alert-dismissible fade show" role="alert">' +
+                                response.message +
+                                '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+                            form[0].reset();
+                            alert('Operación exitosa. La página se recargará.');
+                            window.location.reload();
+                        } else {
+                            var errorMessage = response.message;
+                            if (response.errors && response.errors.length > 0) {
+                                errorMessage += '<br/><ul>';
+                                response.errors.forEach(function (err) { errorMessage += '<li>' + err + '</li>'; });
+                                errorMessage += '</ul>';
+                            }
+                            messageHtml = '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                                errorMessage +
+                                '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+                        }
+                        $('#uploadMessages').html(messageHtml);
+                    },
+                    error: function (xhr, status, error) {
+                        var errorMsg = "Error al procesar la solicitud. ";
+                        if (xhr.responseJSON && xhr.responseJSON.message) { errorMsg += xhr.responseJSON.message; }
+                        else { errorMsg += "Error del servidor: " + error; }
+                        var messageHtml = '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                            errorMsg +
+                            '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+                        $('#uploadMessages').html(messageHtml);
+                    }
+                });
+            });
+
+            $('.btn-eliminar-documento').on('click', function () {
+                var button = $(this);
+                var idDocumento = button.data('id-documento');
+                var idProyecto = button.data('id-proyecto');
+                var nombreArchivo = button.data('nombre-archivo');
+
+                if (confirm("¿Está seguro de que desea eliminar el documento '" + nombreArchivo + "'? Esta acción no se puede deshacer.")) {
+                    $('#uploadMessages').html('');
+                    $.ajax({
+                        url: '@Url.Action("EliminarDocumento", "Documentos")',
+                        type: 'POST',
+                        data: {
+                            __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val(),
+                            idDocumento: idDocumento,
+                            idProyecto: idProyecto // Necesario para redirigir correctamente si falla
+                        },
+                        success: function (response) {
+                            var messageHtml = '';
+                            if (response.success) {
+                                messageHtml = '<div class="alert alert-success alert-dismissible fade show" role="alert">' +
+                                    response.message +
+                                    '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+                                $('#doc-row-' + idDocumento).fadeOut(500, function() { $(this).remove(); });
+                                // Actualizar contador (opcional, pero bueno para UX)
+                                var currentCount = parseInt($('#docCount').text()) || 0;
+                                if (currentCount > 0) {
+                                     $('#docCount').text(currentCount - 1);
+                                }
+                                if ((currentCount - 1) === 0 && $('#noDocsMessage').length > 0) {
+                                    $('#noDocsMessage').show(); // Mostrar mensaje si la tabla queda vacía
+                                }
+
+                            } else {
+                                messageHtml = '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                                    response.message +
+                                    '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+                            }
+                             $('#uploadMessages').html(messageHtml);
+                        },
+                        error: function (xhr, status, error) {
+                            var errorMsg = "Error al eliminar el documento. ";
+                             if (xhr.responseJSON && xhr.responseJSON.message) { errorMsg += xhr.responseJSON.message; }
+                             else { errorMsg += "Error del servidor: " + error; }
+                            var messageHtml = '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                                errorMsg +
+                                '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+                            $('#uploadMessages').html(messageHtml);
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}

@@ -1,0 +1,272 @@
+﻿@model G03_GestionDeCambios.Models.AdminDashboardViewModel
+@{
+    ViewBag.Title = "Dashboard de Administrador";
+}
+
+<style>
+    .card-link {
+        text-decoration: none;
+        color: inherit;
+    }
+
+        .card-link:hover {
+            text-decoration: none;
+            color: inherit;
+            opacity: 0.9;
+        }
+</style>
+
+<h2>@ViewBag.Title</h2>
+<p class="lead">Un resumen de los proyectos que administras y sus actividades.</p>
+<hr />
+
+<div class="row">
+    <div class="col-lg-3 col-md-6 mb-4">
+        <a href="@Url.Action("Index", "Proyecto")" class="card-link">
+            <div class="card text-white bg-primary h-100">
+                <div class="card-body"><h3 class="font-weight-bold">@Model.TotalProyectos</h3></div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <span>Proyectos Activos</span><i class="fa fa-angle-right"></i>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-lg-3 col-md-6 mb-4">
+        <a href="#" class="card-link">
+            <div class="card text-white bg-success h-100">
+                <div class="card-body"><h3 class="font-weight-bold">@Model.TotalUsuariosActivos</h3></div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <span>Miembros en Proyectos</span><i class="fa fa-angle-right"></i>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-lg-3 col-md-6 mb-4">
+        <a href="#" class="card-link">
+            <div class="card text-white bg-danger h-100">
+                <div class="card-body"><h3 class="font-weight-bold">@Model.TareasAtrasadas</h3></div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <span>Tareas Atrasadas</span><i class="fa fa-angle-right"></i>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-lg-3 col-md-6 mb-4">
+        <a href="#" class="card-link">
+            <div class="card text-white bg-secondary h-100">
+                <div class="card-body"><h3 class="font-weight-bold">@Model.TotalTareas</h3></div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <span>Tareas Totales</span><i class="fa fa-angle-right"></i>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
+
+<hr />
+
+<div class="row">
+    <div class="col-lg-7">
+        <div class="card mb-4">
+            <div class="card-header">Ranking de Usuarios por Tareas</div>
+            <div class="card-body">
+                @if (Model.UsuariosConMasTareas.Any())
+                {
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Usuario</th>
+                                <th class="text-center">Tareas</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaUsuarios">
+                            @foreach (var usuario in Model.UsuariosConMasTareas)
+                            {
+                                <tr class="usuario-row" data-userid="@usuario.IdUsuario" style="cursor: pointer;">
+                                    <td>@usuario.NombreCompleto</td>
+                                    <td class="text-center">
+                                        <span class="badge bg-warning text-dark" style="font-size: 0.9em;">@usuario.TareasAsignadas</span>
+                                    </td>
+                                </tr>
+                                <tr class="detalle-container" id="detalle-@usuario.IdUsuario" style="display: none;">
+                                    <td colspan="2"></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <p class="text-center text-muted">No hay datos de tareas para mostrar.</p>
+                }
+            </div>
+        </div>
+
+        <!-- ======================= INICIO DE LA TABLA REINSERTADA ======================= -->
+        <div class="card mb-4">
+            <div class="card-header">Proyectos con Solicitudes de Cambio</div>
+            <div class="card-body">
+                @if (Model.ProyectosConMasSolicitudes.Any())
+                {
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Proyecto</th>
+                                <th class="text-center">Cambios</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var proyecto in Model.ProyectosConMasSolicitudes)
+                            {
+                                <tr>
+                                    <td>@proyecto.NombreProyecto</td>
+                                    <td class="text-center">
+                                        <span class="badge bg-danger" style="font-size: 0.9em;">@proyecto.CantidadSolicitudes</span>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <p class="text-center text-muted">No hay solicitudes de cambio registradas.</p>
+                }
+            </div>
+        </div>
+        <!-- ======================= FIN DE LA TABLA REINSERTADA ======================= -->
+
+        <div class="card mb-4">
+            <div class="card-header">Miembros con Proyectos Inactivos</div>
+            <div class="card-body">
+                @if (Model.MiembrosConProyectosInactivos.Any())
+                {
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Miembro</th>
+                                <th>Proyectos donde no tiene tareas</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var miembro in Model.MiembrosConProyectosInactivos)
+                            {
+                                <tr>
+                                    <td>@miembro.NombreCompleto</td>
+                                    <td>
+                                        <ul class="list-unstyled mb-0">
+                                            @foreach (var proyecto in miembro.ProyectosSinTareas)
+                                            {
+                                                <li><span class="badge bg-secondary">@proyecto</span></li>
+                                            }
+                                        </ul>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <div class="alert alert-success text-center" role="alert">
+                        ¡Excelente! Ningún miembro está inactivo en algún proyecto.
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-5">
+        <div class="card mb-4">
+            <div class="card-header">Estado General de Tareas</div>
+            <div class="card-body">
+                <canvas id="tareasChart" style="min-height: 250px;"></canvas>
+            </div>
+        </div>
+        <div class="card mb-4">
+            <div class="card-header">Proyectos con Mayor Actividad</div>
+            <div class="card-body">
+                @if (Model.ProyectosMasActivos.Any())
+                {
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Proyecto</th>
+                                <th class="text-center">Puntaje</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var proyecto in Model.ProyectosMasActivos)
+                            {
+                                <tr>
+                                    <td>@proyecto.NombreProyecto</td>
+                                    <td class="text-center">
+                                        <span class="badge bg-info text-dark" style="font-size: 0.9em;">@proyecto.PuntajeActividad</span>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <p class="text-center text-muted">No hay actividad registrada en los proyectos.</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const ctxTareas = document.getElementById('tareasChart');
+            if (ctxTareas) {
+                const tareaLabels = @Html.Raw(Json.Encode(Model.TareasPorEstadoChart.Labels));
+                const colorMap = {
+                    'Finalizado': 'rgba(40, 167, 69, 0.8)', 'En Proceso': 'rgba(23, 162, 184, 0.8)', 'Pendiente':  'rgba(255, 193, 7, 0.8)', 'default': 'rgba(108, 117, 125, 0.8)'
+                };
+                const dynamicTaskColors = tareaLabels.map(label => colorMap[label] || colorMap['default']);
+                new Chart(ctxTareas, {
+                    type: 'doughnut', data: { labels: tareaLabels, datasets: [{ data: @Html.Raw(Json.Encode(Model.TareasPorEstadoChart.Data)), backgroundColor: dynamicTaskColors, borderColor: '#ffffff', borderWidth: 2 }] },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+                });
+            }
+
+            const ctxMetodologia = document.getElementById('metodologiaChart');
+            if (ctxMetodologia) {
+                new Chart(ctxMetodologia, {
+                    type: 'pie', data: { labels: @Html.Raw(Json.Encode(Model.MetodologiaChart.Labels)), datasets: [{ data: @Html.Raw(Json.Encode(Model.MetodologiaChart.Data)), backgroundColor: ['rgba(67, 97, 238, 0.8)', 'rgba(72, 149, 239, 0.8)', 'rgba(111, 66, 193, 0.8)'], borderColor: '#ffffff', borderWidth: 2 }] },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+                });
+            }
+        });
+
+        $(document).ready(function () {
+            $('#tablaUsuarios').on('click', '.usuario-row', function () {
+                var $this = $(this); var userId = $this.data('userid'); var $detalleRow = $('#detalle-' + userId); var $detalleCell = $detalleRow.find('td');
+                if ($detalleRow.is(':visible')) {
+                    $detalleRow.hide(); $this.removeClass('table-active');
+                } else {
+                    $('.detalle-container').hide(); $('.usuario-row').removeClass('table-active'); $this.addClass('table-active');
+                    if ($detalleCell.is(':empty')) {
+                        $detalleCell.html('<div class="text-center p-3"><i class="fa fa-spinner fa-spin"></i> Cargando...</div>'); $detalleRow.show();
+                        $.get('@Url.Action("GetDetalleUsuario", "Home")', { id: userId }, function (data) { $detalleCell.html(data); }).fail(function() { $detalleCell.html('<div class="alert alert-danger">Error al cargar los datos.</div>'); });
+                    } else { $detalleRow.show(); }
+                }
+            });
+
+            $('#tablaMiembrosSinTareas').on('click', '.miembro-row', function () {
+                var $this = $(this); var userId = $this.data('userid'); var $detalleRow = $('#detalle-miembro-' + userId); var $detalleCell = $detalleRow.find('td');
+                if ($detalleRow.is(':visible')) {
+                    $detalleRow.hide(); $this.removeClass('table-active');
+                } else {
+                    $('.detalle-miembro-container').hide(); $('.miembro-row').removeClass('table-active'); $this.addClass('table-active');
+                    if ($detalleCell.is(':empty')) {
+                        $detalleCell.html('<div class="text-center p-3"><i class="fa fa-spinner fa-spin"></i> Cargando...</div>'); $detalleRow.show();
+                        $.get('@Url.Action("GetProyectosDeMiembro", "Home")', { id: userId }, function (data) { $detalleCell.html(data); }).fail(function() { $detalleCell.html('<div class="alert alert-danger">Error al cargar los datos.</div>'); });
+                    } else { $detalleRow.show(); }
+                }
+            });
+        });
+    </script>
+}

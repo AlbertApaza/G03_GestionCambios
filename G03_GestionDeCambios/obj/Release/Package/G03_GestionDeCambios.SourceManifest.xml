@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sitemanifest>
+  <IisApp path="C:\Users\Kenyi\Desktop\G03_GestionDeCambios (1)\G03_GestionDeCambios\G03_GestionDeCambios\obj\Release\Package\PackageTmp" />
+  <setAcl path="C:\Users\Kenyi\Desktop\G03_GestionDeCambios (1)\G03_GestionDeCambios\G03_GestionDeCambios\obj\Release\Package\PackageTmp" setAclResourceType="Directory" />
+  <setAcl path="C:\Users\Kenyi\Desktop\G03_GestionDeCambios (1)\G03_GestionDeCambios\G03_GestionDeCambios\obj\Release\Package\PackageTmp" setAclUser="anonymousAuthenticationUser" setAclResourceType="Directory" />
+</sitemanifest>

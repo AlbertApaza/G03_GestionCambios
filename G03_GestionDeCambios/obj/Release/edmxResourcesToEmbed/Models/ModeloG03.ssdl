@@ -1,0 +1,571 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="BD_GestionDeCambiosModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="tbCiclos">
+    <Key>
+      <PropertyRef Name="codCiclo" />
+    </Key>
+    <Property Name="codCiclo" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="nombre" Type="nvarchar" MaxLength="50" />
+    <Property Name="orden" Type="int" />
+    <Property Name="idMetodologia" Type="int" />
+  </EntityType>
+  <EntityType Name="tbDocumentos">
+    <Key>
+      <PropertyRef Name="idDocumento" />
+    </Key>
+    <Property Name="idDocumento" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="idTipoDocumento" Type="int" />
+    <Property Name="nombreArchivo" Type="nvarchar" MaxLength="50" />
+    <Property Name="rutaArchivo" Type="nvarchar" MaxLength="150" />
+    <Property Name="version" Type="nvarchar" MaxLength="10" />
+    <Property Name="estado" Type="nvarchar" MaxLength="20" />
+    <Property Name="fechaSubida" Type="datetime" />
+    <Property Name="codCiclo" Type="nvarchar" MaxLength="20" />
+    <Property Name="idProyecto" Type="int" />
+    <Property Name="comentarios" Type="nvarchar(max)" />
+    <Property Name="idUsuarioSubida" Type="int" />
+  </EntityType>
+  <EntityType Name="tbElementos">
+    <Key>
+      <PropertyRef Name="idElemento" />
+    </Key>
+    <Property Name="idElemento" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nombre" Type="nvarchar" MaxLength="100" />
+    <Property Name="descripcion" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="tbMetodologias">
+    <Key>
+      <PropertyRef Name="idMetodologia" />
+    </Key>
+    <Property Name="idMetodologia" Type="int" Nullable="false" />
+    <Property Name="nombre" Type="nvarchar" MaxLength="20" />
+  </EntityType>
+  <EntityType Name="tbProyectoCiclo">
+    <Key>
+      <PropertyRef Name="idProyectoCiclo" />
+    </Key>
+    <Property Name="idProyectoCiclo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="idProyecto" Type="int" />
+    <Property Name="codCiclo" Type="nvarchar" MaxLength="20" />
+    <Property Name="inicioCiclo" Type="date" />
+    <Property Name="finCiclo" Type="date" />
+  </EntityType>
+  <EntityType Name="tbProyectoElemento">
+    <Key>
+      <PropertyRef Name="idProyectoElemento" />
+    </Key>
+    <Property Name="idProyectoElemento" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="idProyecto" Type="int" />
+    <Property Name="idElemento" Type="int" />
+    <Property Name="fechaInicio" Type="date" />
+    <Property Name="fechaFin" Type="date" />
+    <Property Name="idRol" Type="int" />
+    <Property Name="estado" Type="nvarchar" MaxLength="20" />
+    <Property Name="codCiclo" Type="nvarchar" MaxLength="20" />
+  </EntityType>
+  <EntityType Name="tbProyectos">
+    <Key>
+      <PropertyRef Name="idProyecto" />
+    </Key>
+    <Property Name="idProyecto" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nombre" Type="nvarchar" MaxLength="100" />
+    <Property Name="fechaInicio" Type="date" Nullable="false" />
+    <Property Name="fechaFin" Type="date" />
+    <Property Name="idUsuarioCreador" Type="int" Nullable="false" />
+    <Property Name="idMetodologia" Type="int" Nullable="false" />
+    <Property Name="codCicloActual" Type="nvarchar" MaxLength="20" />
+    <Property Name="estado" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tbProyectoUsuario">
+    <Key>
+      <PropertyRef Name="idProyectoUsuario" />
+    </Key>
+    <Property Name="idProyectoUsuario" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="idProyecto" Type="int" />
+    <Property Name="idUsuario" Type="int" />
+    <Property Name="idRol" Type="int" />
+  </EntityType>
+  <EntityType Name="tbRoles">
+    <Key>
+      <PropertyRef Name="idRol" />
+    </Key>
+    <Property Name="idRol" Type="int" Nullable="false" />
+    <Property Name="nombre" Type="nvarchar" MaxLength="50" />
+    <Property Name="idMetodologia" Type="int" />
+  </EntityType>
+  <EntityType Name="tbSolicitudesCambio">
+    <Key>
+      <PropertyRef Name="idSolicitudCambio" />
+    </Key>
+    <Property Name="idSolicitudCambio" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="codigoDocumentoSolicitd" Type="nvarchar" MaxLength="30" Nullable="false" />
+    <Property Name="fechaSolicitud" Type="date" />
+    <Property Name="idProyecto" Type="int" Nullable="false" />
+    <Property Name="idUsuarioSolicitante" Type="int" Nullable="false" />
+    <Property Name="objetivoSolicitud" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="descripcionSolicitud" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="idElementoAfectado" Type="int" />
+    <Property Name="impactoEstimado" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="esfuerzoEstimado" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="idUsuarioReceptor" Type="int" />
+    <Property Name="fechaRecibida" Type="date" />
+    <Property Name="pasoActualProceso" Type="int" Nullable="false" />
+    <Property Name="fechaInicioImplementacionCambio" Type="date" />
+    <Property Name="fechaCierreDelCambio" Type="date" />
+    <Property Name="observaciones" Type="nvarchar(max)" />
+    <Property Name="estadoSolicitud" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="fechaEstado" Type="datetime" />
+    <Property Name="GiroJefeProyectoFecha" Type="datetime" />
+    <Property Name="ModificacionVersionFecha" Type="datetime" />
+  </EntityType>
+  <EntityType Name="tbTareas">
+    <Key>
+      <PropertyRef Name="idTareas" />
+    </Key>
+    <Property Name="idTareas" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="idUsuario" Type="int" />
+    <Property Name="idProyectoElemento" Type="int" />
+    <Property Name="nombre" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="descripcion" Type="nvarchar(max)" />
+    <Property Name="estado" Type="nvarchar" MaxLength="20" />
+  </EntityType>
+  <EntityType Name="tbTiposDocumento">
+    <Key>
+      <PropertyRef Name="idTipoDocumento" />
+    </Key>
+    <Property Name="idTipoDocumento" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nombre" Type="nvarchar" MaxLength="50" />
+    <Property Name="clave" Type="nvarchar" MaxLength="20" />
+    <Property Name="codCiclo" Type="nvarchar" MaxLength="20" />
+  </EntityType>
+  <EntityType Name="tbUsuarios">
+    <Key>
+      <PropertyRef Name="idUsuario" />
+    </Key>
+    <Property Name="idUsuario" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="usuario" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="contrasena" Type="nvarchar" MaxLength="50" />
+    <Property Name="nombre" Type="nvarchar" MaxLength="50" />
+    <Property Name="apellido" Type="nvarchar" MaxLength="50" />
+    <Property Name="email" Type="nvarchar" MaxLength="50" />
+    <Property Name="fechaCreacion" Type="date" />
+    <Property Name="estado" Type="int" Nullable="false" />
+    <Property Name="metodo_registro" Type="nvarchar" MaxLength="50" />
+    <Property Name="foto_perfil" Type="nvarchar(max)" />
+  </EntityType>
+  <Association Name="FK__tbCiclos__idMeto__6C190EBB">
+    <End Role="tbMetodologias" Type="Self.tbMetodologias" Multiplicity="0..1" />
+    <End Role="tbCiclos" Type="Self.tbCiclos" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbMetodologias">
+        <PropertyRef Name="idMetodologia" />
+      </Principal>
+      <Dependent Role="tbCiclos">
+        <PropertyRef Name="idMetodologia" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tbDocumen__codCi__6D0D32F4">
+    <End Role="tbCiclos" Type="Self.tbCiclos" Multiplicity="0..1" />
+    <End Role="tbDocumentos" Type="Self.tbDocumentos" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbCiclos">
+        <PropertyRef Name="codCiclo" />
+      </Principal>
+      <Dependent Role="tbDocumentos">
+        <PropertyRef Name="codCiclo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tbDocumen__idPro__6E01572D">
+    <End Role="tbProyectos" Type="Self.tbProyectos" Multiplicity="0..1" />
+    <End Role="tbDocumentos" Type="Self.tbDocumentos" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbProyectos">
+        <PropertyRef Name="idProyecto" />
+      </Principal>
+      <Dependent Role="tbDocumentos">
+        <PropertyRef Name="idProyecto" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tbDocumen__idTip__6EF57B66">
+    <End Role="tbTiposDocumento" Type="Self.tbTiposDocumento" Multiplicity="0..1" />
+    <End Role="tbDocumentos" Type="Self.tbDocumentos" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbTiposDocumento">
+        <PropertyRef Name="idTipoDocumento" />
+      </Principal>
+      <Dependent Role="tbDocumentos">
+        <PropertyRef Name="idTipoDocumento" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tbDocumen__idUsu__6FE99F9F">
+    <End Role="tbUsuarios" Type="Self.tbUsuarios" Multiplicity="0..1" />
+    <End Role="tbDocumentos" Type="Self.tbDocumentos" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbUsuarios">
+        <PropertyRef Name="idUsuario" />
+      </Principal>
+      <Dependent Role="tbDocumentos">
+        <PropertyRef Name="idUsuarioSubida" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tbProyect__codCi__70DDC3D8">
+    <End Role="tbCiclos" Type="Self.tbCiclos" Multiplicity="0..1" />
+    <End Role="tbProyectoCiclo" Type="Self.tbProyectoCiclo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbCiclos">
+        <PropertyRef Name="codCiclo" />
+      </Principal>
+      <Dependent Role="tbProyectoCiclo">
+        <PropertyRef Name="codCiclo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tbProyect__codCi__72C60C4A">
+    <End Role="tbCiclos" Type="Self.tbCiclos" Multiplicity="0..1" />
+    <End Role="tbProyectoElemento" Type="Self.tbProyectoElemento" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbCiclos">
+        <PropertyRef Name="codCiclo" />
+      </Principal>
+      <Dependent Role="tbProyectoElemento">
+        <PropertyRef Name="codCiclo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tbProyect__codCi__76969D2E">
+    <End Role="tbCiclos" Type="Self.tbCiclos" Multiplicity="0..1" />
+    <End Role="tbProyectos" Type="Self.tbProyectos" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbCiclos">
+        <PropertyRef Name="codCiclo" />
+      </Principal>
+      <Dependent Role="tbProyectos">
+        <PropertyRef Name="codCicloActual" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tbProyect__idEle__73BA3083">
+    <End Role="tbElementos" Type="Self.tbElementos" Multiplicity="0..1" />
+    <End Role="tbProyectoElemento" Type="Self.tbProyectoElemento" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbElementos">
+        <PropertyRef Name="idElemento" />
+      </Principal>
+      <Dependent Role="tbProyectoElemento">
+        <PropertyRef Name="idElemento" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tbProyect__idMet__778AC167">
+    <End Role="tbMetodologias" Type="Self.tbMetodologias" Multiplicity="1" />
+    <End Role="tbProyectos" Type="Self.tbProyectos" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbMetodologias">
+        <PropertyRef Name="idMetodologia" />
+      </Principal>
+      <Dependent Role="tbProyectos">
+        <PropertyRef Name="idMetodologia" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tbProyect__idPro__71D1E811">
+    <End Role="tbProyectos" Type="Self.tbProyectos" Multiplicity="0..1" />
+    <End Role="tbProyectoCiclo" Type="Self.tbProyectoCiclo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbProyectos">
+        <PropertyRef Name="idProyecto" />
+      </Principal>
+      <Dependent Role="tbProyectoCiclo">
+        <PropertyRef Name="idProyecto" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tbProyect__idPro__74AE54BC">
+    <End Role="tbProyectos" Type="Self.tbProyectos" Multiplicity="0..1" />
+    <End Role="tbProyectoElemento" Type="Self.tbProyectoElemento" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbProyectos">
+        <PropertyRef Name="idProyecto" />
+      </Principal>
+      <Dependent Role="tbProyectoElemento">
+        <PropertyRef Name="idProyecto" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tbProyect__idPro__797309D9">
+    <End Role="tbProyectos" Type="Self.tbProyectos" Multiplicity="0..1" />
+    <End Role="tbProyectoUsuario" Type="Self.tbProyectoUsuario" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbProyectos">
+        <PropertyRef Name="idProyecto" />
+      </Principal>
+      <Dependent Role="tbProyectoUsuario">
+        <PropertyRef Name="idProyecto" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tbProyect__idRol__75A278F5">
+    <End Role="tbRoles" Type="Self.tbRoles" Multiplicity="0..1" />
+    <End Role="tbProyectoElemento" Type="Self.tbProyectoElemento" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbRoles">
+        <PropertyRef Name="idRol" />
+      </Principal>
+      <Dependent Role="tbProyectoElemento">
+        <PropertyRef Name="idRol" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tbProyect__idRol__7A672E12">
+    <End Role="tbRoles" Type="Self.tbRoles" Multiplicity="0..1" />
+    <End Role="tbProyectoUsuario" Type="Self.tbProyectoUsuario" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbRoles">
+        <PropertyRef Name="idRol" />
+      </Principal>
+      <Dependent Role="tbProyectoUsuario">
+        <PropertyRef Name="idRol" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tbProyect__idUsu__787EE5A0">
+    <End Role="tbUsuarios" Type="Self.tbUsuarios" Multiplicity="1" />
+    <End Role="tbProyectos" Type="Self.tbProyectos" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbUsuarios">
+        <PropertyRef Name="idUsuario" />
+      </Principal>
+      <Dependent Role="tbProyectos">
+        <PropertyRef Name="idUsuarioCreador" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tbProyect__idUsu__7B5B524B">
+    <End Role="tbUsuarios" Type="Self.tbUsuarios" Multiplicity="0..1" />
+    <End Role="tbProyectoUsuario" Type="Self.tbProyectoUsuario" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbUsuarios">
+        <PropertyRef Name="idUsuario" />
+      </Principal>
+      <Dependent Role="tbProyectoUsuario">
+        <PropertyRef Name="idUsuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tbRoles__idMetod__7C4F7684">
+    <End Role="tbMetodologias" Type="Self.tbMetodologias" Multiplicity="0..1" />
+    <End Role="tbRoles" Type="Self.tbRoles" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbMetodologias">
+        <PropertyRef Name="idMetodologia" />
+      </Principal>
+      <Dependent Role="tbRoles">
+        <PropertyRef Name="idMetodologia" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tbSolicit__idEle__7D439ABD">
+    <End Role="tbProyectoElemento" Type="Self.tbProyectoElemento" Multiplicity="0..1" />
+    <End Role="tbSolicitudesCambio" Type="Self.tbSolicitudesCambio" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbProyectoElemento">
+        <PropertyRef Name="idProyectoElemento" />
+      </Principal>
+      <Dependent Role="tbSolicitudesCambio">
+        <PropertyRef Name="idElementoAfectado" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tbSolicit__idPro__7E37BEF6">
+    <End Role="tbProyectos" Type="Self.tbProyectos" Multiplicity="1" />
+    <End Role="tbSolicitudesCambio" Type="Self.tbSolicitudesCambio" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbProyectos">
+        <PropertyRef Name="idProyecto" />
+      </Principal>
+      <Dependent Role="tbSolicitudesCambio">
+        <PropertyRef Name="idProyecto" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tbSolicit__idUsu__00200768">
+    <End Role="tbUsuarios" Type="Self.tbUsuarios" Multiplicity="0..1" />
+    <End Role="tbSolicitudesCambio" Type="Self.tbSolicitudesCambio" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbUsuarios">
+        <PropertyRef Name="idUsuario" />
+      </Principal>
+      <Dependent Role="tbSolicitudesCambio">
+        <PropertyRef Name="idUsuarioReceptor" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tbSolicit__idUsu__7F2BE32F">
+    <End Role="tbUsuarios" Type="Self.tbUsuarios" Multiplicity="1" />
+    <End Role="tbSolicitudesCambio" Type="Self.tbSolicitudesCambio" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbUsuarios">
+        <PropertyRef Name="idUsuario" />
+      </Principal>
+      <Dependent Role="tbSolicitudesCambio">
+        <PropertyRef Name="idUsuarioSolicitante" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tbTareas__idProy__01142BA1">
+    <End Role="tbProyectoElemento" Type="Self.tbProyectoElemento" Multiplicity="0..1" />
+    <End Role="tbTareas" Type="Self.tbTareas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbProyectoElemento">
+        <PropertyRef Name="idProyectoElemento" />
+      </Principal>
+      <Dependent Role="tbTareas">
+        <PropertyRef Name="idProyectoElemento" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tbTareas__idUsua__02084FDA">
+    <End Role="tbUsuarios" Type="Self.tbUsuarios" Multiplicity="0..1" />
+    <End Role="tbTareas" Type="Self.tbTareas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbUsuarios">
+        <PropertyRef Name="idUsuario" />
+      </Principal>
+      <Dependent Role="tbTareas">
+        <PropertyRef Name="idUsuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tbTiposDo__codCi__02FC7413">
+    <End Role="tbCiclos" Type="Self.tbCiclos" Multiplicity="0..1" />
+    <End Role="tbTiposDocumento" Type="Self.tbTiposDocumento" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbCiclos">
+        <PropertyRef Name="codCiclo" />
+      </Principal>
+      <Dependent Role="tbTiposDocumento">
+        <PropertyRef Name="codCiclo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="BD_GestionDeCambiosModelStoreContainer">
+    <EntitySet Name="tbCiclos" EntityType="Self.tbCiclos" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbDocumentos" EntityType="Self.tbDocumentos" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbElementos" EntityType="Self.tbElementos" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbMetodologias" EntityType="Self.tbMetodologias" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbProyectoCiclo" EntityType="Self.tbProyectoCiclo" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbProyectoElemento" EntityType="Self.tbProyectoElemento" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbProyectos" EntityType="Self.tbProyectos" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbProyectoUsuario" EntityType="Self.tbProyectoUsuario" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbRoles" EntityType="Self.tbRoles" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbSolicitudesCambio" EntityType="Self.tbSolicitudesCambio" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbTareas" EntityType="Self.tbTareas" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbTiposDocumento" EntityType="Self.tbTiposDocumento" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbUsuarios" EntityType="Self.tbUsuarios" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__tbCiclos__idMeto__6C190EBB" Association="Self.FK__tbCiclos__idMeto__6C190EBB">
+      <End Role="tbMetodologias" EntitySet="tbMetodologias" />
+      <End Role="tbCiclos" EntitySet="tbCiclos" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbDocumen__codCi__6D0D32F4" Association="Self.FK__tbDocumen__codCi__6D0D32F4">
+      <End Role="tbCiclos" EntitySet="tbCiclos" />
+      <End Role="tbDocumentos" EntitySet="tbDocumentos" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbDocumen__idPro__6E01572D" Association="Self.FK__tbDocumen__idPro__6E01572D">
+      <End Role="tbProyectos" EntitySet="tbProyectos" />
+      <End Role="tbDocumentos" EntitySet="tbDocumentos" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbDocumen__idTip__6EF57B66" Association="Self.FK__tbDocumen__idTip__6EF57B66">
+      <End Role="tbTiposDocumento" EntitySet="tbTiposDocumento" />
+      <End Role="tbDocumentos" EntitySet="tbDocumentos" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbDocumen__idUsu__6FE99F9F" Association="Self.FK__tbDocumen__idUsu__6FE99F9F">
+      <End Role="tbUsuarios" EntitySet="tbUsuarios" />
+      <End Role="tbDocumentos" EntitySet="tbDocumentos" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbProyect__codCi__70DDC3D8" Association="Self.FK__tbProyect__codCi__70DDC3D8">
+      <End Role="tbCiclos" EntitySet="tbCiclos" />
+      <End Role="tbProyectoCiclo" EntitySet="tbProyectoCiclo" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbProyect__codCi__72C60C4A" Association="Self.FK__tbProyect__codCi__72C60C4A">
+      <End Role="tbCiclos" EntitySet="tbCiclos" />
+      <End Role="tbProyectoElemento" EntitySet="tbProyectoElemento" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbProyect__codCi__76969D2E" Association="Self.FK__tbProyect__codCi__76969D2E">
+      <End Role="tbCiclos" EntitySet="tbCiclos" />
+      <End Role="tbProyectos" EntitySet="tbProyectos" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbProyect__idEle__73BA3083" Association="Self.FK__tbProyect__idEle__73BA3083">
+      <End Role="tbElementos" EntitySet="tbElementos" />
+      <End Role="tbProyectoElemento" EntitySet="tbProyectoElemento" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbProyect__idMet__778AC167" Association="Self.FK__tbProyect__idMet__778AC167">
+      <End Role="tbMetodologias" EntitySet="tbMetodologias" />
+      <End Role="tbProyectos" EntitySet="tbProyectos" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbProyect__idPro__71D1E811" Association="Self.FK__tbProyect__idPro__71D1E811">
+      <End Role="tbProyectos" EntitySet="tbProyectos" />
+      <End Role="tbProyectoCiclo" EntitySet="tbProyectoCiclo" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbProyect__idPro__74AE54BC" Association="Self.FK__tbProyect__idPro__74AE54BC">
+      <End Role="tbProyectos" EntitySet="tbProyectos" />
+      <End Role="tbProyectoElemento" EntitySet="tbProyectoElemento" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbProyect__idPro__797309D9" Association="Self.FK__tbProyect__idPro__797309D9">
+      <End Role="tbProyectos" EntitySet="tbProyectos" />
+      <End Role="tbProyectoUsuario" EntitySet="tbProyectoUsuario" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbProyect__idRol__75A278F5" Association="Self.FK__tbProyect__idRol__75A278F5">
+      <End Role="tbRoles" EntitySet="tbRoles" />
+      <End Role="tbProyectoElemento" EntitySet="tbProyectoElemento" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbProyect__idRol__7A672E12" Association="Self.FK__tbProyect__idRol__7A672E12">
+      <End Role="tbRoles" EntitySet="tbRoles" />
+      <End Role="tbProyectoUsuario" EntitySet="tbProyectoUsuario" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbProyect__idUsu__787EE5A0" Association="Self.FK__tbProyect__idUsu__787EE5A0">
+      <End Role="tbUsuarios" EntitySet="tbUsuarios" />
+      <End Role="tbProyectos" EntitySet="tbProyectos" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbProyect__idUsu__7B5B524B" Association="Self.FK__tbProyect__idUsu__7B5B524B">
+      <End Role="tbUsuarios" EntitySet="tbUsuarios" />
+      <End Role="tbProyectoUsuario" EntitySet="tbProyectoUsuario" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbRoles__idMetod__7C4F7684" Association="Self.FK__tbRoles__idMetod__7C4F7684">
+      <End Role="tbMetodologias" EntitySet="tbMetodologias" />
+      <End Role="tbRoles" EntitySet="tbRoles" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbSolicit__idEle__7D439ABD" Association="Self.FK__tbSolicit__idEle__7D439ABD">
+      <End Role="tbProyectoElemento" EntitySet="tbProyectoElemento" />
+      <End Role="tbSolicitudesCambio" EntitySet="tbSolicitudesCambio" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbSolicit__idPro__7E37BEF6" Association="Self.FK__tbSolicit__idPro__7E37BEF6">
+      <End Role="tbProyectos" EntitySet="tbProyectos" />
+      <End Role="tbSolicitudesCambio" EntitySet="tbSolicitudesCambio" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbSolicit__idUsu__00200768" Association="Self.FK__tbSolicit__idUsu__00200768">
+      <End Role="tbUsuarios" EntitySet="tbUsuarios" />
+      <End Role="tbSolicitudesCambio" EntitySet="tbSolicitudesCambio" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbSolicit__idUsu__7F2BE32F" Association="Self.FK__tbSolicit__idUsu__7F2BE32F">
+      <End Role="tbUsuarios" EntitySet="tbUsuarios" />
+      <End Role="tbSolicitudesCambio" EntitySet="tbSolicitudesCambio" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbTareas__idProy__01142BA1" Association="Self.FK__tbTareas__idProy__01142BA1">
+      <End Role="tbProyectoElemento" EntitySet="tbProyectoElemento" />
+      <End Role="tbTareas" EntitySet="tbTareas" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbTareas__idUsua__02084FDA" Association="Self.FK__tbTareas__idUsua__02084FDA">
+      <End Role="tbUsuarios" EntitySet="tbUsuarios" />
+      <End Role="tbTareas" EntitySet="tbTareas" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbTiposDo__codCi__02FC7413" Association="Self.FK__tbTiposDo__codCi__02FC7413">
+      <End Role="tbCiclos" EntitySet="tbCiclos" />
+      <End Role="tbTiposDocumento" EntitySet="tbTiposDocumento" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

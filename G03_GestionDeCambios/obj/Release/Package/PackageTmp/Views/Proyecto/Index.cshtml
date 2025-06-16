@@ -1,0 +1,61 @@
+﻿@model IEnumerable<G03_GestionDeCambios.Models.tbProyectos>
+@{
+    ViewBag.Title = "Mis Proyectos";
+}
+<style>
+    body {
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        transition: transform 0.2s ease-in-out;
+    }
+
+    .card-title {
+        font-weight: 600;
+    }
+</style>
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-primary">Mis Proyectos</h2>
+        <a href="@Url.Action("Crear", "Proyecto")" class="btn btn-success shadow-sm">➕ Nuevo Proyecto</a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info text-center">
+            No tienes proyectos registrados aún.
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var proyecto in Model)
+            {
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card shadow-sm border-0 h-100">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary">
+                                #@proyecto.idProyecto - @proyecto.nombre
+                            </h5>
+                            <p class="card-text mb-1">
+                                <strong>📅 Inicio:</strong> @proyecto.fechaInicio.ToShortDateString()
+                            </p>
+                            <p class="card-text mb-1">
+                                <strong>📅 Fin:</strong> @(proyecto.fechaFin?.ToShortDateString() ?? "No definida")
+                            </p>
+                            <p class="card-text mb-1">
+                                <strong>📌 Estado:</strong> @proyecto.estado
+                            </p>
+                            <p class="card-text mb-3">
+                                <strong>🧭 Metodología:</strong> @proyecto.tbMetodologias.nombre
+                            </p>
+                            <a href="@Url.Action("Tareas", "Tareas", new { idProyecto = proyecto.idProyecto })" class="btn btn-outline-primary w-100">🔍 Ver Proyecto</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

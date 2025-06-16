@@ -1,0 +1,381 @@
+﻿@model G03_GestionDeCambios.Models.ProyectoElementosViewModel
+@{
+    ViewBag.Title = "Gestionar Elementos del Proyecto";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    Func<DateTime?, string> FormatDateForInput = (date) => date.HasValue ? date.Value.ToString("yyyy-MM-dd") : "";
+    string fechaInicioProyectoStr = FormatDateForInput(Model.FechaInicioProyecto);
+    string fechaFinProyectoStr = FormatDateForInput(Model.FechaFinProyecto);
+}
+<h2>@ViewBag.Title: @Model.NombreProyecto <small>(Metodología: @Model.NombreMetodologia)</small></h2>
+<p>
+    Fechas del Proyecto: <strong>@fechaInicioProyectoStr</strong>
+    @if (Model.FechaFinProyecto.HasValue)
+    {
+        <span> al <strong>@fechaFinProyectoStr</strong></span>
+    }
+    else
+    {
+        <span> (Proyecto sin fecha de fin definida)</span>
+    }
+</p>
+<hr />
+@if (TempData["Exito"] != null)
+{<div class="alert alert-success">@TempData["Exito"]</div>}
+@if (TempData["Error"] != null)
+{<div class="alert alert-danger">@TempData["Error"]</div>}
+@Html.ValidationSummary(false, "", new { @class = "alert alert-danger" })
+
+@using (Html.BeginForm("Elementos", "Proyecto", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.IdProyecto)
+    @Html.HiddenFor(m => m.NombreProyecto)
+    @Html.HiddenFor(m => m.NombreMetodologia)
+    @Html.HiddenFor(m => m.FechaInicioProyecto)
+    @Html.HiddenFor(m => m.FechaFinProyecto)
+
+    <div class="accordion" id="accordionCiclos">
+        @for (int i = 0; i < Model.CiclosDelProyecto.Count; i++)
+        {
+            var ciclo = Model.CiclosDelProyecto[i];
+            string idFechaInicioCiclo = $"CiclosDelProyecto_{i}_FechaInicioCiclo";
+            string idFechaFinCiclo = $"CiclosDelProyecto_{i}_FechaFinCiclo";
+            string idElementosContainer = $"elementosContainer_ciclo_{i}";
+            string idAcordeonButton = $"acordeonButton_ciclo_{i}";
+            string idAcordeonCollapse = $"acordeonCollapse_ciclo_{i}";
+
+            bool habilitarFechasCicloActual = true;
+            string minFechaInicioCicloActual = fechaInicioProyectoStr;
+
+            if (i > 0)
+            {
+                var cicloAnterior = Model.CiclosDelProyecto[i - 1];
+                habilitarFechasCicloActual = cicloAnterior.FechaInicioCiclo.HasValue && cicloAnterior.FechaFinCiclo.HasValue;
+                if (habilitarFechasCicloActual)
+                {
+                    minFechaInicioCicloActual = FormatDateForInput(cicloAnterior.FechaFinCiclo);
+                }
+            }
+            bool habilitarElementosEsteCiclo = ciclo.FechaInicioCiclo.HasValue && ciclo.FechaFinCiclo.HasValue;
+
+            @Html.HiddenFor(m => m.CiclosDelProyecto[i].CodCiclo)
+            @Html.HiddenFor(m => m.CiclosDelProyecto[i].NombreCiclo)
+            @Html.HiddenFor(m => m.CiclosDelProyecto[i].OrdenCiclo)
+            @Html.HiddenFor(m => m.CiclosDelProyecto[i].IdProyectoCiclo)
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading_@idAcordeonButton">
+                    <button class="accordion-button @(i == 0 ? "" : (habilitarFechasCicloActual ? "" : "collapsed"))" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#@idAcordeonCollapse"
+                            aria-expanded="@(i == 0 ? "true" : (habilitarFechasCicloActual ? "true" : "false"))" aria-controls="@idAcordeonCollapse"
+                            id="@idAcordeonButton" @((i > 0 && !habilitarFechasCicloActual) ? "disabled" : "")>
+                        <strong>@(i + 1). @ciclo.NombreCiclo</strong>
+                        @if (ciclo.FechaInicioCiclo.HasValue && ciclo.FechaFinCiclo.HasValue)
+                        {
+                            <small class="ms-2 text-muted">(@FormatDateForInput(ciclo.FechaInicioCiclo) - @FormatDateForInput(ciclo.FechaFinCiclo))</small>
+                        }
+                    </button>
+                </h2>
+                <div id="@idAcordeonCollapse" class="accordion-collapse collapse @(i == 0 ? "show" : (habilitarFechasCicloActual ? "show" : ""))"
+                     aria-labelledby="heading_@idAcordeonButton" data-bs-parent="#accordionCiclos">
+                    <div class="accordion-body">
+                        <h5>Fechas del Ciclo: @ciclo.NombreCiclo</h5>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                @Html.LabelFor(m => m.CiclosDelProyecto[i].FechaInicioCiclo, new { @class = "form-label" })
+                                @Html.TextBoxFor(m => m.CiclosDelProyecto[i].FechaInicioCiclo, "{0:yyyy-MM-dd}",
+                                    new
+                                         {
+                                        @class = "form-control fecha-ciclo-inicio",
+                                             type = "date",
+                                             id = idFechaInicioCiclo,
+                                        min = minFechaInicioCicloActual,
+                                             max = fechaFinProyectoStr,
+                                             data_ciclo_index = i
+                                    })
+                                @Html.ValidationMessageFor(m => m.CiclosDelProyecto[i].FechaInicioCiclo, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-6">
+                                @Html.LabelFor(m => m.CiclosDelProyecto[i].FechaFinCiclo, new { @class = "form-label" })
+                                @Html.TextBoxFor(m => m.CiclosDelProyecto[i].FechaFinCiclo, "{0:yyyy-MM-dd}",
+                                    new
+                                         {
+                                        @class = "form-control fecha-ciclo-fin",
+                                             type = "date",
+                                             id = idFechaFinCiclo,
+                                        min = FormatDateForInput(ciclo.FechaInicioCiclo),
+                                             max = fechaFinProyectoStr,
+                                        data_ciclo_index = i,
+                                             disabled = (!ciclo.FechaInicioCiclo.HasValue || (i > 0 && !habilitarFechasCicloActual))
+                                    })
+                                @Html.ValidationMessageFor(m => m.CiclosDelProyecto[i].FechaFinCiclo, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <hr />
+                        <div id="@idElementosContainer" class="elementos-container @(!habilitarElementosEsteCiclo ? "disabled-section" : "")">
+                            <h6>Elementos Asignados a @ciclo.NombreCiclo</h6>
+                            @if (ciclo.ElementosAsignados.Any())
+                            {
+                                <table class="table table-sm table-bordered tabla-elementos">
+                                    <thead>
+                                        <tr>
+                                            <th>Elemento</th>
+                                            <th>Fecha Inicio</th>
+                                            <th>Fecha Fin</th>
+                                            <th>Rol</th>
+                                            <th>Acción</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for (int j = 0; j < ciclo.ElementosAsignados.Count; j++)
+                                        {
+                                            var elemento = ciclo.ElementosAsignados[j];
+                                            string idFechaInicioElemento = $"CiclosDelProyecto_{i}_ElementosAsignados_{j}_FechaInicioElemento";
+                                            string idFechaFinElemento = $"CiclosDelProyecto_{i}_ElementosAsignados_{j}_FechaFinElemento";
+                                            // No necesitamos un ID para el rol aquí si solo mostramos texto
+                                            <tr>
+                                                @Html.HiddenFor(m => m.CiclosDelProyecto[i].ElementosAsignados[j].IdProyectoElemento)
+                                                @Html.HiddenFor(m => m.CiclosDelProyecto[i].ElementosAsignados[j].IdElemento)
+                                                @Html.HiddenFor(m => m.CiclosDelProyecto[i].ElementosAsignados[j].NombreElemento)
+                                                @Html.HiddenFor(m => m.CiclosDelProyecto[i].ElementosAsignados[j].CodCiclo)
+                                                @Html.HiddenFor(m => m.CiclosDelProyecto[i].ElementosAsignados[j].MarcadoParaEliminar, new { @class = "marcado-para-eliminar" })
+                                                @* Mantenemos IdRol oculto por si la lógica del post lo necesita o para futuras ediciones *@
+                                                @Html.HiddenFor(m => m.CiclosDelProyecto[i].ElementosAsignados[j].IdRol)
+                                                <td>@elemento.NombreElemento</td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.CiclosDelProyecto[i].ElementosAsignados[j].FechaInicioElemento, "{0:yyyy-MM-dd}",
+                                                        new
+                                                             {
+                                                            @class = "form-control form-control-sm fecha-elemento-inicio",
+                                                                 type = "date",
+                                                                 id = idFechaInicioElemento,
+                                                            min = FormatDateForInput(ciclo.FechaInicioCiclo),
+                                                                 max = FormatDateForInput(ciclo.FechaFinCiclo)
+                                                        })
+                                                    @Html.ValidationMessageFor(m => m.CiclosDelProyecto[i].ElementosAsignados[j].FechaInicioElemento, "", new { @class = "text-danger" })
+                                                </td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.CiclosDelProyecto[i].ElementosAsignados[j].FechaFinElemento, "{0:yyyy-MM-dd}",
+                                                        new
+                                                             {
+                                                            @class = "form-control form-control-sm fecha-elemento-fin",
+                                                                 type = "date",
+                                                                 id = idFechaFinElemento,
+                                                            min = FormatDateForInput(elemento.FechaInicioElemento),
+                                                                 max = FormatDateForInput(ciclo.FechaFinCiclo),
+                                                            disabled = !elemento.FechaInicioElemento.HasValue
+                                                        })
+                                                    @Html.ValidationMessageFor(m => m.CiclosDelProyecto[i].ElementosAsignados[j].FechaFinElemento, "", new { @class = "text-danger" })
+                                                </td>
+                                                <td>
+                                                    @* MOSTRAR ROL COMO TEXTO *@
+                                                    @Html.DisplayFor(m => elemento.NombreRol)
+                                                </td>
+                                                <td><button type="button" class="btn btn-danger btn-sm btn-remove-element" title="Eliminar"><i class="fas fa-trash"></i></button></td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            }
+                            else
+                            { <p>No hay elementos asignados.</p>}
+
+                            <div class="mt-3 p-3 border rounded agregar-nuevo-elemento-form">
+                                <h6>Agregar Nuevo Elemento</h6>
+                                <div class="row g-3 align-items-end">
+                                    <div class="col-md-3">
+                                        @Html.LabelFor(m => m.CiclosDelProyecto[i].IdElementoAAgregar, new { @class = "form-label" })
+                                        @Html.DropDownListFor(m => m.CiclosDelProyecto[i].IdElementoAAgregar, Model.TodosLosElementosDisponibles, new { @class = "form-select" })
+                                        @Html.ValidationMessageFor(m => m.CiclosDelProyecto[i].IdElementoAAgregar, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.LabelFor(m => m.CiclosDelProyecto[i].IdRolNuevoElemento, new { @class = "form-label" })
+                                        @Html.DropDownListFor(m => m.CiclosDelProyecto[i].IdRolNuevoElemento, Model.RolesDisponiblesParaElementos, new { @class = "form-select" })
+                                        @Html.ValidationMessageFor(m => m.CiclosDelProyecto[i].IdRolNuevoElemento, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-md-2">
+                                        @Html.LabelFor(m => m.CiclosDelProyecto[i].FechaInicioNuevoElemento, new { @class = "form-label" })
+                                        @Html.TextBoxFor(m => m.CiclosDelProyecto[i].FechaInicioNuevoElemento, "{0:yyyy-MM-dd}", new { @class = "form-control fecha-nuevo-elemento-inicio", type = "date", min = FormatDateForInput(ciclo.FechaInicioCiclo), max = FormatDateForInput(ciclo.FechaFinCiclo) })
+                                        @Html.ValidationMessageFor(m => m.CiclosDelProyecto[i].FechaInicioNuevoElemento, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-md-2">
+                                        @Html.LabelFor(m => m.CiclosDelProyecto[i].FechaFinNuevoElemento, new { @class = "form-label" })
+                                        @Html.TextBoxFor(m => m.CiclosDelProyecto[i].FechaFinNuevoElemento, "{0:yyyy-MM-dd}", new { @class = "form-control fecha-nuevo-elemento-fin", type = "date", min = "", max = FormatDateForInput(ciclo.FechaFinCiclo), disabled = true })
+                                        @Html.ValidationMessageFor(m => m.CiclosDelProyecto[i].FechaFinNuevoElemento, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="form-group mt-4">
+        <button type="submit" class="btn btn-primary">Guardar Gestión de Elementos</button>
+        @Html.ActionLink("Volver a Proyectos", "Index", "Proyecto", null, new { @class = "btn btn-info" })
+    </div>
+}
+@section Scripts {
+    @* El script JavaScript existente debería funcionar bien, ya que los cambios principales son en el HTML generado y no en la lógica de habilitación/deshabilitación de secciones. *@
+    <style>
+        .disabled-section {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+    </style>
+    <script>
+    $(document).ready(function () {
+        const fechaInicioProyecto = '@fechaInicioProyectoStr';
+        const fechaFinProyecto = '@fechaFinProyectoStr';
+
+        function toggleElementosSection(cicloIndex, habilitar) {
+            const container = $(`#elementosContainer_ciclo_${cicloIndex}`);
+            if (habilitar) {
+                container.removeClass('disabled-section');
+                container.find('input, select, button').not('.btn-remove-element.disabled').prop('disabled', false);
+                container.find('.fecha-elemento-fin').each(function() {
+                    if (!$(this).closest('tr').find('.fecha-elemento-inicio').val()) {
+                        $(this).prop('disabled', true);
+                    }
+                });
+                const fechaInicioNuevoEl = container.find('.fecha-nuevo-elemento-inicio').val();
+                if (!fechaInicioNuevoEl) {
+                    container.find('.fecha-nuevo-elemento-fin').prop('disabled', true);
+                }
+            } else {
+                container.addClass('disabled-section');
+                container.find('input, select, button').prop('disabled', true);
+            }
+        }
+
+        function actualizarFechasElementos(cicloIndex, fechaInicioCiclo, fechaFinCiclo) {
+            const container = $(`#elementosContainer_ciclo_${cicloIndex}`);
+            container.find('.fecha-elemento-inicio, .fecha-nuevo-elemento-inicio').each(function() {
+                $(this).attr('min', fechaInicioCiclo).attr('max', fechaFinCiclo);
+            });
+            container.find('.fecha-elemento-fin, .fecha-nuevo-elemento-fin').each(function() {
+                const fechaInicioAsociada = $(this).closest('tr, .row').find('.fecha-elemento-inicio, .fecha-nuevo-elemento-inicio').val();
+                $(this).attr('max', fechaFinCiclo);
+                if (fechaInicioAsociada) $(this).attr('min', fechaInicioAsociada);
+            });
+        }
+
+        function manejarCambioFechaCiclo(cicloIndex) {
+            const inicioCicloField = $(`#CiclosDelProyecto_${cicloIndex}_FechaInicioCiclo`);
+            const finCicloField = $(`#CiclosDelProyecto_${cicloIndex}_FechaFinCiclo`);
+            const inicioCicloVal = inicioCicloField.val();
+            const finCicloVal = finCicloField.val();
+
+            if (inicioCicloVal) {
+                finCicloField.prop('disabled', false).attr('min', inicioCicloVal);
+            } else {
+                finCicloField.prop('disabled', true).val('');
+                toggleElementosSection(cicloIndex, false);
+            }
+
+            if (inicioCicloVal && finCicloVal) {
+                toggleElementosSection(cicloIndex, true);
+                actualizarFechasElementos(cicloIndex, inicioCicloVal, finCicloVal);
+            } else {
+                toggleElementosSection(cicloIndex, false);
+            }
+
+            const siguienteCicloIndex = cicloIndex + 1;
+            const acordeonBtnSiguiente = $(`#acordeonButton_ciclo_${siguienteCicloIndex}`);
+            const inicioSiguienteCicloField = $(`#CiclosDelProyecto_${siguienteCicloIndex}_FechaInicioCiclo`);
+
+            if (acordeonBtnSiguiente.length) {
+                if (inicioCicloVal && finCicloVal) {
+                    acordeonBtnSiguiente.prop('disabled', false);
+                    inicioSiguienteCicloField.prop('disabled', false).attr('min', finCicloVal);
+                } else {
+                    for (let k = siguienteCicloIndex; k < @Model.CiclosDelProyecto.Count; k++) {
+                        $(`#acordeonButton_ciclo_${k}`).prop('disabled', true).addClass('collapsed').attr('aria-expanded', 'false');
+                        $(`#${$(`#acordeonButton_ciclo_${k}`).data('bs-target').substring(1)}`).removeClass('show');
+                        $(`#CiclosDelProyecto_${k}_FechaInicioCiclo`).prop('disabled', true).val('');
+                        $(`#CiclosDelProyecto_${k}_FechaFinCiclo`).prop('disabled', true).val('');
+                        toggleElementosSection(k, false);
+                    }
+                }
+            }
+
+            const acordeonButtonActual = $(`#acordeonButton_ciclo_${cicloIndex}`);
+            let nombreCicloBase = "";
+            const strongContent = acordeonButtonActual.find('strong');
+            if (strongContent.find('small').length > 0) {
+                 nombreCicloBase = strongContent.clone().children().remove().end().text().trim();
+            } else {
+                 nombreCicloBase = strongContent.text().trim();
+            }
+
+            if(inicioCicloVal && finCicloVal){
+                acordeonButtonActual.find('strong').html(`${nombreCicloBase} <small class="ms-2 text-muted">(${inicioCicloVal} - ${finCicloVal})</small>`);
+            } else {
+                 acordeonButtonActual.find('strong').text(nombreCicloBase);
+            }
+        }
+
+        $('.fecha-ciclo-inicio, .fecha-ciclo-fin').on('change input', function () {
+            const cicloIndex = parseInt($(this).data('ciclo-index'));
+            manejarCambioFechaCiclo(cicloIndex);
+        });
+
+        $('body').on('change input', '.fecha-elemento-inicio, .fecha-nuevo-elemento-inicio', function() {
+            const inicioVal = $(this).val();
+            const finField = $(this).closest('tr, .row').find('.fecha-elemento-fin, .fecha-nuevo-elemento-fin');
+            if (inicioVal) {
+                finField.prop('disabled', false).attr('min', inicioVal);
+            } else {
+                finField.prop('disabled', true).val('');
+            }
+        });
+
+        $('body').on('click', '.btn-remove-element', function () {
+            var $row = $(this).closest('tr');
+            $row.find('.marcado-para-eliminar').val('true');
+            $row.addClass('table-danger').css('text-decoration', 'line-through');
+            // Deshabilitar solo los inputs y el botón de la fila, no el select de rol que ya no está
+            $row.find('input[type="date"], button').prop('disabled', true);
+            $(this).prop('disabled', true).addClass('disabled');
+        });
+
+        // Inicialización
+        @for (int i = 0; i < Model.CiclosDelProyecto.Count; i++)
+        {
+            <text>
+            manejarCambioFechaCiclo(@(i));
+            </text>
+
+            var ciclo = Model.CiclosDelProyecto[i];
+            if (ciclo.FechaInicioCiclo.HasValue && ciclo.FechaFinCiclo.HasValue)
+            {
+                for (int j = 0; j < ciclo.ElementosAsignados.Count; j++)
+                {
+                    var elem = ciclo.ElementosAsignados[j];
+                    if (elem.FechaInicioElemento.HasValue)
+                    {
+                        <text>
+                        $('#CiclosDelProyecto_@(i)_ElementosAsignados_@(j)_FechaFinElemento').prop('disabled', false).attr('min', '@FormatDateForInput(elem.FechaInicioElemento)');
+                        </text>
+                    } else {
+                         <text>
+                        $('#CiclosDelProyecto_@(i)_ElementosAsignados_@(j)_FechaFinElemento').prop('disabled', true);
+                        </text>
+                    }
+                }
+
+                <text>
+                var inicioNuevoElVal_@(i) = $('#CiclosDelProyecto_@(i)_FechaInicioNuevoElemento').val();
+                if (inicioNuevoElVal_@(i)) {
+                    $('#CiclosDelProyecto_@(i)_FechaFinNuevoElemento').prop('disabled', false).attr('min', inicioNuevoElVal_@(i));
+                } else {
+                    $('#CiclosDelProyecto_@(i)_FechaFinNuevoElemento').prop('disabled', true).val('');
+                }
+                </text>
+            }
+        }
+    });
+    </script>
+}

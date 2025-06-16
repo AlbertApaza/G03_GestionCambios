@@ -1,0 +1,202 @@
+﻿@model G03_GestionDeCambios.Models.SolicitudIndexViewModel
+@{
+    ViewBag.Title = "Gestión de Solicitudes de Cambio";
+}
+
+<style>
+    /* Estilos para que los text area se vean mejor */
+    textarea {
+        min-height: 100px;
+    }
+</style>
+
+<h2>@ViewBag.Title</h2>
+<hr />
+
+<!-- Botón para abrir el modal -->
+<p>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#crearSolicitudModal">
+        <i class="fas fa-plus-circle"></i> Nueva Solicitud de Cambio
+    </button>
+</p>
+
+<!-- Mensaje de éxito (opcional pero recomendado) -->
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+
+<!-- Listado de Solicitudes -->
+<div class="card">
+    <div class="card-header">
+        Mis Solicitudes de Cambio
+    </div>
+    <div class="card-body">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(m => m.Solicitudes.FirstOrDefault().CodigoSolicitud)</th>
+                    <th>@Html.DisplayNameFor(m => m.Solicitudes.FirstOrDefault().NombreProyecto)</th>
+                    <th>@Html.DisplayNameFor(m => m.Solicitudes.FirstOrDefault().Objetivo)</th>
+                    <th>@Html.DisplayNameFor(m => m.Solicitudes.FirstOrDefault().FechaSolicitud)</th>
+                    <th>@Html.DisplayNameFor(m => m.Solicitudes.FirstOrDefault().Estado)</th>
+                    <th>@Html.DisplayNameFor(m => m.Solicitudes.FirstOrDefault().PasoActualProceso)</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Solicitudes)
+                {
+                    string actionName;
+
+                    switch (item.PasoActualProceso)
+                    {
+                        case 1:
+                            actionName = "VerSolicitud";
+                            break;
+                        case 2:
+                            actionName = "VerAnalisis";
+                            break;
+                        case 3:
+                            actionName = "VerAprobacion";
+                            break;
+                        default:
+                            actionName = "VerSolicitud";
+                            break;
+                    }
+
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.CodigoSolicitud)</td>
+                        <td>@Html.DisplayFor(modelItem => item.NombreProyecto)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Objetivo)</td>
+                        <td>@Html.DisplayFor(modelItem => item.FechaSolicitud)</td>
+                        <td><span class="text text-info">@Html.DisplayFor(modelItem => item.Estado)</span></td>
+                        <td>@Html.DisplayFor(modelItem => item.PasoActualProceso)</td>
+                        <td>
+                            @Html.ActionLink("Ver Detalles", actionName,"ProcesoCambio", new { idSolicitud = item.IdSolicitudCambio }, new { @class = "btn btn-sm btn-info" })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<!-- Modal para Crear Nueva Solicitud -->
+<div class="modal fade" id="crearSolicitudModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            @using (Html.BeginForm("Crear", "Solicitud", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel">Nueva Solicitud de Cambio</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Fila para Solicitante y Proyecto/Producto -->
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.FormularioCreacion.IdProyecto, new { @class = "control-label" })
+                        @Html.DropDownListFor(m => m.FormularioCreacion.IdProyecto, Model.FormularioCreacion.ProyectosDisponibles, "-- Seleccione un Proyecto --", new { @class = "form-control", id = "ddlProyectos" })
+                        @Html.ValidationMessageFor(m => m.FormularioCreacion.IdProyecto, "", new { @class = "text-danger" })
+                    </div>
+
+                    <!-- Fila para Objetivo -->
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.FormularioCreacion.ObjetivoSolicitud, new { @class = "control-label" })
+                        @Html.TextAreaFor(m => m.FormularioCreacion.ObjetivoSolicitud, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.FormularioCreacion.ObjetivoSolicitud, "", new { @class = "text-danger" })
+                    </div>
+
+                    <!-- Fila para Descripción -->
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.FormularioCreacion.DescripcionSolicitud, new { @class = "control-label" })
+                        @Html.TextAreaFor(m => m.FormularioCreacion.DescripcionSolicitud, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.FormularioCreacion.DescripcionSolicitud, "", new { @class = "text-danger" })
+                    </div>
+
+                    <!-- Fila para Elemento Afectado -->
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.FormularioCreacion.IdElementoAfectado, new { @class = "control-label" })
+                        @Html.DropDownListFor(m => m.FormularioCreacion.IdElementoAfectado, Model.FormularioCreacion.ElementosDisponibles, "-- Seleccione primero un proyecto --", new { @class = "form-control", id = "ddlElementos" })
+                        @Html.ValidationMessageFor(m => m.FormularioCreacion.IdElementoAfectado, "", new { @class = "text-danger" })
+                    </div>
+
+                    <!-- Fila para Impacto y Esfuerzo -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.FormularioCreacion.ImpactoEstimado, new { @class = "control-label" })
+                                @Html.TextAreaFor(m => m.FormularioCreacion.ImpactoEstimado, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.FormularioCreacion.ImpactoEstimado, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.FormularioCreacion.EsfuerzoEstimado, new { @class = "control-label" })
+                                @Html.TextAreaFor(m => m.FormularioCreacion.EsfuerzoEstimado, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.FormularioCreacion.EsfuerzoEstimado, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-success">Crear Solicitud</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+
+            // Lógica para cargar elementos dinámicamente
+            $('#ddlProyectos').change(function () {
+                var proyectoId = $(this).val();
+                var ddlElementos = $('#ddlElementos');
+                ddlElementos.empty(); // Limpiar opciones anteriores
+
+                if (proyectoId) {
+                    ddlElementos.append($('<option/>', { value: '', text: 'Cargando...' }));
+                    $.ajax({
+                        url: '@Url.Action("GetElementosPorProyecto", "Solicitud")',
+                        type: 'GET',
+                        data: { idProyecto: proyectoId },
+                        success: function (data) {
+                            ddlElementos.empty();
+                            ddlElementos.append($('<option/>', { value: '', text: '-- Seleccione un elemento --' }));
+                            $.each(data, function (i, item) {
+                                ddlElementos.append($('<option/>', {
+                                    value: item.Value,
+                                    text: item.Text
+                                }));
+                            });
+                        },
+                        error: function () {
+                            alert('Error al cargar los elementos de configuración.');
+                            ddlElementos.empty();
+                            ddlElementos.append($('<option/>', { value: '', text: 'Error al cargar' }));
+                        }
+                    });
+                } else {
+                    ddlElementos.append($('<option/>', { value: '', text: '-- Seleccione primero un proyecto --' }));
+                }
+            });
+
+            // Si hay un error de validación, el controlador envía una bandera para mostrar el modal.
+            @if (ViewBag.ShowModalOnError == true)
+            {
+                <text>
+                    $('#crearSolicitudModal').modal('show');
+                </text>
+            }
+        });
+    </script>
+}

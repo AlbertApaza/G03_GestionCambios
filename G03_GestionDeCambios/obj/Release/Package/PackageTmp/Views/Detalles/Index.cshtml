@@ -1,0 +1,180 @@
+﻿@model G03_GestionDeCambios.ViewModels.DetallesViewModels.DetallesIndexViewModel
+
+@{
+    ViewBag.Title = "Resumen del Proyecto";
+    ViewBag.ProjectId = Model.IdProyecto;
+
+    var parrafo = new System.Text.StringBuilder();
+
+    parrafo.Append($"El proyecto se encuentra actualmente en la fase de <strong>{Model.NombreCicloActual}</strong>. ");
+    parrafo.Append($"Han transcurrido <strong>{Model.DiasTranscurridos}</strong> días desde su inicio. ");
+
+    if (Model.DiasRestantes.HasValue)
+    {
+        if (Model.DiasRestantes < 0)
+        {
+            parrafo.Append($"<span class='text-danger'>Se ha excedido la fecha de entrega por {Math.Abs(Model.DiasRestantes.Value)} días.</span> ");
+        }
+        else
+        {
+            parrafo.Append($"Quedan <strong>{Model.DiasRestantes}</strong> días para la fecha límite. ");
+        }
+    }
+    else
+    {
+        parrafo.Append("No hay una fecha de finalización definida. ");
+    }
+
+    if (Model.TareasTotales > 0)
+    {
+        var porcentajeCompletado = (Model.TareasCompletadas * 100) / Model.TareasTotales;
+        parrafo.Append($"El avance general de las tareas es del <strong>{porcentajeCompletado}%</strong>. ");
+    }
+    else
+    {
+        parrafo.Append("<span class='text-warning'>Es importante definir las primeras tareas para medir el progreso.</span> ");
+    }
+
+    var miembroMasActivo = Model.ActividadPorMiembro.FirstOrDefault();
+    if (miembroMasActivo != null)
+    {
+        parrafo.Append($"Se observa un gran desempeño por parte de <strong>{miembroMasActivo.NombreCompleto}</strong>, quien lidera la actividad del equipo. ");
+    }
+
+    if (Model.MiembrosSinRol.Any())
+    {
+        parrafo.Append($"<span class='text-danger'>Se ha detectado que <strong>{Model.MiembrosSinRol.First()}</strong> {(Model.MiembrosSinRol.Count > 1 ? "y otros" : "")} no tienen un rol asignado, lo cual es prioritario resolver.</span> ");
+    }
+}
+
+<style>
+    .kpi-card .card-body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .kpi-number {
+        font-size: 2.5rem;
+        font-weight: 700;
+    }
+
+    .kpi-label {
+        font-size: 1rem;
+        color: #6c757d;
+    }
+</style>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2>@ViewBag.Title</h2>
+        <p class="lead text-muted mb-0">Proyecto: @Model.NombreProyecto</p>
+    </div>
+</div>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success shadow-sm">@TempData["SuccessMessage"]</div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger shadow-sm">@TempData["ErrorMessage"]</div>
+}
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <div class="row align-items-center">
+            <div class="col-md-12">
+                <h5 class="card-title">Análisis del Proyecto</h5>
+                <p class="card-text" style="font-size: 1.1rem; line-height: 1.6;">
+                    @Html.Raw(parrafo.ToString())
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-lg-8">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">Progreso del Proyecto</h5>
+                <p>El proyecto se encuentra en el ciclo <strong>@Model.NombreCicloActual</strong>.</p>
+                <div class="progress" style="height: 25px;">
+                    <div class="progress-bar" role="progressbar" style="width: @(Model.PorcentajeCompletado)%;" aria-valuenow="@Model.PorcentajeCompletado" aria-valuemin="0" aria-valuemax="100">@Model.PorcentajeCompletado%</div>
+                </div>
+                <div class="d-flex justify-content-between mt-2 text-muted">
+                    <span>Días Transcurridos: @Model.DiasTranscurridos</span>
+                    <span>Días Restantes: @(Model.DiasRestantes.HasValue ? Model.DiasRestantes.Value.ToString() : "N/A")</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">Cambiar Ciclo</h5>
+                @using (Html.BeginForm("CambiarCiclo", "Detalles", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(model => model.IdProyecto)
+                    <div class="form-group">
+                        @Html.DropDownListFor(m => m.CodCicloActual, Model.CiclosDisponiblesSelectList, new { @class = "form-control" })
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block mt-2">Guardar Ciclo</button>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        @if (Model.MiembrosSinRol.Any())
+        {
+            <div class="card shadow-sm">
+                <div class="card-header bg-danger text-white">Miembros sin Rol Asignado</div>
+                <ul class="list-group list-group-flush">
+                    @foreach (var miembro in Model.MiembrosSinRol)
+                    {
+                        <li class="list-group-item">@miembro</li>
+                    }
+                </ul>
+            </div>
+        }
+    </div>
+</div>
+
+@*
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card shadow-sm">
+                    <div class="card-header">Actividad por Miembro</div>
+                    <div class="card-body">
+                        <table class="table table-hover">
+                            <thead><tr><th>Miembro</th><th class="text-center">Tareas Asignadas</th><th class="text-center">Documentos Subidos</th></tr></thead>
+                            <tbody>
+                                @foreach (var miembro in Model.ActividadPorMiembro)
+                                {
+                                    <tr>
+                                        <td>@miembro.NombreCompleto</td>
+                                        <td class="text-center"><span class="badge bg-primary rounded-pill">@miembro.TareasAsignadas</span></td>
+                                        <td class="text-center"><span class="badge bg-secondary rounded-pill">@miembro.DocumentosSubidos</span></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                 <div class="row text-center mb-4">
+        <div class="col-md-3"><div class="card kpi-card shadow-sm"><div class="card-body"><span class="kpi-number text-success">@Model.TareasCompletadas</span><span class="kpi-label">Tareas Completadas</span></div></div></div>
+        <div class="col-md-3"><div class="card kpi-card shadow-sm"><div class="card-body"><span class="kpi-number text-warning">@Model.TareasPendientes</span><span class="kpi-label">Tareas Pendientes</span></div></div></div>
+        <div class="col-md-3"><div class="card kpi-card shadow-sm"><div class="card-body"><span class="kpi-number text-info">@Model.TotalMiembros</span><span class="kpi-label">Miembros del Equipo</span></div></div></div>
+        <div class="col-md-3"><div class="card kpi-card shadow-sm"><div class="card-body"><span class="kpi-number text-secondary">@Model.TotalDocumentos</span><span class="kpi-label">Documentos</span></div></div></div>
+    </div>
+            </div>
+        </div>
+*@

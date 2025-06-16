@@ -1,0 +1,214 @@
+﻿@model G03_GestionDeCambios.Models.LoginViewModel
+@{
+    ViewBag.Title = "Iniciar Sesión";
+    Layout = null; // Sin layout para la página de login
+    var returnUrl = ViewBag.ReturnUrl as string;
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewBag.Title - Gestión de Cambios</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation-unobtrusive@3.2.12/dist/jquery.validate.unobtrusive.min.js"></script>
+
+    <style>
+        body {
+            background-color: #eef1f4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .login-container {
+            max-width: 420px;
+            width: 100%;
+            padding: 35px;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            border-top: 5px solid #007bff;
+        }
+
+            .login-container h3 {
+                color: #333;
+                font-weight: 600;
+            }
+
+        .form-label {
+            font-weight: 500;
+            color: #555;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            padding: 10px;
+            font-size: 1rem;
+        }
+
+            .btn-primary:hover {
+                background-color: #0056b3;
+                border-color: #0056b3;
+            }
+
+        .btn-google {
+            background: white;
+            border: 2px solid #dadce0;
+            color: #3c4043;
+            font-weight: 500;
+            padding: 10px;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+        }
+
+            .btn-google:hover {
+                background: #f8f9fa;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+                transform: translateY(-1px);
+                color: #3c4043;
+                text-decoration: none;
+            }
+
+            .btn-google:focus {
+                outline: none;
+                box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.3);
+                color: #3c4043;
+                text-decoration: none;
+            }
+
+            .btn-google i {
+                margin-right: 8px;
+                font-size: 18px;
+            }
+
+        /* Colores multicolor para las letras de Google */
+        .google-g {
+            color: #4285f4;
+        }
+
+        .google-o1 {
+            color: #ea4335;
+        }
+
+        .google-o2 {
+            color: #fbbc05;
+        }
+
+        .google-g2 {
+            color: #4285f4;
+        }
+
+        .google-l {
+            color: #34a853;
+        }
+
+        .google-e {
+            color: #ea4335;
+        }
+
+        .divider-text {
+            position: relative;
+            text-align: center;
+            margin: 20px 0;
+            color: #888;
+        }
+
+            .divider-text::before,
+            .divider-text::after {
+                content: "";
+                position: absolute;
+                top: 50%;
+                width: 40%;
+                height: 1px;
+                background-color: #ddd;
+            }
+
+            .divider-text::before {
+                left: 0;
+            }
+
+            .divider-text::after {
+                right: 0;
+            }
+
+        .alert-danger ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin-bottom: 0;
+        }
+
+        .alert-danger li {
+            margin-bottom: 0.25rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <div class="text-center mb-4">
+            @* Si tienes un logo, puedes ponerlo aquí:
+            <img src="~/Content/Images/logo_aplicacion.png" alt="Logo Aplicación" style="max-height: 70px; margin-bottom:15px;" />
+            *@
+            <h3>@ViewBag.Title</h3>
+        </div>
+
+        @if (ViewBag.GeneralMessage != null)
+        {
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                @ViewBag.GeneralMessage
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+
+        @using (Html.BeginForm("Login", "Login", new { ReturnUrl = returnUrl }, FormMethod.Post, new { id = "loginForm", novalidate = "novalidate" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="mb-3">
+                @Html.LabelFor(m => m.Email, new { @class = "form-label" })
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "tu@email.com", type = "email" })
+                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger small mt-1" })
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(m => m.Contrasena, new { @class = "form-label" })
+                @Html.PasswordFor(m => m.Contrasena, new { @class = "form-control", placeholder = "Contraseña" })
+                @Html.ValidationMessageFor(m => m.Contrasena, "", new { @class = "text-danger small mt-1" })
+            </div>
+
+            <div class="d-grid mb-3">
+                <button type="submit" class="btn btn-primary">Ingresar</button>
+            </div>
+
+            <div class="divider-text my-4">o</div>
+
+            <a href="@Url.Action("GoogleLogin", "Login", new { ReturnUrl = returnUrl })" class="btn btn-google">
+                Continuar con&nbsp;<span class="google-g">G</span><span class="google-o1">o</span><span class="google-o2">o</span><span class="google-g2">g</span><span class="google-l">l</span><span class="google-e">e</span>
+            </a>
+
+            <div class="text-center mt-3">
+                <p class="mb-0">¿No tienes cuenta? <a href="@Url.Action("Register", "Login")">Regístrate aquí</a></p>
+            </div>
+
+        }
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
