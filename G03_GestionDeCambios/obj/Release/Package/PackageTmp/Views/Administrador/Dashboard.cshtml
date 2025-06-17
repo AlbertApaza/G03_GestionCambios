@@ -1,0 +1,268 @@
+﻿@model G03_GestionDeCambios.Models.SuperAdminDashboardViewModel
+@{
+    ViewBag.Title = "Dashboard del Sistema";
+}
+
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">@ViewBag.Title</h1>
+    <a href="@Url.Action("Index", "Administrador")" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="bi bi-gear-fill fa-sm text-white-50"></i> Panel de Configuración</a>
+</div>
+<p class="lead">Un resumen global de la actividad y estado de todos los proyectos del sistema.</p>
+<hr />
+
+<!-- Stat Cards -->
+<div class="row">
+    <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card text-white bg-primary h-100">
+            <div class="card-body">
+                <div class="card-body-icon"><i class="bi bi-kanban-fill"></i></div>
+                <h3 class="font-weight-bold">@Model.TotalProyectos</h3>
+                <div>Proyectos Totales</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card text-white bg-success h-100">
+            <div class="card-body">
+                <div class="card-body-icon"><i class="bi bi-people-fill"></i></div>
+                <h3 class="font-weight-bold">@Model.TotalUsuariosActivos</h3>
+                <div>Usuarios Activos</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card text-white bg-info h-100">
+            <div class="card-body">
+                <div class="card-body-icon"><i class="bi bi-file-earmark-arrow-up-fill"></i></div>
+                <h3 class="font-weight-bold">@Model.TotalDocumentosSubidos</h3>
+                <div>Documentos Subidos</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card text-white bg-danger h-100">
+            <div class="card-body">
+                <div class="card-body-icon"><i class="bi bi-exclamation-triangle-fill"></i></div>
+                <h3 class="font-weight-bold">@Model.TareasAtrasadas</h3>
+                <div>Tareas Atrasadas</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr />
+
+<!-- Timeline Chart -->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Crecimiento Histórico del Sistema</h6>
+            </div>
+            <div class="card-body">
+                <div id="timelineContainer" style="height: 400px; min-width: 310px"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ======================= INICIO DE TABLAS AÑADIDAS ======================= -->
+<hr />
+<div class="row">
+    <div class="col-lg-7">
+        <!-- Ranking de Usuarios por Tareas -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Usuarios más Activos (por Tareas Asignadas)</h6>
+            </div>
+            <div class="card-body">
+                @if (Model.UsuariosConMasTareas.Any())
+                {
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Usuario</th>
+                                    <th class="text-center">Tareas Asignadas</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var usuario in Model.UsuariosConMasTareas)
+                                {
+                                    <tr>
+                                        <td>@usuario.NombreCompleto</td>
+                                        <td class="text-center">
+                                            <span class="badge bg-warning text-dark">@usuario.TareasAsignadas</span>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <p class="text-center text-muted">No hay datos de tareas para mostrar.</p>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-5">
+        <!-- Proyectos con Mayor Actividad -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Proyectos con Mayor Actividad</h6>
+            </div>
+            <div class="card-body">
+                @if (Model.ProyectosMasActivos.Any())
+                {
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Proyecto</th>
+                                    <th class="text-center">Puntaje</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var proyecto in Model.ProyectosMasActivos)
+                                {
+                                    <tr>
+                                        <td>@proyecto.NombreProyecto</td>
+                                        <td class="text-center">
+                                            <span class="badge bg-info text-dark">@proyecto.PuntajeActividad</span>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <p class="text-center text-muted">No hay actividad registrada en los proyectos.</p>
+                }
+            </div>
+        </div>
+        <!-- Proyectos con Solicitudes de Cambio -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Proyectos con Solicitudes de Cambio</h6>
+            </div>
+            <div class="card-body">
+                @if (Model.ProyectosConMasSolicitudes.Any())
+                {
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Proyecto</th>
+                                    <th class="text-center">Solicitudes</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var proyecto in Model.ProyectosConMasSolicitudes)
+                                {
+                                    <tr>
+                                        <td>@proyecto.NombreProyecto</td>
+                                        <td class="text-center">
+                                            <span class="badge bg-danger">@proyecto.CantidadSolicitudes</span>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <p class="text-center text-muted">No hay solicitudes de cambio registradas.</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ======================= FIN DE TABLAS AÑADIDAS ======================= -->
+
+@section scripts {
+    <!-- CORRECCIÓN: Se usan las librerías de Highcharts Stock para habilitar los 'flags' -->
+    <script src="https://code.highcharts.com/stock/highstock.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Data from the Model
+            const proyectosData = @Html.Raw(Json.Encode(Model.ProyectosTimeline));
+            const usuariosData = @Html.Raw(Json.Encode(Model.UsuariosTimeline));
+            const flagsData = @Html.Raw(Json.Encode(Model.TimelineFlags));
+
+            Highcharts.chart('timelineContainer', {
+                // Se añade un rangeSelector, característico de Highstock
+                rangeSelector: {
+                    selected: 1
+                },
+                title: {
+                    text: null // El título ya está en la tarjeta
+                },
+                xAxis: {
+                    type: 'datetime'
+                },
+                yAxis: [{ // Eje Y para Proyectos
+                    labels: {
+                        align: 'right',
+                        x: -3
+                    },
+                    title: {
+                        text: 'Proyectos'
+                    },
+                    height: '60%',
+                    lineWidth: 2,
+                    resize: {
+                        enabled: true
+                    }
+                }, { // Eje Y para Usuarios
+                    labels: {
+                        align: 'right',
+                        x: -3
+                    },
+                    title: {
+                        text: 'Usuarios'
+                    },
+                    top: '65%',
+                    height: '35%',
+                    offset: 0,
+                    lineWidth: 2
+                }],
+                tooltip: {
+                    split: true
+                },
+                series: [{
+                    type: 'area',
+                    id: 'proyectos-creados',
+                    name: 'Proyectos Acumulados',
+                    data: proyectosData,
+                    fillColor: {
+                        linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                        stops: [
+                            [0, Highcharts.getOptions().colors[0]],
+                            [1, Highcharts.color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                        ]
+                    }
+                }, {
+                    type: 'column',
+                    name: 'Usuarios Acumulados',
+                    data: usuariosData,
+                    yAxis: 1
+                }, {
+                    type: 'flags',
+                    name: 'Eventos Clave',
+                    data: flagsData,
+                    onSeries: 'proyectos-creados', // Se vincula a la serie de proyectos
+                    shape: 'squarepin',
+                    width: 16
+                }]
+            });
+        });
+    </script>
+}

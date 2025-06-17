@@ -67,9 +67,28 @@ namespace G03_GestionDeCambios.Controllers
                     SetUserSession(usuarioDb);
                     TempData["Message"] = "Has iniciado sesión correctamente.";
 
+
+                    // --- INICIO DE LA MODIFICACIÓN 1 ---
+                    // Lógica para redirigir según el rol del usuario
+
+                    // Si hay una URL de retorno específica, la respetamos.
                     if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                    {
                         return Redirect(returnUrl);
-                    return RedirectToAction("Index", "Home");
+                    }
+
+                    // Si no hay URL de retorno, decidimos a dónde ir por defecto.
+                    if (usuarioDb.adminRol == 1)
+                    {
+                        // Si es administrador, va a su panel.
+                        return RedirectToAction("Index", "Administrador");
+                    }
+                    else
+                    {
+                        // Si es usuario normal, va al Home.
+                        return RedirectToAction("Index", "Home");
+                    }
+                    // --- FIN DE LA MODIFICACIÓN 1 ---
                 }
                 else
                 {
@@ -221,9 +240,21 @@ namespace G03_GestionDeCambios.Controllers
                 SetUserSession(usuarioApp);
                 TempData["Message"] = "Has iniciado sesión correctamente con Google.";
 
+
                 if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                {
                     return Redirect(returnUrl);
-                return RedirectToAction("Index", "Home");
+                }
+
+                if (usuarioApp.adminRol == 1)
+                {
+                    return RedirectToAction("Index", "Administrador");
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+
             }
             else if (usuarioApp != null && usuarioApp.estado != 1)
             {
@@ -245,6 +276,8 @@ namespace G03_GestionDeCambios.Controllers
             Session["emailUsuario"] = user.email;
             Session["fotoPerfil"] = string.IsNullOrWhiteSpace(user.foto_perfil) ? "https://w7.pngwing.com/pngs/708/467/png-transparent-avatar-default-head-person-unknown-user-anonym-user-pictures-icon-thumbnail.png" : user.foto_perfil;
             Session["metodoRegistro"] = user.metodo_registro;
+            Session["adminRol"] = user.adminRol ?? 0;
+
         }
 
         public ActionResult Logout()

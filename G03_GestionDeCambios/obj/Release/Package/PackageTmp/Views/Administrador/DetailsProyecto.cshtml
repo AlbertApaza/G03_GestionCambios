@@ -1,0 +1,32 @@
+﻿@model G03_GestionDeCambios.Models.tbProyectos
+
+@{
+    ViewBag.Title = "Detalles del Proyecto";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div>
+    <h4>Proyecto: @Model.nombre</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>@Html.DisplayNameFor(model => model.nombre)</dt>
+        <dd>@Html.DisplayFor(model => model.nombre)</dd>
+        <dt>@Html.DisplayNameFor(model => model.fechaInicio)</dt>
+        <dd>@Model.fechaInicio.ToShortDateString()</dd>
+        <dt>@Html.DisplayNameFor(model => model.fechaFin)</dt>
+        <dd>@(Model.fechaFin.HasValue ? Model.fechaFin.Value.ToShortDateString() : "N/A")</dd>
+        <dt>Usuario Creador</dt>
+        <dd>@Html.DisplayFor(model => model.tbUsuarios.nombre)</dd>
+        <dt>Metodología</dt>
+        <dd>@Html.DisplayFor(model => model.tbMetodologias.nombre)</dd>
+        <dt>Ciclo Actual</dt>
+        <dd>@Html.DisplayFor(model => model.codCicloActual)</dd>
+        <dt>Estado</dt>
+        <dd>@(Model.estado == 1 ? "Activo" : "Inactivo")</dd>
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Editar", "EditProyecto", new { id = Model.idProyecto }, new { @class = "btn btn-primary" }) |
+    @Html.ActionLink("Volver a la lista", "Index", null, new { @class = "btn btn-default" })
+</p>

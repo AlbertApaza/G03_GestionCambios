@@ -154,6 +154,7 @@
     <EntitySetMapping Name="tbUsuarios">
       <EntityTypeMapping TypeName="BD_GestionDeCambiosModel.tbUsuarios">
         <MappingFragment StoreEntitySet="tbUsuarios">
+          <ScalarProperty Name="adminRol" ColumnName="adminRol" />
           <ScalarProperty Name="foto_perfil" ColumnName="foto_perfil" />
           <ScalarProperty Name="metodo_registro" ColumnName="metodo_registro" />
           <ScalarProperty Name="estado" ColumnName="estado" />

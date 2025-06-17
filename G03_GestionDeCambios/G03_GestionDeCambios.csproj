@@ -151,16 +151,31 @@
     </Content>
     <Content Include="source\css\bootstrap.css" />
     <Content Include="source\css\bootstrap.min.css" />
+    <Content Include="source\css\highcharts.css" />
     <Content Include="source\css\sidebar.css" />
+    <Content Include="source\DataTables\datatables.css" />
+    <Content Include="source\DataTables\datatables.js" />
+    <Content Include="source\DataTables\datatables.min.css" />
+    <Content Include="source\DataTables\datatables.min.js" />
     <Content Include="source\js\bootstrap.bundle.min.js" />
     <Content Include="source\js\bootstrap.js" />
     <Content Include="source\js\bootstrap.min.js" />
+    <Content Include="source\js\exporting.js" />
+    <Content Include="source\js\highcharts-3d.js" />
+    <Content Include="source\js\highcharts-more.js" />
+    <Content Include="source\js\highcharts.js" />
+    <Content Include="source\js\ini.js" />
     <Content Include="source\js\jquery-3.7.1.min.js" />
+    <Content Include="source\js\jquery.form.js" />
+    <Content Include="source\js\jquery.validate.min.js" />
+    <Content Include="source\js\jquery.validate.unobtrusive.min.js" />
+    <Content Include="source\js\offline-exporting.js" />
     <Content Include="source\js\sidebar.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AdministradorController.cs" />
     <Compile Include="Controllers\CronogramaController.cs" />
     <Compile Include="Controllers\DetallesController.cs" />
     <Compile Include="Controllers\DocumentosController.cs" />
@@ -176,6 +191,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AdminDashboardViewModel.cs" />
+    <Compile Include="Models\AdministradorDashboardViewModel.cs" />
+    <Compile Include="Models\AdminTimelineDashboardViewModel.cs" />
     <Compile Include="Models\CrearProyectoViewModel.cs" />
     <Compile Include="Models\DetallesViewModel.cs" />
     <Compile Include="Models\DocumentoViewModel.cs" />
@@ -200,6 +217,7 @@
     <Compile Include="Models\RegisterViewModel.cs" />
     <Compile Include="Models\SolicitudDetalleViewModel.cs" />
     <Compile Include="Models\SolicitudViewModel.cs" />
+    <Compile Include="Models\SuperAdminDashboardViewModel.cs" />
     <Compile Include="Models\TareasUsuario.cs" />
     <Compile Include="Models\TareasViewModels.cs" />
     <Compile Include="Models\tbCiclos.cs">
@@ -241,8 +259,10 @@
     <Compile Include="Models\tbUsuarios.cs">
       <DependentUpon>ModeloG03.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\TestGraphViewModel.cs" />
     <Compile Include="Models\UsuarioViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\AdministradorService.cs" />
     <Compile Include="Service\CronogramaService.cs" />
     <Compile Include="Service\DashboardService.cs" />
     <Compile Include="Service\DetallesService.cs" />
@@ -255,6 +275,7 @@
     <Compile Include="Service\ProyectoUsuarioService.cs" />
     <Compile Include="Service\RolService.cs" />
     <Compile Include="Service\SolicitudService.cs" />
+    <Compile Include="Service\SuperAdminDashboardService.cs" />
     <Compile Include="Service\TareasService.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -293,8 +314,35 @@
     <Content Include="Views\Shared\_UsuarioProyectos.cshtml" />
     <Content Include="Views\Estadisticas\Index.cshtml" />
     <None Include="Properties\PublishProfiles\gestionsistemag03 - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\gestionsistemag03 - FTP1.pubxml" />
     <None Include="Properties\PublishProfiles\gestionsistemag03 - ReadOnly - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\gestionsistemag03 - ReadOnly - FTP1.pubxml" />
     <None Include="Properties\PublishProfiles\gestionsistemag03 - Web Deploy.pubxml" />
+    <Content Include="Views\Administrador\Index.cshtml" />
+    <Content Include="Views\Administrador\CreateUsuario.cshtml" />
+    <Content Include="Views\Administrador\DetailsUsuario.cshtml" />
+    <Content Include="Views\Administrador\EditUsuario.cshtml" />
+    <Content Include="Views\Administrador\DeleteUsuario.cshtml" />
+    <Content Include="Views\Administrador\CreateProyecto.cshtml" />
+    <Content Include="Views\Administrador\DetailsProyecto.cshtml" />
+    <Content Include="Views\Administrador\EditProyecto.cshtml" />
+    <Content Include="Views\Administrador\DeleteProyecto.cshtml" />
+    <Content Include="Views\Administrador\CreateMetodologia.cshtml" />
+    <Content Include="Views\Administrador\EditMetodologia.cshtml" />
+    <Content Include="Views\Administrador\DeleteMetodologia.cshtml" />
+    <Content Include="Views\Administrador\CreateRol.cshtml" />
+    <Content Include="Views\Administrador\EditRol.cshtml" />
+    <Content Include="Views\Administrador\DeleteRol.cshtml" />
+    <Content Include="Views\Administrador\CreateElemento.cshtml" />
+    <Content Include="Views\Administrador\EditElemento.cshtml" />
+    <Content Include="Views\Administrador\DeleteElemento.cshtml" />
+    <Content Include="Views\Administrador\CreateCiclo.cshtml" />
+    <Content Include="Views\Administrador\EditCiclo.cshtml" />
+    <Content Include="Views\Administrador\DeleteCiclo.cshtml" />
+    <Content Include="Views\Administrador\Dashboard.cshtml" />
+    <Content Include="Views\Administrador\TestGraph.cshtml" />
+    <Content Include="Views\Administrador\DemoGraph.cshtml" />
+    <None Include="Properties\PublishProfiles\gestionsistemag03 - Web Deploy1.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

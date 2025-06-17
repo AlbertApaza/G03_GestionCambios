@@ -317,6 +317,7 @@
     <NavigationProperty Name="tbTareas" Relationship="BD_GestionDeCambiosModel.FK__tbTareas__idUsua__5CD6CB2B" FromRole="tbUsuarios" ToRole="tbTareas" />
     <Property Name="metodo_registro" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="foto_perfil" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="adminRol" Type="Int32" />
   </EntityType>
   <Association Name="FK__tbCiclos__idMeto__3F466844">
     <End Type="BD_GestionDeCambiosModel.tbMetodologias" Role="tbMetodologias" Multiplicity="0..1" />

@@ -37,6 +37,7 @@ namespace G03_GestionDeCambios.Models
     public class UsuarioRankingViewModel
     {
         public int IdUsuario { get; set; }
+        // FIX: Corrected property name from "NombreCompletos" to "NombreCompleto"
         public string NombreCompleto { get; set; }
         public int TareasAsignadas { get; set; }
     }

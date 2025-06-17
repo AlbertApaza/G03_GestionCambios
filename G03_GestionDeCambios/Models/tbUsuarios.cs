@@ -35,6 +35,7 @@ namespace G03_GestionDeCambios.Models
         public int estado { get; set; }
         public string metodo_registro { get; set; }
         public string foto_perfil { get; set; }
+        public Nullable<int> adminRol { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbDocumentos> tbDocumentos { get; set; }

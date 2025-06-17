@@ -1,34 +1,74 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\Kenyi\\Desktop\\G03_GestionDeCambios (1)\\G03_GestionDeCambios\\",
+  "WorkspaceRootPath": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|c:\\users\\kenyi\\desktop\\g03_gestiondecambios (1)\\g03_gestiondecambios\\g03_gestiondecambios\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|c:\\users\\kenyi\\desktop\\g03_gestioncambios\\g03_gestiondecambios\\controllers\\proyectocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\controllers\\proyectocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|c:\\users\\kenyi\\desktop\\g03_gestioncambios\\g03_gestiondecambios\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
       "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|C:\\Users\\Kenyi\\Desktop\\G03_GestionDeCambios (1)\\G03_GestionDeCambios\\g03_gestiondecambios\\views\\estadisticas\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\views\\estadisticas\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|c:\\users\\kenyi\\desktop\\g03_gestioncambios\\g03_gestiondecambios\\service\\superadmindashboardservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\service\\superadmindashboardservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|C:\\Users\\Kenyi\\Desktop\\G03_GestionDeCambios (1)\\G03_GestionDeCambios\\g03_gestiondecambios\\models\\estadisticasviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\models\\estadisticasviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\g03_gestiondecambios\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|C:\\Users\\Kenyi\\Desktop\\G03_GestionDeCambios (1)\\G03_GestionDeCambios\\g03_gestiondecambios\\models\\documentoviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\models\\documentoviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\g03_gestiondecambios\\views\\administrador\\dashboard.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\views\\administrador\\dashboard.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|C:\\Users\\Kenyi\\Desktop\\G03_GestionDeCambios (1)\\G03_GestionDeCambios\\g03_gestiondecambios\\service\\estadisticasservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\service\\estadisticasservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\g03_gestiondecambios\\views\\administrador\\demograph.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\views\\administrador\\demograph.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|C:\\Users\\Kenyi\\Desktop\\G03_GestionDeCambios (1)\\G03_GestionDeCambios\\g03_gestiondecambios\\views\\_viewstart.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\views\\_viewstart.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\g03_gestiondecambios\\controllers\\administradorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\controllers\\administradorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|C:\\Users\\Kenyi\\Desktop\\G03_GestionDeCambios (1)\\G03_GestionDeCambios\\g03_gestiondecambios\\views\\detalles\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\views\\detalles\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\g03_gestiondecambios\\views\\administrador\\testgraph.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\views\\administrador\\testgraph.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\g03_gestiondecambios\\models\\testgraphviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\models\\testgraphviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\g03_gestiondecambios\\views\\administrador\\createusuario.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\views\\administrador\\createusuario.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\g03_gestiondecambios\\models\\superadmindashboardviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\models\\superadmindashboardviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\g03_gestiondecambios\\models\\admindashboardviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\models\\admindashboardviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\g03_gestiondecambios\\views\\administrador\\deleteciclo.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\views\\administrador\\deleteciclo.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\g03_gestiondecambios\\views\\home\\dashboard.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\views\\home\\dashboard.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\g03_gestiondecambios\\models\\usuarioviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\models\\usuarioviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\g03_gestiondecambios\\service\\dashboardservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\service\\dashboardservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\g03_gestiondecambios\\models\\admintimelinedashboardviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\models\\admintimelinedashboardviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -43,87 +83,209 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "ProyectoController.cs",
+              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\G03_GestionDeCambios\\Controllers\\ProyectoController.cs",
+              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Controllers\\ProyectoController.cs",
+              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\G03_GestionDeCambios\\Controllers\\ProyectoController.cs",
+              "RelativeToolTip": "G03_GestionDeCambios\\Controllers\\ProyectoController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEMAAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-17T17:48:54.503Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "Web.config",
-              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\G03_GestionDeCambios (1)\\G03_GestionDeCambios\\G03_GestionDeCambios\\Web.config",
+              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\G03_GestionDeCambios\\Web.config",
               "RelativeDocumentMoniker": "G03_GestionDeCambios\\Web.config",
-              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\G03_GestionDeCambios (1)\\G03_GestionDeCambios\\G03_GestionDeCambios\\Web.config",
+              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\G03_GestionDeCambios\\Web.config",
               "RelativeToolTip": "G03_GestionDeCambios\\Web.config",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAnAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAA7AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000601|",
-              "WhenOpened": "2025-06-16T14:05:10.787Z",
+              "WhenOpened": "2025-06-17T17:45:12.847Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "DocumentoViewModel.cs",
-              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\G03_GestionDeCambios (1)\\G03_GestionDeCambios\\G03_GestionDeCambios\\Models\\DocumentoViewModel.cs",
-              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Models\\DocumentoViewModel.cs",
-              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\G03_GestionDeCambios (1)\\G03_GestionDeCambios\\G03_GestionDeCambios\\Models\\DocumentoViewModel.cs",
-              "RelativeToolTip": "G03_GestionDeCambios\\Models\\DocumentoViewModel.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-16T13:39:30.666Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\G03_GestionDeCambios (1)\\G03_GestionDeCambios\\G03_GestionDeCambios\\Views\\Detalles\\Index.cshtml",
-              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Views\\Detalles\\Index.cshtml",
-              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\G03_GestionDeCambios (1)\\G03_GestionDeCambios\\G03_GestionDeCambios\\Views\\Detalles\\Index.cshtml",
-              "RelativeToolTip": "G03_GestionDeCambios\\Views\\Detalles\\Index.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAAAAAAAAAAAAA==",
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "G03_GestionDeCambios\\Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAABYCAAAAAAAAAAAEwLkBAABwAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-06-16T13:29:40.777Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\G03_GestionDeCambios (1)\\G03_GestionDeCambios\\G03_GestionDeCambios\\Views\\Estadisticas\\Index.cshtml",
-              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Views\\Estadisticas\\Index.cshtml",
-              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\G03_GestionDeCambios (1)\\G03_GestionDeCambios\\G03_GestionDeCambios\\Views\\Estadisticas\\Index.cshtml",
-              "RelativeToolTip": "G03_GestionDeCambios\\Views\\Estadisticas\\Index.cshtml",
-              "ViewState": "AgIAACkAAAAAAAAAAAAwwEMAAAAGAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-06-16T13:27:45.435Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "EstadisticasService.cs",
-              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\G03_GestionDeCambios (1)\\G03_GestionDeCambios\\G03_GestionDeCambios\\Service\\EstadisticasService.cs",
-              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Service\\EstadisticasService.cs",
-              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\G03_GestionDeCambios (1)\\G03_GestionDeCambios\\G03_GestionDeCambios\\Service\\EstadisticasService.cs",
-              "RelativeToolTip": "G03_GestionDeCambios\\Service\\EstadisticasService.cs",
-              "ViewState": "AgIAABUAAAAAAAAAAAAowCkAAAApAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-16T11:29:00.423Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "EstadisticasViewModel.cs",
-              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\G03_GestionDeCambios (1)\\G03_GestionDeCambios\\G03_GestionDeCambios\\Models\\EstadisticasViewModel.cs",
-              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Models\\EstadisticasViewModel.cs",
-              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\G03_GestionDeCambios (1)\\G03_GestionDeCambios\\G03_GestionDeCambios\\Models\\EstadisticasViewModel.cs",
-              "RelativeToolTip": "G03_GestionDeCambios\\Models\\EstadisticasViewModel.cs",
-              "ViewState": "AgIAABsAAAAAAAAAAAAkwAYAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-16T11:28:44.54Z"
+              "WhenOpened": "2025-06-17T17:39:20.527Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 5,
-              "Title": "_ViewStart.cshtml",
-              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\G03_GestionDeCambios (1)\\G03_GestionDeCambios\\G03_GestionDeCambios\\Views\\_ViewStart.cshtml",
-              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Views\\_ViewStart.cshtml",
-              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\G03_GestionDeCambios (1)\\G03_GestionDeCambios\\G03_GestionDeCambios\\Views\\_ViewStart.cshtml",
-              "RelativeToolTip": "G03_GestionDeCambios\\Views\\_ViewStart.cshtml",
+              "Title": "DemoGraph.cshtml",
+              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\Administrador\\DemoGraph.cshtml",
+              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Views\\Administrador\\DemoGraph.cshtml",
+              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\Administrador\\DemoGraph.cshtml",
+              "RelativeToolTip": "G03_GestionDeCambios\\Views\\Administrador\\DemoGraph.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-17T17:34:38.609Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "DeleteCiclo.cshtml",
+              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\Administrador\\DeleteCiclo.cshtml",
+              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Views\\Administrador\\DeleteCiclo.cshtml",
+              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\Administrador\\DeleteCiclo.cshtml",
+              "RelativeToolTip": "G03_GestionDeCambios\\Views\\Administrador\\DeleteCiclo.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-17T16:15:24.147Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "SuperAdminDashboardService.cs",
+              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\G03_GestionDeCambios\\Service\\SuperAdminDashboardService.cs",
+              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Service\\SuperAdminDashboardService.cs",
+              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\G03_GestionDeCambios\\Service\\SuperAdminDashboardService.cs",
+              "RelativeToolTip": "G03_GestionDeCambios\\Service\\SuperAdminDashboardService.cs",
+              "ViewState": "AgIAAG0AAAAAAAAAAAAwwIsAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-17T15:42:47.787Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "AdministradorController.cs",
+              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\G03_GestionDeCambios\\Controllers\\AdministradorController.cs",
+              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Controllers\\AdministradorController.cs",
+              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\G03_GestionDeCambios\\Controllers\\AdministradorController.cs",
+              "RelativeToolTip": "G03_GestionDeCambios\\Controllers\\AdministradorController.cs",
+              "ViewState": "AgIAABsBAAAAAAAAAAAgwC0BAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-17T15:49:45.793Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Dashboard.cshtml",
+              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\Administrador\\Dashboard.cshtml",
+              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Views\\Administrador\\Dashboard.cshtml",
+              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\Administrador\\Dashboard.cshtml",
+              "RelativeToolTip": "G03_GestionDeCambios\\Views\\Administrador\\Dashboard.cshtml",
+              "ViewState": "AgIAAOUAAAAAAAAAAAAUwAsBAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-17T16:39:12.441Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "CreateUsuario.cshtml",
+              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\Administrador\\CreateUsuario.cshtml",
+              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Views\\Administrador\\CreateUsuario.cshtml",
+              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\Administrador\\CreateUsuario.cshtml",
+              "RelativeToolTip": "G03_GestionDeCambios\\Views\\Administrador\\CreateUsuario.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-06-16T07:38:40.541Z"
+              "WhenOpened": "2025-06-17T17:22:12.339Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "TestGraph.cshtml",
+              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\Administrador\\TestGraph.cshtml",
+              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Views\\Administrador\\TestGraph.cshtml",
+              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\Administrador\\TestGraph.cshtml",
+              "RelativeToolTip": "G03_GestionDeCambios\\Views\\Administrador\\TestGraph.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACcAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-17T17:26:52.047Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "TestGraphViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\G03_GestionDeCambios\\Models\\TestGraphViewModel.cs",
+              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Models\\TestGraphViewModel.cs",
+              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\G03_GestionDeCambios\\Models\\TestGraphViewModel.cs",
+              "RelativeToolTip": "G03_GestionDeCambios\\Models\\TestGraphViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-17T17:26:12.867Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "AdminDashboardViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\G03_GestionDeCambios\\Models\\AdminDashboardViewModel.cs",
+              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Models\\AdminDashboardViewModel.cs",
+              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\G03_GestionDeCambios\\Models\\AdminDashboardViewModel.cs",
+              "RelativeToolTip": "G03_GestionDeCambios\\Models\\AdminDashboardViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-17T17:20:51.049Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "SuperAdminDashboardViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\G03_GestionDeCambios\\Models\\SuperAdminDashboardViewModel.cs",
+              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Models\\SuperAdminDashboardViewModel.cs",
+              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\G03_GestionDeCambios\\Models\\SuperAdminDashboardViewModel.cs",
+              "RelativeToolTip": "G03_GestionDeCambios\\Models\\SuperAdminDashboardViewModel.cs",
+              "ViewState": "AgIAACQAAAAAAAAAAAAwwEkAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-17T16:49:12.235Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "Dashboard.cshtml",
+              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\Home\\Dashboard.cshtml",
+              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Views\\Home\\Dashboard.cshtml",
+              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\Home\\Dashboard.cshtml",
+              "RelativeToolTip": "G03_GestionDeCambios\\Views\\Home\\Dashboard.cshtml",
+              "ViewState": "AgIAAFEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-17T16:48:09.667Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "UsuarioViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\G03_GestionDeCambios\\Models\\UsuarioViewModel.cs",
+              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Models\\UsuarioViewModel.cs",
+              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\G03_GestionDeCambios\\Models\\UsuarioViewModel.cs",
+              "RelativeToolTip": "G03_GestionDeCambios\\Models\\UsuarioViewModel.cs",
+              "ViewState": "AgIAADsAAAAAAAAAAADwvwAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-17T16:42:38.634Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "DashboardService.cs",
+              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\G03_GestionDeCambios\\Service\\DashboardService.cs",
+              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Service\\DashboardService.cs",
+              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\G03_GestionDeCambios\\Service\\DashboardService.cs",
+              "RelativeToolTip": "G03_GestionDeCambios\\Service\\DashboardService.cs",
+              "ViewState": "AgIAAMMAAAAAAAAAAAAcwOIAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-17T16:47:41.25Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "AdminTimelineDashboardViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\G03_GestionDeCambios\\Models\\AdminTimelineDashboardViewModel.cs",
+              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Models\\AdminTimelineDashboardViewModel.cs",
+              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\G03_GestionCambios\\G03_GestionDeCambios\\Models\\AdminTimelineDashboardViewModel.cs",
+              "RelativeToolTip": "G03_GestionDeCambios\\Models\\AdminTimelineDashboardViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEYAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-17T16:42:27.74Z"
             }
           ]
         }

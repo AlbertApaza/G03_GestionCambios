@@ -1,0 +1,40 @@
+﻿@section scripts {
+    <!-- CORRECCIÓN: Se usan las librerías de Highcharts Stock -->
+    <script src="https://code.highcharts.com/stock/highstock.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const seriesData = @Html.Raw(Json.Encode(Model.ProyectosTimeline));
+            const flagsData = @Html.Raw(Json.Encode(Model.TimelineFlags));
+
+            Highcharts.chart('testContainer', {
+                title: {
+                    text: 'Gráfico de Prueba con Highcharts Stock'
+                },
+                rangeSelector: { // Highstock a menudo usa un selector de rango
+                    selected: 1
+                },
+                xAxis: {
+                    type: 'datetime'
+                },
+                series: [{
+                    id: 'serie-prueba',
+                    name: 'Datos de Prueba',
+                    data: seriesData,
+                    tooltip: {
+                        valueDecimals: 0
+                    }
+                }, {
+                    type: 'flags',
+                    name: 'Eventos',
+                    data: flagsData,
+                    onSeries: 'serie-prueba', // Vincular a la serie de datos
+                    shape: 'squarepin'
+                }]
+            });
+        });
+    </script>
+}

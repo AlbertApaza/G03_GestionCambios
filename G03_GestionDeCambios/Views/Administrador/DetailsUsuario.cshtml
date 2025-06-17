@@ -1,0 +1,34 @@
+﻿@model G03_GestionDeCambios.Models.tbUsuarios
+
+@{
+    ViewBag.Title = "Detalles del Usuario";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div>
+    <h4>Usuario: @Model.nombre @Model.apellido</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>@Html.DisplayNameFor(model => model.usuario)</dt>
+        <dd>@Html.DisplayFor(model => model.usuario)</dd>
+        <dt>@Html.DisplayNameFor(model => model.nombre)</dt>
+        <dd>@Html.DisplayFor(model => model.nombre)</dd>
+        <dt>@Html.DisplayNameFor(model => model.apellido)</dt>
+        <dd>@Html.DisplayFor(model => model.apellido)</dd>
+        <dt>@Html.DisplayNameFor(model => model.email)</dt>
+        <dd>@Html.DisplayFor(model => model.email)</dd>
+        <dt>Rol de Administrador</dt>
+        <dd>@(Model.adminRol == 1 ? "Sí" : "No")</dd>
+        <dt>Estado</dt>
+        <dd>@(Model.estado == 1 ? "Activo" : "Inactivo")</dd>
+        <dt>@Html.DisplayNameFor(model => model.fechaCreacion)</dt>
+        <dd>@Html.DisplayFor(model => model.fechaCreacion)</dd>
+        <dt>@Html.DisplayNameFor(model => model.metodo_registro)</dt>
+        <dd>@Html.DisplayFor(model => model.metodo_registro)</dd>
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Editar", "EditUsuario", new { id = Model.idUsuario }, new { @class = "btn btn-primary" }) |
+    @Html.ActionLink("Volver a la lista", "Index", null, new { @class = "btn btn-default" })
+</p>

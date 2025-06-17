@@ -1,0 +1,31 @@
+﻿@model G03_GestionDeCambios.Models.tbProyectos
+
+@{
+    ViewBag.Title = "Eliminar Proyecto";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<h3>¿Estás seguro de que quieres eliminar este proyecto?</h3>
+<h4>Esta acción no se puede deshacer y podría afectar a otras tablas.</h4>
+<hr />
+<div>
+    <dl class="dl-horizontal">
+        <dt>@Html.DisplayNameFor(model => model.nombre)</dt>
+        <dd>@Html.DisplayFor(model => model.nombre)</dd>
+        <dt>Usuario Creador</dt>
+        <dd>@Html.DisplayFor(model => model.tbUsuarios.nombre)</dd>
+        <dt>Metodología</dt>
+        <dd>@Html.DisplayFor(model => model.tbMetodologias.nombre)</dd>
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Eliminar" class="btn btn-danger" /> |
+            @Html.ActionLink("Cancelar y volver a la lista", "Index")
+        </div>
+    }
+</div>
