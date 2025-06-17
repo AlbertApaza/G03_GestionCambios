@@ -1,0 +1,199 @@
+﻿@model G03_GestionDeCambios.Models.DespliegueViewModel
+@{
+    ViewBag.Title = "Plataforma de Despliegue";
+}
+
+<style>
+    .deployment-workbench .card-header {
+        font-size: 1.1rem;
+    }
+
+    .step-table th, .step-table td {
+        vertical-align: middle;
+    }
+
+    .badge-estado-completado {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .badge-estado-enproceso {
+        background-color: #17a2b8;
+        color: white;
+    }
+
+    .badge-estado-pendiente {
+        background-color: #ffc107;
+    }
+
+    .accordion-button:not(.collapsed) {
+        background-color: #e7f1ff;
+        color: #0c63e4;
+    }
+</style>
+
+<div class="panel-container deployment-workbench">
+    <h2 class="mb-4">Plataforma de Despliegue - Solicitud #@Model.IdSolicitud</h2>
+
+    <div class="row">
+        <!-- Columna Izquierda: Despliegues Activos e Historial -->
+        <div class="col-lg-8">
+            <div class="card mb-4">
+                <div class="card-header bg-dark text-white"><i class="fas fa-check-circle card-title-icon"></i>Contexto: Aprobación de QA</div>
+                <div class="card-body">
+                    @if (Model.ResumenQA != null)
+                    {
+                        <p><strong>Aprobado por:</strong> @Model.ResumenQA.AprobadoPor el @Model.ResumenQA.FechaAprobacion.ToString("dd/MM/yyyy HH:mm")</p>
+                        <blockquote class="blockquote bg-light p-3 rounded">
+                            <p class="mb-0"><em>"@Model.ResumenQA.ComentariosQA"</em></p>
+                        </blockquote>
+                    }
+                    else
+                    {
+                        <p class="text-muted">No se encontró el registro de aprobación de QA.</p>
+                    }
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header"><i class="fas fa-tasks card-title-icon"></i>Despliegues en Curso / Historial</div>
+                <div class="card-body">
+                    @if (!Model.DesplieguesActivos.Any())
+                    {
+                        <div class="alert alert-info">Aún no se ha planificado ningún despliegue para esta solicitud.</div>
+                    }
+                    else
+                    {
+                        <div class="accordion" id="accordionDespliegues">
+                            @foreach (var despliegue in Model.DesplieguesActivos)
+                            {
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="heading-@despliegue.IdDespliegue">
+                                        <button class="accordion-button @(despliegue.Estado == "En Proceso" ? "" : "collapsed")" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-@despliegue.IdDespliegue" aria-expanded="true" aria-controls="collapse-@despliegue.IdDespliegue">
+                                            <span class="fw-bold me-3">@despliegue.EntornoNombre</span>
+                                            <span class="badge @("badge-estado-" + despliegue.Estado.ToLower()) me-auto">@despliegue.Estado</span>
+                                            <small class="text-muted">Iniciado: @despliegue.FechaInicio.ToString("g")</small>
+                                        </button>
+                                    </h2>
+                                    <div id="collapse-@despliegue.IdDespliegue" class="accordion-collapse collapse @(despliegue.Estado == "En Proceso" ? "show" : "")" aria-labelledby="heading-@despliegue.IdDespliegue" data-bs-parent="#accordionDespliegues">
+                                        <div class="accordion-body">
+                                            <table class="table table-hover step-table">
+                                                <thead><tr><th>#</th><th>Paso</th><th>Estado</th><th>Acción</th></tr></thead>
+                                                <tbody>
+                                                    @foreach (var paso in despliegue.Pasos)
+                                                    {
+                                                        <tr>
+                                                            <td>@paso.Orden</td>
+                                                            <td>@paso.Descripcion</td>
+                                                            <td><span class="badge @("badge-estado-" + paso.Estado.ToLower())">@paso.Estado</span></td>
+                                                            <td>
+                                                                @if (paso.Estado == "Pendiente")
+                                                                {
+                                                                    <button class="btn btn-sm btn-outline-success" onclick="marcarPasoCompletado(@paso.IdPaso)">Completar</button>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <span class="text-success" title="Completado por @paso.CompletadoPor el @paso.FechaCompletado?.ToString(" g")"><i class="fas fa-check"></i></span>
+                                                                }
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Columna Derecha: Panel de Acciones -->
+        <div class="col-lg-4">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white"><i class="fas fa-rocket card-title-icon"></i>Planificar Nuevo Despliegue</div>
+                <div class="card-body">
+                    @using (Html.BeginForm("PlanificarDespliegue", "ProcesoCambio", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.Hidden("idSolicitud", Model.IdSolicitud)
+                        <div class="form-group mb-3">
+                            <label for="idEntorno" class="form-label">Entorno de Destino</label>
+                            @Html.DropDownList("idEntorno", Model.EntornosDisponibles, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="pasosTexto" class="form-label">Plan de Despliegue (un paso por línea)</label>
+                            <textarea name="pasosTexto" class="form-control" rows="5" placeholder="1. Realizar backup de la BD
+2. Detener servicio IIS
+3. Copiar archivos DLL
+4. Iniciar servicio IIS"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100"><i class="fas fa-play"></i> Iniciar Despliegue</button>
+                    }
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header bg-success text-white"><i class="fas fa-flag-checkered card-title-icon"></i>Finalizar Solicitud de Cambio</div>
+                <div class="card-body">
+                    @using (Html.BeginForm("FinalizarSolicitud", "ProcesoCambio", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.Hidden("idSolicitud", Model.IdSolicitud)
+                        <p>Esta acción marcará la solicitud como <strong>"Implantada"</strong> y cerrará el proceso.</p>
+                        <div class="form-group mb-3">
+                            <label for="comentariosFinales" class="form-label">Comentarios Finales</label>
+                            <textarea name="comentariosFinales" class="form-control" rows="3" placeholder="Ej: Despliegue en producción verificado. El cambio ha sido implementado con éxito."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100" @(Model.PuedeCerrarSolicitud ? "" : "disabled") title="@(Model.PuedeCerrarSolicitud ? "Cerrar solicitud" : "Debe completar al menos un despliegue antes de cerrar")">
+                            <i class="fas fa-lock"></i> Confirmar Implementación y Cerrar
+                        </button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+    function marcarPasoCompletado(idPaso) {
+        Swal.fire({
+            title: 'Confirmar Paso',
+            text: '¿Desea marcar este paso como completado?',
+            input: 'textarea',
+            inputPlaceholder: 'Añada notas si es necesario...',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, completar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const notas = result.value || '';
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("CompletarPaso", "ProcesoCambio")',
+                    data: {
+                        __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val(),
+                        idPaso: idPaso,
+                        notas: notas
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            Swal.fire('¡Éxito!', 'El paso ha sido completado.', 'success').then(() => location.reload());
+                        } else {
+                            Swal.fire('Error', response.message, 'error');
+                        }
+                    },
+                    error: function () {
+                        Swal.fire('Error', 'No se pudo comunicar con el servidor.', 'error');
+                    }
+                });
+            }
+        });
+    }
+    </script>
+}

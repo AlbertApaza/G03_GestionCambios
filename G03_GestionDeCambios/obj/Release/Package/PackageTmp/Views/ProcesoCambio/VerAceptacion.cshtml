@@ -1,0 +1,225 @@
+﻿@model G03_GestionDeCambios.Models.AceptacionViewModel
+@{
+    ViewBag.Title = "Verificación y Aceptación Final";
+}
+
+<style>
+    .timeline {
+        list-style: none;
+        padding: 0;
+        position: relative;
+    }
+
+        .timeline:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: #e9ecef;
+            left: 30px;
+            margin-left: -2px;
+        }
+
+    .timeline-item {
+        margin-bottom: 20px;
+        position: relative;
+    }
+
+        .timeline-item:before, .timeline-item:after {
+            content: " ";
+            display: table;
+        }
+
+        .timeline-item:after {
+            clear: both;
+        }
+
+    .timeline-icon {
+        float: left;
+        width: 60px;
+        height: 60px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        background: #6c757d;
+        color: white;
+        font-size: 1.5rem;
+        z-index: 1;
+    }
+
+    .timeline-body {
+        margin-left: 90px;
+        background: #fff;
+        border-radius: .25rem;
+        padding: 20px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.05);
+    }
+
+    .timeline-title {
+        font-weight: 600;
+    }
+
+    .bg-success .timeline-icon {
+        background: #28a745;
+    }
+
+    .bg-info .timeline-icon {
+        background: #0dcaf0;
+    }
+
+    .bg-warning .timeline-icon {
+        background: #ffc107;
+    }
+
+    .bg-danger .timeline-icon {
+        background: #dc3545;
+    }
+
+    .badge-estado-implantado {
+        background-color: #198754;
+        color: white;
+    }
+
+    .badge-estado-cancelado {
+        background-color: #dc3545;
+        color: white;
+    }
+</style>
+
+<div class="panel-container">
+    <h2 class="mb-4">Verificación Final - Solicitud #@Model.IdSolicitud</h2>
+
+    <!-- Panel de Decisión Final -->
+    @if (Model.InfoCierre == null)
+    {
+        <div class="card mb-4 border-primary">
+            <div class="card-header bg-primary text-white"><i class="fas fa-gavel card-title-icon"></i>Acción Requerida: Decisión Final</div>
+            <div class="card-body">
+                <p>Por favor, revise el resumen completo del cambio implementado. Una vez verificado, proceda a aceptar o rechazar la solicitud. Esta acción es definitiva y cerrará el proceso.</p>
+                <div class="row">
+                    <div class="col-md-6">
+                        @using (Html.BeginForm("AceptarCambioFinal", "ProcesoCambio", FormMethod.Post, new { id = "formAceptar" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.HiddenFor(m => m.IdSolicitud)
+                            <textarea name="comentariosAceptacion" class="form-control mb-2" rows="2" placeholder="Comentarios de aceptación (opcional)..."></textarea>
+                            <button type="submit" class="btn btn-success w-100"><i class="fas fa-check-circle"></i> Aceptar e Implantar Cambio</button>
+                        }
+                    </div>
+                    <div class="col-md-6">
+                        @using (Html.BeginForm("RechazarCambioFinal", "ProcesoCambio", FormMethod.Post, new { id = "formRechazar" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.HiddenFor(m => m.IdSolicitud)
+                            <textarea name="comentariosRechazo" class="form-control mb-2" rows="2" placeholder="Motivo del rechazo (obligatorio)..." required></textarea>
+                            <button type="submit" class="btn btn-danger w-100"><i class="fas fa-times-circle"></i> Rechazar Cambio</button>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="alert @(Model.InfoCierre.DecisionFinal == "Aceptado" ? "alert-success" : "alert-danger")">
+            <h4 class="alert-heading">Solicitud Cerrada</h4>
+            <p>
+                Esta solicitud fue cerrada por <strong>@Model.InfoCierre.CerradoPor</strong> el @Model.InfoCierre.FechaCierre.ToString("dd/MM/yyyy 'a las' HH:mm")
+                con la decisión final: <strong>@Model.InfoCierre.DecisionFinal.ToUpper()</strong>.
+            </p>
+            <hr>
+            <p class="mb-0"><em>Comentarios: "@Model.InfoCierre.ComentariosFinales"</em></p>
+        </div>
+    }
+
+    <!-- Resumen de la Solicitud -->
+    <div class="card mb-4">
+        <div class="card-header"><i class="fas fa-file-alt card-title-icon"></i>Resumen de la Solicitud Original</div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">Objetivo</dt>
+                <dd class="col-sm-9">@Model.SolicitudInfo.Objetivo</dd>
+                <dt class="col-sm-3">Descripción</dt>
+                <dd class="col-sm-9">@Model.SolicitudInfo.DescripcionCambio</dd>
+                <dt class="col-sm-3">Elemento Afectado</dt>
+                <dd class="col-sm-9">@Model.SolicitudInfo.ElementoConfiguracion</dd>
+                <dt class="col-sm-3">Solicitado por</dt>
+                <dd class="col-sm-9">@Model.SolicitudInfo.SolicitadoPor</dd>
+                <dt class="col-sm-3">Fecha Solicitud</dt>
+                <dd class="col-sm-9">@Model.SolicitudInfo.FechaSolicitud?.ToString("dd/MM/yyyy")</dd>
+            </dl>
+        </div>
+    </div>
+
+    <!-- Trazabilidad Completa del Proceso -->
+    <div class="card">
+        <div class="card-header"><i class="fas fa-stream card-title-icon"></i>Línea de Tiempo del Cambio</div>
+        <div class="card-body">
+            <ul class="timeline">
+                @foreach (var item in Model.HistorialCompleto)
+                {
+                    <li class="timeline-item">
+                        <div class="timeline-icon"><i class="fas fa-history"></i></div>
+                        <div class="timeline-body">
+                            <h5 class="timeline-title">@item.PasoProceso - <span class="text-primary">@item.Decision</span></h5>
+                            <p class="text-muted"><i class="fas fa-user"></i> @item.Usuario    <i class="fas fa-clock"></i> @item.Fecha.ToString("g")</p>
+                            @if (!string.IsNullOrWhiteSpace(item.Comentarios))
+                            {
+                                <p><em>"@item.Comentarios"</em></p>
+                            }
+                        </div>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+
+    <!-- Pestañas con Detalles -->
+    <div class="card mt-4">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#tab-tareas">Implementación</a></li>
+                <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-qa">Resultados de QA</a></li>
+                <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-despliegues">Despliegues</a></li>
+            </ul>
+        </div>
+        <div class="card-body tab-content">
+            <div class="tab-pane active" id="tab-tareas">
+                <table class="table table-sm table-striped">
+                    <thead><tr><th>Tarea</th><th>Asignado a</th><th>Estado</th></tr></thead>
+                    <tbody>
+                        @foreach (var tarea in Model.TareasImplementacion)
+                        {
+                            <tr><td>@tarea.Nombre</td><td>@tarea.AsignadoA</td><td>@tarea.Estado</td></tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="tab-pane" id="tab-qa">
+                <dl class="row">
+                    <dt class="col-sm-4">Pruebas Totales Ejecutadas</dt>
+                    <dd class="col-sm-8">@Model.ResumenQA.PruebasEjecutadas</dd>
+                    <dt class="col-sm-4">Incidencias Reportadas</dt>
+                    <dd class="col-sm-8">@Model.ResumenQA.IncidenciasReportadas</dd>
+                    <dt class="col-sm-4">Aprobado por</dt>
+                    <dd class="col-sm-8">@Model.ResumenQA.AprobadoPorQA</dd>
+                    <dt class="col-sm-4">Fecha de Aprobación</dt>
+                    <dd class="col-sm-8">@Model.ResumenQA.FechaAprobacionQA.ToString("g")</dd>
+                </dl>
+            </div>
+            <div class="tab-pane" id="tab-despliegues">
+                <table class="table table-sm table-striped">
+                    <thead><tr><th>Entorno</th><th>Fecha Inicio</th><th>Fecha Fin</th><th>Estado</th></tr></thead>
+                    <tbody>
+                        @foreach (var despliegue in Model.DesplieguesRealizados)
+                        {
+                            <tr><td>@despliegue.EntornoNombre</td><td>@despliegue.FechaInicio.ToString("g")</td><td>@despliegue.FechaFin?.ToString("g")</td><td><span class="badge @("badge-estado-" + despliegue.Estado.ToLower())">@despliegue.Estado</span></td></tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

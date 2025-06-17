@@ -1,0 +1,202 @@
+﻿@model G03_GestionDeCambios.Models.AsignacionViewModel
+@{
+    ViewBag.Title = "Planificación y Asignación de Tareas";
+}
+
+<!-- Incluye los mismos estilos y scripts que las vistas anteriores -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<style>
+    /* ... (copia los estilos de las vistas anteriores) ... */
+    .task-planner {
+        border-left: 5px solid #007bff;
+        background-color: #f8f9fa;
+    }
+
+    .planned-tasks-table th {
+        background-color: #e9ecef;
+    }
+</style>
+
+<div class="panel-container">
+    <h2 class="mb-4">Taller de Planificación y Asignación - Solicitud #@Model.IdSolicitud</h2>
+
+    @using (Html.BeginForm("AsignarTareas", "ProcesoCambio", FormMethod.Post, new { id = "formAsignacion" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.IdSolicitud)
+        <!-- Este div contendrá los inputs ocultos para cada tarea añadida -->
+        <div id="hidden-tasks-container"></div>
+
+        <div class="row">
+            <!-- Columna Izquierda - Contexto y Equipo -->
+            <div class="col-lg-5">
+                <div class="card">
+                    <div class="card-header"><i class="fas fa-bullseye card-title-icon"></i>Objetivo del Cambio</div>
+                    <div class="card-body">
+                        <p><strong>Elemento a modificar:</strong> @Model.ElementoAfectadoNombre</p>
+                        <p><strong>Objetivo:</strong> @Model.SolicitudInfo.Objetivo</p>
+                        <h6>Recomendación del Analista:</h6>
+                        <p class="text-muted"><em>"@Model.ResumenAnalisis?.JustificacionAnalisis"</em></p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header"><i class="fas fa-users-cog card-title-icon"></i>Equipo Elegible para Asignación</div>
+                    <div class="card-body">
+                        <p class="text-info"><i class="fas fa-info-circle"></i> Solo se muestran usuarios con el rol requerido para este elemento.</p>
+                        <table class="table table-sm table-hover">
+                            <thead><tr><th>Miembro del Equipo</th><th>Rol</th><th>Carga Actual</th></tr></thead>
+                            <tbody>
+                                @foreach (var miembro in Model.EquipoElegible)
+                                {
+                                    <tr>
+                                        <td>@miembro.NombreCompleto</td>
+                                        <td>@miembro.Rol</td>
+                                        <td><span class="badge badge-primary">@miembro.TareasActivas Tareas</span></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Columna Derecha - Planificador de Tareas -->
+            <div class="col-lg-7">
+                <div class="card task-planner">
+                    <div class="card-header bg-primary text-white"><i class="fas fa-clipboard-list card-title-icon"></i>Planificador de Tareas</div>
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
+                                <label for="nombreTarea">Nombre de la Tarea</label>
+                                <input type="text" id="nombreTarea" class="form-control" placeholder="Ej: Modificar el procedimiento almacenado...">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="descripcionTarea">Descripción</label>
+                            <textarea id="descripcionTarea" class="form-control" rows="2" placeholder="Detalles técnicos, criterios de aceptación..."></textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-8">
+                                <label for="usuarioAsignado">Asignar a</label>
+                                @Html.DropDownList("usuarioAsignado", new SelectList(Model.EquipoElegible, "IdUsuario", "NombreCompleto"), "Seleccionar usuario...", new { @class = "form-control" })
+                            </div>
+                            <div class="form-group col-md-4 d-flex align-items-end">
+                                <button type="button" class="btn btn-info btn-block" onclick="agregarTarea()"><i class="fas fa-plus-circle"></i> Añadir Tarea al Plan</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mt-4">
+                    <div class="card-header"><i class="fas fa-tasks card-title-icon"></i>Plan de Implementación</div>
+                    <div class="card-body">
+                        <h6>Tareas Nuevas a Asignar:</h6>
+                        <table class="table table-bordered planned-tasks-table">
+                            <thead><tr><th>Tarea</th><th>Asignado a</th><th>Acción</th></tr></thead>
+                            <tbody id="planned-tasks-body">
+                                <!-- Las tareas añadidas con JS aparecerán aquí -->
+                            </tbody>
+                        </table>
+                        <hr />
+                        <h6>Tareas Existentes (si las hay):</h6>
+                        @if (Model.TareasYaAsignadas.Any())
+                        {
+                            <table class="table table-sm">
+                                <thead><tr><th>Tarea</th><th>Asignado a</th><th>Estado</th></tr></thead>
+                                <tbody>
+                                    @foreach (var tarea in Model.TareasYaAsignadas)
+                                    {
+                                        <tr><td>@tarea.NombreTarea</td><td>@tarea.UsuarioAsignado</td><td>@tarea.Estado</td></tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                        else
+                        {
+                            <p class="text-muted">No hay tareas previamente asignadas para este elemento.</p>
+                        }
+                    </div>
+                    <div class="card-footer text-right">
+                        <button type="button" class="btn btn-success btn-lg" onclick="confirmarAsignacion()"><i class="fas fa-play-circle"></i> Confirmar y Empezar Implementación</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+    let taskCounter = 0;
+
+    function agregarTarea() {
+        const nombre = document.getElementById('nombreTarea').value;
+        const descripcion = document.getElementById('descripcionTarea').value;
+        const selectUsuario = document.getElementById('usuarioAsignado');
+        const idUsuario = selectUsuario.value;
+        const nombreUsuario = selectUsuario.options[selectUsuario.selectedIndex].text;
+
+        if (!nombre || !idUsuario) {
+            Swal.fire('Campos incompletos', 'Debe proporcionar un nombre para la tarea y seleccionar un usuario.', 'warning');
+            return;
+        }
+
+        // Añadir a la tabla visible
+        const tbody = document.getElementById('planned-tasks-body');
+        const newRow = tbody.insertRow();
+        newRow.id = `task-row-${taskCounter}`;
+        newRow.innerHTML = `
+            <td>${nombre}</td>
+            <td>${nombreUsuario}</td>
+            <td><button type="button" class="btn btn-danger btn-sm" onclick="eliminarTarea(${taskCounter})"><i class="fas fa-trash"></i></button></td>
+        `;
+
+        // Añadir a los inputs ocultos para el post
+        const container = document.getElementById('hidden-tasks-container');
+        container.innerHTML += `
+            <div id="hidden-task-${taskCounter}">
+                <input type="hidden" name="NuevasTareas[${taskCounter}].Nombre" value="${nombre}" />
+                <input type="hidden" name="NuevasTareas[${taskCounter}].Descripcion" value="${descripcion}" />
+                <input type="hidden" name="NuevasTareas[${taskCounter}].IdUsuarioAsignado" value="${idUsuario}" />
+            </div>
+        `;
+        taskCounter++;
+
+        // Limpiar formulario
+        document.getElementById('nombreTarea').value = '';
+        document.getElementById('descripcionTarea').value = '';
+        selectUsuario.selectedIndex = 0;
+    }
+
+    function eliminarTarea(index) {
+        document.getElementById(`task-row-${index}`).remove();
+        document.getElementById(`hidden-task-${index}`).remove();
+    }
+
+    function confirmarAsignacion() {
+        const taskCount = document.getElementById('planned-tasks-body').rows.length;
+        if (taskCount === 0) {
+            Swal.fire('Sin Tareas', 'Debe añadir al menos una tarea al plan antes de confirmar.', 'error');
+            return;
+        }
+
+        Swal.fire({
+            title: `¿Confirmar y asignar ${taskCount} tarea(s)?`,
+            text: "Se crearán las tareas y el cambio pasará a la fase de Desarrollo. Esta acción no se puede deshacer.",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#28a745',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Sí, ¡Empezar!',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('formAsignacion').submit();
+            }
+        });
+    }
+    </script>
+}

@@ -60,6 +60,21 @@
                         case 3:
                             actionName = "VerAprobacion";
                             break;
+                        case 4:
+                            actionName = "VerAsignacion";
+                            break;
+                        case 5:
+                            actionName = "VerDesarrollo";
+                            break;
+                        case 6:
+                            actionName = "VerQA";
+                            break;
+                        case 7:
+                            actionName = "VerDespliegue";
+                            break;
+                        case 8:
+                            actionName = "verAceptacion";
+                            break;
                         default:
                             actionName = "VerSolicitud";
                             break;
@@ -70,10 +85,39 @@
                         <td>@Html.DisplayFor(modelItem => item.NombreProyecto)</td>
                         <td>@Html.DisplayFor(modelItem => item.Objetivo)</td>
                         <td>@Html.DisplayFor(modelItem => item.FechaSolicitud)</td>
-                        <td><span class="text text-info">@Html.DisplayFor(modelItem => item.Estado)</span></td>
+                        <td>
+                            @{
+                                string estado = item.Estado;
+                                string claseBadge = "";
+
+                                switch (estado)
+                                {
+                                    case "Cancelado":
+                                        claseBadge = "bg-danger";
+                                        break;
+                                    case "Implantado":
+                                        claseBadge = "bg-success";
+                                        break;
+                                    case "Planificado":
+                                        claseBadge = "bg-primary";
+                                        break;
+                                    case "Aprobado":
+                                        claseBadge = "bg-warning text-dark"; // texto oscuro para mejor contraste
+                                        break;
+                                    case "Propuesto":
+                                        claseBadge = "bg-info text-dark";
+                                        break;
+                                    default:
+                                        claseBadge = "bg-secondary";
+                                        break;
+                                }
+                            }
+
+                            <span class="badge @claseBadge">@Html.DisplayFor(modelItem => item.Estado)</span>
+                        </td>
                         <td>@Html.DisplayFor(modelItem => item.PasoActualProceso)</td>
                         <td>
-                            @Html.ActionLink("Ver Detalles", actionName,"ProcesoCambio", new { idSolicitud = item.IdSolicitudCambio }, new { @class = "btn btn-sm btn-info" })
+                            @Html.ActionLink("Ver Detalles", actionName, "ProcesoCambio", new { idSolicitud = item.IdSolicitudCambio }, new { @class = "btn btn-sm btn-info" })
                         </td>
                     </tr>
                 }

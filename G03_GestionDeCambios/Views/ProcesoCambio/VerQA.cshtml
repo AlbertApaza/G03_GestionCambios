@@ -1,0 +1,165 @@
+﻿@model G03_GestionDeCambios.Models.QAViewModel
+@{
+    ViewBag.Title = "Taller de Pruebas (QA)";
+}
+<!-- Estilos y scripts de vistas anteriores -->
+
+<style>
+    /* ... (estilos anteriores) ... */
+    .qa-workbench .card-header {
+        font-size: 1.1rem;
+    }
+
+    .test-case-item {
+        border-bottom: 1px solid #eee;
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+    }
+
+    .badge-severidad-critica {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .badge-severidad-alta {
+        background-color: #fd7e14;
+    }
+
+    .badge-severidad-media {
+        background-color: #ffc107;
+    }
+</style>
+
+<div class="panel-container qa-workbench">
+    <h2 class="mb-4">Taller de Pruebas y Aseguramiento de la Calidad - Solicitud #@Model.IdSolicitud</h2>
+
+    <div class="row">
+        <!-- Columna Izquierda: Plan de Pruebas y Contexto -->
+        <div class="col-lg-7">
+            <div class="card mb-4">
+                <div class="card-header bg-dark text-white"><i class="fas fa-file-invoice card-title-icon"></i>Contexto y Resumen de Desarrollo</div>
+                <div class="card-body">
+                    <p><strong>Objetivo del Cambio:</strong> @Model.ObjetivoSolicitud</p>
+                    <hr>
+                    <h6><i class="fas fa-user-hard-hat"></i> Notas del Desarrollador:</h6>
+                    <blockquote class="blockquote bg-light p-3 rounded">
+                        <p class="mb-0"><em>"@Model.ResumenDesarrollo"</em></p>
+                    </blockquote>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header"><i class="fas fa-clipboard-list card-title-icon"></i>Plan de Pruebas</div>
+                <div class="card-body">
+                    <p>Ejecute los casos de prueba y registre los resultados.</p>
+                    @foreach (var testCase in Model.PlanDePruebas)
+                    {
+                        <div class="test-case-item">
+                            <h5>@testCase.Nombre</h5>
+                            <p class="text-muted">@testCase.Descripcion</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small>Asignado a: <strong>@testCase.AsignadoA</strong></small>
+                                <div>
+                                    <!-- Aquí irían los botones para cambiar estado -->
+                                    <span class="badge badge-info">Estado: @testCase.Estado</span>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Columna Derecha: Panel de Acción de QA -->
+        <div class="col-lg-5">
+            <div class="card mb-4">
+                <div class="card-header bg-info text-white"><i class="fas fa-chart-pie card-title-icon"></i>Estado de la Prueba</div>
+                <div class="card-body text-center">
+                    <h6>Progreso de Pruebas</h6>
+                    <div class="progress" style="height: 25px;"><div class="progress-bar" role="progressbar" style="width: @Model.ProgresoPruebas%;" aria-valuenow="@Model.ProgresoPruebas">@Model.ProgresoPruebas%</div></div>
+                    <hr>
+                    <h6>Incidencias Abiertas</h6>
+                    <h3 class="font-weight-bold @(Model.IncidenciasAbiertas > 0 ? "text-danger" : "text-success")">@Model.IncidenciasAbiertas</h3>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header bg-danger text-white"><i class="fas fa-bug card-title-icon"></i>Reportar Incidencia (Bug)</div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label>Severidad</label>
+                        <select id="incidenciaSeveridad" class="form-control">
+                            <option>Media</option>
+                            <option>Alta</option>
+                            <option>Crítica</option>
+                            <option>Baja</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Descripción (Pasos para reproducir)</label>
+                        <textarea id="incidenciaDescripcion" class="form-control" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Asignar corrección a</label>
+                        @Html.DropDownList("incidenciaDevAsignado", new SelectList(Model.Desarrolladores, "IdUsuario", "NombreCompleto"), new { @class = "form-control" })
+                    </div>
+                    <button type="button" class="btn btn-warning btn-block" onclick="reportarIncidencia()">Reportar Incidencia</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header bg-success text-white"><i class="fas fa-gavel card-title-icon"></i>Decisión Final de QA</div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label>Comentarios Finales de QA</label>
+                        <textarea id="comentariosFinalesQA" class="form-control" rows="3" placeholder="Ej: Pruebas completadas satisfactoriamente. Se recomienda el pase a producción."></textarea>
+                    </div>
+                    <button type="button" class="btn btn-success btn-block mb-2" onclick="tomarDecisionFinal('Aprobar')" @(Model.ProgresoPruebas < 100 || Model.IncidenciasAbiertas > 0 ? "disabled" : "")>
+                        <i class="fas fa-rocket"></i> Aprobar para Despliegue
+                    </button>
+                    <button type="button" class="btn btn-danger btn-block" onclick="tomarDecisionFinal('Rechazar')" @(Model.IncidenciasAbiertas == 0 ? "disabled" : "")>
+                        <i class="fas fa-undo-alt"></i> Retornar a Desarrollo
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Formularios y Scripts -->
+@using (Html.BeginForm("AprobarParaDespliegue", "ProcesoCambio", FormMethod.Post, new { id = "formAprobarQA" }))
+{@Html.AntiForgeryToken() @Html.Hidden("idSolicitud", Model.IdSolicitud) @Html.Hidden("comentarios", "", new { id = "comentariosAprobarQA" })}
+@using (Html.BeginForm("RetornarADesarrollo", "ProcesoCambio", FormMethod.Post, new { id = "formRechazarQA" }))
+{@Html.AntiForgeryToken() @Html.Hidden("idSolicitud", Model.IdSolicitud) @Html.Hidden("comentarios", "", new { id = "comentariosRechazarQA" })}
+
+@section Scripts {
+    <script>
+    function reportarIncidencia() {
+        const payload = {
+            idSolicitud: @Model.IdSolicitud,
+            descripcion: $('#incidenciaDescripcion').val(),
+            severidad: $('#incidenciaSeveridad').val(),
+            idDevAsignado: $('#incidenciaDevAsignado').val()
+        };
+        // Lógica AJAX para llamar al endpoint /ProcesoCambio/RegistrarIncidencia
+        // ... al recibir la respuesta, actualizar la UI o recargar la página.
+        Swal.fire('¡Reportado!', 'La incidencia ha sido registrada y notificada al desarrollador.', 'success').then(() => location.reload());
+    }
+
+    function tomarDecisionFinal(decision) {
+        const comentarios = $('#comentariosFinalesQA').val();
+        if(!comentarios.trim()){
+            Swal.fire('Comentario requerido', 'Debe dejar un comentario final para documentar su decisión.', 'warning');
+            return;
+        }
+
+        if (decision === 'Aprobar') {
+            $('#comentariosAprobarQA').val(comentarios);
+            $('#formAprobarQA').submit();
+        } else {
+            $('#comentariosRechazarQA').val(comentarios);
+            $('#formRechazarQA').submit();
+        }
+    }
+    </script>
+}

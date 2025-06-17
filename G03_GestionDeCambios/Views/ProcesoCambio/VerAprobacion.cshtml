@@ -1,9 +1,219 @@
-﻿
+﻿@model G03_GestionDeCambios.Models.AprobacionViewModel
 @{
-    ViewBag.Title = "VerAprobacion";
+    ViewBag.Title = "Aprobación Final de Solicitud";
 }
 
+<!-- Incluye los mismos estilos y scripts que VerAnalisis.cshtml -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<div class="text-center" style="margin-top: 20px;">
-    @Html.ActionLink("Volver al Listado", "Index", "Solicitud", null, new { @class = "btn btn-secondary" })
+<style>
+    .panel-container {
+        background-color: #f4f6f9;
+        padding: 20px;
+    }
+
+    .card {
+        margin-bottom: 1.5rem;
+        box-shadow: 0 0 1rem rgba(0,0,0,.05);
+    }
+
+    .card-header {
+        background-color: #343a40;
+        color: white;
+        font-weight: 600;
+    }
+
+    .card-title-icon {
+        margin-right: 10px;
+    }
+
+    .timeline {
+        list-style: none;
+        padding: 0;
+        position: relative;
+    }
+
+        .timeline:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #e9ecef;
+            left: 20px;
+        }
+
+    .timeline-item {
+        position: relative;
+        margin-bottom: 1rem;
+        padding-left: 40px;
+    }
+
+    .timeline-icon {
+        position: absolute;
+        left: 12px;
+        top: 5px;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background-color: #007bff;
+    }
+
+    .timeline-body {
+        background-color: #fff;
+        padding: 15px;
+        border-radius: 5px;
+        border: 1px solid #dee2e6;
+    }
+
+    .decision-panel {
+        border-top: 3px solid #28a745;
+    }
+
+    .analysis-recommendation {
+        border-left: 5px solid #17a2b8;
+        background-color: #e3f2fd;
+    }
+</style>
+
+<div class="panel-container">
+    <h2 class="mb-4">Panel de Aprobación Final - Solicitud #@Model.IdSolicitud</h2>
+
+    <div class="row">
+        <!-- Columna Izquierda - Resumen y Decisión -->
+        <div class="col-lg-7">
+
+            <!-- Recomendación del Analista (LA MÁS IMPORTANTE) -->
+            <div class="card">
+                <div class="card-header bg-info"><i class="fas fa-user-check card-title-icon"></i>Recomendación del Área de Análisis</div>
+                <div class="card-body analysis-recommendation">
+                    <blockquote class="blockquote">
+                        <p class="mb-2"><em>"@Model.ResumenAnalisis.JustificacionAnalisis"</em></p>
+                        <footer class="blockquote-footer">
+                            Análisis realizado por <strong>@Model.ResumenAnalisis.AnalistaNombre</strong>
+                            <cite title="Fecha"> el @Model.ResumenAnalisis.FechaAnalisis.ToString("dd/MM/yyyy 'a las' hh:mm tt")</cite>
+                        </footer>
+                    </blockquote>
+                </div>
+            </div>
+
+            <!-- Resumen de la Solicitud Original -->
+            <div class="card">
+                <div class="card-header"><i class="fas fa-file-alt card-title-icon"></i>Resumen de la Solicitud Original</div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>Solicitado por:</strong> @Model.SolicitudInfo.SolicitadoPor</li>
+                        <li class="list-group-item"><strong>Objetivo:</strong> @Model.SolicitudInfo.Objetivo</li>
+                        <li class="list-group-item"><strong>Descripción:</strong> <pre style="white-space: pre-wrap; font-family: inherit;">@Model.SolicitudInfo.DescripcionCambio</pre></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Panel de Decisión Final -->
+            <div class="card decision-panel">
+                <div class="card-header bg-success"><i class="fas fa-gavel card-title-icon"></i>Panel de Decisión Final</div>
+                <div class="card-body">
+                    <p>Como parte del Comité de Cambios, registre la decisión final y los comentarios pertinentes.</p>
+                    <div class="form-group">
+                        <label for="comentariosFinales"><strong>Justificación / Comentarios Finales:</strong></label>
+                        <textarea id="comentariosFinales" class="form-control" rows="4" placeholder="Ej: Se aprueba el cambio. Proceder con la planificación y asignación de recursos..."></textarea>
+                    </div>
+                    <div class="btn-group mt-2">
+                        <button class="btn btn-success btn-lg" onclick="tomarDecisionFinal('Aprobar')"><i class="fas fa-check-double"></i> APROBAR IMPLEMENTACIÓN</button>
+                        <button class="btn btn-danger btn-lg" onclick="tomarDecisionFinal('Rechazar')"><i class="fas fa-ban"></i> RECHAZAR SOLICITUD</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Columna Derecha - Historial -->
+        <div class="col-lg-5">
+            <div class="card">
+                <div class="card-header"><i class="fas fa-history card-title-icon"></i>Línea de Tiempo Completa</div>
+                <div class="card-body">
+                    <ul class="timeline">
+                        @foreach (var entry in Model.HistorialCompleto.Entradas)
+                        {
+                            <li class="timeline-item">
+                                <div class="timeline-icon"></div>
+                                <div class="timeline-body">
+                                    <strong>@entry.Decision</strong> por @entry.Usuario
+                                    <div class="text-muted"><small>@entry.Fecha.ToString("g")</small></div>
+                                    @if (!string.IsNullOrEmpty(entry.Comentarios))
+                                    {
+                                        <p class="mb-0"><small><i>"@entry.Comentarios"</i></small></p>
+                                    }
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<!-- Formularios ocultos -->
+@using (Html.BeginForm("AprobarFinal", "ProcesoCambio", FormMethod.Post, new { id = "formAprobarFinal" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.Hidden("idSolicitud", Model.IdSolicitud)
+    @Html.Hidden("comentarios", "", new { id = "comentariosAprobarFinal" })
+}
+@using (Html.BeginForm("RechazarFinal", "ProcesoCambio", FormMethod.Post, new { id = "formRechazarFinal" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.Hidden("idSolicitud", Model.IdSolicitud)
+    @Html.Hidden("comentarios", "", new { id = "comentariosRechazarFinal" })
+}
+
+@section Scripts {
+    <script>
+    function tomarDecisionFinal(accion) {
+        const comentarios = document.getElementById('comentariosFinales').value;
+
+        if (!comentarios.trim()) {
+            Swal.fire('Atención', 'Debe ingresar una justificación o comentario para registrar la decisión final.', 'warning');
+            return;
+        }
+
+        let config = {
+            Aprobar: {
+                title: '¿Confirmar Aprobación Final?',
+                text: "El cambio será planificado para su desarrollo. Esta acción es definitiva.",
+                icon: 'question',
+                confirmButtonText: 'Sí, ¡Aprobar!',
+                formId: 'formAprobarFinal',
+                hiddenInputId: 'comentariosAprobarFinal'
+            },
+            Rechazar: {
+                title: '¿Confirmar Rechazo Final?',
+                text: "La solicitud será cancelada permanentemente. ¿Está seguro?",
+                icon: 'warning',
+                confirmButtonText: 'Sí, rechazar',
+                formId: 'formRechazarFinal',
+                hiddenInputId: 'comentariosRechazarFinal'
+            }
+        };
+        const decisionConfig = config[accion];
+
+        Swal.fire({
+            title: decisionConfig.title,
+            text: decisionConfig.text,
+            icon: decisionConfig.icon,
+            showCancelButton: true,
+            confirmButtonColor: (accion === 'Aprobar' ? '#28a745' : '#d33'),
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: decisionConfig.confirmButtonText,
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById(decisionConfig.hiddenInputId).value = comentarios;
+                document.getElementById(decisionConfig.formId).submit();
+            }
+        });
+    }
+    </script>
+}

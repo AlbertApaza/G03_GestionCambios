@@ -1,0 +1,148 @@
+﻿@model G03_GestionDeCambios.Models.DesarrolloViewModel
+@{
+    ViewBag.Title = "Seguimiento de Desarrollo";
+    var progresoColor = Model.Progreso < 50 ? "bg-danger" : (Model.Progreso < 100 ? "bg-warning" : "bg-success");
+}
+
+<!-- Incluye los mismos estilos y scripts que las vistas anteriores -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<style>
+    /* ... (copia los estilos de las vistas anteriores) ... */
+    .progress {
+        height: 30px;
+        font-size: 1rem;
+    }
+
+    .task-card {
+        margin-bottom: 1rem;
+        border-left-width: 5px;
+    }
+
+    .task-card-pendiente {
+        border-left-color: #6c757d;
+    }
+
+    .task-card-en-proceso {
+        border-left-color: #007bff;
+    }
+
+    .task-card-finalizado {
+        border-left-color: #28a745;
+    }
+
+    .task-card .card-header {
+        font-weight: 600;
+    }
+</style>
+
+<div class="panel-container">
+    <h2 class="mb-4">Panel de Seguimiento de Desarrollo - Solicitud #@Model.IdSolicitud</h2>
+
+    <!-- Panel de Progreso General -->
+    <div class="card mb-4">
+        <div class="card-header"><i class="fas fa-tasks card-title-icon"></i>Progreso General del Cambio</div>
+        <div class="card-body">
+            <h5 class="card-title">Elemento: @Model.ElementoAfectadoNombre</h5>
+            <p><strong>Objetivo:</strong> @Model.ObjetivoSolicitud</p>
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated @progresoColor" role="progressbar" style="width: @Model.Progreso%;" aria-valuenow="@Model.Progreso" aria-valuemin="0" aria-valuemax="100">
+                    @Model.Progreso% Completado
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lista de Tareas -->
+    <h4><i class="fas fa-clipboard-check"></i> Estado de Tareas</h4>
+    <div class="row">
+        @foreach (var tarea in Model.Tareas)
+        {
+            var cardClass = "";
+            var iconClass = "";
+            switch (tarea.Estado)
+            {
+                case "Pendiente":
+                    cardClass = "task-card-pendiente";
+                    iconClass = "fas fa-clock text-secondary";
+                    break;
+                case "En Proceso":
+                    cardClass = "task-card-en-proceso";
+                    iconClass = "fas fa-cogs text-primary";
+                    break;
+                case "Finalizado":
+                    cardClass = "task-card-finalizado";
+                    iconClass = "fas fa-check-circle text-success";
+                    break;
+            }
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card task-card @cardClass">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        @tarea.Nombre
+                        <span title="Estado: @tarea.Estado"><i class="@iconClass fa-lg"></i></span>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">@tarea.Descripcion</p>
+                    </div>
+                    <div class="card-footer text-muted">
+                        Asignado a: <strong>@tarea.AsignadoA</strong>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Panel de Acción -->
+    <div class="card mt-4">
+        <div class="card-header bg-dark text-white"><i class="fas fa-flag-checkered card-title-icon"></i>Finalizar Fase de Desarrollo</div>
+        <div class="card-body">
+            <p>Una vez que todas las tareas hayan sido marcadas como "Finalizado", puede enviar el cambio al equipo de Quality Assurance (QA) para su validación.</p>
+            @using (Html.BeginForm("EnviarAQA", "ProcesoCambio", FormMethod.Post, new { id = "formEnviarAQA" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.Hidden("idSolicitud", Model.IdSolicitud)
+                <div class="form-group">
+                    <label for="comentarios"><strong>Comentarios de Cierre / Resumen de Desarrollo:</strong></label>
+                    <textarea id="comentarios" name="comentarios" class="form-control" rows="3" placeholder="Ej: Se completaron todas las tareas según lo planificado. Se refactorizó el módulo X y se aplicaron las pruebas unitarias correspondientes. Listo para QA."></textarea>
+                </div>
+
+                <button type="button" class="btn btn-primary btn-lg" onclick="confirmarEnvioAQA()" @(Model.Progreso < 100 ? "disabled" : "")>
+                    <i class="fas fa-vial"></i> Enviar a QA
+                </button>
+                if (Model.Progreso < 100)
+                {
+                    <small class="form-text text-danger ml-2 d-inline">El botón se activará cuando el progreso sea del 100%.</small>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+    function confirmarEnvioAQA() {
+        const comentarios = document.getElementById('comentarios').value;
+        if (!comentarios.trim()) {
+            Swal.fire('Atención', 'Por favor, ingrese un resumen o comentario de cierre antes de enviar a QA.', 'warning');
+            return;
+        }
+
+        Swal.fire({
+            title: '¿Confirmar envío a QA?',
+            text: "Se notificará al equipo de QA que el desarrollo está listo para ser probado. ¿Desea continuar?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#007bff',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Sí, ¡Enviar a QA!',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('formEnviarAQA').submit();
+            }
+        });
+    }
+    </script>
+}

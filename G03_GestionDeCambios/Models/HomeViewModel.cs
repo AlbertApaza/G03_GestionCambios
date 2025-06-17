@@ -35,5 +35,6 @@ namespace G03_GestionDeCambios.Models
         public string Descripcion { get; set; }
         public string Estado { get; set; }
         public string NombreCiclo { get; set; }
+        public string UsuarioAsignado { get; set; }
     }
 }

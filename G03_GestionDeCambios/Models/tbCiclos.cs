@@ -18,9 +18,9 @@ namespace G03_GestionDeCambios.Models
         public tbCiclos()
         {
             this.tbDocumentos = new HashSet<tbDocumentos>();
-            this.tbProyectos = new HashSet<tbProyectos>();
             this.tbProyectoCiclo = new HashSet<tbProyectoCiclo>();
             this.tbProyectoElemento = new HashSet<tbProyectoElemento>();
+            this.tbProyectos = new HashSet<tbProyectos>();
             this.tbTiposDocumento = new HashSet<tbTiposDocumento>();
         }
     
@@ -33,11 +33,11 @@ namespace G03_GestionDeCambios.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbDocumentos> tbDocumentos { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tbProyectos> tbProyectos { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbProyectoCiclo> tbProyectoCiclo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbProyectoElemento> tbProyectoElemento { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tbProyectos> tbProyectos { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbTiposDocumento> tbTiposDocumento { get; set; }
     }

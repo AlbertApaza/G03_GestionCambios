@@ -25,16 +25,21 @@ namespace G03_GestionDeCambios.Models
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<tbCiclos> tbCiclos { get; set; }
+        public virtual DbSet<tbDespliegues> tbDespliegues { get; set; }
         public virtual DbSet<tbDocumentos> tbDocumentos { get; set; }
         public virtual DbSet<tbElementos> tbElementos { get; set; }
+        public virtual DbSet<tbEntornosDespliegue> tbEntornosDespliegue { get; set; }
         public virtual DbSet<tbMetodologias> tbMetodologias { get; set; }
+        public virtual DbSet<tbPasosDespliegue> tbPasosDespliegue { get; set; }
         public virtual DbSet<tbProyectoCiclo> tbProyectoCiclo { get; set; }
         public virtual DbSet<tbProyectoElemento> tbProyectoElemento { get; set; }
         public virtual DbSet<tbProyectos> tbProyectos { get; set; }
         public virtual DbSet<tbProyectoUsuario> tbProyectoUsuario { get; set; }
         public virtual DbSet<tbRoles> tbRoles { get; set; }
         public virtual DbSet<tbSolicitudesCambio> tbSolicitudesCambio { get; set; }
+        public virtual DbSet<tbSolicitudHistorial> tbSolicitudHistorial { get; set; }
         public virtual DbSet<tbTareas> tbTareas { get; set; }
         public virtual DbSet<tbTiposDocumento> tbTiposDocumento { get; set; }
         public virtual DbSet<tbUsuarios> tbUsuarios { get; set; }

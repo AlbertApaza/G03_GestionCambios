@@ -1,5 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="BD_GestionDeCambiosModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
   <EntityType Name="tbCiclos">
     <Key>
       <PropertyRef Name="codCiclo" />
@@ -8,6 +18,19 @@
     <Property Name="nombre" Type="nvarchar" MaxLength="50" />
     <Property Name="orden" Type="int" />
     <Property Name="idMetodologia" Type="int" />
+  </EntityType>
+  <EntityType Name="tbDespliegues">
+    <Key>
+      <PropertyRef Name="idDespliegue" />
+    </Key>
+    <Property Name="idDespliegue" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="idSolicitudCambio" Type="int" Nullable="false" />
+    <Property Name="idEntorno" Type="int" Nullable="false" />
+    <Property Name="idUsuarioInicio" Type="int" Nullable="false" />
+    <Property Name="fechaInicio" Type="datetime" Nullable="false" />
+    <Property Name="fechaFin" Type="datetime" />
+    <Property Name="estado" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="comentarios" Type="nvarchar(max)" />
   </EntityType>
   <EntityType Name="tbDocumentos">
     <Key>
@@ -33,12 +56,32 @@
     <Property Name="nombre" Type="nvarchar" MaxLength="100" />
     <Property Name="descripcion" Type="nvarchar(max)" />
   </EntityType>
+  <EntityType Name="tbEntornosDespliegue">
+    <Key>
+      <PropertyRef Name="idEntorno" />
+    </Key>
+    <Property Name="idEntorno" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nombre" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
   <EntityType Name="tbMetodologias">
     <Key>
       <PropertyRef Name="idMetodologia" />
     </Key>
     <Property Name="idMetodologia" Type="int" Nullable="false" />
     <Property Name="nombre" Type="nvarchar" MaxLength="20" />
+  </EntityType>
+  <EntityType Name="tbPasosDespliegue">
+    <Key>
+      <PropertyRef Name="idPasoDespliegue" />
+    </Key>
+    <Property Name="idPasoDespliegue" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="idDespliegue" Type="int" Nullable="false" />
+    <Property Name="orden" Type="int" Nullable="false" />
+    <Property Name="descripcion" Type="nvarchar" MaxLength="255" Nullable="false" />
+    <Property Name="estado" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="idUsuarioCompletado" Type="int" />
+    <Property Name="fechaCompletado" Type="datetime" />
+    <Property Name="notas" Type="nvarchar(max)" />
   </EntityType>
   <EntityType Name="tbProyectoCiclo">
     <Key>
@@ -118,6 +161,19 @@
     <Property Name="GiroJefeProyectoFecha" Type="datetime" />
     <Property Name="ModificacionVersionFecha" Type="datetime" />
   </EntityType>
+  <EntityType Name="tbSolicitudHistorial">
+    <Key>
+      <PropertyRef Name="idHistorial" />
+    </Key>
+    <Property Name="idHistorial" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="idSolicitudCambio" Type="int" Nullable="false" />
+    <Property Name="pasoProceso" Type="int" Nullable="false" />
+    <Property Name="nombrePasoProceso" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="fechaAccion" Type="datetime" Nullable="false" />
+    <Property Name="idUsuarioAccion" Type="int" Nullable="false" />
+    <Property Name="comentarios" Type="nvarchar(max)" />
+    <Property Name="decision" Type="nvarchar" MaxLength="100" />
+  </EntityType>
   <EntityType Name="tbTareas">
     <Key>
       <PropertyRef Name="idTareas" />
@@ -166,6 +222,42 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK__tbDesplie__idEnt__0D7A0286">
+    <End Role="tbEntornosDespliegue" Type="Self.tbEntornosDespliegue" Multiplicity="1" />
+    <End Role="tbDespliegues" Type="Self.tbDespliegues" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbEntornosDespliegue">
+        <PropertyRef Name="idEntorno" />
+      </Principal>
+      <Dependent Role="tbDespliegues">
+        <PropertyRef Name="idEntorno" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tbDesplie__idSol__0C85DE4D">
+    <End Role="tbSolicitudesCambio" Type="Self.tbSolicitudesCambio" Multiplicity="1" />
+    <End Role="tbDespliegues" Type="Self.tbDespliegues" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbSolicitudesCambio">
+        <PropertyRef Name="idSolicitudCambio" />
+      </Principal>
+      <Dependent Role="tbDespliegues">
+        <PropertyRef Name="idSolicitudCambio" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tbDesplie__idUsu__0E6E26BF">
+    <End Role="tbUsuarios" Type="Self.tbUsuarios" Multiplicity="1" />
+    <End Role="tbDespliegues" Type="Self.tbDespliegues" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbUsuarios">
+        <PropertyRef Name="idUsuario" />
+      </Principal>
+      <Dependent Role="tbDespliegues">
+        <PropertyRef Name="idUsuarioInicio" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK__tbDocumen__codCi__59FA5E80">
     <End Role="tbCiclos" Type="Self.tbCiclos" Multiplicity="0..1" />
     <End Role="tbDocumentos" Type="Self.tbDocumentos" Multiplicity="*" />
@@ -211,6 +303,30 @@
       </Principal>
       <Dependent Role="tbDocumentos">
         <PropertyRef Name="idUsuarioSubida" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tbPasosDe__idDes__123EB7A3">
+    <End Role="tbDespliegues" Type="Self.tbDespliegues" Multiplicity="1" />
+    <End Role="tbPasosDespliegue" Type="Self.tbPasosDespliegue" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbDespliegues">
+        <PropertyRef Name="idDespliegue" />
+      </Principal>
+      <Dependent Role="tbPasosDespliegue">
+        <PropertyRef Name="idDespliegue" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tbPasosDe__idUsu__1332DBDC">
+    <End Role="tbUsuarios" Type="Self.tbUsuarios" Multiplicity="0..1" />
+    <End Role="tbPasosDespliegue" Type="Self.tbPasosDespliegue" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbUsuarios">
+        <PropertyRef Name="idUsuario" />
+      </Principal>
+      <Dependent Role="tbPasosDespliegue">
+        <PropertyRef Name="idUsuarioCompletado" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -394,6 +510,30 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK__tbSolicit__idSol__05D8E0BE">
+    <End Role="tbSolicitudesCambio" Type="Self.tbSolicitudesCambio" Multiplicity="1" />
+    <End Role="tbSolicitudHistorial" Type="Self.tbSolicitudHistorial" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbSolicitudesCambio">
+        <PropertyRef Name="idSolicitudCambio" />
+      </Principal>
+      <Dependent Role="tbSolicitudHistorial">
+        <PropertyRef Name="idSolicitudCambio" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tbSolicit__idUsu__07C12930">
+    <End Role="tbUsuarios" Type="Self.tbUsuarios" Multiplicity="1" />
+    <End Role="tbSolicitudHistorial" Type="Self.tbSolicitudHistorial" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbUsuarios">
+        <PropertyRef Name="idUsuario" />
+      </Principal>
+      <Dependent Role="tbSolicitudHistorial">
+        <PropertyRef Name="idUsuarioAccion" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK__tbSolicit__idUsu__6C190EBB">
     <End Role="tbUsuarios" Type="Self.tbUsuarios" Multiplicity="1" />
     <End Role="tbSolicitudesCambio" Type="Self.tbSolicitudesCambio" Multiplicity="*" />
@@ -455,22 +595,39 @@
     </ReferentialConstraint>
   </Association>
   <EntityContainer Name="BD_GestionDeCambiosModelStoreContainer">
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tbCiclos" EntityType="Self.tbCiclos" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbDespliegues" EntityType="Self.tbDespliegues" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tbDocumentos" EntityType="Self.tbDocumentos" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tbElementos" EntityType="Self.tbElementos" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbEntornosDespliegue" EntityType="Self.tbEntornosDespliegue" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tbMetodologias" EntityType="Self.tbMetodologias" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbPasosDespliegue" EntityType="Self.tbPasosDespliegue" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tbProyectoCiclo" EntityType="Self.tbProyectoCiclo" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tbProyectoElemento" EntityType="Self.tbProyectoElemento" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tbProyectos" EntityType="Self.tbProyectos" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tbProyectoUsuario" EntityType="Self.tbProyectoUsuario" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tbRoles" EntityType="Self.tbRoles" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tbSolicitudesCambio" EntityType="Self.tbSolicitudesCambio" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbSolicitudHistorial" EntityType="Self.tbSolicitudHistorial" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tbTareas" EntityType="Self.tbTareas" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tbTiposDocumento" EntityType="Self.tbTiposDocumento" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tbUsuarios" EntityType="Self.tbUsuarios" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="FK__tbCiclos__idMeto__59063A47" Association="Self.FK__tbCiclos__idMeto__59063A47">
       <End Role="tbMetodologias" EntitySet="tbMetodologias" />
       <End Role="tbCiclos" EntitySet="tbCiclos" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbDesplie__idEnt__0D7A0286" Association="Self.FK__tbDesplie__idEnt__0D7A0286">
+      <End Role="tbEntornosDespliegue" EntitySet="tbEntornosDespliegue" />
+      <End Role="tbDespliegues" EntitySet="tbDespliegues" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbDesplie__idSol__0C85DE4D" Association="Self.FK__tbDesplie__idSol__0C85DE4D">
+      <End Role="tbSolicitudesCambio" EntitySet="tbSolicitudesCambio" />
+      <End Role="tbDespliegues" EntitySet="tbDespliegues" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbDesplie__idUsu__0E6E26BF" Association="Self.FK__tbDesplie__idUsu__0E6E26BF">
+      <End Role="tbUsuarios" EntitySet="tbUsuarios" />
+      <End Role="tbDespliegues" EntitySet="tbDespliegues" />
     </AssociationSet>
     <AssociationSet Name="FK__tbDocumen__codCi__59FA5E80" Association="Self.FK__tbDocumen__codCi__59FA5E80">
       <End Role="tbCiclos" EntitySet="tbCiclos" />
@@ -487,6 +644,14 @@
     <AssociationSet Name="FK__tbDocumen__idUsu__5CD6CB2B" Association="Self.FK__tbDocumen__idUsu__5CD6CB2B">
       <End Role="tbUsuarios" EntitySet="tbUsuarios" />
       <End Role="tbDocumentos" EntitySet="tbDocumentos" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbPasosDe__idDes__123EB7A3" Association="Self.FK__tbPasosDe__idDes__123EB7A3">
+      <End Role="tbDespliegues" EntitySet="tbDespliegues" />
+      <End Role="tbPasosDespliegue" EntitySet="tbPasosDespliegue" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbPasosDe__idUsu__1332DBDC" Association="Self.FK__tbPasosDe__idUsu__1332DBDC">
+      <End Role="tbUsuarios" EntitySet="tbUsuarios" />
+      <End Role="tbPasosDespliegue" EntitySet="tbPasosDespliegue" />
     </AssociationSet>
     <AssociationSet Name="FK__tbProyect__codCi__5DCAEF64" Association="Self.FK__tbProyect__codCi__5DCAEF64">
       <End Role="tbCiclos" EntitySet="tbCiclos" />
@@ -547,6 +712,14 @@
     <AssociationSet Name="FK__tbSolicit__idPro__6B24EA82" Association="Self.FK__tbSolicit__idPro__6B24EA82">
       <End Role="tbProyectos" EntitySet="tbProyectos" />
       <End Role="tbSolicitudesCambio" EntitySet="tbSolicitudesCambio" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbSolicit__idSol__05D8E0BE" Association="Self.FK__tbSolicit__idSol__05D8E0BE">
+      <End Role="tbSolicitudesCambio" EntitySet="tbSolicitudesCambio" />
+      <End Role="tbSolicitudHistorial" EntitySet="tbSolicitudHistorial" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbSolicit__idUsu__07C12930" Association="Self.FK__tbSolicit__idUsu__07C12930">
+      <End Role="tbUsuarios" EntitySet="tbUsuarios" />
+      <End Role="tbSolicitudHistorial" EntitySet="tbSolicitudHistorial" />
     </AssociationSet>
     <AssociationSet Name="FK__tbSolicit__idUsu__6C190EBB" Association="Self.FK__tbSolicit__idUsu__6C190EBB">
       <End Role="tbUsuarios" EntitySet="tbUsuarios" />

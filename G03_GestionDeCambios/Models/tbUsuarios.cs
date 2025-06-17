@@ -17,11 +17,14 @@ namespace G03_GestionDeCambios.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public tbUsuarios()
         {
+            this.tbDespliegues = new HashSet<tbDespliegues>();
             this.tbDocumentos = new HashSet<tbDocumentos>();
+            this.tbPasosDespliegue = new HashSet<tbPasosDespliegue>();
             this.tbProyectos = new HashSet<tbProyectos>();
             this.tbProyectoUsuario = new HashSet<tbProyectoUsuario>();
             this.tbSolicitudesCambio = new HashSet<tbSolicitudesCambio>();
             this.tbSolicitudesCambio1 = new HashSet<tbSolicitudesCambio>();
+            this.tbSolicitudHistorial = new HashSet<tbSolicitudHistorial>();
             this.tbTareas = new HashSet<tbTareas>();
         }
     
@@ -38,7 +41,11 @@ namespace G03_GestionDeCambios.Models
         public Nullable<int> adminRol { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tbDespliegues> tbDespliegues { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbDocumentos> tbDocumentos { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tbPasosDespliegue> tbPasosDespliegue { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbProyectos> tbProyectos { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -47,6 +54,8 @@ namespace G03_GestionDeCambios.Models
         public virtual ICollection<tbSolicitudesCambio> tbSolicitudesCambio { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbSolicitudesCambio> tbSolicitudesCambio1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tbSolicitudHistorial> tbSolicitudHistorial { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbTareas> tbTareas { get; set; }
     }

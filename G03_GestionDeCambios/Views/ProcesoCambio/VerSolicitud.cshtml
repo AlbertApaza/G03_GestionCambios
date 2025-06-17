@@ -1,6 +1,7 @@
 ﻿@model G03_GestionDeCambios.Models.SolicitudDetalleViewModel
 @{
     ViewBag.Title = "Detalle de Solicitud de Cambio";
+    var idSolicitud = ViewBag.IdSolicitudActual;
 }
 
 <style>
@@ -174,3 +175,53 @@
     <!-- Aquí podrías agregar botones para avanzar en el wizard, por ejemplo -->
     <!-- <a href="@Url.Action("VerAnalisis", new { idSolicitud = Model.IdSolicitud })" class="btn btn-primary">Siguiente: Analizar Solicitud »</a> -->
 </div>
+
+
+<hr />
+
+@* Formulario para la acción de Rechazar *@
+@using (Html.BeginForm("Rechazar", "ProcesoCambio", FormMethod.Post, new { id = "formRechazo" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.Hidden("idSolicitud", (int)(idSolicitud))
+    @Html.Hidden("comentarios", "", new { id = "comentarioRechazo" })
+
+    <button type="button" class="btn btn-danger" onclick="rechazarSolicitud()">
+        <i class="fas fa-times-circle"></i> Rechazar Solicitud
+    </button>
+}
+
+@* Formulario para la acción de Rechazar *@
+@using (Html.BeginForm("EnviarAnalisis", "ProcesoCambio", FormMethod.Post, new { id = "formEnviarAnalisis" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.Hidden("idSolicitud", (int)(idSolicitud))
+    @Html.Hidden("comentarios", "", new { id = "comentarioEnviarAnalisis" })
+
+    <button type="button" class="btn btn-secondary" onclick="enviarAnalisis()">
+        <i class="fas fa-times-circle"></i> Envia Solicitud a Analisis
+    </button>
+}
+
+@section Scripts {
+    <script>
+        function rechazarSolicitud() {
+            var motivo = prompt("Escribe el motivo del rechazo:");
+            if (motivo && motivo.trim() !== "") {
+                document.getElementById("comentarioRechazo").value = motivo;
+                document.getElementById("formRechazo").submit();
+            } else {
+                alert("Debes ingresar un motivo para rechazar la solicitud.");
+            }
+        }
+        function enviarAnalisis() {
+            var motivo = prompt("Ingrese detalles para el área de Analisis:");
+            if (motivo && motivo.trim() !== "") {
+                document.getElementById("comentarioEnviarAnalisis").value = motivo;
+                document.getElementById("formEnviarAnalisis").submit();
+            } else {
+                alert("Debes ingresar detalles adicionales.");
+            }
+        }
+    </script>
+}

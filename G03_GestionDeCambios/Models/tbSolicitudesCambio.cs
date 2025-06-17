@@ -14,6 +14,13 @@ namespace G03_GestionDeCambios.Models
     
     public partial class tbSolicitudesCambio
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public tbSolicitudesCambio()
+        {
+            this.tbDespliegues = new HashSet<tbDespliegues>();
+            this.tbSolicitudHistorial = new HashSet<tbSolicitudHistorial>();
+        }
+    
         public int idSolicitudCambio { get; set; }
         public string codigoDocumentoSolicitd { get; set; }
         public Nullable<System.DateTime> fechaSolicitud { get; set; }
@@ -35,8 +42,12 @@ namespace G03_GestionDeCambios.Models
         public Nullable<System.DateTime> GiroJefeProyectoFecha { get; set; }
         public Nullable<System.DateTime> ModificacionVersionFecha { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tbDespliegues> tbDespliegues { get; set; }
         public virtual tbProyectoElemento tbProyectoElemento { get; set; }
         public virtual tbProyectos tbProyectos { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tbSolicitudHistorial> tbSolicitudHistorial { get; set; }
         public virtual tbUsuarios tbUsuarios { get; set; }
         public virtual tbUsuarios tbUsuarios1 { get; set; }
     }

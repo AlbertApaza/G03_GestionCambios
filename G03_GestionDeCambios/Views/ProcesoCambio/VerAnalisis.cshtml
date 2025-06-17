@@ -1,9 +1,301 @@
-﻿
+﻿@model G03_GestionDeCambios.Models.AnalisisSolicitudViewModel
 @{
-    ViewBag.Title = "VerAnalisis";
+    ViewBag.Title = "Análisis de Impacto de Solicitud";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<style>
+    .panel-container {
+        background-color: #f4f6f9;
+        padding: 20px;
+    }
+
+    .card {
+        margin-bottom: 1.5rem;
+        box-shadow: 0 0 1rem rgba(0,0,0,.05);
+    }
+
+    .card-header {
+        background-color: #343a40;
+        color: white;
+        font-weight: 600;
+    }
+
+    .card-title-icon {
+        margin-right: 10px;
+    }
+
+    .list-group-item strong {
+        min-width: 180px;
+        display: inline-block;
+    }
+
+    .badge-disponible {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .badge-ocupado {
+        background-color: #ffc107;
+        color: black;
+    }
+
+    .timeline {
+        list-style: none;
+        padding: 0;
+        position: relative;
+    }
+
+        .timeline:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #e9ecef;
+            left: 20px;
+        }
+
+    .timeline-item {
+        position: relative;
+        margin-bottom: 1rem;
+        padding-left: 40px;
+    }
+
+    .timeline-icon {
+        position: absolute;
+        left: 12px;
+        top: 5px;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background-color: #007bff;
+    }
+
+    .timeline-body {
+        background-color: #fff;
+        padding: 15px;
+        border-radius: 5px;
+        border: 1px solid #dee2e6;
+    }
+
+    .decision-panel {
+        border-top: 3px solid #007bff;
+    }
+</style>
+
+<div class="panel-container">
+    <h2 class="mb-4">Panel de Análisis de Impacto - Solicitud #@Model.IdSolicitud</h2>
+
+    <div class="row">
+        <!-- Columna Izquierda - Detalles y Contexto -->
+        <div class="col-lg-8">
+            <!-- Detalles de la Solicitud -->
+            <div class="card">
+                <div class="card-header"><i class="fas fa-file-alt card-title-icon"></i>Resumen de la Solicitud</div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>Objetivo:</strong> @Model.SolicitudInfo.Objetivo</li>
+                        <li class="list-group-item"><strong>Descripción:</strong> <pre style="white-space: pre-wrap; font-family: inherit;">@Model.SolicitudInfo.DescripcionCambio</pre></li>
+                        <li class="list-group-item"><strong>Impacto Estimado (Solicitante):</strong> @Model.SolicitudInfo.Impacto</li>
+                        <li class="list-group-item"><strong>Esfuerzo Estimado (Solicitante):</strong> @Model.SolicitudInfo.EsfuerzoEstimado</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Contexto del Elemento Afectado -->
+            <div class="card">
+                <div class="card-header"><i class="fas fa-cogs card-title-icon"></i>Contexto del Elemento Afectado</div>
+                <div class="card-body">
+                    <h5 class="card-title">Elemento: @Model.ElementoAfectado.NombreElemento</h5>
+                    <p class="card-text">
+                        Fechas planificadas para este elemento:
+                        <strong>@Model.ElementoAfectado.FechaInicio?.ToString("dd/MM/yyyy")</strong> - <strong>@Model.ElementoAfectado.FechaFin?.ToString("dd/MM/yyyy")</strong>
+                    </p>
+                    <h6>Tareas Asociadas al Elemento:</h6>
+                    @if (Model.ElementoAfectado.TareasAsociadas.Any())
+                    {
+                        <table class="table table-sm table-bordered">
+                            <thead><tr><th>Tarea</th><th>Asignado a</th><th>Estado</th></tr></thead>
+                            <tbody>
+                                @foreach (var tarea in Model.ElementoAfectado.TareasAsociadas)
+                                {
+                                    <tr>
+                                        <td>@tarea.NombreTarea</td>
+                                        <td>@tarea.UsuarioAsignado</td>
+                                        <td>@tarea.Estado</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <p class="text-muted">No hay tareas específicas registradas para este elemento.</p>
+                    }
+                </div>
+            </div>
+
+            <!-- Panel de Decisión -->
+            <div class="card decision-panel">
+                <div class="card-header bg-primary"><i class="fas fa-gavel card-title-icon"></i>Panel de Decisión del Analista</div>
+                <div class="card-body">
+                    <p>Evalúe el impacto técnico, de recursos y de cronograma. Luego, registre su decisión y justificación.</p>
+                    <div class="form-group">
+                        <label for="comentariosAnalista"><strong>Justificación / Comentarios del Análisis:</strong></label>
+                        <textarea id="comentariosAnalista" class="form-control" rows="4" placeholder="Ej: El cambio es viable, requiere 20 horas adicionales y la intervención del equipo de QA. Se recomienda proceder..."></textarea>
+                    </div>
+                    <div class="btn-group mt-2">
+                        <button class="btn btn-success" onclick="tomarDecision('Aprobar')"><i class="fas fa-check-circle"></i> Aprobar y Enviar a Comité</button>
+                        <button class="btn btn-danger" onclick="tomarDecision('Rechazar')"><i class="fas fa-times-circle"></i> Rechazar Solicitud</button>
+                        <button class="btn btn-warning" onclick="tomarDecision('Informacion')"><i class="fas fa-info-circle"></i> Solicitar más Información</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Columna Derecha - Info Adicional -->
+        <div class="col-lg-4">
+            <!-- Historial -->
+            <div class="card">
+                <div class="card-header"><i class="fas fa-history card-title-icon"></i>Historial y Comentarios</div>
+                <div class="card-body">
+                    <h6>Comentario del Gestor:</h6>
+                    <div class="alert alert-info">
+                        <small>De: <strong>@Model.HistorialReciente.UsuarioPasoAnterior</strong></small><br />
+                        <em>"@Model.HistorialReciente.ComentarioPasoAnterior"</em>
+                    </div>
+                    <h6>Línea de Tiempo:</h6>
+                    <ul class="timeline">
+                        @foreach (var entry in Model.HistorialReciente.Entradas)
+                        {
+                            <li class="timeline-item">
+                                <div class="timeline-icon"></div>
+                                <div class="timeline-body">
+                                    <strong>@entry.Decision</strong> por @entry.Usuario
+                                    <div class="text-muted"><small>@entry.Fecha.ToString("g")</small></div>
+                                    @if (!string.IsNullOrEmpty(entry.Comentarios))
+                                    {
+                                        <p class="mb-0"><small><i>"@entry.Comentarios"</i></small></p>
+                                    }
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Equipo del Proyecto -->
+            <div class="card">
+                <div class="card-header"><i class="fas fa-users card-title-icon"></i>Equipo del Proyecto y Disponibilidad</div>
+                <div class="card-body">
+                    <table class="table table-hover table-sm">
+                        <thead><tr><th>Miembro</th><th>Rol</th><th>Estado</th></tr></thead>
+                        <tbody>
+                            @foreach (var miembro in Model.EquipoProyecto.Miembros)
+                            {
+                                <tr>
+                                    <td>@miembro.NombreCompleto</td>
+                                    <td>@miembro.Rol</td>
+                                    <td>
+                                        @if (miembro.Disponibilidad == "Disponible")
+                                        {
+                                            <span class="badge badge-disponible">@miembro.Disponibilidad</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge badge-ocupado">@miembro.Disponibilidad</span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Formularios ocultos para las acciones -->
+@using (Html.BeginForm("AprobarDesdeAnalisis", "ProcesoCambio", FormMethod.Post, new { id = "formAprobar" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.Hidden("idSolicitud", Model.IdSolicitud)
+    @Html.Hidden("comentarios", "", new { id = "comentariosAprobar" })
+}
+@using (Html.BeginForm("RechazarDesdeAnalisis", "ProcesoCambio", FormMethod.Post, new { id = "formRechazar" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.Hidden("idSolicitud", Model.IdSolicitud)
+    @Html.Hidden("comentarios", "", new { id = "comentariosRechazar" })
+}
+@using (Html.BeginForm("PedirInformacion", "ProcesoCambio", FormMethod.Post, new { id = "formInformacion" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.Hidden("idSolicitud", Model.IdSolicitud)
+    @Html.Hidden("comentarios", "", new { id = "comentariosInformacion" })
 }
 
 
-<div class="text-center" style="margin-top: 20px;">
-    @Html.ActionLink("Volver al Listado", "Index", "Solicitud", null, new { @class = "btn btn-secondary" })
-</div>
+@section Scripts {
+    <script>
+    function tomarDecision(accion) {
+        const comentarios = document.getElementById('comentariosAnalista').value;
+
+        if (!comentarios.trim()) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Campo Requerido',
+                text: 'Por favor, ingrese su justificación en el panel de decisión antes de continuar.'
+            });
+            return;
+        }
+
+        let config = {
+            Aprobar: {
+                title: '¿Confirmar Aprobación?',
+                text: "La solicitud pasará al Comité de Cambios para su aprobación final.",
+                icon: 'question',
+                formId: 'formAprobar',
+                hiddenInputId: 'comentariosAprobar'
+            },
+            Rechazar: {
+                title: '¿Confirmar Rechazo?',
+                text: "Esta acción cancelará la solicitud permanentemente. ¿Está seguro?",
+                icon: 'warning',
+                formId: 'formRechazar',
+                hiddenInputId: 'comentariosRechazar'
+            },
+            Informacion: {
+                title: '¿Solicitar más Información?',
+                text: "Se enviará una notificación con sus comentarios al gestor del proyecto.",
+                icon: 'info',
+                formId: 'formInformacion',
+                hiddenInputId: 'comentariosInformacion'
+            }
+        };
+
+        const decisionConfig = config[accion];
+
+        Swal.fire({
+            title: decisionConfig.title,
+            text: decisionConfig.text,
+            icon: decisionConfig.icon,
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, continuar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById(decisionConfig.hiddenInputId).value = comentarios;
+                document.getElementById(decisionConfig.formId).submit();
+            }
+        });
+    }
+    </script>
+}

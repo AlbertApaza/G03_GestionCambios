@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using System;
+using System.EnterpriseServices;
 
 namespace G03_GestionDeCambios.Service
 {
@@ -82,12 +83,7 @@ namespace G03_GestionDeCambios.Service
             return new SelectList(elementos, "Value", "Text");
         }
 
-        public int ObtenerPasoActualProceso(int idSolicitud)
-        {
-            return _context.tbSolicitudesCambio
-                .Where(sc => sc.idSolicitudCambio == idSolicitud)
-                .Select(sc => sc.pasoActualProceso)
-                .FirstOrDefault();
-        }
+
+
     }
 }
