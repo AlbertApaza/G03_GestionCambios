@@ -1,30 +1,50 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\USUARIO\\Pictures\\G03_GestionCambios\\",
+  "WorkspaceRootPath": "C:\\Users\\USUARIO\\source\\repos\\diaexpo\\G03_GestionCambios\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|c:\\users\\usuario\\pictures\\g03_gestioncambios\\g03_gestiondecambios\\views\\procesocambio\\veraceptacion.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\views\\procesocambio\\veraceptacion.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|C:\\Users\\USUARIO\\Pictures\\G03_GestionCambios\\g03_gestiondecambios\\models\\admindashboardviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\models\\admindashboardviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|C:\\Users\\USUARIO\\Pictures\\G03_GestionCambios\\g03_gestiondecambios\\service\\procesocambioservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|C:\\Users\\USUARIO\\source\\repos\\diaexpo\\G03_GestionCambios\\g03_gestiondecambios\\service\\procesocambioservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\service\\procesocambioservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|C:\\Users\\USUARIO\\Pictures\\G03_GestionCambios\\g03_gestiondecambios\\views\\solicitud\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\views\\solicitud\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|c:\\users\\usuario\\source\\repos\\diaexpo\\g03_gestioncambios\\g03_gestiondecambios\\views\\procesocambio\\versolicitud.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\views\\procesocambio\\versolicitud.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|C:\\Users\\USUARIO\\Pictures\\G03_GestionCambios\\g03_gestiondecambios\\service\\solicitudservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\service\\solicitudservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|c:\\users\\usuario\\source\\repos\\diaexpo\\g03_gestioncambios\\g03_gestiondecambios\\views\\procesocambio\\veraceptacion.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\views\\procesocambio\\veraceptacion.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|C:\\Users\\USUARIO\\Pictures\\G03_GestionCambios\\g03_gestiondecambios\\models\\homeviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\models\\homeviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|c:\\users\\usuario\\source\\repos\\diaexpo\\g03_gestioncambios\\g03_gestiondecambios\\views\\procesocambio\\verdespliegue.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\views\\procesocambio\\verdespliegue.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|c:\\users\\usuario\\source\\repos\\diaexpo\\g03_gestioncambios\\g03_gestiondecambios\\views\\procesocambio\\verqa.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\views\\procesocambio\\verqa.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|c:\\users\\usuario\\source\\repos\\diaexpo\\g03_gestioncambios\\g03_gestiondecambios\\models\\qaviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\models\\qaviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|c:\\users\\usuario\\source\\repos\\diaexpo\\g03_gestioncambios\\g03_gestiondecambios\\controllers\\procesocambiocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\controllers\\procesocambiocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|c:\\users\\usuario\\source\\repos\\diaexpo\\g03_gestioncambios\\g03_gestiondecambios\\service\\estadosolicitudservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\service\\estadosolicitudservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|c:\\users\\usuario\\source\\repos\\diaexpo\\g03_gestioncambios\\g03_gestiondecambios\\views\\procesocambio\\verasignacion.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\views\\procesocambio\\verasignacion.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|c:\\users\\usuario\\source\\repos\\diaexpo\\g03_gestioncambios\\g03_gestiondecambios\\views\\procesocambio\\veraprobacion.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\views\\procesocambio\\veraprobacion.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|C:\\Users\\USUARIO\\source\\repos\\diaexpo\\G03_GestionCambios\\g03_gestiondecambios\\models\\admindashboardviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\models\\admindashboardviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -34,76 +54,145 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 9,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "VerAceptacion.cshtml",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\Pictures\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\ProcesoCambio\\VerAceptacion.cshtml",
-              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Views\\ProcesoCambio\\VerAceptacion.cshtml",
-              "ToolTip": "C:\\Users\\USUARIO\\Pictures\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\ProcesoCambio\\VerAceptacion.cshtml",
-              "RelativeToolTip": "G03_GestionDeCambios\\Views\\ProcesoCambio\\VerAceptacion.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAZAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "VerSolicitud.cshtml",
+              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\diaexpo\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\ProcesoCambio\\VerSolicitud.cshtml",
+              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Views\\ProcesoCambio\\VerSolicitud.cshtml",
+              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\diaexpo\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\ProcesoCambio\\VerSolicitud.cshtml",
+              "RelativeToolTip": "G03_GestionDeCambios\\Views\\ProcesoCambio\\VerSolicitud.cshtml",
+              "ViewState": "AgIAAIYAAAAAAAAAAAArwJYAAAA5AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-06-17T21:06:52.956Z",
+              "WhenOpened": "2025-06-19T22:29:18.509Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "VerAceptacion.cshtml",
+              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\diaexpo\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\ProcesoCambio\\VerAceptacion.cshtml",
+              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Views\\ProcesoCambio\\VerAceptacion.cshtml",
+              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\diaexpo\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\ProcesoCambio\\VerAceptacion.cshtml",
+              "RelativeToolTip": "G03_GestionDeCambios\\Views\\ProcesoCambio\\VerAceptacion.cshtml",
+              "ViewState": "AgIAAH8AAAAAAAAAAAAAAJAAAABLAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-19T22:25:52.776Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\Pictures\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\Solicitud\\Index.cshtml",
-              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Views\\Solicitud\\Index.cshtml",
-              "ToolTip": "C:\\Users\\USUARIO\\Pictures\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\Solicitud\\Index.cshtml",
-              "RelativeToolTip": "G03_GestionDeCambios\\Views\\Solicitud\\Index.cshtml",
-              "ViewState": "AgIAAOYAAAAAAAAAAAAQwPAAAAAxAAAAAAAAAA==",
+              "Title": "VerDespliegue.cshtml",
+              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\diaexpo\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\ProcesoCambio\\VerDespliegue.cshtml",
+              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Views\\ProcesoCambio\\VerDespliegue.cshtml",
+              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\diaexpo\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\ProcesoCambio\\VerDespliegue.cshtml",
+              "RelativeToolTip": "G03_GestionDeCambios\\Views\\ProcesoCambio\\VerDespliegue.cshtml",
+              "ViewState": "AgIAADoAAAAAAAAAAAArwE0AAABjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-06-17T21:05:21.166Z"
+              "WhenOpened": "2025-06-19T22:23:15.183Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "SolicitudService.cs",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\Pictures\\G03_GestionCambios\\G03_GestionDeCambios\\Service\\SolicitudService.cs",
-              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Service\\SolicitudService.cs",
-              "ToolTip": "C:\\Users\\USUARIO\\Pictures\\G03_GestionCambios\\G03_GestionDeCambios\\Service\\SolicitudService.cs",
-              "RelativeToolTip": "G03_GestionDeCambios\\Service\\SolicitudService.cs",
-              "ViewState": "AgIAAEoAAAAAAAAAAAAUwFMAAAAJAAAAAAAAAA==",
+              "DocumentIndex": 7,
+              "Title": "EstadoSolicitudService.cs",
+              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\diaexpo\\G03_GestionCambios\\G03_GestionDeCambios\\Service\\EstadoSolicitudService.cs",
+              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Service\\EstadoSolicitudService.cs",
+              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\diaexpo\\G03_GestionCambios\\G03_GestionDeCambios\\Service\\EstadoSolicitudService.cs",
+              "RelativeToolTip": "G03_GestionDeCambios\\Service\\EstadoSolicitudService.cs",
+              "ViewState": "AgIAANMBAAAAAAAAAAAowOgBAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-17T21:03:33.082Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "ProcesoCambioService.cs",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\Pictures\\G03_GestionCambios\\G03_GestionDeCambios\\Service\\ProcesoCambioService.cs",
-              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Service\\ProcesoCambioService.cs",
-              "ToolTip": "C:\\Users\\USUARIO\\Pictures\\G03_GestionCambios\\G03_GestionDeCambios\\Service\\ProcesoCambioService.cs",
-              "RelativeToolTip": "G03_GestionDeCambios\\Service\\ProcesoCambioService.cs",
-              "ViewState": "AgIAAOgBAAAAAAAAAAAUwP8BAAAqAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-17T21:03:27.012Z"
+              "WhenOpened": "2025-06-19T22:00:33.355Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 5,
-              "Title": "HomeViewModel.cs",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\Pictures\\G03_GestionCambios\\G03_GestionDeCambios\\Models\\HomeViewModel.cs",
-              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Models\\HomeViewModel.cs",
-              "ToolTip": "C:\\Users\\USUARIO\\Pictures\\G03_GestionCambios\\G03_GestionDeCambios\\Models\\HomeViewModel.cs",
-              "RelativeToolTip": "G03_GestionDeCambios\\Models\\HomeViewModel.cs",
-              "ViewState": "AgIAABMAAAAAAAAAAAAIwBoAAAAqAAAAAAAAAA==",
+              "Title": "QAViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\diaexpo\\G03_GestionCambios\\G03_GestionDeCambios\\Models\\QAViewModel.cs",
+              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Models\\QAViewModel.cs",
+              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\diaexpo\\G03_GestionCambios\\G03_GestionDeCambios\\Models\\QAViewModel.cs",
+              "RelativeToolTip": "G03_GestionDeCambios\\Models\\QAViewModel.cs",
+              "ViewState": "AgIAACEAAAAAAAAAAAA3wCIAAAAwAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-17T21:02:57.792Z"
+              "WhenOpened": "2025-06-19T21:55:48.587Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
+              "Title": "VerQA.cshtml",
+              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\diaexpo\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\ProcesoCambio\\VerQA.cshtml",
+              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Views\\ProcesoCambio\\VerQA.cshtml",
+              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\diaexpo\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\ProcesoCambio\\VerQA.cshtml",
+              "RelativeToolTip": "G03_GestionDeCambios\\Views\\ProcesoCambio\\VerQA.cshtml",
+              "ViewState": "AgIAAPUAAAAAAAAAAAAkwAoBAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-19T21:43:57.326Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "VerAprobacion.cshtml",
+              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\diaexpo\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\ProcesoCambio\\VerAprobacion.cshtml",
+              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Views\\ProcesoCambio\\VerAprobacion.cshtml",
+              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\diaexpo\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\ProcesoCambio\\VerAprobacion.cshtml",
+              "RelativeToolTip": "G03_GestionDeCambios\\Views\\ProcesoCambio\\VerAprobacion.cshtml",
+              "ViewState": "AgIAALEAAAAAAAAAAAAAALEAAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-19T21:46:59.723Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "ProcesoCambioController.cs",
+              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\diaexpo\\G03_GestionCambios\\G03_GestionDeCambios\\Controllers\\ProcesoCambioController.cs",
+              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Controllers\\ProcesoCambioController.cs",
+              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\diaexpo\\G03_GestionCambios\\G03_GestionDeCambios\\Controllers\\ProcesoCambioController.cs",
+              "RelativeToolTip": "G03_GestionDeCambios\\Controllers\\ProcesoCambioController.cs",
+              "ViewState": "AgIAAM0BAAAAAAAAAAAcwNwBAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T21:36:19.498Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "VerAsignacion.cshtml",
+              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\diaexpo\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\ProcesoCambio\\VerAsignacion.cshtml",
+              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Views\\ProcesoCambio\\VerAsignacion.cshtml",
+              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\diaexpo\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\ProcesoCambio\\VerAsignacion.cshtml",
+              "RelativeToolTip": "G03_GestionDeCambios\\Views\\ProcesoCambio\\VerAsignacion.cshtml",
+              "ViewState": "AgIAAKYAAAAAAAAAAAAQwLkAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-19T21:31:13.742Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ProcesoCambioService.cs",
+              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\diaexpo\\G03_GestionCambios\\G03_GestionDeCambios\\Service\\ProcesoCambioService.cs",
+              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Service\\ProcesoCambioService.cs",
+              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\diaexpo\\G03_GestionCambios\\G03_GestionDeCambios\\Service\\ProcesoCambioService.cs",
+              "RelativeToolTip": "G03_GestionDeCambios\\Service\\ProcesoCambioService.cs",
+              "ViewState": "AgIAABgAAAAAAAAAAAAtwCcAAABAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-17T21:03:27.012Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
               "Title": "AdminDashboardViewModel.cs",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\Pictures\\G03_GestionCambios\\G03_GestionDeCambios\\Models\\AdminDashboardViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\diaexpo\\G03_GestionCambios\\G03_GestionDeCambios\\Models\\AdminDashboardViewModel.cs",
               "RelativeDocumentMoniker": "G03_GestionDeCambios\\Models\\AdminDashboardViewModel.cs",
-              "ToolTip": "C:\\Users\\USUARIO\\Pictures\\G03_GestionCambios\\G03_GestionDeCambios\\Models\\AdminDashboardViewModel.cs",
+              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\diaexpo\\G03_GestionCambios\\G03_GestionDeCambios\\Models\\AdminDashboardViewModel.cs",
               "RelativeToolTip": "G03_GestionDeCambios\\Models\\AdminDashboardViewModel.cs",
               "ViewState": "AgIAADwAAAAAAAAAAAAywEQAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",

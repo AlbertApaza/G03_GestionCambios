@@ -43,7 +43,8 @@ namespace G03_GestionDeCambios.Service
                     Estado = s.estadoSolicitud,
                     ImplementacionFecha = s.fechaInicioImplementacionCambio,
                     CierreCambioFecha = s.fechaCierreDelCambio,
-                    Observaciones = s.observaciones
+                    Observaciones = s.observaciones,
+                    FechaEstado = s.fechaEstado
 
                     // Nota: Los otros campos de fecha (FechaEstado, GiroJefe, etc.)
                     // necesitarían sus propias columnas en la tabla tbSolicitudesCambio.
@@ -298,52 +299,49 @@ namespace G03_GestionDeCambios.Service
 
             return viewModel;
         }
+        // En ProcesoCambioService.cs
+
         public QAViewModel GetQAViewModel(int idSolicitud)
         {
             var solicitud = _context.tbSolicitudesCambio.Find(idSolicitud);
             if (solicitud == null || !solicitud.idElementoAfectado.HasValue) return null;
 
-            // 1. Obtener resumen del desarrollador
             var resumenDev = _context.tbSolicitudHistorial
                 .Where(h => h.idSolicitudCambio == idSolicitud && h.decision == "Enviado a QA")
                 .OrderByDescending(h => h.fechaAccion)
                 .Select(h => h.comentarios)
                 .FirstOrDefault() ?? "No se dejaron comentarios.";
 
-            // 2. Obtener tareas (discriminando entre plan de pruebas e incidencias)
-            var todasLasTareas = _context.tbTareas
+            var todasLasTareasDelElemento = _context.tbTareas
                 .Where(t => t.idProyectoElemento == solicitud.idElementoAfectado)
                 .Include(t => t.tbUsuarios)
                 .ToList();
 
-            // Tareas de QA: Las que no son [DEFECTO]
-            var planDePruebas = todasLasTareas
-                .Where(t => !t.nombre.StartsWith("[DEFECTO]"))
+            // Tareas de Prueba: Las que empiezan con "[PRUEBA]"
+            var planDePruebas = todasLasTareasDelElemento
+                .Where(t => t.nombre.StartsWith("[PRUEBA]"))
                 .Select(t => new QATareaViewModel
                 {
                     IdTarea = t.idTareas,
-                    Nombre = t.nombre,
+                    Nombre = t.nombre.Replace("[PRUEBA] - ", ""), // Mostramos un nombre limpio
                     Descripcion = t.descripcion,
                     AsignadoA = t.tbUsuarios?.nombre + " " + t.tbUsuarios?.apellido,
-                    // Aquí podrías tener más estados para QA si los añades a la BD
                     Estado = t.estado
                 }).ToList();
 
-            // Incidencias: Las que sí son [DEFECTO]
-            var incidencias = todasLasTareas
+            // Incidencias: Las que empiezan con "[DEFECTO]"
+            var incidencias = todasLasTareasDelElemento
                 .Where(t => t.nombre.StartsWith("[DEFECTO]"))
                 .Select(t => new IncidenciaViewModel
                 {
                     IdTareaIncidencia = t.idTareas,
-                    // Extraemos la severidad y descripción del nombre y descripción
                     Descripcion = t.descripcion,
-                    Severidad = t.nombre.Split(':')[1].Trim(), // Asume formato "[DEFECTO]: Severidad"
-                    Estado = t.estado, // Abierta, En Corrección, Corregida
+                    Severidad = t.nombre.Contains(":") ? t.nombre.Split(':')[1].Trim() : "No especificada",
+                    Estado = t.estado,
                     AsignadoA = t.tbUsuarios?.nombre + " " + t.tbUsuarios?.apellido,
-                    ReportadoPor = "Equipo de QA" // Simplificado
+                    ReportadoPor = "Equipo de QA"
                 }).ToList();
 
-            // 3. Obtener desarrolladores para asignar correcciones
             var desarrolladores = _context.tbProyectoUsuario
                 .Where(pu => pu.idProyecto == solicitud.idProyecto && pu.tbRoles.nombre == "Desarrollador")
                 .Select(pu => new MiembroAsignableViewModel
@@ -352,9 +350,12 @@ namespace G03_GestionDeCambios.Service
                     NombreCompleto = pu.tbUsuarios.nombre + " " + pu.tbUsuarios.apellido
                 }).ToList();
 
-            // 4. Calcular progreso
-            int pruebasPasadas = planDePruebas.Count(p => p.Estado == "Finalizado"); // Asumimos que "Finalizado" significa "Pasó"
-            int progreso = planDePruebas.Any() ? (int)Math.Round((double)pruebasPasadas / planDePruebas.Count * 100) : 100;
+            // CÁLCULOS CORRECTOS BASADOS EN EL NUEVO FLUJO
+            int pruebasEjecutadas = planDePruebas.Count(p => p.Estado != "Pendiente");
+            int progreso = planDePruebas.Any() ? (int)Math.Round((double)pruebasEjecutadas / planDePruebas.Count * 100) : 100; // Si no hay pruebas, está 100% listo
+
+            int pruebasFallidas = planDePruebas.Count(p => p.Estado == "En Proceso"); // "En Proceso" es nuestra bandera de "Falló"
+            int incidenciasAbiertas = incidencias.Count(i => i.Estado != "Finalizado");
 
             return new QAViewModel
             {
@@ -365,7 +366,8 @@ namespace G03_GestionDeCambios.Service
                 IncidenciasRegistradas = incidencias,
                 Desarrolladores = desarrolladores,
                 ProgresoPruebas = progreso,
-                IncidenciasAbiertas = incidencias.Count(i => i.Estado != "Corregida")
+                IncidenciasAbiertas = incidenciasAbiertas,
+                PruebasFallidas = pruebasFallidas,
             };
         }
 

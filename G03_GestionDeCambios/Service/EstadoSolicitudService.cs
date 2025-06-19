@@ -431,6 +431,8 @@ namespace G03_GestionDeCambios.Service
             }
         }
 
+        // En EstadoSolicitudService.cs
+
         public void EnviarAQA(int idSolicitud, int idUsuario, string comentarios)
         {
             using (var transaction = _context.Database.BeginTransaction())
@@ -443,12 +445,32 @@ namespace G03_GestionDeCambios.Service
                         throw new Exception("La solicitud no se encuentra en la fase de Desarrollo.");
                     }
 
-                    // Validación CRÍTICA: Asegurar que todas las tareas estén finalizadas.
-                    var tareas = _context.tbTareas.Where(t => t.idProyectoElemento == solicitud.idElementoAfectado);
-                    if (tareas.Any(t => t.estado != "Finalizado"))
+                    var tareasDesarrollo = _context.tbTareas
+                        .Where(t => t.idProyectoElemento == solicitud.idElementoAfectado && !t.nombre.StartsWith("[DEFECTO]"));
+
+                    if (tareasDesarrollo.Any(t => t.estado != "Finalizado"))
                     {
-                        throw new Exception("No se puede enviar a QA. Aún hay tareas pendientes o en proceso.");
+                        throw new Exception("No se puede enviar a QA. Aún hay tareas de desarrollo pendientes o en proceso.");
                     }
+
+                    // --- LÓGICA CRÍTICA NUEVA: GENERAR TAREAS DE PRUEBA ---
+                    // Por cada tarea de desarrollo finalizada, creamos una tarea de prueba correspondiente.
+                    // En un sistema real, estas podrían venir de un plan de pruebas. Aquí las generamos.
+                    var idUsuarioQA = 2; // Asumimos un ID de usuario de QA, en un caso real lo buscarías o asignarías.
+
+                    foreach (var tareaDev in tareasDesarrollo)
+                    {
+                        var nuevaTareaQA = new tbTareas
+                        {
+                            nombre = $"[PRUEBA] - {tareaDev.nombre}",
+                            descripcion = $"Verificar que la funcionalidad '{tareaDev.nombre}' se implementó correctamente según los criterios.",
+                            idUsuario = idUsuarioQA, // Asignar a un tester
+                            idProyectoElemento = solicitud.idElementoAfectado,
+                            estado = "Pendiente" // ¡¡NACEN COMO PENDIENTES!!
+                        };
+                        _context.tbTareas.Add(nuevaTareaQA);
+                    }
+                    // --------------------------------------------------------
 
                     // 1. Actualizar el paso de la solicitud
                     solicitud.pasoActualProceso = 6; // Mover a "Pruebas (QA)"
@@ -764,6 +786,26 @@ namespace G03_GestionDeCambios.Service
                     throw ex;
                 }
             }
+        }
+        public void ActualizarEstadoTareaQA(int idTarea, string nuevoEstado, int idUsuario)
+        {
+            var tarea = _context.tbTareas.Find(idTarea);
+            if (tarea == null)
+            {
+                throw new Exception("La tarea no fue encontrada.");
+            }
+
+            // Validación para evitar estados no deseados
+            var estadosValidos = new[] { "Passed", "Failed" };
+            if (!estadosValidos.Contains(nuevoEstado))
+            {
+                throw new Exception("Estado no válido para esta acción.");
+            }
+
+            tarea.estado = nuevoEstado;
+            // Opcional: Registrar quién y cuándo cambió el estado en un log o en la misma tarea si tienes campos para ello.
+
+            _context.SaveChanges();
         }
     }
 }

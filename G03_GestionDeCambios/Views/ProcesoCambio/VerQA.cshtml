@@ -1,32 +1,46 @@
 ﻿@model G03_GestionDeCambios.Models.QAViewModel
 @{
     ViewBag.Title = "Taller de Pruebas (QA)";
+
+    Func<string, string> GetBadgeClass = (estado) =>
+    {
+        switch (estado)
+        {
+            case "Finalizado": return "badge-success";  // Prueba PASADA
+            case "En Proceso": return "badge-danger";   // Prueba FALLIDA
+            case "Pendiente": return "badge-secondary"; // Prueba sin ejecutar
+            default: return "badge-info";
+        }
+    };
+
+    Func<string, string> GetStatusText = (estado) =>
+    {
+        switch (estado)
+        {
+            case "Finalizado": return "Pasada";
+            case "En Proceso": return "Fallida";
+            default: return estado;
+        }
+    };
 }
-<!-- Estilos y scripts de vistas anteriores -->
 
 <style>
-    /* ... (estilos anteriores) ... */
-    .qa-workbench .card-header {
-        font-size: 1.1rem;
-    }
-
     .test-case-item {
-        border-bottom: 1px solid #eee;
-        padding-bottom: 10px;
-        margin-bottom: 10px;
+        transition: background-color 0.3s;
+        border-radius: 5px;
     }
 
-    .badge-severidad-critica {
-        background-color: #dc3545;
-        color: white;
+    .action-buttons .btn {
+        min-width: 80px;
     }
 
-    .badge-severidad-alta {
-        background-color: #fd7e14;
+    .progress {
+        height: 25px;
+        font-size: 1rem;
     }
 
-    .badge-severidad-media {
-        background-color: #ffc107;
+    .card-title-icon {
+        margin-right: 10px;
     }
 </style>
 
@@ -34,8 +48,9 @@
     <h2 class="mb-4">Taller de Pruebas y Aseguramiento de la Calidad - Solicitud #@Model.IdSolicitud</h2>
 
     <div class="row">
-        <!-- Columna Izquierda: Plan de Pruebas y Contexto -->
+        <!-- Columna Izquierda: Plan de Pruebas e Incidencias -->
         <div class="col-lg-7">
+            <!-- CONTEXTO -->
             <div class="card mb-4">
                 <div class="card-header bg-dark text-white"><i class="fas fa-file-invoice card-title-icon"></i>Contexto y Resumen de Desarrollo</div>
                 <div class="card-body">
@@ -48,92 +63,167 @@
                 </div>
             </div>
 
+            <!-- PLAN DE PRUEBAS INTERACTIVO -->
             <div class="card">
-                <div class="card-header"><i class="fas fa-clipboard-list card-title-icon"></i>Plan de Pruebas</div>
-                <div class="card-body">
-                    <p>Ejecute los casos de prueba y registre los resultados.</p>
+                <div class="card-header"><i class="fas fa-clipboard-list card-title-icon"></i>Plan de Pruebas (@Model.PlanDePruebas.Count)</div>
+                <div class="list-group list-group-flush">
+                    @if (!Model.PlanDePruebas.Any())
+                    {
+                        <div class="list-group-item text-center p-4">
+                            <i class="fas fa-info-circle fa-2x text-muted mb-2"></i>
+                            <p>No hay casos de prueba generados para esta solicitud. Esto puede ocurrir si no se definieron tareas de desarrollo.</p>
+                        </div>
+                    }
                     @foreach (var testCase in Model.PlanDePruebas)
                     {
-                        <div class="test-case-item">
-                            <h5>@testCase.Nombre</h5>
-                            <p class="text-muted">@testCase.Descripcion</p>
+                        <div class="list-group-item test-case-item" id="task-@testCase.IdTarea">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">@testCase.Nombre</h5>
+                                <span class="badge @GetBadgeClass(testCase.Estado) p-2">@GetStatusText(testCase.Estado)</span>
+                            </div>
+                            <p class="mb-2 text-muted">@testCase.Descripcion</p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <small>Asignado a: <strong>@testCase.AsignadoA</strong></small>
-                                <div>
-                                    <!-- Aquí irían los botones para cambiar estado -->
-                                    <span class="badge badge-info">Estado: @testCase.Estado</span>
+                                <div class="action-buttons">
+                                    <button class="btn btn-sm btn-success" onclick="actualizarEstadoPrueba(@testCase.IdTarea, 'Finalizado')" @(testCase.Estado != "Pendiente" ? "disabled" : "")>
+                                        <i class="fas fa-check"></i> Pasar
+                                    </button>
+                                    <button class="btn btn-sm btn-danger" onclick="actualizarEstadoPrueba(@testCase.IdTarea, 'En Proceso')" @(testCase.Estado != "Pendiente" ? "disabled" : "")>
+                                        <i class="fas fa-times"></i> Fallar
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     }
                 </div>
             </div>
+
+            <!-- INCIDENCIAS REGISTRADAS -->
+            <div class="card mt-4">
+                <div class="card-header"><i class="fas fa-bug card-title-icon"></i>Incidencias Registradas (@Model.IncidenciasRegistradas.Count)</div>
+                <ul class="list-group list-group-flush">
+                    @if (!Model.IncidenciasRegistradas.Any())
+                    {
+                        <li class="list-group-item">No se han registrado incidencias.</li>
+                    }
+                    @foreach (var incidencia in Model.IncidenciasRegistradas)
+                    {
+                        <li class="list-group-item">
+                            <div class="d-flex w-100 justify-content-between">
+                                <p class="mb-1"><strong>@incidencia.Severidad:</strong> @incidencia.Descripcion</p>
+                                <span class="badge @(incidencia.Estado != "Finalizado" ? "badge-warning" : "badge-success") p-2">
+                                    @(incidencia.Estado != "Finalizado" ? "Abierta" : "Corregida")
+                                </span>
+                            </div>
+                            <small>Asignada a: @incidencia.AsignadoA</small>
+                        </li>
+                    }
+                </ul>
+            </div>
         </div>
 
         <!-- Columna Derecha: Panel de Acción de QA -->
         <div class="col-lg-5">
+            <!-- ESTADO GENERAL -->
             <div class="card mb-4">
-                <div class="card-header bg-info text-white"><i class="fas fa-chart-pie card-title-icon"></i>Estado de la Prueba</div>
+                <div class="card-header bg-info text-white"><i class="fas fa-chart-pie card-title-icon"></i>Estado General de QA</div>
                 <div class="card-body text-center">
-                    <h6>Progreso de Pruebas</h6>
-                    <div class="progress" style="height: 25px;"><div class="progress-bar" role="progressbar" style="width: @Model.ProgresoPruebas%;" aria-valuenow="@Model.ProgresoPruebas">@Model.ProgresoPruebas%</div></div>
+                    <h6>Progreso de Ejecución</h6>
+                    <div class="progress"><div class="progress-bar bg-primary" role="progressbar" style="width: @Model.ProgresoPruebas%;" aria-valuenow="@Model.ProgresoPruebas">@Model.ProgresoPruebas%</div></div>
                     <hr>
-                    <h6>Incidencias Abiertas</h6>
-                    <h3 class="font-weight-bold @(Model.IncidenciasAbiertas > 0 ? "text-danger" : "text-success")">@Model.IncidenciasAbiertas</h3>
+                    <div class="row">
+                        <div class="col-6">
+                            <h6>Pruebas Fallidas</h6>
+                            <h3 class="font-weight-bold text-danger">@Model.PruebasFallidas</h3>
+                        </div>
+                        <div class="col-6">
+                            <h6>Incidencias Abiertas</h6>
+                            <h3 class="font-weight-bold text-warning">@Model.IncidenciasAbiertas</h3>
+                        </div>
+                    </div>
                 </div>
             </div>
 
+            <!-- REPORTAR INCIDENCIA -->
             <div class="card mb-4">
-                <div class="card-header bg-danger text-white"><i class="fas fa-bug card-title-icon"></i>Reportar Incidencia (Bug)</div>
+                <div class="card-header bg-warning text-dark"><i class="fas fa-exclamation-triangle card-title-icon"></i>Reportar Nueva Incidencia</div>
                 <div class="card-body">
                     <div class="form-group">
                         <label>Severidad</label>
-                        <select id="incidenciaSeveridad" class="form-control">
-                            <option>Media</option>
-                            <option>Alta</option>
-                            <option>Crítica</option>
-                            <option>Baja</option>
-                        </select>
+                        <select id="incidenciaSeveridad" class="form-control"><option>Media</option><option>Alta</option><option>Crítica</option><option>Baja</option></select>
                     </div>
                     <div class="form-group">
                         <label>Descripción (Pasos para reproducir)</label>
-                        <textarea id="incidenciaDescripcion" class="form-control" rows="3"></textarea>
+                        <textarea id="incidenciaDescripcion" class="form-control" rows="3" placeholder="Ej: 1. Ir a la pantalla X. 2. Hacer clic en el botón Y..."></textarea>
                     </div>
                     <div class="form-group">
                         <label>Asignar corrección a</label>
-                        @Html.DropDownList("incidenciaDevAsignado", new SelectList(Model.Desarrolladores, "IdUsuario", "NombreCompleto"), new { @class = "form-control" })
+                        @Html.DropDownList("incidenciaDevAsignado", new SelectList(Model.Desarrolladores, "IdUsuario", "NombreCompleto"), "Seleccionar desarrollador...", new { @class = "form-control" })
                     </div>
-                    <button type="button" class="btn btn-warning btn-block" onclick="reportarIncidencia()">Reportar Incidencia</button>
+                    <button type="button" class="btn btn-warning btn-block" onclick="reportarIncidencia()"><i class="fas fa-bug"></i> Reportar Incidencia</button>
                 </div>
             </div>
 
+            <!-- DECISIÓN FINAL -->
             <div class="card">
                 <div class="card-header bg-success text-white"><i class="fas fa-gavel card-title-icon"></i>Decisión Final de QA</div>
                 <div class="card-body">
                     <div class="form-group">
                         <label>Comentarios Finales de QA</label>
-                        <textarea id="comentariosFinalesQA" class="form-control" rows="3" placeholder="Ej: Pruebas completadas satisfactoriamente. Se recomienda el pase a producción."></textarea>
+                        <textarea id="comentariosFinalesQA" class="form-control" rows="3" placeholder="Ej: Pruebas completadas. Se encontraron 2 incidencias menores..."></textarea>
                     </div>
-                    <button type="button" class="btn btn-success btn-block mb-2" onclick="tomarDecisionFinal('Aprobar')" @(Model.ProgresoPruebas < 100 || Model.IncidenciasAbiertas > 0 ? "disabled" : "")>
-                        <i class="fas fa-rocket"></i> Aprobar para Despliegue
-                    </button>
-                    <button type="button" class="btn btn-danger btn-block" onclick="tomarDecisionFinal('Rechazar')" @(Model.IncidenciasAbiertas == 0 ? "disabled" : "")>
-                        <i class="fas fa-undo-alt"></i> Retornar a Desarrollo
-                    </button>
+                    @{
+                        bool puedeAprobar = Model.ProgresoPruebas == 100 && Model.IncidenciasAbiertas == 0 && Model.PruebasFallidas == 0;
+                        bool puedeRechazar = Model.PruebasFallidas > 0 || Model.IncidenciasAbiertas > 0;
+                    }
+                    <button type="button" class="btn btn-success btn-block mb-2" onclick="tomarDecisionFinal('Aprobar')" @(puedeAprobar ? "" : "disabled title='Debe ejecutar todas las pruebas, no tener fallos ni incidencias abiertas.'")><i class="fas fa-rocket"></i> Aprobar para Despliegue</button>
+                    <button type="button" class="btn btn-danger btn-block" onclick="tomarDecisionFinal('Rechazar')" @(puedeRechazar ? "" : "disabled title='Solo puede retornar si hay pruebas fallidas o incidencias abiertas.'")><i class="fas fa-undo-alt"></i> Retornar a Desarrollo</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Formularios y Scripts -->
+<!-- Formularios ocultos -->
 @using (Html.BeginForm("AprobarParaDespliegue", "ProcesoCambio", FormMethod.Post, new { id = "formAprobarQA" }))
 {@Html.AntiForgeryToken() @Html.Hidden("idSolicitud", Model.IdSolicitud) @Html.Hidden("comentarios", "", new { id = "comentariosAprobarQA" })}
 @using (Html.BeginForm("RetornarADesarrollo", "ProcesoCambio", FormMethod.Post, new { id = "formRechazarQA" }))
 {@Html.AntiForgeryToken() @Html.Hidden("idSolicitud", Model.IdSolicitud) @Html.Hidden("comentarios", "", new { id = "comentariosRechazarQA" })}
 
 @section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+    function actualizarEstadoPrueba(idTarea, nuevoEstado) {
+        const accionTexto = nuevoEstado === 'Finalizado' ? 'Pasar' : 'Fallar';
+        Swal.fire({
+            title: `¿Marcar prueba como '${accionTexto}'?`,
+            text: "Esta acción no se puede deshacer.",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: nuevoEstado === 'Finalizado' ? '#28a745' : '#dc3545',
+            confirmButtonText: 'Sí, confirmar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '@Url.Action("ActualizarEstadoPrueba", "ProcesoCambio")',
+                    type: 'POST',
+                    data: { __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val(), idTarea: idTarea, nuevoEstado: nuevoEstado },
+                    success: function(response) {
+                        if (response.success) {
+                            Swal.fire('¡Actualizado!', 'El estado de la prueba ha cambiado.', 'success').then(() => location.reload());
+                        } else {
+                            Swal.fire('Error', response.message || 'No se pudo actualizar el estado.', 'error');
+                        }
+                    },
+                    error: function() {
+                         Swal.fire('Error de Comunicación', 'No se pudo contactar al servidor.', 'error');
+                    }
+                });
+            }
+        });
+    }
+
     function reportarIncidencia() {
         const payload = {
             idSolicitud: @Model.IdSolicitud,
@@ -141,25 +231,46 @@
             severidad: $('#incidenciaSeveridad').val(),
             idDevAsignado: $('#incidenciaDevAsignado').val()
         };
-        // Lógica AJAX para llamar al endpoint /ProcesoCambio/RegistrarIncidencia
-        // ... al recibir la respuesta, actualizar la UI o recargar la página.
-        Swal.fire('¡Reportado!', 'La incidencia ha sido registrada y notificada al desarrollador.', 'success').then(() => location.reload());
+        if (!payload.descripcion.trim() || !payload.idDevAsignado) {
+            Swal.fire('Datos incompletos', 'Por favor, complete la descripción y asigne un desarrollador.', 'warning');
+            return;
+        }
+        $.ajax({
+            url: '@Url.Action("RegistrarIncidencia", "ProcesoCambio")',
+            type: 'POST',
+            data: { __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val(), ...payload },
+            success: (response) => {
+                if (response.success) Swal.fire('¡Reportado!', response.message, 'success').then(() => location.reload());
+                else Swal.fire('Error', response.message, 'error');
+            },
+            error: () => Swal.fire('Error de Comunicación', 'No se pudo contactar al servidor.', 'error')
+        });
     }
 
     function tomarDecisionFinal(decision) {
         const comentarios = $('#comentariosFinalesQA').val();
         if(!comentarios.trim()){
-            Swal.fire('Comentario requerido', 'Debe dejar un comentario final para documentar su decisión.', 'warning');
+            Swal.fire('Comentario requerido', 'Debe dejar un comentario final.', 'warning');
             return;
         }
-
-        if (decision === 'Aprobar') {
-            $('#comentariosAprobarQA').val(comentarios);
-            $('#formAprobarQA').submit();
-        } else {
-            $('#comentariosRechazarQA').val(comentarios);
-            $('#formRechazarQA').submit();
-        }
+        const config = {
+            Aprobar: { title: '¿Aprobar para despliegue?', text: 'La solicitud avanzará al siguiente paso.' },
+            Rechazar: { title: '¿Retornar a Desarrollo?', text: 'La solicitud volverá a la fase de desarrollo.' }
+        };
+        Swal.fire({
+            title: config[decision].title, text: config[decision].text, icon: 'warning',
+            showCancelButton: true, confirmButtonText: 'Sí, continuar', cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if(result.isConfirmed){
+                if (decision === 'Aprobar') {
+                    $('#comentariosAprobarQA').val(comentarios);
+                    $('#formAprobarQA').submit();
+                } else {
+                    $('#comentariosRechazarQA').val(comentarios);
+                    $('#formRechazarQA').submit();
+                }
+            }
+        });
     }
     </script>
 }

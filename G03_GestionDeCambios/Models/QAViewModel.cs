@@ -14,6 +14,8 @@ namespace G03_GestionDeCambios.Models
         public List<MiembroAsignableViewModel> Desarrolladores { get; set; } // Para asignar correcciones
         public int ProgresoPruebas { get; set; }
         public int IncidenciasAbiertas { get; set; }
+        public int PruebasFallidas { get; set; }
+
     }
 
     public class QATareaViewModel

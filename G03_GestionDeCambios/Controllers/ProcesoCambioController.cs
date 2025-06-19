@@ -10,6 +10,12 @@ namespace G03_GestionDeCambios.Controllers
 {
     public class ProcesoCambioController : Controller
     {
+        private readonly BD_GestionDeCambiosEntities _context;
+
+        public ProcesoCambioController()
+        {
+            _context = new BD_GestionDeCambiosEntities();
+        }
         SolicitudService _solicitudService = new SolicitudService();
         ProcesoCambioService _procesoCambioService = new ProcesoCambioService();
         EstadoSolicitudService _estadoSolicitudService = new EstadoSolicitudService();
@@ -163,11 +169,11 @@ namespace G03_GestionDeCambios.Controllers
         {
             var idPasoReal = _estadoSolicitudService.ObtenerPasoActualProceso(idSolicitud);
             var pasoActual = _estadoSolicitudService.ObtenerPasoActualProceso(idSolicitud);
-            //if (pasoActual != 4)
-            //{
-            //    TempData["WarningMessage"] = "La solicitud no se encuentra en la fase de Asignación.";
-            //    return RedirectToAction("VerSolicitud", new { idSolicitud });
-            //}
+            if (pasoActual != 4)
+            {
+                TempData["WarningMessage"] = "La solicitud no se encuentra en la fase de Asignación.";
+                return RedirectToAction("VerSolicitud", new { idSolicitud });
+            }
 
             var viewModel = _procesoCambioService.GetAsignacionViewModel(idSolicitud);
             if (viewModel == null) return HttpNotFound();
@@ -193,7 +199,7 @@ namespace G03_GestionDeCambios.Controllers
                 var idUsuario = (int)Session["idUsuario"];
                 _estadoSolicitudService.AsignarTareasEIniciarImplementacion(model, idUsuario);
                 TempData["SuccessMessage"] = "Tareas asignadas correctamente. La implementación ha comenzado.";
-                return RedirectToAction("Index", "Solicitud"); // O a un dashboard
+                return RedirectToAction("VerDesarrollo", new { idSolicitud = model.IdSolicitud }); // O a un dashboard
             }
             catch (Exception ex)
             {
@@ -440,7 +446,48 @@ namespace G03_GestionDeCambios.Controllers
             }
             return RedirectToAction("VerAceptacion", new { idSolicitud });
         }
+        [HttpPost]
+        public JsonResult ActualizarEstadoTareaQA(int idTarea, string nuevoEstado)
+        {
+            try
+            {
+                // Añadimos estados válidos para las pruebas de QA a la tabla Tareas
+                _estadoSolicitudService.ActualizarEstadoTareaQA(idTarea, nuevoEstado, (int)Session["idUsuario"]);
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+        [HttpPost]
+        public JsonResult ActualizarEstadoPrueba(int idTarea, string nuevoEstado)
+        {
+            try
+            {
+                var estadosValidos = new[] { "Finalizado", "En Proceso" };
+                if (!estadosValidos.Contains(nuevoEstado))
+                {
+                    return Json(new { success = false, message = "Estado no válido para esta acción." });
+                }
 
+                // Accede al contexto a través del campo de la clase que ya tienes
+                var tarea = _context.tbTareas.Find(idTarea);
+                if (tarea == null)
+                {
+                    return Json(new { success = false, message = "Tarea no encontrada." });
+                }
+
+                tarea.estado = nuevoEstado;
+                _context.SaveChanges();
+
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
     }
 }
 
