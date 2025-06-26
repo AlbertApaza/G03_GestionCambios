@@ -38,7 +38,7 @@
                         <p><strong>Elemento a modificar:</strong> @Model.ElementoAfectadoNombre</p>
                         <p><strong>Objetivo:</strong> @Model.SolicitudInfo.Objetivo</p>
                         <h6>Recomendación del Analista:</h6>
-                        <p class="text-muted"><em>"@Model.ResumenAnalisis?.JustificacionAnalisis"</em></p>
+                        <p class="text-muted"><em>@Model.ResumenAnalisis.JustificacionAnalisis</em></p>
                     </div>
                 </div>
 
@@ -54,7 +54,7 @@
                                     <tr>
                                         <td>@miembro.NombreCompleto</td>
                                         <td>@miembro.Rol</td>
-                                        <td><span class="badge badge-primary">@miembro.TareasActivas Tareas</span></td>
+                                        <td><span class="badge bg-primary">@miembro.TareasActivas Tareas</span></td>
                                     </tr>
                                 }
                             </tbody>

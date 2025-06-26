@@ -28,6 +28,13 @@
         <h2>@ViewBag.Title</h2>
         <p class="lead text-muted mb-0">Proyecto: @Model.NombreProyecto</p>
     </div>
+    <div>
+        <!-- BOTÓN AGREGADO AQUÍ -->
+        <!-- Llama a la acción 'GenerarInformeEstado' en 'EstadisticasController' y pasa el id del proyecto -->
+        <a href="@Url.Action("ListaSolicitudes", "Estadisticas", new { id = Model.IdProyecto })" class="btn btn-primary">
+            <i class="fas fa-list"></i> Ver Historial de Cambios
+        </a>s
+    </div>
 </div>
 
 <div class="row text-center mb-4">

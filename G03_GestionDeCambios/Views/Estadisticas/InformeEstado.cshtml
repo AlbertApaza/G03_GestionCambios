@@ -1,0 +1,106 @@
+﻿@model G03_GestionDeCambios.Models.InformeEstadoViewModel
+@{
+    Layout = null; // No usamos la plantilla principal para que se vea limpio
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Informe de Estado - Solicitud @Model.NumeroSolicitud</title>
+    <!-- Usamos un CDN de Bootstrap para asegurar que el estilo funcione -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body { font-family: Arial, sans-serif; font-size: 12px; color: #000; }
+        .report-container { width: 800px; margin: 20px auto; border: 1px solid #dee2e6; padding: 10px; }
+        .report-table { width: 100%; border-collapse: collapse; }
+        .report-table th, .report-table td { border: 1px solid black; padding: 8px; vertical-align: top; }
+        .header-green { background-color: #92b76e !important; color: white !important; font-weight: bold; font-size: 1.2em; text-align: center; }
+        .logo { width: 80px; height: auto; vertical-align: middle; }
+        .field-label { font-weight: bold; background-color: #f8f9fa !important; }
+        .full-width-content { min-height: 40px; }
+        .small-text { font-size: 0.9em; }
+        /* Para impresión */
+        @@media print {
+            .header-green {
+                -webkit-print-color-adjust: exact;
+                color-adjust: exact;
+            }
+             .field-label {
+                -webkit-print-color-adjust: exact;
+                color-adjust: exact;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="report-container">
+        <!-- SECCIÓN DE ENCABEZADO SUPERIOR -->
+        <table class="report-table mb-4">
+            <tr>
+                <td style="width: 15%; text-align: center;">
+                    <!-- ¡¡IMPORTANTE!! CAMBIA ESTO POR LA RUTA A TU LOGO -->
+                    <img src="@Url.Content("~/Content/images/logo_universidad.png")" alt="Logo" class="logo" />
+                </td>
+                <td class="header-green" style="width: 60%; vertical-align: middle;">INFORME DE ESTADO</td>
+                <td style="width: 25%;">
+                    <table class="table-sm table-borderless small-text w-100 m-0">
+                        <tr><td class="p-1"><strong>CÓDIGO</strong></td><td class="p-1">@Model.CodigoDocumento</td></tr>
+                        <tr><td class="p-1"><strong>VERSIÓN</strong></td><td class="p-1">@Model.Version</td></tr>
+                        <tr><td class="p-1"><strong>PÁGINA</strong></td><td class="p-1">@Model.Pagina</td></tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+
+        <!-- SECCIÓN DE CUERPO -->
+        <table class="report-table">
+            <tr>
+                <td class="header-green" colspan="2">INFORME DE ESTADO</td>
+                <td class="field-label" style="width: 15%;">No de Solicitud:</td>
+                <td style="width: 20%;">@Model.NumeroSolicitud.ToString("D2")</td>
+            </tr>
+            <tr>
+                <td colspan="2" style="border-top: none; border-left: none; border-bottom: none;"></td>
+                <td class="field-label">Fecha:</td>
+                <td>@Model.FechaInforme.ToString("dd/MM/yyyy")</td>
+            </tr>
+            <tr><td colspan="4" class="field-label">Proyecto/Producto:</td></tr>
+            <tr><td colspan="4" class="full-width-content">@Model.NombreProyecto</td></tr>
+
+            <tr><td colspan="4" class="field-label">Nombre del Documento – Primera Versión Aprobada:</td></tr>
+            <tr><td colspan="4" class="full-width-content">@Model.NombreDocumento</td></tr>
+
+            <tr><td colspan="4" class="field-label">Descripción del Cambio:</td></tr>
+            <tr><td colspan="4" class="full-width-content" style="min-height: 60px;">@Model.DescripcionCambio</td></tr>
+
+            <tr>
+                <td colspan="2" class="field-label">Elemento de Configuración del software afectado</td>
+                <td colspan="2" class="field-label">Fecha Actual:</td>
+            </tr>
+            <tr>
+                <td colspan="2" class="full-width-content">@Model.ElementoAfectado</td>
+                <td colspan="2" class="full-width-content">@Model.FechaInforme.ToString("dd/MM/yyyy")</td>
+            </tr>
+
+            <tr>
+                <td colspan="2" class="field-label">Estado del Cambio Solicitado:</td>
+                <td colspan="2" class="field-label">Responsable del cambio:</td>
+            </tr>
+            <tr>
+                <td colspan="2" class="full-width-content">@Model.EstadoCambioSolicitado</td>
+                <td colspan="2" class="full-width-content">@Model.ResponsableDelCambio</td>
+            </tr>
+
+            <tr><td colspan="4" class="field-label">Estado de implementación de los cambios aprobados:</td></tr>
+            <tr><td colspan="4" class="full-width-content">@Model.EstadoImplementacion</td></tr>
+
+            <tr><td colspan="4" class="field-label">Impacto sobre el sistema:</td></tr>
+            <tr><td colspan="4" class="full-width-content" style="min-height: 60px;">@Model.ImpactoSistema</td></tr>
+
+            <tr><td colspan="4" class="field-label">Observaciones:</td></tr>
+            <tr><td colspan="4" class="full-width-content" style="height: 80px;">@Model.Observaciones</td></tr>
+        </table>
+    </div>
+</body>
+</html>

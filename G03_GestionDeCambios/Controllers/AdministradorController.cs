@@ -224,23 +224,178 @@ namespace G03_GestionDeCambios.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
-       
 
         // --- GESTIÓN DE METODOLOGIAS ---
-        public ActionResult CreateMetodologia() { if (!IsAdmin()) return RedirectToAction("Index", "Login"); return View(); }
-        [HttpPost][ValidateAntiForgeryToken] public ActionResult CreateMetodologia([Bind(Include = "idMetodologia,nombre")] tbMetodologias metodologia) { if (!IsAdmin()) return RedirectToAction("Index", "Login"); if (ModelState.IsValid) { db.tbMetodologias.Add(metodologia); db.SaveChanges(); return RedirectToAction("Index"); } return View(metodologia); }
-        public ActionResult EditMetodologia(int? id) { if (!IsAdmin()) return RedirectToAction("Index", "Login"); if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest); tbMetodologias metodologia = db.tbMetodologias.Find(id); if (metodologia == null) return HttpNotFound(); return View(metodologia); }
-        [HttpPost][ValidateAntiForgeryToken] public ActionResult EditMetodologia(tbMetodologias metodologia) { if (!IsAdmin()) return RedirectToAction("Index", "Login"); if (ModelState.IsValid) { db.Entry(metodologia).State = EntityState.Modified; db.SaveChanges(); return RedirectToAction("Index"); } return View(metodologia); }
-        public ActionResult DeleteMetodologia(int? id) { if (!IsAdmin()) return RedirectToAction("Index", "Login"); if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest); tbMetodologias metodologia = db.tbMetodologias.Find(id); if (metodologia == null) return HttpNotFound(); return View(metodologia); }
-        [HttpPost, ActionName("DeleteMetodologia")][ValidateAntiForgeryToken] public ActionResult DeleteMetodologiaConfirmed(int id) { if (!IsAdmin()) return RedirectToAction("Index", "Login"); tbMetodologias metodologia = db.tbMetodologias.Find(id); db.tbMetodologias.Remove(metodologia); db.SaveChanges(); return RedirectToAction("Index"); }
 
+        // Este método GET no necesita cambios.
+        public ActionResult CreateMetodologia()
+        {
+            if (!IsAdmin()) return RedirectToAction("Index", "Login");
+            return View();
+        }
+
+        //
+        // MÉTODO MODIFICADO
+        //
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        // Modificación 1: Se elimina "idMetodologia" del Bind, ya que se generará en el servidor.
+        public ActionResult CreateMetodologia([Bind(Include = "nombre")] tbMetodologias metodologia)
+        {
+            if (!IsAdmin()) return RedirectToAction("Index", "Login");
+
+            if (ModelState.IsValid)
+            {
+                // --- INICIO DE LA MODIFICACIÓN ---
+                // Lógica para asignar el nuevo idMetodologia manualmente.
+
+                // 1. Encontrar el ID máximo actual en la tabla.
+                // Se usa .DefaultIfEmpty(0) para que funcione incluso si la tabla está vacía.
+                int maxId = db.tbMetodologias.Select(m => m.idMetodologia).DefaultIfEmpty(0).Max();
+
+                // 2. Asignar el siguiente ID disponible (maxId + 1) a la nueva metodología.
+                metodologia.idMetodologia = maxId + 1;
+                // --- FIN DE LA MODIFICACIÓN ---
+
+                db.tbMetodologias.Add(metodologia);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            return View(metodologia);
+        }
+
+        // Los métodos de edición y borrado no requieren cambios, ya que trabajan con IDs que ya existen.
+        public ActionResult EditMetodologia(int? id)
+        {
+            if (!IsAdmin()) return RedirectToAction("Index", "Login");
+            if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            tbMetodologias metodologia = db.tbMetodologias.Find(id);
+            if (metodologia == null) return HttpNotFound();
+            return View(metodologia);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditMetodologia(tbMetodologias metodologia)
+        {
+            if (!IsAdmin()) return RedirectToAction("Index", "Login");
+            if (ModelState.IsValid)
+            {
+                db.Entry(metodologia).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(metodologia);
+        }
+
+        public ActionResult DeleteMetodologia(int? id)
+        {
+            if (!IsAdmin()) return RedirectToAction("Index", "Login");
+            if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            tbMetodologias metodologia = db.tbMetodologias.Find(id);
+            if (metodologia == null) return HttpNotFound();
+            return View(metodologia);
+        }
+
+        [HttpPost, ActionName("DeleteMetodologia")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteMetodologiaConfirmed(int id)
+        {
+            if (!IsAdmin()) return RedirectToAction("Index", "Login");
+            tbMetodologias metodologia = db.tbMetodologias.Find(id);
+            db.tbMetodologias.Remove(metodologia);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
         // --- GESTIÓN DE ROLES ---
-        public ActionResult CreateRol() { if (!IsAdmin()) return RedirectToAction("Index", "Login"); ViewBag.idMetodologia = new SelectList(db.tbMetodologias, "idMetodologia", "nombre"); return View(); }
-        [HttpPost][ValidateAntiForgeryToken] public ActionResult CreateRol([Bind(Include = "idRol,nombre,idMetodologia")] tbRoles rol) { if (!IsAdmin()) return RedirectToAction("Index", "Login"); if (ModelState.IsValid) { db.tbRoles.Add(rol); db.SaveChanges(); return RedirectToAction("Index"); } ViewBag.idMetodologia = new SelectList(db.tbMetodologias, "idMetodologia", "nombre", rol.idMetodologia); return View(rol); }
-        public ActionResult EditRol(int? id) { if (!IsAdmin()) return RedirectToAction("Index", "Login"); if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest); tbRoles rol = db.tbRoles.Find(id); if (rol == null) return HttpNotFound(); ViewBag.idMetodologia = new SelectList(db.tbMetodologias, "idMetodologia", "nombre", rol.idMetodologia); return View(rol); }
-        [HttpPost][ValidateAntiForgeryToken] public ActionResult EditRol(tbRoles rol) { if (!IsAdmin()) return RedirectToAction("Index", "Login"); if (ModelState.IsValid) { db.Entry(rol).State = EntityState.Modified; db.SaveChanges(); return RedirectToAction("Index"); } ViewBag.idMetodologia = new SelectList(db.tbMetodologias, "idMetodologia", "nombre", rol.idMetodologia); return View(rol); }
-        public ActionResult DeleteRol(int? id) { if (!IsAdmin()) return RedirectToAction("Index", "Login"); if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest); tbRoles rol = db.tbRoles.Find(id); if (rol == null) return HttpNotFound(); return View(rol); }
-        [HttpPost, ActionName("DeleteRol")][ValidateAntiForgeryToken] public ActionResult DeleteRolConfirmed(int id) { if (!IsAdmin()) return RedirectToAction("Index", "Login"); tbRoles rol = db.tbRoles.Find(id); db.tbRoles.Remove(rol); db.SaveChanges(); return RedirectToAction("Index"); }
+
+        // Este método GET no necesita cambios.
+        public ActionResult CreateRol()
+        {
+            if (!IsAdmin()) return RedirectToAction("Index", "Login");
+            ViewBag.idMetodologia = new SelectList(db.tbMetodologias, "idMetodologia", "nombre");
+            return View();
+        }
+
+        //
+        // MÉTODO MODIFICADO
+        //
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        // Modificación 1: Se elimina "idRol" del Bind, ya que lo asignaremos manualmente.
+        public ActionResult CreateRol([Bind(Include = "nombre,idMetodologia")] tbRoles rol)
+        {
+            if (!IsAdmin()) return RedirectToAction("Index", "Login");
+
+            if (ModelState.IsValid)
+            {
+                // --- INICIO DE LA MODIFICACIÓN ---
+                // Lógica para asignar el nuevo idRol manualmente.
+
+                // 1. Encontrar el ID máximo actual en la tabla.
+                // Usamos .DefaultIfEmpty(0) para manejar el caso de que la tabla esté vacía.
+                // Si está vacía, Max() devolverá 0 (el valor por defecto para int).
+                int maxId = db.tbRoles.Select(r => r.idRol).DefaultIfEmpty(0).Max();
+
+                // 2. Asignar el siguiente ID disponible (maxId + 1).
+                rol.idRol = maxId + 1;
+                // --- FIN DE LA MODIFICACIÓN ---
+
+                db.tbRoles.Add(rol);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            ViewBag.idMetodologia = new SelectList(db.tbMetodologias, "idMetodologia", "nombre", rol.idMetodologia);
+            return View(rol);
+        }
+
+        // Los métodos Edit y Delete no necesitan cambios, ya que operan sobre un ID que ya existe.
+        public ActionResult EditRol(int? id)
+        {
+            if (!IsAdmin()) return RedirectToAction("Index", "Login");
+            if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            tbRoles rol = db.tbRoles.Find(id);
+            if (rol == null) return HttpNotFound();
+            ViewBag.idMetodologia = new SelectList(db.tbMetodologias, "idMetodologia", "nombre", rol.idMetodologia);
+            return View(rol);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditRol(tbRoles rol)
+        {
+            if (!IsAdmin()) return RedirectToAction("Index", "Login");
+            if (ModelState.IsValid)
+            {
+                db.Entry(rol).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            ViewBag.idMetodologia = new SelectList(db.tbMetodologias, "idMetodologia", "nombre", rol.idMetodologia);
+            return View(rol);
+        }
+
+        public ActionResult DeleteRol(int? id)
+        {
+            if (!IsAdmin()) return RedirectToAction("Index", "Login");
+            if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            tbRoles rol = db.tbRoles.Find(id);
+            if (rol == null) return HttpNotFound();
+            return View(rol);
+        }
+
+        [HttpPost, ActionName("DeleteRol")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteRolConfirmed(int id)
+        {
+            if (!IsAdmin()) return RedirectToAction("Index", "Login");
+            tbRoles rol = db.tbRoles.Find(id);
+            db.tbRoles.Remove(rol);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
 
         // --- GESTIÓN DE ELEMENTOS ---
         public ActionResult CreateElemento() { if (!IsAdmin()) return RedirectToAction("Index", "Login"); return View(); }

@@ -1,0 +1,46 @@
+﻿@model List<G03_GestionDeCambios.Models.SolicitudListItemViewModel>
+@{
+    ViewBag.Title = "Historial de Solicitudes de Cambio";
+}
+
+<h2>@ViewBag.Title</h2>
+<p>
+    A continuación se listan todas las solicitudes de cambio para el proyecto.
+</p>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Descripción</th>
+                    <th>Estado</th>
+                    <th>Fecha</th>
+                    <th>Solicitante</th>
+                    <th class="text-center">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.IdSolicitudCambio</td>
+                        <td>@item.DescripcionResumida</td>
+                        <td><span class="badge bg-info">@item.EstadoSolicitud</span></td>
+                        <td>@item.FechaSolicitud.ToShortDateString()</td>
+                        <td>@item.NombreSolicitante</td>
+                        <td class="text-center">
+                            <!-- ESTE ES EL BOTÓN CLAVE -->
+                            <a href="@Url.Action("GenerarInformeEstado", "Estadisticas", new { idSolicitud = item.IdSolicitudCambio })" class="btn btn-sm btn-success" target="_blank">
+                                Generar Informe
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<br />
+<a href="@Url.Action("Index", new { id = ViewBag.ProjectId })" class="btn btn-secondary">Volver a Estadísticas</a>

@@ -1,49 +1,101 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\USUARIO\\source\\repos\\diaexpo\\G03_GestionCambios\\",
+  "WorkspaceRootPath": "C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|C:\\Users\\USUARIO\\source\\repos\\diaexpo\\G03_GestionCambios\\g03_gestiondecambios\\service\\procesocambioservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|c:\\users\\kenyi\\desktop\\final de gestion para subirlo uwu\\g03_gestioncambios\\g03_gestiondecambios\\service\\documentoservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\service\\documentoservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|c:\\users\\kenyi\\desktop\\final de gestion para subirlo uwu\\g03_gestioncambios\\g03_gestiondecambios\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|c:\\users\\kenyi\\desktop\\final de gestion para subirlo uwu\\g03_gestioncambios\\g03_gestiondecambios\\views\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\views\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|c:\\users\\kenyi\\desktop\\final de gestion para subirlo uwu\\g03_gestioncambios\\g03_gestiondecambios\\views\\_viewstart.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\views\\_viewstart.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|c:\\users\\kenyi\\desktop\\final de gestion para subirlo uwu\\g03_gestioncambios\\g03_gestiondecambios\\controllers\\administradorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\controllers\\administradorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|c:\\users\\kenyi\\desktop\\final de gestion para subirlo uwu\\g03_gestioncambios\\g03_gestiondecambios\\views\\estadisticas\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\views\\estadisticas\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|c:\\users\\kenyi\\desktop\\final de gestion para subirlo uwu\\g03_gestioncambios\\g03_gestiondecambios\\views\\estadisticas\\listasolicitudes.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\views\\estadisticas\\listasolicitudes.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|c:\\users\\kenyi\\desktop\\final de gestion para subirlo uwu\\g03_gestioncambios\\g03_gestiondecambios\\controllers\\estadisticascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\controllers\\estadisticascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|c:\\users\\kenyi\\desktop\\final de gestion para subirlo uwu\\g03_gestioncambios\\g03_gestiondecambios\\service\\estadisticasservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\service\\estadisticasservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|c:\\users\\kenyi\\desktop\\final de gestion para subirlo uwu\\g03_gestioncambios\\g03_gestiondecambios\\models\\solicitudlistitemviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\models\\solicitudlistitemviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|c:\\users\\kenyi\\desktop\\final de gestion para subirlo uwu\\g03_gestioncambios\\g03_gestiondecambios\\views\\estadisticas\\informeestado.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\views\\estadisticas\\informeestado.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|c:\\users\\kenyi\\desktop\\final de gestion para subirlo uwu\\g03_gestioncambios\\g03_gestiondecambios\\models\\informeestadoviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\models\\informeestadoviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|c:\\users\\kenyi\\desktop\\final de gestion para subirlo uwu\\g03_gestioncambios\\g03_gestiondecambios\\controllers\\proyectocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\controllers\\proyectocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|c:\\users\\kenyi\\desktop\\final de gestion para subirlo uwu\\g03_gestioncambios\\g03_gestiondecambios\\service\\procesocambioservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\service\\procesocambioservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|c:\\users\\usuario\\source\\repos\\diaexpo\\g03_gestioncambios\\g03_gestiondecambios\\views\\procesocambio\\versolicitud.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\g03_gestiondecambios\\views\\procesocambio\\versolicitud.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\views\\procesocambio\\versolicitud.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|c:\\users\\usuario\\source\\repos\\diaexpo\\g03_gestioncambios\\g03_gestiondecambios\\views\\procesocambio\\veraceptacion.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\g03_gestiondecambios\\views\\procesocambio\\veraceptacion.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\views\\procesocambio\\veraceptacion.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|c:\\users\\usuario\\source\\repos\\diaexpo\\g03_gestioncambios\\g03_gestiondecambios\\views\\procesocambio\\verdespliegue.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\g03_gestiondecambios\\views\\procesocambio\\verdespliegue.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\views\\procesocambio\\verdespliegue.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|c:\\users\\usuario\\source\\repos\\diaexpo\\g03_gestioncambios\\g03_gestiondecambios\\views\\procesocambio\\verqa.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\g03_gestiondecambios\\views\\procesocambio\\verqa.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\views\\procesocambio\\verqa.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|c:\\users\\usuario\\source\\repos\\diaexpo\\g03_gestioncambios\\g03_gestiondecambios\\models\\qaviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\g03_gestiondecambios\\models\\qaviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\models\\qaviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|c:\\users\\usuario\\source\\repos\\diaexpo\\g03_gestioncambios\\g03_gestiondecambios\\controllers\\procesocambiocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\g03_gestiondecambios\\controllers\\procesocambiocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\controllers\\procesocambiocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|c:\\users\\usuario\\source\\repos\\diaexpo\\g03_gestioncambios\\g03_gestiondecambios\\service\\estadosolicitudservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\g03_gestiondecambios\\service\\estadosolicitudservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\service\\estadosolicitudservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|c:\\users\\usuario\\source\\repos\\diaexpo\\g03_gestioncambios\\g03_gestiondecambios\\views\\procesocambio\\verasignacion.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\g03_gestiondecambios\\views\\procesocambio\\verasignacion.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\views\\procesocambio\\verasignacion.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|c:\\users\\usuario\\source\\repos\\diaexpo\\g03_gestioncambios\\g03_gestiondecambios\\views\\procesocambio\\veraprobacion.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\g03_gestiondecambios\\views\\procesocambio\\veraprobacion.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\views\\procesocambio\\veraprobacion.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|C:\\Users\\USUARIO\\source\\repos\\diaexpo\\G03_GestionCambios\\g03_gestiondecambios\\models\\admindashboardviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\g03_gestiondecambios\\models\\admindashboardviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{4A656A40-CC67-451A-AD50-8AB270948F46}|G03_GestionDeCambios\\G03_GestionDeCambios.csproj|solutionrelative:g03_gestiondecambios\\models\\admindashboardviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -54,132 +106,232 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 9,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "VerSolicitud.cshtml",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\diaexpo\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\ProcesoCambio\\VerSolicitud.cshtml",
-              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Views\\ProcesoCambio\\VerSolicitud.cshtml",
-              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\diaexpo\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\ProcesoCambio\\VerSolicitud.cshtml",
-              "RelativeToolTip": "G03_GestionDeCambios\\Views\\ProcesoCambio\\VerSolicitud.cshtml",
-              "ViewState": "AgIAAIYAAAAAAAAAAAArwJYAAAA5AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-06-19T22:29:18.509Z",
+              "DocumentIndex": 0,
+              "Title": "DocumentoService.cs",
+              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\G03_GestionDeCambios\\Service\\DocumentoService.cs",
+              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Service\\DocumentoService.cs",
+              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\G03_GestionDeCambios\\Service\\DocumentoService.cs",
+              "RelativeToolTip": "G03_GestionDeCambios\\Service\\DocumentoService.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAqwBEAAABUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-26T20:26:08.924Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "VerAceptacion.cshtml",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\diaexpo\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\ProcesoCambio\\VerAceptacion.cshtml",
-              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Views\\ProcesoCambio\\VerAceptacion.cshtml",
-              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\diaexpo\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\ProcesoCambio\\VerAceptacion.cshtml",
-              "RelativeToolTip": "G03_GestionDeCambios\\Views\\ProcesoCambio\\VerAceptacion.cshtml",
-              "ViewState": "AgIAAH8AAAAAAAAAAAAAAJAAAABLAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-06-19T22:25:52.776Z",
+              "Title": "web.config",
+              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\web.config",
+              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Views\\web.config",
+              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\web.config",
+              "RelativeToolTip": "G03_GestionDeCambios\\Views\\web.config",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000601|",
+              "WhenOpened": "2025-06-26T20:25:51.006Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "VerDespliegue.cshtml",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\diaexpo\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\ProcesoCambio\\VerDespliegue.cshtml",
-              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Views\\ProcesoCambio\\VerDespliegue.cshtml",
-              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\diaexpo\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\ProcesoCambio\\VerDespliegue.cshtml",
-              "RelativeToolTip": "G03_GestionDeCambios\\Views\\ProcesoCambio\\VerDespliegue.cshtml",
-              "ViewState": "AgIAADoAAAAAAAAAAAArwE0AAABjAAAAAAAAAA==",
+              "Title": "_ViewStart.cshtml",
+              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\_ViewStart.cshtml",
+              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Views\\_ViewStart.cshtml",
+              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\_ViewStart.cshtml",
+              "RelativeToolTip": "G03_GestionDeCambios\\Views\\_ViewStart.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-06-19T22:23:15.183Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "EstadoSolicitudService.cs",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\diaexpo\\G03_GestionCambios\\G03_GestionDeCambios\\Service\\EstadoSolicitudService.cs",
-              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Service\\EstadoSolicitudService.cs",
-              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\diaexpo\\G03_GestionCambios\\G03_GestionDeCambios\\Service\\EstadoSolicitudService.cs",
-              "RelativeToolTip": "G03_GestionDeCambios\\Service\\EstadoSolicitudService.cs",
-              "ViewState": "AgIAANMBAAAAAAAAAAAowOgBAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-19T22:00:33.355Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "QAViewModel.cs",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\diaexpo\\G03_GestionCambios\\G03_GestionDeCambios\\Models\\QAViewModel.cs",
-              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Models\\QAViewModel.cs",
-              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\diaexpo\\G03_GestionCambios\\G03_GestionDeCambios\\Models\\QAViewModel.cs",
-              "RelativeToolTip": "G03_GestionDeCambios\\Models\\QAViewModel.cs",
-              "ViewState": "AgIAACEAAAAAAAAAAAA3wCIAAAAwAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-19T21:55:48.587Z",
+              "WhenOpened": "2025-06-26T20:25:49.319Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 4,
-              "Title": "VerQA.cshtml",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\diaexpo\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\ProcesoCambio\\VerQA.cshtml",
-              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Views\\ProcesoCambio\\VerQA.cshtml",
-              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\diaexpo\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\ProcesoCambio\\VerQA.cshtml",
-              "RelativeToolTip": "G03_GestionDeCambios\\Views\\ProcesoCambio\\VerQA.cshtml",
-              "ViewState": "AgIAAPUAAAAAAAAAAAAkwAoBAAAxAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-06-19T21:43:57.326Z",
+              "Title": "AdministradorController.cs",
+              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\G03_GestionDeCambios\\Controllers\\AdministradorController.cs",
+              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Controllers\\AdministradorController.cs",
+              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\G03_GestionDeCambios\\Controllers\\AdministradorController.cs",
+              "RelativeToolTip": "G03_GestionDeCambios\\Controllers\\AdministradorController.cs",
+              "ViewState": "AgIAANABAAAAAAAAAAAAANIBAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-26T20:19:53.33Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "VerAprobacion.cshtml",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\diaexpo\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\ProcesoCambio\\VerAprobacion.cshtml",
-              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Views\\ProcesoCambio\\VerAprobacion.cshtml",
-              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\diaexpo\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\ProcesoCambio\\VerAprobacion.cshtml",
-              "RelativeToolTip": "G03_GestionDeCambios\\Views\\ProcesoCambio\\VerAprobacion.cshtml",
-              "ViewState": "AgIAALEAAAAAAAAAAAAAALEAAAAQAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-06-19T21:46:59.723Z",
+              "DocumentIndex": 1,
+              "Title": "Web.config",
+              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\G03_GestionDeCambios\\Web.config",
+              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Web.config",
+              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\G03_GestionDeCambios\\Web.config",
+              "RelativeToolTip": "G03_GestionDeCambios\\Web.config",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAACQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000601|",
+              "WhenOpened": "2025-06-26T19:40:52.188Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 6,
-              "Title": "ProcesoCambioController.cs",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\diaexpo\\G03_GestionCambios\\G03_GestionDeCambios\\Controllers\\ProcesoCambioController.cs",
-              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Controllers\\ProcesoCambioController.cs",
-              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\diaexpo\\G03_GestionCambios\\G03_GestionDeCambios\\Controllers\\ProcesoCambioController.cs",
-              "RelativeToolTip": "G03_GestionDeCambios\\Controllers\\ProcesoCambioController.cs",
-              "ViewState": "AgIAAM0BAAAAAAAAAAAcwNwBAAARAAAAAAAAAA==",
+              "Title": "ListaSolicitudes.cshtml",
+              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\Estadisticas\\ListaSolicitudes.cshtml",
+              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Views\\Estadisticas\\ListaSolicitudes.cshtml",
+              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\Estadisticas\\ListaSolicitudes.cshtml",
+              "RelativeToolTip": "G03_GestionDeCambios\\Views\\Estadisticas\\ListaSolicitudes.cshtml",
+              "ViewState": "AgIAABAAAAAAAAAAAAAowC0AAAByAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-26T19:57:40.422Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "SolicitudListItemViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\G03_GestionDeCambios\\Models\\SolicitudListItemViewModel.cs",
+              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Models\\SolicitudListItemViewModel.cs",
+              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\G03_GestionDeCambios\\Models\\SolicitudListItemViewModel.cs",
+              "RelativeToolTip": "G03_GestionDeCambios\\Models\\SolicitudListItemViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-19T21:36:19.498Z",
+              "WhenOpened": "2025-06-26T19:56:14.068Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 8,
-              "Title": "VerAsignacion.cshtml",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\diaexpo\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\ProcesoCambio\\VerAsignacion.cshtml",
-              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Views\\ProcesoCambio\\VerAsignacion.cshtml",
-              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\diaexpo\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\ProcesoCambio\\VerAsignacion.cshtml",
-              "RelativeToolTip": "G03_GestionDeCambios\\Views\\ProcesoCambio\\VerAsignacion.cshtml",
-              "ViewState": "AgIAAKYAAAAAAAAAAAAQwLkAAAAMAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-06-19T21:31:13.742Z",
+              "Title": "EstadisticasService.cs",
+              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\G03_GestionDeCambios\\Service\\EstadisticasService.cs",
+              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Service\\EstadisticasService.cs",
+              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\G03_GestionDeCambios\\Service\\EstadisticasService.cs",
+              "RelativeToolTip": "G03_GestionDeCambios\\Service\\EstadisticasService.cs",
+              "ViewState": "AgIAACgAAAAAAAAAAAAmwHQAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-26T19:17:14.678Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 5,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\Estadisticas\\Index.cshtml",
+              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Views\\Estadisticas\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\Estadisticas\\Index.cshtml",
+              "RelativeToolTip": "G03_GestionDeCambios\\Views\\Estadisticas\\Index.cshtml",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAtwCMAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-26T18:38:32.1Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "EstadisticasController.cs",
+              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\G03_GestionDeCambios\\Controllers\\EstadisticasController.cs",
+              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Controllers\\EstadisticasController.cs",
+              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\G03_GestionDeCambios\\Controllers\\EstadisticasController.cs",
+              "RelativeToolTip": "G03_GestionDeCambios\\Controllers\\EstadisticasController.cs",
+              "ViewState": "AgIAABsAAAAAAAAAAAAuwDIAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-26T18:50:10.671Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "InformeEstado.cshtml",
+              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\Estadisticas\\InformeEstado.cshtml",
+              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Views\\Estadisticas\\InformeEstado.cshtml",
+              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\Estadisticas\\InformeEstado.cshtml",
+              "RelativeToolTip": "G03_GestionDeCambios\\Views\\Estadisticas\\InformeEstado.cshtml",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAcwBsAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-26T19:21:07.58Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "InformeEstadoViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\G03_GestionDeCambios\\Models\\InformeEstadoViewModel.cs",
+              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Models\\InformeEstadoViewModel.cs",
+              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\G03_GestionDeCambios\\Models\\InformeEstadoViewModel.cs",
+              "RelativeToolTip": "G03_GestionDeCambios\\Models\\InformeEstadoViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-26T19:16:58.467Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "ProyectoController.cs",
+              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\G03_GestionDeCambios\\Controllers\\ProyectoController.cs",
+              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Controllers\\ProyectoController.cs",
+              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\G03_GestionDeCambios\\Controllers\\ProyectoController.cs",
+              "RelativeToolTip": "G03_GestionDeCambios\\Controllers\\ProyectoController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-26T18:43:46.934Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "VerDespliegue.cshtml",
+              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\ProcesoCambio\\VerDespliegue.cshtml",
+              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Views\\ProcesoCambio\\VerDespliegue.cshtml",
+              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\ProcesoCambio\\VerDespliegue.cshtml",
+              "RelativeToolTip": "G03_GestionDeCambios\\Views\\ProcesoCambio\\VerDespliegue.cshtml",
+              "ViewState": "AgIAADoAAAAAAAAAAAArwE0AAABjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-19T22:23:15.183Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "EstadoSolicitudService.cs",
+              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\G03_GestionDeCambios\\Service\\EstadoSolicitudService.cs",
+              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Service\\EstadoSolicitudService.cs",
+              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\G03_GestionDeCambios\\Service\\EstadoSolicitudService.cs",
+              "RelativeToolTip": "G03_GestionDeCambios\\Service\\EstadoSolicitudService.cs",
+              "ViewState": "AgIAANMBAAAAAAAAAAAowOgBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T22:00:33.355Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "QAViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\G03_GestionDeCambios\\Models\\QAViewModel.cs",
+              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Models\\QAViewModel.cs",
+              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\G03_GestionDeCambios\\Models\\QAViewModel.cs",
+              "RelativeToolTip": "G03_GestionDeCambios\\Models\\QAViewModel.cs",
+              "ViewState": "AgIAACEAAAAAAAAAAAA3wCIAAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T21:55:48.587Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "VerQA.cshtml",
+              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\ProcesoCambio\\VerQA.cshtml",
+              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Views\\ProcesoCambio\\VerQA.cshtml",
+              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\ProcesoCambio\\VerQA.cshtml",
+              "RelativeToolTip": "G03_GestionDeCambios\\Views\\ProcesoCambio\\VerQA.cshtml",
+              "ViewState": "AgIAAPUAAAAAAAAAAAAkwAoBAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-19T21:43:57.326Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
               "Title": "ProcesoCambioService.cs",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\diaexpo\\G03_GestionCambios\\G03_GestionDeCambios\\Service\\ProcesoCambioService.cs",
+              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\G03_GestionDeCambios\\Service\\ProcesoCambioService.cs",
               "RelativeDocumentMoniker": "G03_GestionDeCambios\\Service\\ProcesoCambioService.cs",
-              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\diaexpo\\G03_GestionCambios\\G03_GestionDeCambios\\Service\\ProcesoCambioService.cs",
+              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\G03_GestionDeCambios\\Service\\ProcesoCambioService.cs",
               "RelativeToolTip": "G03_GestionDeCambios\\Service\\ProcesoCambioService.cs",
               "ViewState": "AgIAABgAAAAAAAAAAAAtwCcAAABAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -188,11 +340,71 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 15,
+              "Title": "VerAceptacion.cshtml",
+              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\ProcesoCambio\\VerAceptacion.cshtml",
+              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Views\\ProcesoCambio\\VerAceptacion.cshtml",
+              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\ProcesoCambio\\VerAceptacion.cshtml",
+              "RelativeToolTip": "G03_GestionDeCambios\\Views\\ProcesoCambio\\VerAceptacion.cshtml",
+              "ViewState": "AgIAAH8AAAAAAAAAAAAAAJAAAABLAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-19T22:25:52.776Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "VerSolicitud.cshtml",
+              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\ProcesoCambio\\VerSolicitud.cshtml",
+              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Views\\ProcesoCambio\\VerSolicitud.cshtml",
+              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\ProcesoCambio\\VerSolicitud.cshtml",
+              "RelativeToolTip": "G03_GestionDeCambios\\Views\\ProcesoCambio\\VerSolicitud.cshtml",
+              "ViewState": "AgIAAIYAAAAAAAAAAAArwJYAAAA5AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-19T22:29:18.509Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "VerAprobacion.cshtml",
+              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\ProcesoCambio\\VerAprobacion.cshtml",
+              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Views\\ProcesoCambio\\VerAprobacion.cshtml",
+              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\ProcesoCambio\\VerAprobacion.cshtml",
+              "RelativeToolTip": "G03_GestionDeCambios\\Views\\ProcesoCambio\\VerAprobacion.cshtml",
+              "ViewState": "AgIAALEAAAAAAAAAAAAAALEAAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-19T21:46:59.723Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "ProcesoCambioController.cs",
+              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\G03_GestionDeCambios\\Controllers\\ProcesoCambioController.cs",
+              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Controllers\\ProcesoCambioController.cs",
+              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\G03_GestionDeCambios\\Controllers\\ProcesoCambioController.cs",
+              "RelativeToolTip": "G03_GestionDeCambios\\Controllers\\ProcesoCambioController.cs",
+              "ViewState": "AgIAAM0BAAAAAAAAAAAcwNwBAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T21:36:19.498Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "VerAsignacion.cshtml",
+              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\ProcesoCambio\\VerAsignacion.cshtml",
+              "RelativeDocumentMoniker": "G03_GestionDeCambios\\Views\\ProcesoCambio\\VerAsignacion.cshtml",
+              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\G03_GestionDeCambios\\Views\\ProcesoCambio\\VerAsignacion.cshtml",
+              "RelativeToolTip": "G03_GestionDeCambios\\Views\\ProcesoCambio\\VerAsignacion.cshtml",
+              "ViewState": "AgIAAKYAAAAAAAAAAAAQwLkAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-19T21:31:13.742Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
               "Title": "AdminDashboardViewModel.cs",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\diaexpo\\G03_GestionCambios\\G03_GestionDeCambios\\Models\\AdminDashboardViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\G03_GestionDeCambios\\Models\\AdminDashboardViewModel.cs",
               "RelativeDocumentMoniker": "G03_GestionDeCambios\\Models\\AdminDashboardViewModel.cs",
-              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\diaexpo\\G03_GestionCambios\\G03_GestionDeCambios\\Models\\AdminDashboardViewModel.cs",
+              "ToolTip": "C:\\Users\\Kenyi\\Desktop\\final de gestion para subirlo uwu\\G03_GestionCambios\\G03_GestionDeCambios\\Models\\AdminDashboardViewModel.cs",
               "RelativeToolTip": "G03_GestionDeCambios\\Models\\AdminDashboardViewModel.cs",
               "ViewState": "AgIAADwAAAAAAAAAAAAywEQAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",

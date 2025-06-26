@@ -201,6 +201,7 @@
     <Compile Include="Models\DocumentoViewModel.cs" />
     <Compile Include="Models\EstadisticasViewModel.cs" />
     <Compile Include="Models\HomeViewModel.cs" />
+    <Compile Include="Models\InformeEstadoViewModel.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
     <Compile Include="Models\ModeloG03.Context.cs">
       <AutoGen>True</AutoGen>
@@ -220,6 +221,7 @@
     <Compile Include="Models\QAViewModel.cs" />
     <Compile Include="Models\RegisterViewModel.cs" />
     <Compile Include="Models\SolicitudDetalleViewModel.cs" />
+    <Compile Include="Models\SolicitudListItemViewModel.cs" />
     <Compile Include="Models\SolicitudViewModel.cs" />
     <Compile Include="Models\SuperAdminDashboardViewModel.cs" />
     <Compile Include="Models\sysdiagrams.cs">
@@ -333,9 +335,11 @@
     <None Include="Properties\PublishProfiles\gestionsistemag03 - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\gestionsistemag03 - FTP1.pubxml" />
     <None Include="Properties\PublishProfiles\gestionsistemag03 - FTP2.pubxml" />
+    <None Include="Properties\PublishProfiles\gestionsistemag03 - FTP3.pubxml" />
     <None Include="Properties\PublishProfiles\gestionsistemag03 - ReadOnly - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\gestionsistemag03 - ReadOnly - FTP1.pubxml" />
     <None Include="Properties\PublishProfiles\gestionsistemag03 - ReadOnly - FTP2.pubxml" />
+    <None Include="Properties\PublishProfiles\gestionsistemag03 - ReadOnly - FTP3.pubxml" />
     <None Include="Properties\PublishProfiles\gestionsistemag03 - Web Deploy.pubxml" />
     <Content Include="Views\Administrador\Index.cshtml" />
     <Content Include="Views\Administrador\CreateUsuario.cshtml" />
@@ -371,8 +375,11 @@
     <Content Include="Views\ProcesoCambio\VerQA.cshtml" />
     <Content Include="Views\ProcesoCambio\VerSolicitud.cshtml" />
     <None Include="Properties\PublishProfiles\gestionsistemag03 - Web Deploy2.pubxml" />
+    <None Include="Properties\PublishProfiles\gestionsistemag03 - Web Deploy3.pubxml" />
     <None Include="Properties\PublishProfiles\pruebaAppBuen - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\pruebaAppBuen - Web Deploy.pubxml" />
+    <Content Include="Views\Estadisticas\InformeEstado.cshtml" />
+    <Content Include="Views\Estadisticas\ListaSolicitudes.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

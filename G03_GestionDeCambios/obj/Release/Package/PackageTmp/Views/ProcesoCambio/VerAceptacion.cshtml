@@ -126,7 +126,7 @@
         <div class="alert @(Model.InfoCierre.DecisionFinal == "Aceptado" ? "alert-success" : "alert-danger")">
             <h4 class="alert-heading">Solicitud Cerrada</h4>
             <p>
-                Esta solicitud fue cerrada por <strong>@Model.InfoCierre.CerradoPor</strong> el @Model.InfoCierre.FechaCierre.ToString("dd/MM/yyyy 'a las' HH:mm")
+                Esta solicitud fue cerrada por <strong>@Model.InfoCierre.CerradoPor</strong> el @(Model.InfoCierre.FechaCierre.ToString("dd/MM/yyyy 'a las' HH:mm"))
                 con la decisión final: <strong>@Model.InfoCierre.DecisionFinal.ToUpper()</strong>.
             </p>
             <hr>
@@ -148,7 +148,7 @@
                 <dt class="col-sm-3">Solicitado por</dt>
                 <dd class="col-sm-9">@Model.SolicitudInfo.SolicitadoPor</dd>
                 <dt class="col-sm-3">Fecha Solicitud</dt>
-                <dd class="col-sm-9">@Model.SolicitudInfo.FechaSolicitud?.ToString("dd/MM/yyyy")</dd>
+                <dd class="col-sm-9">@(Model.SolicitudInfo.FechaSolicitud?.ToString("dd/MM/yyyy"))</dd>
             </dl>
         </div>
     </div>

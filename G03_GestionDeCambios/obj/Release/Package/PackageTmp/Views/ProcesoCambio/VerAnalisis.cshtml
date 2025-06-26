@@ -112,7 +112,7 @@
                     <h5 class="card-title">Elemento: @Model.ElementoAfectado.NombreElemento</h5>
                     <p class="card-text">
                         Fechas planificadas para este elemento:
-                        <strong>@Model.ElementoAfectado.FechaInicio?.ToString("dd/MM/yyyy")</strong> - <strong>@Model.ElementoAfectado.FechaFin?.ToString("dd/MM/yyyy")</strong>
+                        <strong>@(Model.ElementoAfectado.FechaInicio?.ToString("dd/MM/yyyy"))</strong> - <strong>@(Model.ElementoAfectado.FechaFin?.ToString("dd/MM/yyyy"))</strong>
                     </p>
                     <h6>Tareas Asociadas al Elemento:</h6>
                     @if (Model.ElementoAfectado.TareasAsociadas.Any())

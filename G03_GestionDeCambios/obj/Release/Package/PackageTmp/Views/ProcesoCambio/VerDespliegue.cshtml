@@ -71,7 +71,7 @@
                                     <h2 class="accordion-header" id="heading-@despliegue.IdDespliegue">
                                         <button class="accordion-button @(despliegue.Estado == "En Proceso" ? "" : "collapsed")" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-@despliegue.IdDespliegue" aria-expanded="true" aria-controls="collapse-@despliegue.IdDespliegue">
                                             <span class="fw-bold me-3">@despliegue.EntornoNombre</span>
-                                            <span class="badge @("badge-estado-" + despliegue.Estado.ToLower()) me-auto">@despliegue.Estado</span>
+                                            <span class="bg @("badge-estado-" + despliegue.Estado.ToLower()) me-auto">@despliegue.Estado</span>
                                             <small class="text-muted">Iniciado: @despliegue.FechaInicio.ToString("g")</small>
                                         </button>
                                     </h2>

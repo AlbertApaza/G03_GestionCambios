@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using G03_GestionDeCambios.Models;
 using G03_GestionDeCambios.ViewModels.DetallesViewModels;
@@ -52,6 +53,67 @@ namespace G03_GestionDeCambios.Service
                 .ToList();
 
             return viewModel;
+        }
+
+        // ===================================================================
+        // === AGREGA ESTE NUEVO MÉTODO A TU SERVICIO ========================
+        // ===================================================================
+        public List<SolicitudListItemViewModel> GetSolicitudesProyecto(int idProyecto)
+        {
+            var solicitudes = _context.tbSolicitudesCambio
+                .Where(s => s.idProyecto == idProyecto)
+                .Include(s => s.tbUsuarios) // Para obtener el nombre del solicitante
+                .OrderByDescending(s => s.fechaSolicitud)
+                .Select(s => new SolicitudListItemViewModel
+                {
+                    IdSolicitudCambio = s.idSolicitudCambio,
+                    // Acortamos la descripción para que no ocupe mucho en la tabla
+                    DescripcionResumida = s.descripcionSolicitud.Length > 100
+                                          ? s.descripcionSolicitud.Substring(0, 100) + "..."
+                                          : s.descripcionSolicitud,
+                    EstadoSolicitud = s.estadoSolicitud,
+                    FechaSolicitud = s.fechaSolicitud ?? DateTime.MinValue,
+                    NombreSolicitante = s.tbUsuarios.nombre + " " + s.tbUsuarios.apellido
+                })
+                .ToList();
+
+            return solicitudes;
+        }
+
+
+        // === MODIFICA EL MÉTODO GetInformeEstadoData =======================
+        // Ahora buscará por ID de solicitud, no por proyecto.
+        public InformeEstadoViewModel GetInformeEstadoData(int idSolicitud) // <-- PARÁMETRO CAMBIADO
+        {
+            // La consulta ahora busca una solicitud específica por su ID
+            var solicitud = _context.tbSolicitudesCambio
+                              .Include(s => s.tbProyectos)
+                              .Include(s => s.tbProyectoElemento.tbElementos)
+                              .Include(s => s.tbUsuarios1) // Receptor del cambio
+                              .FirstOrDefault(s => s.idSolicitudCambio == idSolicitud); // <-- LÓGICA CAMBIADA
+
+            if (solicitud == null)
+            {
+                return null;
+            }
+
+            var responsable = solicitud.tbUsuarios1;
+            var informeModel = new InformeEstadoViewModel
+            {
+                NumeroSolicitud = solicitud.idSolicitudCambio,
+                FechaInforme = DateTime.Now,
+                NombreProyecto = solicitud.tbProyectos.nombre,
+                NombreDocumento = $"Documento de Solicitud {solicitud.codigoDocumentoSolicitd} – Primera Versión Aprobada",
+                DescripcionCambio = solicitud.descripcionSolicitud,
+                ElementoAfectado = solicitud.tbProyectoElemento?.tbElementos?.nombre ?? "No especificado",
+                EstadoCambioSolicitado = "Aprobado",
+                ResponsableDelCambio = responsable != null ? $"{responsable.nombre} {responsable.apellido}" : "No asignado",
+                EstadoImplementacion = "Aprobado",
+                ImpactoSistema = solicitud.impactoEstimado,
+                Observaciones = solicitud.observaciones ?? "Sin observaciones."
+            };
+
+            return informeModel;
         }
 
         public void Dispose() { _context.Dispose(); }
