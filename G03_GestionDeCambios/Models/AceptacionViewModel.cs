@@ -52,3 +52,5 @@ namespace G03_GestionDeCambios.Models
         public string DecisionFinal { get; set; } // Aceptado, Rechazado
     }
 }
+
+//revisado.
